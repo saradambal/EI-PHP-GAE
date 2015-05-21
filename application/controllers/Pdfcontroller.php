@@ -1,4 +1,6 @@
 <?php
+include "GET_USERSTAMP.php";
+$USERSTAMP=$UserStamp;
 class Pdfcontroller extends CI_Controller{
 
     public function pdfexport()
@@ -145,6 +147,40 @@ class Pdfcontroller extends CI_Controller{
         $pdf->WriteHTML($data); // write the HTML into the PDF
         $pdf->Output($PDLY_SEARCH_lbl_flextableheader.'.pdf', 'd');
 
+    }
+    public function pdfexportbizexpense(){
+        $this->load->library('pdf');
+        global $USERSTAMP;
+        global $timeZoneFormat;
+        $this->load->database();
+        $BDLY_SRC_lb_unitno=$this->input->post('BDLY_SRC_lb_unitno');
+        $BDLY_SRC_lb_invoiceto=$this->input->post('BDLY_SRC_lb_invoiceto');
+        $BDLY_SRC_comments=$this->input->post('BDLY_SRC_comments');
+        $BDLY_SRC_tb_fromamnt=$this->input->post('BDLY_SRC_tb_fromamnt');
+        $BDLY_SRC_tb_toamnt=$this->input->post('BDLY_SRC_tb_toamnt');
+        $BDLY_SRC_servicedue=$this->input->post('BDLY_SRC_servicedue');
+        $BDLY_SRC_lb_cleanername=$this->input->post('BDLY_SRC_lb_cleanername');
+        $BDLY_SRC_tb_durationamt=$this->input->post('BDLY_SRC_tb_durationamt');
+        $BDLY_SRC_startdate=$this->input->post('startdate');
+        $BDLY_SRC_enddate=$this->input->post('enddate');
+        $BDLY_SRC_invoicefrom=$this->input->post('BDLY_SRC_invoicefrom');
+        $BDLY_SRC_lb_accountno=$this->input->post('BDLY_SRC_lb_accountno');
+        $BDLY_SRC_lb_cusname=$this->input->post('BDLY_SRC_lb_cusname');
+        $BDLY_SRC_lb_Digvoiceno=$this->input->post('BDLY_SRC_lb_Digvoiceno');
+        $BDLY_SRC_lb_cardno=$this->input->post('BDLY_SRC_lb_cardno');
+        $BDLY_SRC_lb_carno=$this->input->post('BDLY_SRC_lb_carno');
+        $BDLY_SRC_lb_serviceby=$this->input->post('BDLY_SRC_lb_serviceby');
+        $BDLY_SRC_invoiceitem=$this->input->post('BDLY_SRC_invoiceitem');
+        $BDLY_SRC_lb_category=$this->input->post('BDLY_SRC_lb_category');
+        $pdfheader=$this->input->post('pdfheader');
+        $this->load->model('Pdf_model');
+        $data=$this->Pdf_model->BDLY_SRC_getAnyTypeExpData($USERSTAMP,$timeZoneFormat,$BDLY_SRC_lb_unitno,$BDLY_SRC_lb_invoiceto,$BDLY_SRC_comments,$BDLY_SRC_comments,$BDLY_SRC_tb_fromamnt,$BDLY_SRC_tb_toamnt,$BDLY_SRC_servicedue,$BDLY_SRC_lb_cleanername,$BDLY_SRC_tb_durationamt,$BDLY_SRC_startdate,$BDLY_SRC_enddate,$BDLY_SRC_invoicefrom,$BDLY_SRC_lb_accountno,$BDLY_SRC_lb_cusname,$BDLY_SRC_lb_Digvoiceno,$BDLY_SRC_lb_cardno,$BDLY_SRC_lb_carno,$BDLY_SRC_lb_serviceby,$BDLY_SRC_invoiceitem,$BDLY_SRC_lb_category);
+        $pdf = $this->pdf->load();
+        $pdf=new mPDF('utf-8','A4');
+        $pdf->SetHTMLHeader('<div style="text-align: center; font-weight: bold;">'.$pdfheader.'</div>', 'O', true);
+        $pdf->SetHTMLFooter('<div style="text-align: center;">{PAGENO}</div>'); // Add a footer for good measure <img src="https://davidsimpson.me/wp-includes/images/smilies/icon_wink.gif" alt=";)" class="wp-smiley">
+        $pdf->WriteHTML($data); // write the HTML into the PDF
+        $pdf->Output($pdfheader.'.pdf', 'd');
     }
 }
 

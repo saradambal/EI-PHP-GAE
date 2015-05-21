@@ -69,7 +69,9 @@ var BDLY_SRC_flag_autocom='';
         $('.preloader').hide();
         $('#spacewidth').height('0%');
         $('#BDLY_INPUT_lb_unitno').hide();
+        $('#typeofexpense').hide();
         $('#BDLY_INPUT_lb_selectexptype').hide();
+        $('#BDLY_btn_pdf').hide();
         $('textarea').autogrow({onInitialize: true});
 //VALIDATION USED IN THE FORMS//
         $('.includeminusfour').doValidation({rule:'numbersonly',prop:{integer:true,realpart:4,imaginary:2}});
@@ -116,12 +118,31 @@ var BDLY_SRC_flag_autocom='';
                     data:{"ErrorList":'2,8,9,10,105,169,204,205,206,207,208,242,245,246,247,248,250,256,258,400'},
                     success: function(res) {
                         $('.preloader').hide();
+                        $("html, body").animate({ scrollTop: $(document).height() }, "slow");
                         initial_values=JSON.parse(res);
                         BDLY_INPUT_load_initialvalue(initial_values)
                     }
             });
                 $('#biz_expenseentryform').show();
                 $('#updateform').hide();
+                $('#BDLY_INPUT_lb_selectexptype').val('SELECT').show();
+                $('#typeofexpense').hide();
+                $('#BDLY_INPUT_tble_aircon').hide();
+                $('#BDLY_INPUT_tble_cardpark').hide();
+                $('#BDLY_INPUT_tble_digitalvoice').hide();
+                $('#BDLY_INPUT_tble_facility').hide();
+                $('#BDLY_INPUT_tble_moving').hide();
+                $('#BDLY_INPUT_tble_purchase').hide();
+                $('#BDLY_INPUT_tble_pettycash').hide();
+                $('#BDLY_INPUT_tble_housekeeping').hide();
+                $('#BDLY_INPUT_tble_housepayment').hide();
+                $('#BDLY_INPUT_tble_electricity').hide();
+                $('#BDLY_INPUT_tble_unitexpense').hide();
+                $('#BDLY_INPUT_tble_starhub').hide();
+                $('#BDLY_INPUT_btn_submitbutton').hide();
+                $('#BDLY_INPUT_btn_multisubmitbutton').hide();
+                $('#BDLY_INPUT_btn_resetbutton').hide();
+
             }
             if(radiooption=='bizsearchform')
             {
@@ -131,13 +152,23 @@ var BDLY_SRC_flag_autocom='';
                     url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_getInitialvalue",
                     success: function(res) {
                         $('.preloader').hide();
+                        $("html, body").animate({ scrollTop: $(document).height() }, "slow");
                         var initialvalue=JSON.parse(res);
                         BDLY_SRC_result_getInitialvalue(initialvalue)
                     }
                 });
                 $('#biz_expenseentryform').hide();
                 $('#updateform').show();
+                $('#BDLY_SRC_lb_ExpenseList').val('SELECT').show();
                 $('#BDLY_SRC_tble_maintable').show();
+                $('#BDLY_SRC_dynamicarea').html('');
+                $("#BDLY_SRC_tr_serachopt").hide();
+                $('#BDLY_SRC_btn_search').hide();
+                $('#BDLY_btn_pdf').hide();
+                $('#BDLY_SRC_tb_DataTableId').hide();
+                $('#BDLY_SRC_div_searchresult').html('');
+                $('#BDLY_SRC_Optionhead').text('');
+                $('#BDLY_SRC_div_searchresult_head').html('');
             }
     });
         /*------------------------------------------------CHANGE FUNCTION FOR AMOUNT VALIDATION------------------------------------------*/
@@ -385,7 +416,7 @@ var BDLY_SRC_flag_autocom='';
             }
             var expense_id=BDLY_INPUT_exptype_array.BDLY_INPUT_expanse_id;
             var expense_Data=BDLY_INPUT_exptype_array.BDLY_INPUT_expanse_date;
-            var BDLY_INPUT_exptype_options =''
+            var BDLY_INPUT_exptype_options ='';
             for (var i = 0; i <expense_id.length ; i++) {
                 if(i>=0 && i<=11)
                 {
@@ -560,6 +591,7 @@ var BDLY_SRC_flag_autocom='';
         $('#BDLY_INPUT_tble_aircon').hide();
         $('#BDLY_INPUT_lbl_unitno').hide();
         $('#BDLY_INPUT_lb_unitno').hide();
+        $('#typeofexpense').hide();
         $('#BDLY_INPUT_tble_cardpark').hide();
         $('#BDLY_INPUT_tble_digitalvoice').hide();
         $('#BDLY_INPUT_tble_facility').hide();
@@ -602,6 +634,7 @@ var BDLY_SRC_flag_autocom='';
             $('#BDLY_INPUT_tble_aircon').hide();
             $('#BDLY_INPUT_lbl_unitno').hide();
             $('#BDLY_INPUT_lb_unitno').hide();
+            $('#typeofexpense').hide();
             $('#BDLY_INPUT_tble_cardpark').hide();
             $('#BDLY_INPUT_tble_digitalvoice').hide();
             $('#BDLY_INPUT_tble_facility').hide();
@@ -680,6 +713,7 @@ var BDLY_SRC_flag_autocom='';
                         data:{"BDLY_INPUT_type":BDLY_INPUT_type},
                         success: function(res) {
                             $('.preloader').hide();
+                            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
                             BDLY_INPUT_unitno_result_auto=JSON.parse(res);
                             BDLY_INPUT_load_unitno(BDLY_INPUT_unitno_result_auto)
                         }
@@ -799,6 +833,7 @@ var BDLY_SRC_flag_autocom='';
                     $('#BDLY_INPUT_lb_unitno').html(BDLY_INPUT_unitno_options);
                     $('#BDLY_INPUT_lbl_unitno').show();
                     $('#BDLY_INPUT_lb_unitno').show();
+                    $('#typeofexpense').show();
                     $('#BDLY_INPUT_btn_submitbutton').hide();
                 }
                 $('#BDLY_INPUT_btn_resetbutton').hide();
@@ -1268,8 +1303,6 @@ var BDLY_SRC_flag_autocom='';
         var BDLY_INPUT_values=[];
         $(document).on('change','#BDLY_INPUT_lb_unitno',function() {
             $(".preloader").show();
-            var  newPos= adjustPosition($(this).position(),100,120);
-            resetPreloader(newPos);
             $('#BDLY_INPUT_lbl_pcarderrmsg').hide();
             var BDLY_INPUT_unitno=$('#BDLY_INPUT_lb_unitno').val();
             var BDLY_INPUT_type=$('#BDLY_INPUT_lb_selectexptype').val()
@@ -1357,6 +1390,7 @@ var BDLY_SRC_flag_autocom='';
         function BDLY_INPUT_load_form(BDLY_INPUT_values)
         {
             $(".preloader").hide();
+            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
             var BDLY_INPUT_type=$('#BDLY_INPUT_lb_selectexptype').val()
             $('#BDLY_INPUT_btn_submitbutton').attr("disabled", "disabled").show();
             if(BDLY_INPUT_type==6){
@@ -3283,6 +3317,7 @@ var BDLY_SRC_flag_autocom='';
         /*------------------------------------------TO GET SEARCH OPTION LIST FOR SELECTED EXPENSE----------------------------------------------------*/
         $("#BDLY_SRC_lb_ExpenseList").change(function(){
             $("#BDLY_SRC_div_searchresult,#BDLY_SRC_dynamicarea,#BDLY_SRC_Optionhead,#BDLY_SRC_div_searchresult_head,#BDLY_SRC_nodyndataerr").html('');
+            $('#BDLY_btn_pdf').hide();
             $('#BDLY_SRC_btn_search').hide();
             $("#BDLY_SRC_lbl_errmsg_exp").text('')
             $("#BDLY_SRC_tr_serachopt").hide();
@@ -3319,11 +3354,13 @@ var BDLY_SRC_flag_autocom='';
                     });
                 }
                 $("#BDLY_SRC_div_searchresult").text("");
+                $('#BDLY_btn_pdf').hide();
             }
         });
         /*-------------------------------------------SUCCESS FUNCTION SEARCH OPTION FOR SEARCH OPTION----------------*/
         function BDLY_SRC_LoadSearchOption(Searchoptionhkpunit) {
             $(".preloader").fadeOut(500);
+            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
             var Searchoption_array=Searchoptionhkpunit.srcoption;
             BDLY_SRC_HKunitnovalues=Searchoptionhkpunit.hkpunitno;
             var totalsearchopt=Searchoption_array.length;
@@ -3358,6 +3395,7 @@ var BDLY_SRC_flag_autocom='';
             BDLY_SRC_sucsval=0;
             $('#BDLY_SRC_btn_search').attr("disabled", "disabled").hide();
             $("#BDLY_SRC_div_searchresult_head,#BDLY_SRC_div_searchresult,#BDLY_SRC_dynamicarea,#BDLY_SRC_Optionhead,#BDLY_SRC_nodyndataerr").html('');
+            $('#BDLY_btn_pdf').hide();
             var selectedSearchopt = $(this).val(),selectedexpense=$('#BDLY_SRC_lb_ExpenseList').val();
             $("#BDLY_SRC_Optionhead").text("");
 //GET ERR MESSAGES BASED ON THE SEARCH OPTION START
@@ -3380,35 +3418,36 @@ var BDLY_SRC_flag_autocom='';
             }
             else
             {
+                $("html, body").animate({ scrollTop: $(document).height() }, "slow");
                 if(selectedSearchopt!=""){
                     $("#BDLY_SRC_Optionhead").text($(this).find('option:selected').text());
                     seclectFormtype =BDLY_SRC_getsearch_optiontype(selectedSearchopt);//GET SEARCH OPTION FORM TYPE
 //CREATE DYNAMIC SEARCH FORM ELEMENTS START
-                    var TempInvoiceFromTR ='<div id="BDLY_SRC_tr_searchopt_invoicefrom" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label col-sm-2">INVOICE FROM</label><div class="col-sm-2"><input type="text" name="BDLY_SRC_invoicefrom" id="BDLY_SRC_invoicefrom" class="auto form-control" disabled /></div></div>';
-                    var TempVoiceNoTR ='<div id="BDLY_SRC_tr_searchopt_voiceno" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label col-sm-2">DIGITAL VOICE NO</label><div class="col-sm-2"><input type="text" name="BDLY_SRC_voiceno" id="BDLY_SRC_voiceno" class="auto form-control" disabled /></div></div>';
-                    var TempDurationFromTR ='<div id="BDLY_SRC_tr_searchopt_durationfrom" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label col-sm-2">FROM DURATION</label><div class="col-sm-2"><input type="text" name="BDLY_SRC_duration" id="BDLY_SRC_durationfrom" class="BDLY_SCR_Field duration form-control"/></div></div>';
-                    var TempDurationToTR ='<div id="BDLY_SRC_tr_searchopt_durationto" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label col-sm-2">TO DURATION</label><div class="col-sm-2"><input type="text" name="BDLY_SRC_duration" id="BDLY_SRC_durationto" class="BDLY_SCR_Field duration form-control"/></div><div><label id="BDLY_SCR_lbl_err_durationmin" class="errormsg"></label></div><div><label id="BDLY_SCR_lbl_err_durationhrs" class="errormsg"></label></div><div><label id="BDLY_SCR_lbl_err_duration" class="errormsg"></label></div></div>';
-                    var TempServiceDueTR ='<div id="BDLY_SRC_tr_searchopt_servicedue" class="form-group"><label class="td_label col-sm-2">SERVICE DUE</label><div class="col-sm-3"><input type="text" name="BDLY_SRC_servicedue" id="BDLY_SRC_servicedue" class="BDLY_SCR_Field BDLY_SCR_forperiod BDLT_SRC_Month_picker monthpicker datemandtry form-control"/></div></div>';
-                    var TempCommentsTR ='<div id="BDLY_SRC_tr_searchopt_comments" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label col-sm-2">COMMENTS</label><div class="col-sm-3"><textarea name="BDLY_SRC_comments" id="BDLY_SRC_comments"  class="auto form-control" disabled ></textarea></div></div>';
-                    var TempItemsTR ='<div id="BDLY_SRC_tr_searchopt_invoiceitem" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label col-sm-2">INVOICE ITEMS</label><div class="col-sm-3"><textarea name="BDLY_SRC_invoiceitem" id="BDLY_SRC_invoiceitem"  class="auto form-control" disabled ></textarea></div></div>';
-                    var TempCategoryTR ='<div id="BDLY_SRC_tr_searchopt_category" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label BDLY_SRC_class_lb_lbl col-sm-2">CATEGORY</label><div class="col-sm-2"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_category" id="BDLY_SRC_lb_category" ><option>SELECT</option></select></div></div>';
-                    var TempCusnameTR ='<div style="display:none;" id="BDLY_SRC_tr_searchopt_cusname" class="form-group"><label class="td_label BDLY_SRC_class_lb_lbl col-sm-2">CUSTOMER NAME</label><div class="col-sm-4"><select class="BDLY_SRC_class_Searchbtn_list_box form-control" name="BDLY_SRC_lb_cusname" id="BDLY_SRC_lb_cusname" ><option>SELECT</option></select></div></div>';
-                    var TempUnitTR ='<div id="BDLY_SRC_tr_searchopt_unit" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label BDLY_SRC_class_lb_lbl col-sm-2">UNIT NO</label><div class="col-sm-2"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_unitno" id="BDLY_SRC_lb_unitno" ><option>SELECT</option></select></div></div>';
-                    var TempDigvoicenoTR ='<div id="BDLY_SRC_tr_searchopt_Digvoiceno" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label BDLY_SRC_class_lb_lbl col-sm-2">DIGITAL VOICE NO</label><div class="col-sm-2"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_Digvoiceno" id="BDLY_SRC_lb_Digvoiceno" ><option>SELECT</option></select></div></div>';
-                    var TempCarNoTR ='<div id="BDLY_SRC_tr_searchopt_carno" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label BDLY_SRC_class_lb_lbl col-sm-2">CAR NO</label><div class="col-sm-2"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_carno" id="BDLY_SRC_lb_carno" ><option>SELECT</option></select></div></div>';
-                    var TempCardNoTR ='<div id="BDLY_SRC_tr_searchopt_cardno" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label BDLY_SRC_class_lb_lbl col-sm-2">CARD NO</label><div class="col-sm-2"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_cardno" id="BDLY_SRC_lb_cardno" ><option>SELECT</option></select></div></div>';
-                    var TempServiceByTR ='<div id="BDLY_SRC_tr_searchopt_serviceby" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label BDLY_SRC_class_lb_lbl col-sm-2">AIRCON SERVICE BY</label><div class="col-sm-4"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_serviceby" id="BDLY_SRC_lb_serviceby" ><option>SELECT</option></select></div></div>';
-                    var TempInvoiceToTR ='<div id="BDLY_SRC_tr_searchopt_invoiceto" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label BDLY_SRC_class_lb_lbl col-sm-2">INVOICE TO</label><div class="col-sm-2"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_invoiceto" id="BDLY_SRC_lb_invoiceto" ><option>SELECT</option></select></div></div>';
-                    var TempCleanerNameTR ='<div id="BDLY_SRC_tr_searchopt_cleanername" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label BDLY_SRC_class_lb_lbl col-sm-2">CLEANER NAME</label><div class="col-sm-3"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_cleanername" id="BDLY_SRC_lb_cleanername" ><option>SELECT</option></select></div></div>';
-                    var TempAccountTR ='<div id="BDLY_SRC_tr_searchopt_accountno" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label BDLY_SRC_class_lb_lbl col-sm-2">ACCOUNT NO</label><div class="col-sm-2"><select  class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_accountno" id="BDLY_SRC_lb_accountno" ><option>SELECT</option></select></div></div>';
-                    var TempFromamtTR ='<div id="BDLY_SRC_tr_searchopt_fromamt" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label col-sm-2">FROM AMOUNT</label><div class="col-sm-2" ><input class="BDLY_SCR_Field form-control" type="text" id="BDLY_SRC_tb_fromamt" name="BDLY_SRC_tb_fromamnt" /></div></div>';
-                    var TempToamtTR ='<div id="BDLY_SRC_tr_searchopt_toamt" class="BDLY_SRC_class_dynamicrows form-group" ><label class="td_label col-sm-2">TO AMOUNT</label><div class="col-sm-2"><input class="BDLY_SCR_Field form-control" type="text" id="BDLY_SRC_tb_toamt"  name="BDLY_SRC_tb_toamnt" /></div><div class="errormsg" id="BDLY_SRC_tb_fromtoamnt_errormsg"></div></div>';
-                    var TempStart_DateTR ='<div id="BDLY_SRC_tr_searchopt_startdate" class="BDLY_SRC_class_dynamicrowss form-group" ><label class="td_label col-sm-2">START DATE</label><div class="col-sm-2"><input  type="text" id="BDLY_SRC_startdate" name="BDLY_SRC_startdate" class="BDLY_SCR_Field datepickerbox BDLY_class_sedatechange datemandtry form-control" style="width:100px;"/></div><div class="errormsg" id="BDLY_SRC_startdate_errormsg"></div></div>';
-                    var TempEnd_DateTR ='<div id="BDLY_SRC_tr_searchopt_enddate" class="BDLY_SRC_class_dynamicrowss form-group" ><label class="td_label col-sm-2">END DATE</label><div class="col-sm-2"><input class="BDLY_SCR_Field datepickerbox BDLY_class_sedatechange datemandtry form-control" type="text" id="BDLY_SRC_enddate" name="BDLY_SRC_enddate"  style="width:100px;"/></div><div class="errormsg" id="BDLY_SRC_enddate_errormsg"></div></div>';
-                    var TempStart_ForperiodTR ='<div id="BDLY_SRC_tr_searchopt_startforperiod"  class="form-group"><label class="td_label col-sm-2">START PERIOD</label><div class="col-sm-2"><input type="text" name="BDLY_SRC_startforperiod" id="BDLY_SRC_startforperiod"  class="BDLY_SCR_Field BDLY_SCR_forperiod monthpicker datemandtry form-control" /></div></div>';
-                    var TempEnd_ForperiodTR ='<div id="BDLY_SRC_tr_searchopt_endforperiod" class="form-group" ><label class="td_label col-sm-2">END PERIOD</label><div class="col-sm-2"><input type="text" name="BDLY_SRC_endforperiod" id="BDLY_SRC_endforperiod"  class="BDLY_SCR_Field BDLY_SCR_forperiod monthpicker datemandtry form-control" /></div></div>';
+                    var TempInvoiceFromTR ='<div id="BDLY_SRC_tr_searchopt_invoicefrom" class="BDLY_SRC_class_dynamicrows form-group" ><label class="col-sm-2">INVOICE FROM</label><div class="col-sm-2"><input type="text" name="BDLY_SRC_invoicefrom" id="BDLY_SRC_invoicefrom" class="auto form-control" disabled /></div></div>';
+                    var TempVoiceNoTR ='<div id="BDLY_SRC_tr_searchopt_voiceno" class="BDLY_SRC_class_dynamicrows form-group" ><label class="col-sm-2">DIGITAL VOICE NO</label><div class="col-sm-2"><input type="text" name="BDLY_SRC_voiceno" id="BDLY_SRC_voiceno" class="auto form-control" disabled /></div></div>';
+                    var TempDurationFromTR ='<div id="BDLY_SRC_tr_searchopt_durationfrom" class="BDLY_SRC_class_dynamicrows form-group" ><label class="col-sm-2">FROM DURATION</label><div class="col-sm-2"><input type="text" name="BDLY_SRC_duration" id="BDLY_SRC_durationfrom" class="BDLY_SCR_Field duration form-control"/></div></div>';
+                    var TempDurationToTR ='<div id="BDLY_SRC_tr_searchopt_durationto" class="BDLY_SRC_class_dynamicrows form-group" ><label class="col-sm-2">TO DURATION</label><div class="col-sm-2"><input type="text" name="BDLY_SRC_duration" id="BDLY_SRC_durationto" class="BDLY_SCR_Field duration form-control"/></div><div><label id="BDLY_SCR_lbl_err_durationmin" class="errormsg"></label></div><div><label id="BDLY_SCR_lbl_err_durationhrs" class="errormsg"></label></div><div><label id="BDLY_SCR_lbl_err_duration" class="errormsg"></label></div></div>';
+                    var TempServiceDueTR ='<div id="BDLY_SRC_tr_searchopt_servicedue" class="form-group"><label class=" col-sm-2">SERVICE DUE</label><div class="col-sm-3"><input type="text" name="BDLY_SRC_servicedue" id="BDLY_SRC_servicedue" class="BDLY_SCR_Field BDLY_SCR_forperiod BDLT_SRC_Month_picker monthpicker datemandtry form-control"/></div></div>';
+                    var TempCommentsTR ='<div id="BDLY_SRC_tr_searchopt_comments" class="BDLY_SRC_class_dynamicrows form-group" ><label class="col-sm-2">COMMENTS</label><div class="col-sm-3"><textarea name="BDLY_SRC_comments" id="BDLY_SRC_comments"  class="auto form-control" disabled ></textarea></div></div>';
+                    var TempItemsTR ='<div id="BDLY_SRC_tr_searchopt_invoiceitem" class="BDLY_SRC_class_dynamicrows form-group" ><label class="col-sm-2">INVOICE ITEMS</label><div class="col-sm-3"><textarea name="BDLY_SRC_invoiceitem" id="BDLY_SRC_invoiceitem"  class="auto form-control" disabled ></textarea></div></div>';
+                    var TempCategoryTR ='<div id="BDLY_SRC_tr_searchopt_category" class="BDLY_SRC_class_dynamicrows form-group" ><label class="BDLY_SRC_class_lb_lbl col-sm-2">CATEGORY</label><div class="col-sm-2"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_category" id="BDLY_SRC_lb_category" ><option>SELECT</option></select></div></div>';
+                    var TempCusnameTR ='<div style="display:none;" id="BDLY_SRC_tr_searchopt_cusname" class="form-group"><label class="BDLY_SRC_class_lb_lbl col-sm-2">CUSTOMER NAME</label><div class="col-sm-4"><select class="BDLY_SRC_class_Searchbtn_list_box form-control" name="BDLY_SRC_lb_cusname" id="BDLY_SRC_lb_cusname" ><option>SELECT</option></select></div></div>';
+                    var TempUnitTR ='<div id="BDLY_SRC_tr_searchopt_unit" class="BDLY_SRC_class_dynamicrows form-group" ><label class="BDLY_SRC_class_lb_lbl col-sm-2">UNIT NO</label><div class="col-sm-2"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_unitno" id="BDLY_SRC_lb_unitno" ><option>SELECT</option></select></div></div>';
+                    var TempDigvoicenoTR ='<div id="BDLY_SRC_tr_searchopt_Digvoiceno" class="BDLY_SRC_class_dynamicrows form-group" ><label class="BDLY_SRC_class_lb_lbl col-sm-2">DIGITAL VOICE NO</label><div class="col-sm-2"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_Digvoiceno" id="BDLY_SRC_lb_Digvoiceno" ><option>SELECT</option></select></div></div>';
+                    var TempCarNoTR ='<div id="BDLY_SRC_tr_searchopt_carno" class="BDLY_SRC_class_dynamicrows form-group" ><label class="BDLY_SRC_class_lb_lbl col-sm-2">CAR NO</label><div class="col-sm-2"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_carno" id="BDLY_SRC_lb_carno" ><option>SELECT</option></select></div></div>';
+                    var TempCardNoTR ='<div id="BDLY_SRC_tr_searchopt_cardno" class="BDLY_SRC_class_dynamicrows form-group" ><label class="BDLY_SRC_class_lb_lbl col-sm-2">CARD NO</label><div class="col-sm-2"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_cardno" id="BDLY_SRC_lb_cardno" ><option>SELECT</option></select></div></div>';
+                    var TempServiceByTR ='<div id="BDLY_SRC_tr_searchopt_serviceby" class="BDLY_SRC_class_dynamicrows form-group" ><label class="BDLY_SRC_class_lb_lbl col-sm-2">AIRCON SERVICE BY</label><div class="col-sm-4"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_serviceby" id="BDLY_SRC_lb_serviceby" ><option>SELECT</option></select></div></div>';
+                    var TempInvoiceToTR ='<div id="BDLY_SRC_tr_searchopt_invoiceto" class="BDLY_SRC_class_dynamicrows form-group" ><label class="BDLY_SRC_class_lb_lbl col-sm-2">INVOICE TO</label><div class="col-sm-2"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_invoiceto" id="BDLY_SRC_lb_invoiceto" ><option>SELECT</option></select></div></div>';
+                    var TempCleanerNameTR ='<div id="BDLY_SRC_tr_searchopt_cleanername" class="BDLY_SRC_class_dynamicrows form-group" ><label class="BDLY_SRC_class_lb_lbl col-sm-2">CLEANER NAME</label><div class="col-sm-3"><select class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_cleanername" id="BDLY_SRC_lb_cleanername" ><option>SELECT</option></select></div></div>';
+                    var TempAccountTR ='<div id="BDLY_SRC_tr_searchopt_accountno" class="BDLY_SRC_class_dynamicrows form-group" ><label class="BDLY_SRC_class_lb_lbl col-sm-2">ACCOUNT NO</label><div class="col-sm-2"><select  class="BDLY_SRC_class_Searchbtn_list_box BDLY_SCR_Field form-control" name="BDLY_SRC_lb_accountno" id="BDLY_SRC_lb_accountno" ><option>SELECT</option></select></div></div>';
+                    var TempFromamtTR ='<div id="BDLY_SRC_tr_searchopt_fromamt" class="BDLY_SRC_class_dynamicrows form-group" ><label class="col-sm-2">FROM AMOUNT</label><div class="col-sm-2" ><input class="BDLY_SCR_Field form-control" type="text" id="BDLY_SRC_tb_fromamt" name="BDLY_SRC_tb_fromamnt" /></div></div>';
+                    var TempToamtTR ='<div id="BDLY_SRC_tr_searchopt_toamt" class="BDLY_SRC_class_dynamicrows form-group" ><label class="col-sm-2">TO AMOUNT</label><div class="col-sm-2"><input class="BDLY_SCR_Field form-control" type="text" id="BDLY_SRC_tb_toamt"  name="BDLY_SRC_tb_toamnt" /></div><div class="errormsg" id="BDLY_SRC_tb_fromtoamnt_errormsg"></div></div>';
+                    var TempStart_DateTR ='<div id="BDLY_SRC_tr_searchopt_startdate" class="BDLY_SRC_class_dynamicrowss form-group" ><label class="col-sm-2">START DATE</label><div class="col-sm-2"><input  type="text" id="BDLY_SRC_startdate" name="BDLY_SRC_startdate" class="BDLY_SCR_Field datepickerbox BDLY_class_sedatechange datemandtry form-control" style="width:100px;"/></div><div class="errormsg" id="BDLY_SRC_startdate_errormsg"></div></div>';
+                    var TempEnd_DateTR ='<div id="BDLY_SRC_tr_searchopt_enddate" class="BDLY_SRC_class_dynamicrowss form-group" ><label class="col-sm-2">END DATE</label><div class="col-sm-2"><input class="BDLY_SCR_Field datepickerbox BDLY_class_sedatechange datemandtry form-control" type="text" id="BDLY_SRC_enddate" name="BDLY_SRC_enddate"  style="width:100px;"/></div><div class="errormsg" id="BDLY_SRC_enddate_errormsg"></div></div>';
+                    var TempStart_ForperiodTR ='<div id="BDLY_SRC_tr_searchopt_startforperiod"  class="form-group"><label class="col-sm-2">START PERIOD</label><div class="col-sm-2"><input type="text" name="BDLY_SRC_startforperiod" id="BDLY_SRC_startforperiod"  class="BDLY_SCR_Field BDLY_SCR_forperiod monthpicker datemandtry form-control" /></div></div>';
+                    var TempEnd_ForperiodTR ='<div id="BDLY_SRC_tr_searchopt_endforperiod" class="form-group" ><label class="col-sm-2">END PERIOD</label><div class="col-sm-2"><input type="text" name="BDLY_SRC_endforperiod" id="BDLY_SRC_endforperiod"  class="BDLY_SCR_Field BDLY_SCR_forperiod monthpicker datemandtry form-control" /></div></div>';
                     var BDLY_SRC_Form_search_btn_html='<div class="col-lg-offset-2" style="padding-left:65px;"><input type="button" name="BDLY_SRC_btn_search" id="BDLY_SRC_btn_search" class="btn" value="SEARCH"  />';
-                    var TempdurationamtTR ='<div id="BDLY_SRC_tr_searchopt_durationamt" class="form-group" ><label class="td_label col-sm-2">AMOUNT PER DURATION</label><div class="col-sm-2" ><input class="BDLY_SCR_Field form-control" type="text" id="BDLY_SRC_tb_durationamt" name="BDLY_SRC_tb_durationamt" /></div></div>';
+                    var TempdurationamtTR ='<div id="BDLY_SRC_tr_searchopt_durationamt" class="form-group" ><label class="col-sm-2">AMOUNT PER DURATION</label><div class="col-sm-2" ><input class="BDLY_SCR_Field form-control" type="text" id="BDLY_SRC_tb_durationamt" name="BDLY_SRC_tb_durationamt" /></div></div>';
 //CREATE DYNAMIC SEARCH FORM ELEMENTS END
 //APPEND DYNAMIC ELEMENTS BASED ON THE SEARCH OPTION GROUPED START
                     switch (seclectFormtype)
@@ -3582,6 +3621,7 @@ var BDLY_SRC_flag_autocom='';
             $('textarea').height(116);
             $('#BDLY_SRC_div_searchresult_head').text("")
             $('#BDLY_SRC_div_searchresult').text("")
+            $('#BDLY_btn_pdf').hide();
             var BDLY_SRC_btn_validation = true;
             $( ".BDLY_SCR_Field" ).each(function( index ) {
                 var val =$.trim($(this).val());
@@ -3929,6 +3969,7 @@ var BDLY_SRC_flag_autocom='';
             var BDLY_SRC_getsearch_optiontypearray=["CATEGORY","ACCOUNT NO","INVOICE TO","CLEANER NAME","CARD NO","CAR NO","SERVICED BY","UNIT NO","VOCIE NO"];
             var BDLY_SRC_getsearch_optiontypeval=BDLY_SRC_getsearch_optiontype(selectedSearchopt)
             startdate=$('#BDLY_SRC_startdate').val();enddate=$('#BDLY_SRC_enddate').val();
+            $('#startdate').val(startdate);$('#enddate').val(enddate);
             var BDLY_SRC_servicedue=$('#BDLY_SRC_servicedue').val();
 //SET END DATE OR END FOR PERIOD START
             if(startdate!="")
@@ -4178,6 +4219,7 @@ var BDLY_SRC_flag_autocom='';
         var oTable;
 //FUNCTION TO UPDATE DATA TABLE DYNAMICALLY FOR THE SEARCH RESULT
         function BDLY_SRC_UpdateDataTable(reaponse){
+            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
             BDLY_SRC_arr_unitcmts=reaponse[3];
             $('#BDLY_SRC_div_searchresult_head').text("")
             var selectedSearchopt=$("#BDLY_SRC_lb_serachopt").val(),
@@ -4223,7 +4265,7 @@ var BDLY_SRC_flag_autocom='';
             $("#BDLY_SRC_div_searchresult").html('').append('<table class="srcresult" id="BDLY_SRC_tb_DataTableId" style="width:'+BIZDLY_SRC_tablewidth+'px" hidden><thead><tr></tr></thead><tbody></tbody></table>');
             if(BDLY_SRC_selectedexptype==10||selectedSearchopt==198)
             {
-                $("#BDLY_SRC_tb_DataTableId > thead >tr"). append("<th style='width:50px'>EDIT</th>");
+                $("#BDLY_SRC_tb_DataTableId > thead >tr"). append("<th style='width:50px'>EDIT/CANCEL</th>");
             }
             else if(selectedSearchopt!=142)
             {
@@ -4262,13 +4304,14 @@ var BDLY_SRC_flag_autocom='';
             });
 
                $.each(resultarray, function(index, row) {
+                   var keyid;
                 if (index < 2) return;
                 var tr = $("#BDLY_SRC_tb_DataTableId >tbody").append("<tr></tr>");
                 var eachcell;
                 $.each( row, function( key, cell ) {
                     var selectedSearchopt = $('#BDLY_SRC_lb_serachopt').val();
                     if(key==0)
-                        var keyid=cell;
+                        keyid=cell;
                     var cell = ((cell==null)?"":cell);
                     if((key==0)&&(selectedSearchopt!=142))
                         eachcell +='<td style="display:none;">'+cell+'</td>';
@@ -4281,17 +4324,17 @@ var BDLY_SRC_flag_autocom='';
                        BDLY_SRC_selectedexptype=$("#BDLY_SRC_lb_ExpenseList").val();
                    if(BDLY_SRC_selectedexptype==10||selectedSearchopt==198)
                    {
-                       var BDLY_SRC_delbtn='<span style="display: none;"  class="glyphicon glyphicon-trash  delete"  id="delete">';
+                       var BDLY_SRC_delbtn='<span style="display: none;"  class="glyphicon glyphicon-trash  delete"  id="delete_'+keyid+'">';
 //                   '<input type="button" class="multirowbtn delete" value="Delete" style="display: none;">';
                    }
                    else
                    {
-                       var BDLY_SRC_delbtn='<span style="display: block;"  class="glyphicon glyphicon-trash  delete"  id="delete">';
+                       var BDLY_SRC_delbtn='<span style="display: block;"  class="glyphicon glyphicon-trash  delete"  id="delete_'+keyid+'">';
 //                           '<input type="button" class="multirowbtn delete" value="Delete" >';
                    }
                    if(selectedSearchopt!=142)
                    {
-                       $("#BDLY_SRC_tb_DataTableId >tbody >tr:last").append('<td><div class="col-lg-1"><span style="display: block;color:green" class="glyphicon glyphicon-edit  edit"></span></div><div class="col-lg-1">'+BDLY_SRC_delbtn+'</div></td>'); //myButton
+                       $("#BDLY_SRC_tb_DataTableId >tbody >tr:last").append('<td><div class="col-lg-1"><span style="display: block;color:green" class="glyphicon glyphicon-edit  edit" id="edit_'+keyid+'"></span></div><div class="col-lg-1">'+BDLY_SRC_delbtn+'</div></td>'); //myButton
 //                   <input type="button" class="multirowbtn edit" value="Edit">
                    }
                    $("#BDLY_SRC_tb_DataTableId >tbody >tr:last").append(eachcell);
@@ -4577,12 +4620,14 @@ var BDLY_SRC_flag_autocom='';
             if(resultarray.length==2)
             {
                 $("#BDLY_SRC_div_searchresult_head").text(BDLY_SRC_errormessagenodata).removeClass("srctitle").addClass("errormsg")
+                $('#BDLY_btn_pdf').hide();
                 $('#pdfheader').val(BDLY_SRC_errormessagenodata);
                 $('#BDLY_SRC_tb_DataTableId').hide();
                 $('#BDLY_SRC_btn_search').attr("disabled", "disabled")
             }
             else
             {
+                $('#BDLY_btn_pdf').show();
                 $('#BDLY_SRC_tb_DataTableId').show();
                 $("#BDLY_SRC_div_searchresult_head").text(BDLY_SRC_errormessagewitdata).removeClass("errormsg").addClass("srctitle");
                 $('#pdfheader').val(BDLY_SRC_errormessagewitdata);
@@ -4774,6 +4819,8 @@ var BDLY_SRC_flag_autocom='';
         });
         /*------------------------------------------------TO DELETE EACH ROW FROM TABLE----------------------------*/
         $(document).on('click','.delete,.cancel',function() {
+            $('.EditRemove').addClass("edit").removeClass("EditRemove");
+            $('.DeleteRemove').addClass('delete').removeClass('DeleteRemove');
             var selectedSearchopt=$("#BDLY_SRC_lb_serachopt").val()
             var BDLY_SRC_selectedexptype=$("#BDLY_SRC_lb_ExpenseList").val()
             if($(this).attr('class')=='cancel glyphicon glyphicon-remove'){
@@ -4794,7 +4841,7 @@ var BDLY_SRC_flag_autocom='';
                         $(this).html($(this).data('restore'));
                     }
                 });
-                $('.edit').removeAttr("disabled").next().removeAttr("disabled");
+//                $('.edit').removeAttr("disabled").next().removeAttr("disabled");
             }
             else{
                 var td =  $(this).closest("tr").children("td");
@@ -4854,6 +4901,7 @@ var BDLY_SRC_flag_autocom='';
                     if(BDLY_SRC_sucsval==2)
                     {
                         $("#BDLY_SRC_div_searchresult,#BDLY_SRC_div_searchresult_head,#BDLY_SRC_nodyndataerr").html('');
+                        $('#BDLY_btn_pdf').hide();
                         $(".preloader").fadeOut(500);
                         show_msgbox("BIZ EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE",BDLY_SRC_confirmmessages[1].replace('[TYPE]',$('#BDLY_SRC_lb_ExpenseList').find('option:selected').text()),"success",false);
                     }
@@ -5211,8 +5259,12 @@ var BDLY_SRC_flag_autocom='';
                 $(".tb_access_card").doValidation({rule:'numbersonly',prop:{realpart:7}}).width(80);
             });
             $(this).parent().next().find('span').show().removeClass('delete glyphicon glyphicon-trash').addClass('cancel glyphicon glyphicon-remove');
-            $('.edit').attr("disabled", "disabled");
-            $('.delete').attr("disabled", "disabled");
+            $('.edit').each(function (i,obj) {
+                $('#'+obj.id).removeClass('edit').addClass('EditRemove');
+            });
+            $('.delete').each(function (i,obj) {
+                $('#'+obj.id).removeClass('delete').addClass('DeleteRemove');
+            });
             var td =  $(this).closest("tr").children("td");
             $(td).each(function () {
                 var tdid =$(this).index();
@@ -5407,6 +5459,7 @@ var BDLY_SRC_flag_autocom='';
                         )
                     {
                         $("#BDLY_SRC_div_searchresult,#BDLY_SRC_div_searchresult_head,#BDLY_SRC_nodyndataerr").html('');
+                        $('#BDLY_btn_pdf').hide();
                         if(BDLY_SRC_sucsval==1)
                         {
                             $(".preloader").fadeOut(500);
@@ -5502,7 +5555,7 @@ var BDLY_SRC_flag_autocom='';
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="typeofexpense">
                         <label  id='BDLY_INPUT_lbl_unitno' class="col-sm-2" hidden>UNIT NO<em>*</em></label>
                         <div class="col-sm-2">
                             <select id='BDLY_INPUT_lb_unitno' class="form-control" name="BDLY_INPUT_lb_unitno" hidden >
@@ -5860,11 +5913,11 @@ var BDLY_SRC_flag_autocom='';
             <div id="updateform">
                 <div id="BDLY_SRC_tble_maintable" hidden>
                     <div class="form-group">
-                        <label  id='BDLY_INPUT_srch_lbl_typeofexp' class="td_label col-sm-2">TYPE OF EXPENSE<em>*</em></label>
-                        <div class="col-sm-3"><select id="BDLY_SRC_lb_ExpenseList" name="BDLY_SRC_lb_ExpenseList" class="form-control" ><option value="" >SELECT</option></select></div>
+                        <label  id='BDLY_INPUT_srch_lbl_typeofexp' class="col-sm-2">TYPE OF EXPENSE<em>*</em></label>
+                        <div class="col-sm-3"><select id="BDLY_SRC_lb_ExpenseList" name="BDLY_SRC_lb_ExpenseList" class="form-control" ><option value="SELECT" >SELECT</option></select></div>
                     </div>
                     <div class="form-group" id="BDLY_SRC_tr_serachopt" style="display: none;">
-                        <label class="td_label col-sm-2">SEARCH BY</label>
+                        <label class="col-sm-2">SEARCH BY</label>
                         <div class="BDLY_SRC_input_val col-sm-3">
                             <select id="BDLY_SRC_lb_serachopt" name="BDLY_SRC_lb_serachopt" class="form-control"><option value="" >SELECT</option></select>
                             </div>
@@ -5872,7 +5925,7 @@ var BDLY_SRC_flag_autocom='';
                     <div><label class="srctitle" colspan="2" id="BDLY_SRC_Optionhead"></label></div>
                     <div id="BDLY_SRC_dynamicarea" >
                     </div>
-                    <div class="col-lg-offset-2" id="BDLY_SRC_td_for_searchbutton" style="padding-left:65px;">
+                    <div class="col-lg-offset-2" id="BDLY_SRC_td_for_searchbutton">
                         <input type="button" name="BDLY_SRC_btn_search" id="BDLY_SRC_btn_search" class="btn" value="SEARCH" style="display:none" disabled />
                     </div>
                     <div><label id="BDLY_SRC_lbl_errmsg_exp" class="errormsg"></label></div>
@@ -5880,8 +5933,10 @@ var BDLY_SRC_flag_autocom='';
                 <div id="BDLY_SRC_nodyndataerr" class="errormsg"></div>
                 <div class="srctitle" id="BDLY_SRC_div_searchresult_head"></div>
                 <input type="hidden" id="pdfheader" name="pdfheader"/>
-                <div><input type="submit" id='PDLY_btn_pdf' class="btnpdf" value="PDF" hidden></div>
+                <div><input type="submit" id='BDLY_btn_pdf' class="btnpdf" value="PDF" hidden></div>
                 <div id="BDLY_SRC_div_searchresult" class="table-responsive"></div>
+                <input type="hidden" id="startdate" name="startdate"/>
+                <input type="hidden" id="enddate" name="enddate"/>
             </div>
 
         </div>

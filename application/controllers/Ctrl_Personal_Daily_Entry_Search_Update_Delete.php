@@ -119,6 +119,7 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
     //PDLY_SEARCH_searchbybaby
     public function PDLY_SEARCH_searchbybaby()
     {
+        global $timeZoneFormat;
         $this->load->database();
         $PDLY_SEARCH_typelistvalue= $this->input->post('PDLY_SEARCH_typelistvalue');
         $PDLY_SEARCH_startdate=$this->input->post('PDLY_SEARCH_startdate');
@@ -136,7 +137,7 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
         $PDLY_SEARCH_invitemcom=$this->db->escape_like_str($PDLY_SEARCH_invitemcom);
         $PDLY_SEARCH_invfromcomt=$this->db->escape_like_str($PDLY_SEARCH_invfromcomt);
         $this->load->model('Mdl_personal_daily_entry_search_update_delete');
-        $data=$this->Mdl_personal_daily_entry_search_update_delete->PDLY_SEARCH_searchbybaby($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
+        $data=$this->Mdl_personal_daily_entry_search_update_delete->PDLY_SEARCH_searchbybaby($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory,$timeZoneFormat);
 
         echo json_encode($data);
     }

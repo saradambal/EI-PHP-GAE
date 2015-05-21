@@ -1420,7 +1420,7 @@ $(document).ready(function(){
     }
 //SUBMIT BUTTON  VALIDATION FOR SEARCHING FORM//
     $(".submitval").change(function(){
-        $('textarea').height(40);
+        $('textarea').height(116);
         $('#PDLY_SEARCH_div_htmltable').hide();
         $('#PDLY_btn_pdf').hide();
         $('#PDLY_SEARCH_tble_multi').hide();
@@ -1898,7 +1898,7 @@ $(document).ready(function(){
                         var PDLY_SEARCH_values=PDLY_SEARCH_babyvalue[i];
                         var PDLY_SEARCH_date=FormTableDateFormat(PDLY_SEARCH_values.EB_INVOICE_DATE);
                         if(PDLY_SEARCH_values.EB_COMMENTS==null){PDLY_SEARCH_values.EB_COMMENTS='';}
-                        PDLY_SEARCH_babytable_header+='<tr><td><span style="max-height:20px;max-width: 20px;" id ='+PDLY_SEARCH_values.EB_ID+' class="glyphicon glyphicon-trash PDLY_SEARCH_btn_deletebutton"></span></td><td id=ebcategory_'+PDLY_SEARCH_values.EB_ID+' class="babyedit">'+PDLY_SEARCH_values.ECN_DATA+'</td><td nowrap id=ebinvdate_'+PDLY_SEARCH_values.EB_ID+' class="babyedit">'+PDLY_SEARCH_date+'</td><td id=ebamount_'+PDLY_SEARCH_values.EB_ID+' class="babyedit">'+PDLY_SEARCH_values.EB_AMOUNT+'</td><td id=ebinvfrom_'+PDLY_SEARCH_values.EB_ID+' class="babyedit">'+PDLY_SEARCH_values.EB_INVOICE_FROM+'</td><td id=ebinvitem_'+PDLY_SEARCH_values.EB_ID+' class="babyedit">'+PDLY_SEARCH_values.EB_INVOICE_ITEMS+'</td><td id=ebcomments_'+PDLY_SEARCH_values.EB_ID+' class="babyedit">'+PDLY_SEARCH_values.EB_COMMENTS+'</td><td>'+PDLY_SEARCH_values.ULD_LOGINID+'</td><td nowrap>'+PDLY_SEARCH_values.TIMESTMP+'</td></tr>';
+                        PDLY_SEARCH_babytable_header+='<tr><td style="width:30px;"><span id ='+PDLY_SEARCH_values.EB_ID+' class="glyphicon glyphicon-trash PDLY_SEARCH_btn_deletebutton"></span></td><td id=ebcategory_'+PDLY_SEARCH_values.EB_ID+' class="babyedit">'+PDLY_SEARCH_values.ECN_DATA+'</td><td nowrap id=ebinvdate_'+PDLY_SEARCH_values.EB_ID+' class="babyedit">'+PDLY_SEARCH_date+'</td><td id=ebamount_'+PDLY_SEARCH_values.EB_ID+' class="babyedit">'+PDLY_SEARCH_values.EB_AMOUNT+'</td><td id=ebinvfrom_'+PDLY_SEARCH_values.EB_ID+' class="babyedit">'+PDLY_SEARCH_values.EB_INVOICE_FROM+'</td><td id=ebinvitem_'+PDLY_SEARCH_values.EB_ID+' class="babyedit">'+PDLY_SEARCH_values.EB_INVOICE_ITEMS+'</td><td id=ebcomments_'+PDLY_SEARCH_values.EB_ID+' class="babyedit">'+PDLY_SEARCH_values.EB_COMMENTS+'</td><td>'+PDLY_SEARCH_values.ULD_LOGINID+'</td><td nowrap>'+PDLY_SEARCH_values.TIMESTMP+'</td></tr>';
                     }
                     PDLY_SEARCH_babytable_header+='</tbody></table>';
                 }
@@ -1911,7 +1911,7 @@ $(document).ready(function(){
                         var PDLY_SEARCH_values=PDLY_SEARCH_babyvalue[i];
                         var PDLY_SEARCH_date=FormTableDateFormat(PDLY_SEARCH_values.EC_INVOICE_DATE);
                         if(PDLY_SEARCH_values.EC_COMMENTS==null){PDLY_SEARCH_values.EC_COMMENTS='';}
-                        PDLY_SEARCH_babytable_header+='<tr><td><span style="max-height:20px;max-width: 20px;" id ='+PDLY_SEARCH_values.EC_ID+' class="glyphicon glyphicon-trash PDLY_SEARCH_btn_deletebutton"></span></td><td id=eccategory_'+PDLY_SEARCH_values.EC_ID+' class="caredit">'+PDLY_SEARCH_values.ECN_DATA+'</td><td nowrap id=ecinvdate_'+PDLY_SEARCH_values.EC_ID+' class="caredit">'+PDLY_SEARCH_date+'</td><td id=ecamount_'+PDLY_SEARCH_values.EC_ID+' class="caredit">'+PDLY_SEARCH_values.EC_AMOUNT+'</td><td id=ecinvfrom_'+PDLY_SEARCH_values.EC_ID+' class="caredit">'+PDLY_SEARCH_values.EC_INVOICE_FROM+'</td><td id=ecinvitem_'+PDLY_SEARCH_values.EC_ID+' class="caredit">'+PDLY_SEARCH_values.EC_INVOICE_ITEMS+'</td><td id=eccomments_'+PDLY_SEARCH_values.EC_ID+' class="caredit">'+PDLY_SEARCH_values.EC_COMMENTS+'</td><td>'+PDLY_SEARCH_values.ULD_LOGINID+'</td><td nowrap>'+PDLY_SEARCH_values.TIMESTMP+'</td></tr>';
+                        PDLY_SEARCH_babytable_header+='<tr><td style="width:30px;"><span id ='+PDLY_SEARCH_values.EC_ID+' class="glyphicon glyphicon-trash PDLY_SEARCH_btn_deletebutton"></span></td><td id=eccategory_'+PDLY_SEARCH_values.EC_ID+' class="caredit">'+PDLY_SEARCH_values.ECN_DATA+'</td><td nowrap id=ecinvdate_'+PDLY_SEARCH_values.EC_ID+' class="caredit">'+PDLY_SEARCH_date+'</td><td id=ecamount_'+PDLY_SEARCH_values.EC_ID+' class="caredit">'+PDLY_SEARCH_values.EC_AMOUNT+'</td><td id=ecinvfrom_'+PDLY_SEARCH_values.EC_ID+' class="caredit">'+PDLY_SEARCH_values.EC_INVOICE_FROM+'</td><td id=ecinvitem_'+PDLY_SEARCH_values.EC_ID+' class="caredit">'+PDLY_SEARCH_values.EC_INVOICE_ITEMS+'</td><td id=eccomments_'+PDLY_SEARCH_values.EC_ID+' class="caredit">'+PDLY_SEARCH_values.EC_COMMENTS+'</td><td>'+PDLY_SEARCH_values.ULD_LOGINID+'</td><td nowrap>'+PDLY_SEARCH_values.TIMESTMP+'</td></tr>';
                     }
                     PDLY_SEARCH_babytable_header+='</tbody></table>';
                 }
@@ -1924,7 +1924,7 @@ $(document).ready(function(){
                         var PDLY_SEARCH_values=PDLY_SEARCH_babyvalue[i];
                         var PDLY_SEARCH_date=FormTableDateFormat(PDLY_SEARCH_values.EP_INVOICE_DATE);
                         if(PDLY_SEARCH_values.EP_COMMENTS==null){PDLY_SEARCH_values.EP_COMMENTS='';}
-                        PDLY_SEARCH_babytable_header+='<tr><td><span style="max-height:20px;max-width: 20px;" class="glyphicon glyphicon-trash PDLY_SEARCH_btn_deletebutton" id ='+PDLY_SEARCH_values.EP_ID+'></span></td><td id=epcategory_'+PDLY_SEARCH_values.EP_ID+' class="personaledit">'+PDLY_SEARCH_values.ECN_DATA+'</td><td nowrap id=epinvdate_'+PDLY_SEARCH_values.EP_ID+' class="personaledit">'+PDLY_SEARCH_date+'</td><td id=epamount_'+PDLY_SEARCH_values.EP_ID+' class="personaledit">'+PDLY_SEARCH_values.EP_AMOUNT+'</td><td id=epinvfrom_'+PDLY_SEARCH_values.EP_ID+' class="personaledit">'+PDLY_SEARCH_values.EP_INVOICE_FROM+'</td><td id=epinvitem_'+PDLY_SEARCH_values.EP_ID+' class="personaledit">'+PDLY_SEARCH_values.EP_INVOICE_ITEMS+'</td><td id=epcomments_'+PDLY_SEARCH_values.EP_ID+' class="personaledit">'+PDLY_SEARCH_values.EP_COMMENTS+'</td><td>'+PDLY_SEARCH_values.ULD_LOGINID+'</td><td nowrap>'+PDLY_SEARCH_values.TIMESTMP+'</td></tr>';
+                        PDLY_SEARCH_babytable_header+='<tr><td style="width:30px;"><span class="glyphicon glyphicon-trash PDLY_SEARCH_btn_deletebutton" id ='+PDLY_SEARCH_values.EP_ID+'></span></td><td id=epcategory_'+PDLY_SEARCH_values.EP_ID+' class="personaledit">'+PDLY_SEARCH_values.ECN_DATA+'</td><td nowrap id=epinvdate_'+PDLY_SEARCH_values.EP_ID+' class="personaledit">'+PDLY_SEARCH_date+'</td><td id=epamount_'+PDLY_SEARCH_values.EP_ID+' class="personaledit">'+PDLY_SEARCH_values.EP_AMOUNT+'</td><td id=epinvfrom_'+PDLY_SEARCH_values.EP_ID+' class="personaledit">'+PDLY_SEARCH_values.EP_INVOICE_FROM+'</td><td id=epinvitem_'+PDLY_SEARCH_values.EP_ID+' class="personaledit">'+PDLY_SEARCH_values.EP_INVOICE_ITEMS+'</td><td id=epcomments_'+PDLY_SEARCH_values.EP_ID+' class="personaledit">'+PDLY_SEARCH_values.EP_COMMENTS+'</td><td>'+PDLY_SEARCH_values.ULD_LOGINID+'</td><td nowrap>'+PDLY_SEARCH_values.TIMESTMP+'</td></tr>';
                     }
                     PDLY_SEARCH_babytable_header+='</tbody></table>';
                 }
@@ -1982,7 +1982,7 @@ $(document).ready(function(){
                     var PDLY_SEARCH_fromdate=FormTableDateFormat(PDLY_SEARCH_values.ECL_FROM_PERIOD);
                     var PDLY_SEARCH_todate=FormTableDateFormat(PDLY_SEARCH_values.ECL_TO_PERIOD);
                     if(PDLY_SEARCH_values.ECL_COMMENTS==null){PDLY_SEARCH_values.ECL_COMMENTS='';}
-                    PDLY_SEARCH_babytable_header+='<tr><td><span style="max-height:20px;max-width: 20px;" id='+PDLY_SEARCH_values.ECL_ID+' class="glyphicon glyphicon-trash PDLY_SEARCH_btn_deletebutton"></span></td><td nowrap id=eclpaiddate_'+PDLY_SEARCH_values.ECL_ID+' class="carloanedit">'+PDLY_SEARCH_paiddate+'</td><td id=eclamount_'+PDLY_SEARCH_values.ECL_ID+' class="carloanedit">'+PDLY_SEARCH_values.ECL_AMOUNT+'</td><td nowrap id=eclfromperiod_'+PDLY_SEARCH_values.ECL_ID+' class="carloanedit">'+PDLY_SEARCH_fromdate+'</td><td nowrap id=ecltopaid_'+PDLY_SEARCH_values.ECL_ID+' class="carloanedit">'+PDLY_SEARCH_todate+'</td><td id=eclcomments_'+PDLY_SEARCH_values.ECL_ID+' class="carloanedit">'+PDLY_SEARCH_values.ECL_COMMENTS+'</td><td>'+PDLY_SEARCH_values.ULD_LOGINID+'</td><td nowrap>'+PDLY_SEARCH_values.TIMESTMP+'</td></tr>';
+                    PDLY_SEARCH_babytable_header+='<tr><td style="width:30px;"><span id='+PDLY_SEARCH_values.ECL_ID+' class="glyphicon glyphicon-trash PDLY_SEARCH_btn_deletebutton"></span></td><td nowrap id=eclpaiddate_'+PDLY_SEARCH_values.ECL_ID+' class="carloanedit">'+PDLY_SEARCH_paiddate+'</td><td id=eclamount_'+PDLY_SEARCH_values.ECL_ID+' class="carloanedit">'+PDLY_SEARCH_values.ECL_AMOUNT+'</td><td nowrap id=eclfromperiod_'+PDLY_SEARCH_values.ECL_ID+' class="carloanedit">'+PDLY_SEARCH_fromdate+'</td><td nowrap id=ecltopaid_'+PDLY_SEARCH_values.ECL_ID+' class="carloanedit">'+PDLY_SEARCH_todate+'</td><td id=eclcomments_'+PDLY_SEARCH_values.ECL_ID+' class="carloanedit">'+PDLY_SEARCH_values.ECL_COMMENTS+'</td><td>'+PDLY_SEARCH_values.ULD_LOGINID+'</td><td nowrap>'+PDLY_SEARCH_values.TIMESTMP+'</td></tr>';
                 }
                 PDLY_SEARCH_babytable_header+='</tbody></table>';
                 $('section').html(PDLY_SEARCH_babytable_header);
@@ -2791,7 +2791,7 @@ $(document).ready(function(){
         <div class="form-group">
             <label id="PCE_lbl_invitems" class="col-sm-2" >INVOICE ITEMS<em>*</em></label>
             <div class="col-sm-3">
-                <textarea id="PCE_ta_invitems" name="PCE_ta_invitems" class="form-control carsubmultivalid PDLY_INPUT_ta_cmtItem" ></textarea>
+                <textarea rows="3" id="PCE_ta_invitems" name="PCE_ta_invitems" class="form-control carsubmultivalid PDLY_INPUT_ta_cmtItem" ></textarea>
             </div>
         </div>
         <div class="form-group">
@@ -2803,7 +2803,7 @@ $(document).ready(function(){
         <div class="form-group">
             <label id="PCE_lbl_comments" class="col-sm-2" >COMMENTS</label>
             <div class="col-sm-3">
-                <textarea id="PCE_ta_comments" name="PCE_ta_comments" class="form-control carsubmultivalid PDLY_INPUT_ta_cmtItem" ></textarea>
+                <textarea rows="3" id="PCE_ta_comments" name="PCE_ta_comments" class="form-control carsubmultivalid PDLY_INPUT_ta_cmtItem" ></textarea>
             </div>
         </div>
         <div class="col-lg-offset-1">
@@ -2839,7 +2839,7 @@ $(document).ready(function(){
         <div class="form-group">
             <label id="PCLE_lbl_comments" class="col-sm-2" >COMMENTS</label>
             <div class="col-sm-3">
-                <textarea id="PCLE_ta_comments" name="PCLE_ta_comments" class="form-control PDLY_INPUT_ta_cmtItem carloansubmultivalid" ></textarea>
+                <textarea rows="3" id="PCLE_ta_comments" name="PCLE_ta_comments" class="form-control PDLY_INPUT_ta_cmtItem carloansubmultivalid" ></textarea>
             </div>
         </div>
         <div class="col-lg-offset-1">
@@ -2877,44 +2877,44 @@ $(document).ready(function(){
         <div class="form-group">
             <label  id='PDLY_SEARCH_lbl_startdate' class="col-sm-2" hidden> START DATE <em>*</em></label>
             <div class="col-sm-2">
-                <input  type="text" class="datebox submitval datemandtry"  name="PDLY_SEARCH_db_startdate" id="PDLY_SEARCH_db_startdate" style="width:80px;" hidden />
+                <input  type="text" class="datebox submitval datemandtry form-control"  name="PDLY_SEARCH_db_startdate" id="PDLY_SEARCH_db_startdate" style="width:100px;" hidden />
             </div>
         </div>
         <div class="form-group">
             <label id='PDLY_SEARCH_lbl_enddate' class="col-sm-2" hidden> END DATE <em>*</em></label>
             <div class="col-sm-2">
-                <input  type="text" class="datebox submitval datemandtry" name="PDLY_SEARCH_db_enddate" id="PDLY_SEARCH_db_enddate" style="width:80px;" hidden />
+                <input  type="text" class="datebox submitval datemandtry form-control" name="PDLY_SEARCH_db_enddate" id="PDLY_SEARCH_db_enddate" style="width:100px;" hidden />
             </div>
         </div>
         <div class="form-group">
             <label  id='PDLY_SEARCH_lbl_searchabycmt' class="col-sm-2" class="auto"  hidden> COMMENTS <em>*</em></label>
             <div class="col-sm-2">
-                <textarea name="PDLY_SEARCH_tb_searchabycmt" class="submitval" id="PDLY_SEARCH_tb_searchabycmt"hidden ></textarea>
+                <textarea rows="3" name="PDLY_SEARCH_tb_searchabycmt" class="submitval form-control" id="PDLY_SEARCH_tb_searchabycmt" style="width:330px;" hidden ></textarea>
             </div>
         </div>
         <div><label id='PDLY_SEARCH_lbl_babyshowcomments' class="errormsg" hidden >  </label></div>
         <div class="form-group">
             <label  id='PDLY_SEARCH_lbl_searchbyinvfrom' class="col-sm-2" hidden> INVOICE FROM <em>*</em></label>
             <div class="col-sm-2">
-                <input   type="text" class="submitval "name ="PDLY_SEARCH_tb_searchbyinvfrom" id="PDLY_SEARCH_tb_searchbyinvfrom"   style="width:330px;"hidden />
+                <input   type="text" class="submitval form-control" name ="PDLY_SEARCH_tb_searchbyinvfrom" id="PDLY_SEARCH_tb_searchbyinvfrom"   style="width:330px;"hidden />
             </div>
         </div>
         <div class="form-group">
             <label  id='PDLY_SEARCH_lbl_searchbyinvitem' class="col-sm-2" hidden> INVOICE ITEM <em>*</em></label>
             <div class="col-sm-2">
-                <textarea   type="text" class="submitval" name ="PDLY_SEARCH_tb_searchbyinvitem" id="PDLY_SEARCH_tb_searchbyinvitem"   style="width:330px;"hidden ></textarea>
+                <textarea   rows="3" type="text" class="submitval form-control" name ="PDLY_SEARCH_tb_searchbyinvitem" id="PDLY_SEARCH_tb_searchbyinvitem"   style="width:330px;"hidden ></textarea>
             </div>
         </div>
         <div class="form-group">
             <label  id='PDLY_SEARCH_lbl_fromamount' class="col-sm-2" hidden> FROM AMOUNT <em>*</em></label>
             <div class="col-sm-2">
-                <input   type="text" name ="PDLY_SEARCH_tb_fromamount" id="PDLY_SEARCH_tb_fromamount"  class="amtsubmitval" style="width:60px;"hidden />
+                <input   type="text" name ="PDLY_SEARCH_tb_fromamount" id="PDLY_SEARCH_tb_fromamount"  class="amtsubmitval form-control" style="width:80px;"hidden />
             </div>
         </div>
         <div class="form-group">
             <label  id='PDLY_SEARCH_lbl_toamount' class="col-sm-2" hidden> TO AMOUNT <em>*</em></label>
             <div class="col-sm-2">
-                <input   type="text" name ="PDLY_SEARCH_tb_toamount" id="PDLY_SEARCH_tb_toamount"  class="amtsubmitval" style="width:60px;"hidden />
+                <input   type="text" name ="PDLY_SEARCH_tb_toamount" id="PDLY_SEARCH_tb_toamount"  class="amtsubmitval form-control" style="width:80px;"hidden />
             </div>
             <label class="errormsg" id='PDLY_SEARCH_lbl_amounterrormsg'  hidden></label>
         </div>
