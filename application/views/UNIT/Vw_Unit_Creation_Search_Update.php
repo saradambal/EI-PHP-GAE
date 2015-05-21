@@ -82,6 +82,10 @@ require_once "Header.php";
                             var initial_values=JSON.parse(data);
                             UC_result(initial_values);
                             $("html, body").animate({ scrollTop: 1100 }, "slow");
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("UNIT CREATION",errordata,'error',false);
                         }
                     });
                 }
@@ -95,6 +99,10 @@ require_once "Header.php";
                             var usuinitial_values=JSON.parse(usudata);
                             USU_success(usuinitial_values);
                             $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("UNIT CREATION",errordata,'error',false);
                         }
                     });
                 }
@@ -195,6 +203,10 @@ require_once "Header.php";
                         success: function(unitdata) {
                             var unit_values=JSON.parse(unitdata);
                             UC_unitresult(unit_values);
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("UNIT CREATION",errordata,'error',false);
                         }
                     });
                 }
@@ -245,6 +257,10 @@ require_once "Header.php";
                         success: function(carddata){
                             var card_values=JSON.parse(carddata);
                             UC_accessresult(card_values);
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("UNIT CREATION",errordata,'error',false);
                         }
                     });
                 }
@@ -305,6 +321,10 @@ require_once "Header.php";
                         success: function(data) {
                             var initial_values=JSON.parse(data);
                             UC_result(initial_values);
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("UNIT CREATION",errordata,'error',false);
                         }
                     });
                     $('#UC_tb_newroomtype').replaceWith('<select name="UC_lb_roomtype" id="UC_lb_roomtype" class="form-control"><option>SELECT</option></select>');
@@ -338,6 +358,10 @@ require_once "Header.php";
                         success: function(data) {
                             var initial_values=JSON.parse(data);
                             UC_result(initial_values);
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("UNIT CREATION",errordata,'error',false);
                         }
                     });
                     $('#UC_div_errstamp').text('');
@@ -372,6 +396,10 @@ require_once "Header.php";
                         success: function(roomdata){
                             var room_values=JSON.parse(roomdata);
                             UC_roomresult(room_values);
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("UNIT CREATION",errordata,'error',false);
                         }
                     });
                 }
@@ -416,6 +444,10 @@ require_once "Header.php";
                         success: function(stampdata){
                             var stamp_values=JSON.parse(stampdata);
                             UC_stampresult(stamp_values);
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("UNIT CREATION",errordata,'error',false);
                         }
                     });
                 }
@@ -479,6 +511,10 @@ require_once "Header.php";
                     success: function(doorlogindata){
                         var door_logindata=JSON.parse(doorlogindata);
                         UC_SuccessLoginDoor(door_logindata);
+                    },
+                    error:function(data){
+                        var errordata=(JSON.stringify(data));
+                        show_msgbox("UNIT CREATION",errordata,'error',false);
                     }
                 });
             }
@@ -540,6 +576,10 @@ require_once "Header.php";
                         success: function(data) {
                             var initial_values=JSON.parse(data);
                             UC_result(initial_values);
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("UNIT CREATION",errordata,'error',false);
                         }
                     });
                 }
@@ -562,6 +602,10 @@ require_once "Header.php";
                     success: function(savedata) {
                         var initial_values=JSON.parse(savedata);
                         UC_result(initial_values);
+                    },
+                    error:function(data){
+                        var errordata=(JSON.stringify(data));
+                        show_msgbox("UNIT CREATION",errordata,'error',false);
                     }
                 });
             });
@@ -630,6 +674,10 @@ require_once "Header.php";
                                 var flxsarray=JSON.parse(flexdata);
                                 USU_success_flex(flxsarray);
                                 $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                            },
+                            error:function(data){
+                                var errordata=(JSON.stringify(data));
+                                show_msgbox("UNIT SEARCH/UPDATE",errordata,'error',false);
                             }
                         });
                     }
@@ -643,6 +691,10 @@ require_once "Header.php";
                                 var valuesarray=JSON.parse(data);
                                 USU_success_load_searchby_lb(valuesarray);
                                 $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                            },
+                            error:function(data){
+                                var errordata=(JSON.stringify(data));
+                                show_msgbox("UNIT SEARCH/UPDATE",errordata,'error',false);
                             }
                         });
                     }
@@ -807,6 +859,10 @@ require_once "Header.php";
                                 var flxsarray=JSON.parse(flexdata);
                                 USU_success_flex(flxsarray);
                                 $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                            },
+                            error:function(data){
+                                var errordata=(JSON.stringify(data));
+                                show_msgbox("UNIT SEARCH/UPDATE",errordata,'error',false);
                             }
                         });
                     }
@@ -829,6 +885,10 @@ require_once "Header.php";
                             var exist_data=JSON.parse(existdata);
                             USU_success_alreadyexists(exist_data);
                             $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("UNIT SEARCH/UPDATE",errordata,'error',false);
                         }
                     });
                 }
@@ -851,6 +911,10 @@ require_once "Header.php";
                             var flxsarray=JSON.parse(flexdata);
                             USU_success_flex(flxsarray);
                             $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("UNIT SEARCH/UPDATE",errordata,'error',false);
                         }
                     });
                 }
@@ -881,6 +945,10 @@ require_once "Header.php";
                         var flxsarray=JSON.parse(flexdata);
                         USU_success_flex(flxsarray);
                         $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                    },
+                    error:function(data){
+                        var errordata=(JSON.stringify(data));
+                        show_msgbox("UNIT SEARCH/UPDATE",errordata,'error',false);
                     }
                 });
             });
@@ -1196,6 +1264,10 @@ require_once "Header.php";
                                 var exist_data=JSON.parse(existdata);
                                 USU_success_unitno_trans(exist_data);
                                 $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                            },
+                            error:function(data){
+                                var errordata=(JSON.stringify(data));
+                                show_msgbox("UNIT SEARCH/UPDATE",errordata,'error',false);
                             }
                         });
                         USU_flag_unitno=1;
@@ -1295,6 +1367,10 @@ require_once "Header.php";
                             success: function(roomstampdata) {
                                 var roomstamp_data=JSON.parse(roomstampdata);
                                 USU_success_stamp_room(roomstamp_data);
+                            },
+                            error:function(data){
+                                var errordata=(JSON.stringify(data));
+                                show_msgbox("UNIT SEARCH/UPDATE",errordata,'error',false);
                             }
                         });
                         if($tds.eq(6).text()==''){
@@ -1371,6 +1447,10 @@ require_once "Header.php";
                                 var exist_data=JSON.parse(existdata);
                                 USU_success_alreadyexists(exist_data);
                                 $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                            },
+                            error:function(data){
+                                var errordata=(JSON.stringify(data));
+                                show_msgbox("UNIT SEARCH/UPDATE",errordata,'error',false);
                             }
                         });
                     }
@@ -1450,6 +1530,10 @@ require_once "Header.php";
                                 $(".preloader").show();
                                 Unit_search_Update();
                             }
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("UNIT SEARCH/UPDATE",errordata,'error',false);
                         }
                     });
                 }
@@ -1646,6 +1730,10 @@ require_once "Header.php";
                         success: function(existdata) {
                             var exist_data=JSON.parse(existdata);
                             USU_success_alreadyexists(exist_data);
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("UNIT SEARCH/UPDATE",errordata,'error',false);
                         }
                     });
                 }
@@ -1662,6 +1750,10 @@ require_once "Header.php";
                         success: function(existdata) {
                             var exist_data=JSON.parse(existdata);
                             USU_success_alreadyexists(exist_data);
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("UNIT SEARCH/UPDATE",errordata,'error',false);
                         }
                     });
                 }
@@ -1778,6 +1870,10 @@ require_once "Header.php";
                     success: function(successdata) {
                         var success_data=JSON.parse(successdata);
                         USU_success_flex(success_data);
+                    },
+                    error:function(data){
+                        var errordata=(JSON.stringify(data));
+                        show_msgbox("UNIT SEARCH/UPDATE",errordata,'error',false);
                     }
                 });
             }
