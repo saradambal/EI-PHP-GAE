@@ -178,7 +178,6 @@ class Mdl_access_rights_search_update extends CI_Model{
         return $URSRC_loginid_details_array;
 }
     public function URSRC_getmenu_folder($basicrole,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token) {
-        set_time_limit(0);
         $URSRC_basicrole=str_replace("_"," ",$basicrole);
 
      $URSRC_finalmenu=array();
@@ -802,7 +801,6 @@ $this->db->trans_commit();
     }
 
     public function URSRC_login_creation_save($URSRC_mainradiobutton,$URSRC_tb_joindate,$URSRC_custom_role,$URSRC_tb_loginid,$USERSTAMP,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
-        set_time_limit(0);
         $URSRC_sharedocflag='';$URSRC_sharecalflag='';$URSRC_sharesiteflag=0;
        try{
 
