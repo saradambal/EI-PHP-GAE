@@ -57,4 +57,19 @@ class Ctrl_Staff_Daily_Entry_Search_Update_Delete extends CI_Controller{
         $data=$this->Mdl_staff_daily_entry_search_update_delete->STDLY_SEARCH_comments($USERSTAMP);
         echo json_encode($data);
     }
+    //FUNCTION FOR UPDATE PART
+    public function updatefunction()
+    {
+        global $USERSTAMP;
+        $this->load->model('Mdl_staff_daily_entry_search_update_delete');
+        $result = $this->Mdl_staff_daily_entry_search_update_delete->update_agentdata($USERSTAMP,$this->input->post('id')) ;
+        echo JSON_encode($result);
+    }
+    // fetch data
+    public function STDLY_SEARCH_sendallstaffdata()
+    {
+        $this->load->model('Mdl_staff_daily_entry_search_update_delete');
+        $data=$this->Mdl_staff_daily_entry_search_update_delete->fetch_staffsalarydata();
+        echo json_encode($data);
+    }
 }
