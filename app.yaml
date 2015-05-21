@@ -1,0 +1,54 @@
+application: ei-php-dev
+version: 4
+runtime: php55
+api_version: 1
+
+handlers:
+
+- url: /CSS
+  static_dir: CSS
+
+- url: /JS
+  static_dir: JS
+
+- url: /bootstrap
+  static_dir: bootstrap
+
+- url: /Data_table
+  static_dir: Data_table
+
+- url: /images
+  static_dir: images
+
+- url: /views
+  static_dir: views
+
+- url: /controllers
+  static_dir: controllers
+
+- url: /models
+  static_dir: models
+
+- url: /config
+  static_dir: config
+
+- url: /menu
+  static_dir: menu
+
+- url: /msgbox
+  static_dir: msgbox
+
+- url: /mpdf
+  static_dir: mpdf
+
+- url: /libraries
+  static_dir: libraries
+
+
+- url: /third_party
+  static_dir: third_party
+
+
+- url: .*
+  script: index.php
+  login: required
