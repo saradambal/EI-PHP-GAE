@@ -47,17 +47,18 @@ class Ctrl_Terminate_Search_Update extends CI_Controller {
     }
 
     public function URT_SRC_func_terminate(){
-        global $UserStamp;
+        global $UserStamp,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token;
+        $this->load->library('Google');
         $this->load->model('ACCESS RIGHTS/Mdl_terminate_search_update');
-        $final_value=$this->Mdl_terminate_search_update->URT_SRC_func_terminate($this->input->post('login_id'),$this->input->post('terminate_date'),$this->input->post('terminate_reason'),$this->input->post('URT_SRC_flag_terminate'),$UserStamp);
+        $final_value=$this->Mdl_terminate_search_update->URT_SRC_func_terminate($this->input->post('login_id'),$this->input->post('terminate_date'),$this->input->post('terminate_reason'),$this->input->post('URT_SRC_flag_terminate'),$UserStamp,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
         echo json_encode($final_value);
 
     }
     public function URT_SRC_func_rejoin(){
-
-        global $UserStamp;
+        global $UserStamp,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token;
+        $this->load->library('Google');
         $this->load->model('ACCESS RIGHTS/Mdl_terminate_search_update');
-        $final_value=$this->Mdl_terminate_search_update->URT_SRC_func_rejoin($this->input->post('login_id'),$this->input->post('rejoin_date'),$this->input->post('role'),$this->input->post('URT_SRC_flag_rejoin'),$UserStamp);
+        $final_value=$this->Mdl_terminate_search_update->URT_SRC_func_rejoin($this->input->post('login_id'),$this->input->post('rejoin_date'),$this->input->post('role'),$this->input->post('URT_SRC_flag_rejoin'),$UserStamp,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
         echo json_encode($final_value);
 
 

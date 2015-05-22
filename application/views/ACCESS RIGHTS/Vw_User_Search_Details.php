@@ -38,7 +38,7 @@ include "Header.php";
                 type:'post',
                 'url':"<?php echo base_url();?>" +"index.php/Ctrl_User_Search_Details/USD_SRC_flextable_getdatas",
                 success:function(data){
-
+                    $('.preloader').hide();
                     var USD_SRC_response=JSON.parse(data);
                     values_array=USD_SRC_response[0];
                     var USD_SRC_errorAarray=USD_SRC_response[1];

@@ -109,7 +109,7 @@ $(document).ready(function(){
         else if(URT_SRC_source=='URT_SRC_radio_srcupd'){
 //            $('<div class="form-group row"><label class="srctitle col-sm-2">SELECT A OPTION</label></div><div class="form-group"><div class="radio"><label class="col-sm-11" name="URT_SRC_lbl_nselectrejoin" id="URT_SRC_lbl_selectrejoin"  style="white-space: nowrap!important;" ><input type="radio" id="URT_SRC_radio_rejoin" name="URT_SRC_radio_rejoin_srcupd" class="URT_SRC_class_rejoin_srcupd">REJOIN</label></div></div><div class="form-group"><div class="radio">    <label class="col-sm-11" name="URT_SRC_lbl_nselectsearchupdate" id="URT_SRC_lbl_selectsearchupdate"  style="white-space: nowrap!important;"><input type="radio" id="URT_SRC_radio_optsrcupd" name="URT_SRC_radio_rejoin_srcupd" class="URT_SRC_class_rejoin_srcupd">SEARCH/UPDATE</label>').appendTo($("#URT_SRC_tble_srchupd"));
 //        $('<div class="form-group  "><label class="srctitle col-sm-2">SELECT A OPTION</label><div class="form-group"><div class="radio"><label class="col-sm-11" name="URT_SRC_lbl_nselectrejoin" id="URT_SRC_lbl_selectrejoin"  style="white-space: nowrap!important;" ><input type="radio" id="URT_SRC_radio_rejoin" name="URT_SRC_radio_rejoin_srcupd" class="URT_SRC_class_rejoin_srcupd">REJOIN</label></div></div><div class="form-group"><div class="radio"><label class="col-sm-11" name="URT_SRC_lbl_nselectsearchupdate" id="URT_SRC_lbl_selectsearchupdate"  style="white-space: nowrap!important;"><input type="radio" id="URT_SRC_radio_optsrcupd" name="URT_SRC_radio_rejoin_srcupd" class="URT_SRC_class_rejoin_srcupd">SEARCH/UPDATE</label></div></div></div>').appendTo($("#URT_SRC_tble_srchupd"));
-$(' <div class="form-group "><label class="srctitle col-sm-2">SELECT A OPTION</label></div><div class="form-group" style="padding-left: 15px"><div class="radio"><label class="col-sm-2" name="URT_SRC_lbl_nselectrejoin" id="URT_SRC_lbl_selectrejoin"   ><input type="radio" id="URT_SRC_radio_rejoin" name="URT_SRC_radio_rejoin_srcupd" class="URT_SRC_class_rejoin_srcupd">REJOIN</label></div><div class="radio"><label class="col-sm-2" name="URT_SRC_lbl_nselectsearchupdate" id="URT_SRC_lbl_selectsearchupdate"  style="white-space: nowrap!important;"><input type="radio" id="URT_SRC_radio_optsrcupd" name="URT_SRC_radio_rejoin_srcupd" class="URT_SRC_class_rejoin_srcupd">SEARCH/UPDATE</label></div></div>').appendTo($("#URT_SRC_tble_srchupd"));
+            $(' <div class="form-group "><label class="srctitle col-sm-2">SELECT A OPTION</label></div><div class="form-group" style="padding-left: 15px"><div class="radio"><label class="col-sm-2" name="URT_SRC_lbl_nselectrejoin" id="URT_SRC_lbl_selectrejoin"   ><input type="radio" id="URT_SRC_radio_rejoin" name="URT_SRC_radio_rejoin_srcupd" class="URT_SRC_class_rejoin_srcupd">REJOIN</label></div><div class="radio"><label class="col-sm-2" name="URT_SRC_lbl_nselectsearchupdate" id="URT_SRC_lbl_selectsearchupdate"  style="white-space: nowrap!important;"><input type="radio" id="URT_SRC_radio_optsrcupd" name="URT_SRC_radio_rejoin_srcupd" class="URT_SRC_class_rejoin_srcupd">SEARCH/UPDATE</label></div></div>').appendTo($("#URT_SRC_tble_srchupd"));
         }
     });
     /*-------------------------------------CHANGE EVENT FUNCTION FOR EMAIL_ID TO GET JOIN DATE-------------------------------------------*/
@@ -139,8 +139,8 @@ $(' <div class="form-group "><label class="srctitle col-sm-2">SELECT A OPTION</l
                     'url':"<?php echo base_url();?>" +"index.php/Ctrl_Terminate_Search_Update/URT_SRC_func_enddate",
                     data:{'login_id':$("#URT_SRC_lb_loginid").val(),'URT_SRC_recdver':'URT_SRC_recdver','URT_SRC_check_enddate':'URT_SRC_check_rejoindate','URT_SRC_recvrsion_one':'URT_SRC_recvrsion_one'},
                     success:function(data){
-                   var URT_SRC_response_enddate=JSON.parse(data);
-                   URT_SRC_success_enddate(URT_SRC_response_enddate);
+                        var URT_SRC_response_enddate=JSON.parse(data);
+                        URT_SRC_success_enddate(URT_SRC_response_enddate);
                     }
                 });
             }
@@ -155,7 +155,7 @@ $(' <div class="form-group "><label class="srctitle col-sm-2">SELECT A OPTION</l
                     }
                 });
             }
-            }
+        }
         else{
             $(".preloader").hide();
             $("#URT_SRC_tble_loginterm").empty();
@@ -288,7 +288,6 @@ $(' <div class="form-group "><label class="srctitle col-sm-2">SELECT A OPTION</l
             'url':"<?php echo base_url();?>" +"index.php/Ctrl_Terminate_Search_Update/URT_SRC_func_terminate",
             data:{'login_id':$("#URT_SRC_lb_loginid").val(),'terminate_date':$('#URT_SRC_db_logindate').val(),'terminate_reason':$('#URT_SRC_ta_reasonterm').val(),'URT_SRC_flag_terminate':'URT_SRC_flag_terminate'},
             success:function(data){
-                alert(data)
                 var URT_SRC_response=JSON.parse(data);
                 URT_SRC_success_update_rejoin_terminate(URT_SRC_response);
             }
@@ -304,7 +303,6 @@ $(' <div class="form-group "><label class="srctitle col-sm-2">SELECT A OPTION</l
             'url':"<?php echo base_url();?>" +"index.php/Ctrl_Terminate_Search_Update/URT_SRC_func_rejoin",
             data:{'login_id':$("#URT_SRC_lb_loginid").val(),'rejoin_date':$('#URT_SRC_db_rejoindate').val(),'role':$("input[name=customrole]:checked").val(),'URT_SRC_flag_rejoin':'URT_SRC_flag_rejoin'},
             success:function(data){
-                alert(data)
                 var URT_SRC_response=JSON.parse(data);
                 URT_SRC_success_update_rejoin_terminate(URT_SRC_response);
             }
@@ -335,7 +333,7 @@ $(' <div class="form-group "><label class="srctitle col-sm-2">SELECT A OPTION</l
         }
         else
         {
-           var doc_flag=URT_SRC_response_upd_rejoin[2];
+            var doc_flag=URT_SRC_response_upd_rejoin[2];
             var cal_flag=URT_SRC_response_upd_rejoin[3];
             if(URT_SRC_response_upd_rejoin[1]==1){
                 if((URT_SRC_response_upd_rejoin[0]=='URT_SRC_flag_updation')&&(URT_SRC_response_upd_rejoin[0]!=undefined)){
@@ -343,7 +341,7 @@ $(' <div class="form-group "><label class="srctitle col-sm-2">SELECT A OPTION</l
                     $(document).doValidation({rule:'messagebox',prop:{msgtitle:"TERMINATE - SEARCH/UPDATE",msgcontent:URT_SRC_err_term_rejoin_srcupd,position:{top:150,left:500}}});}
                 else if((URT_SRC_response_upd_rejoin[0]=='URT_SRC_flag_rejoin')&&(URT_SRC_response_upd_rejoin[0]!=undefined)){
                     if(doc_flag==1 && cal_flag==1){
-                    var URT_SRC_err_term_rejoin_srcupd=(URT_SRC_arr_errormsg[2].EMC_DATA).replace('[LOGIN ID]',$("#URT_SRC_lb_loginid").val())
+                        var URT_SRC_err_term_rejoin_srcupd=(URT_SRC_arr_errormsg[2].EMC_DATA).replace('[LOGIN ID]',$("#URT_SRC_lb_loginid").val())
                     }
                     if( doc_flag==0){
 
@@ -355,11 +353,11 @@ $(' <div class="form-group "><label class="srctitle col-sm-2">SELECT A OPTION</l
                     }
                 }
                 else if((URT_SRC_response_upd_rejoin[0]=='URT_SRC_flag_terminate')&&(URT_SRC_response_upd_rejoin[0]!=undefined)){
-                   if(doc_flag==1 && cal_flag==1){
+                    if(doc_flag==1 && cal_flag==1){
 
-                       var URT_SRC_err_term_rejoin_srcupd=(URT_SRC_arr_errormsg[1].EMC_DATA).replace('[LOGIN ID]',$("#URT_SRC_lb_loginid").val())
+                        var URT_SRC_err_term_rejoin_srcupd=(URT_SRC_arr_errormsg[1].EMC_DATA).replace('[LOGIN ID]',$("#URT_SRC_lb_loginid").val())
 
-                   }
+                    }
                     if( doc_flag==0){
 
                         show_msgbox("TERMINATE - SEARCH/UPDATE",URSRC_errorAarray[9].EMC_DATA,"success",false)
@@ -432,15 +430,15 @@ $(' <div class="form-group "><label class="srctitle col-sm-2">SELECT A OPTION</l
             $(".preloader").show();
             $("#URT_SRC_tble_optsrchupd").empty();
             $.ajax({
-            type:'post',
+                type:'post',
                 'url':"<?php echo base_url();?>" +"index.php/Ctrl_Terminate_Search_Update/URT_SRC_func_enddate",
-            data:{'login_id':$("#URT_SRC_lb_loginid").val(),'URT_SRC_recdver':$("#URT_SRC_lb_recordversion").val(),'URT_SRC_check_enddate':'URT_SRC_srcupd','URT_SRC_srcupd':'URT_SRC_recvrsion_more'},
-            success:function(data){
+                data:{'login_id':$("#URT_SRC_lb_loginid").val(),'URT_SRC_recdver':$("#URT_SRC_lb_recordversion").val(),'URT_SRC_check_enddate':'URT_SRC_srcupd','URT_SRC_srcupd':'URT_SRC_recvrsion_more'},
+                success:function(data){
 
-                var URT_SRC_response_enddate=JSON.parse(data);
-                URT_SRC_success_enddate(URT_SRC_response_enddate);
+                    var URT_SRC_response_enddate=JSON.parse(data);
+                    URT_SRC_success_enddate(URT_SRC_response_enddate);
 
-            }
+                }
             });
         }
         else{
@@ -481,8 +479,8 @@ $(' <div class="form-group "><label class="srctitle col-sm-2">SELECT A OPTION</l
 <body>
 <div class="container">
     <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif"  /></div></div></div>
-<!--    <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif"  /></div></div></div>-->
-<!--    <div class="preloader"><span class="Centerer"></span><img class="preloaderimg"/> </div>-->
+    <!--    <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif"  /></div></div></div>-->
+    <!--    <div class="preloader"><span class="Centerer"></span><img class="preloaderimg"/> </div>-->
     <div class="title text-center"><h4><b>TERMINATE - SEARCH/UPDATE</b></h4></div>
     <form  name="URT_SRC_form_terminatesrcupd" id="URT_SRC_form_terminatesrcupd" class=" form-horizontal content" role="form">
         <div class="panel-body">
@@ -503,7 +501,7 @@ $(' <div class="form-group "><label class="srctitle col-sm-2">SELECT A OPTION</l
                     </div>
                 </div>
 
-<!--                <div class="form-group  "><label class="srctitle col-sm-2">SELECT A OPTION</label></div><div class="form-group"><div class="radio"><label class="col-sm-2" name="URT_SRC_lbl_nselectrejoin" id="URT_SRC_lbl_selectrejoin"   ><input type="radio" id="URT_SRC_radio_rejoin" name="URT_SRC_radio_rejoin_srcupd" class="URT_SRC_class_rejoin_srcupd">REJOIN</label></div><div class="radio"><label class="col-sm-2" name="URT_SRC_lbl_nselectsearchupdate" id="URT_SRC_lbl_selectsearchupdate"  style="white-space: nowrap!important;"><input type="radio" id="URT_SRC_radio_optsrcupd" name="URT_SRC_radio_rejoin_srcupd" class="URT_SRC_class_rejoin_srcupd">SEARCH/UPDATE</label></div></div>-->
+                <!--                <div class="form-group  "><label class="srctitle col-sm-2">SELECT A OPTION</label></div><div class="form-group"><div class="radio"><label class="col-sm-2" name="URT_SRC_lbl_nselectrejoin" id="URT_SRC_lbl_selectrejoin"   ><input type="radio" id="URT_SRC_radio_rejoin" name="URT_SRC_radio_rejoin_srcupd" class="URT_SRC_class_rejoin_srcupd">REJOIN</label></div><div class="radio"><label class="col-sm-2" name="URT_SRC_lbl_nselectsearchupdate" id="URT_SRC_lbl_selectsearchupdate"  style="white-space: nowrap!important;"><input type="radio" id="URT_SRC_radio_optsrcupd" name="URT_SRC_radio_rejoin_srcupd" class="URT_SRC_class_rejoin_srcupd">SEARCH/UPDATE</label></div></div>-->
 
 
 
@@ -513,9 +511,9 @@ $(' <div class="form-group "><label class="srctitle col-sm-2">SELECT A OPTION</l
                 <div id="URT_SRC_tble_rejoin"></div>
                 <div id="URT_SRC_tble_optsrchupd"></div>
                 <label id="URT_SRC_lbl_errormsg_nodata" class="errormsg"></label>
-                </fieldset>
-            </div>
-        </form>
-    </div>
+            </fieldset>
+        </div>
+    </form>
+</div>
 </body>
 </html>

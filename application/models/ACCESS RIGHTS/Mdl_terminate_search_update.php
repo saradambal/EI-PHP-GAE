@@ -132,6 +132,7 @@ class Mdl_terminate_search_update  extends CI_Model{
 
     /*-------------------------------------------FUNCTION TO TERMINATE LOGIN DETAILS-----------------------------*/
     function URT_SRC_func_terminate($URT_SRC_emailid,$URT_SRC_enddate,$URT_SRC_reason,$URT_SRC_flg_terminate,$UserStamp,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
+
         try{
             $URSRC_sharedocflag=0;$URSRC_sharecalflag=0;$URSRC_sharesiteflag=0;
             $URT_SRC_enddate = date('Y-m-d',strtotime($URT_SRC_enddate));
@@ -231,6 +232,7 @@ return $URT_SRC_success_flag;
 //
 /*-------------------------------------------FUNCTION TO REJOIN LOGIN DETAILS-----------------------------*/
 function URT_SRC_func_rejoin($URT_SRC_upd_emailid,$URT_SRC_upd_rejoindate,$URT_SRC_upd_customrole,$URT_SRC_flg_rejoin,$UserStamp,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token) {
+
     try{
             $URSRC_sharedocflag=0;$URSRC_sharecalflag=0;$URSRC_sharesiteflag=0;
              $URT_SRC_temptable='';

@@ -85,8 +85,9 @@ class Mdl_access_rights_search_update extends CI_Model{
     }
     public function URSRC_check_role($role){
 
-        $this->db->like('RC_NAME', $role);
+        $this->db->select();
         $this->db->from('ROLE_CREATION');
+        $this->db->where('RC_NAME', $role);
         $row=$this->db->count_all_results();
         $x=$row;
         if($x > 0)
@@ -117,8 +118,9 @@ class Mdl_access_rights_search_update extends CI_Model{
     }
     public function URSRC_check_loginid($login_id){
 
-        $this->db->like('ULD_LOGINID',$login_id);
+        $this->db->select();
         $this->db->from('USER_LOGIN_DETAILS');
+        $this->db->where('ULD_LOGINID',$login_id);
         $row=$this->db->count_all_results();
         $x=$row;
         if($x > 0)
@@ -178,6 +180,7 @@ class Mdl_access_rights_search_update extends CI_Model{
         return $URSRC_loginid_details_array;
 }
     public function URSRC_getmenu_folder($basicrole,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token) {
+//        set_time_limit(0);
         $URSRC_basicrole=str_replace("_"," ",$basicrole);
 
      $URSRC_finalmenu=array();
@@ -616,6 +619,7 @@ public function URSRC_loadbasicrole_menu($basicrole,$URSRC_basic_role,$ClientId,
 }
 //Role creation save and update & Basic role menu creation save and update
     public function URSRC_role_creation_save($URSRC_mainradiobutton,$URSRC_menu,$URSRC_submenu,$URSRC_sub_submenu,$basicroles,$customrole,$customerrole_upd,$URSRC_radio_basicroles,$URSRC_cb_basicroles,$UserStamp,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
+//        set_time_limit(0);
         $URSRC_sharedocflag=0;
         try{
 
@@ -694,7 +698,7 @@ public function URSRC_loadbasicrole_menu($basicrole,$URSRC_basic_role,$ClientId,
                 }
             }
             if(count($menu_files)==0){
-                $fileid=null;
+                $fileid='null';
             }
             else{
                 $fileid="'".$fileid."'";
@@ -801,6 +805,7 @@ $this->db->trans_commit();
     }
 
     public function URSRC_login_creation_save($URSRC_mainradiobutton,$URSRC_tb_joindate,$URSRC_custom_role,$URSRC_tb_loginid,$USERSTAMP,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
+//        set_time_limit(0);
         $URSRC_sharedocflag='';$URSRC_sharecalflag='';$URSRC_sharesiteflag=0;
        try{
 

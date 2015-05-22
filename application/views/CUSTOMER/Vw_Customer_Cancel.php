@@ -2,7 +2,7 @@
 //************************************CUSTOMER CANCEL***********************************************//
 //DONE BY:SAFI
 
-VER 0.01 - INITIAL VERSION-SD:20/05/2015
+VER 0.01 - INITIAL VERSION-SD:28/08/2013 ED:13/09/2013
 //*********************************************************************************************************//
 -->
 <?php
@@ -32,6 +32,10 @@ $(document).ready(function(){
                 var CCAN_err_msg=CCAN_errorAarray[1].EMC_DATA+'  &  '+CCAN_errorAarray[3].EMC_DATA;
                 $('#CCAN_form_cancelform').replaceWith('<p><label class="errormsg"> '+CCAN_err_msg+'</label></p>');
             }
+        },
+        error:function(data){
+
+           show_msgbox("CUSTOMER CANCELLATION",JSON.stringify(data),"error",false);
         }
     });
     $('#CCAN_radio_cancellist').change(function(){
@@ -41,15 +45,16 @@ $(document).ready(function(){
         var CCAN_select_type=$('#CCAN_radio_cancellist').val()
         $('#CCAN_tble_unitno').hide();
         $('#CCAN_div_cancelform').hide();
+        $('#CCAN_custname').hide();
         $('#CCAN_lbl_errmsg').hide();
         $('#CCAN_div_buttons').hide();
-        $('#CCAN_tble_guest_cardno tr').remove();
+        $('#CCAN_tble_guest_cardno > div').remove();
         $('#CCAN_lb_selectname').hide();
         $('#CCAN_lb_selectname').prop('selectedIndex',0);
         $('#CCAN_lbl_cname').hide();
         $('#CCAN_div_uncancelbuttons').hide();
         $('input:radio[name=CCAN_id]').attr('checked',false);
-        $('#CCAN_tble_id tr').remove();
+        $('#CCAN_tble_id > div').remove();
         $('#CCAN_tble_unitno').hide();
         $('#CCAN_lbl_title').text("CANCEL CUSTOMER").show();
         $.ajax({
@@ -59,6 +64,10 @@ $(document).ready(function(){
             success:function(data){
                 var response_unit=JSON.parse(data);
                 CCAN_loadUnitNo(response_unit)  ;
+            },
+            error:function(data){
+
+               show_msgbox("CUSTOMER CANCELLATION",JSON.stringify(data),"error",false);
             }
         });
     });
@@ -69,12 +78,13 @@ $(document).ready(function(){
         $('#CCAN_div_cancelform').hide();
         $('#CCAN_lbl_errmsg').hide();
         $('#CCAN_div_buttons').hide();
-        $('#CCAN_tble_guest_cardno tr').remove();
+        $('#CCAN_custname').hide();
+        $('#CCAN_tble_guest_cardno > div').remove();
         $('#CCAN_lb_selectname').hide();
         $('#CCAN_lb_selectname').prop('selectedIndex',0);
         $('#CCAN_lbl_cname').hide();
         $('input:radio[name=CCAN_id]').attr('checked',false);
-        $('#CCAN_tble_id tr').remove();
+        $('#CCAN_tble_id > div').remove();
         var CCAN_select_type=$('#CCAN_radio_uncancellist').val()
         $('#CCAN_tble_unitno').hide();
         $('#CCAN_lbl_title').text("UNCANCEL CUSTOMER").show();
@@ -85,24 +95,28 @@ $(document).ready(function(){
             success:function(data){
                 var response_unit=JSON.parse(data);
                 CCAN_loadUnitNo(response_unit)  ;
-            }
+            },
+            error:function(data){
+
+            show_msgbox("CUSTOMER CANCELLATION",JSON.stringify(data),"error",false);
+        }
         });
     });
 //-----UNIT NO CHANGE FUNCTION-----------------
     $('#CCAN_lb_selectunit').change(function(){
-
+        $("html, body").animate({ scrollTop: $(document).height() }, "slow");
         var CCAN_unit = $(this).val();
         if(CCAN_unit=='SELECT'){
             $('#CCAN_div_cancelform').hide();
             $('#CCAN_div_buttons').hide();
             $('#CCAN_div_uncancelbuttons').hide();
-            $('#CCAN_tble_guest_cardno tr').remove();
+            $('#CCAN_tble_guest_cardno > div').remove();
             $('#CCAN_lb_selectname').hide();
             $('#CCAN_lb_selectname').prop('selectedIndex',0);
             $('#CCAN_custname').hide();
             $('#CCAN_lbl_cname').hide();
             $('input:radio[name=CCAN_id]').attr('checked',false);
-            $('#CCAN_tble_id tr').remove();
+            $('#CCAN_tble_id > div').remove();
         }
         else{
 //$(".preloader").show();
@@ -113,8 +127,8 @@ $(document).ready(function(){
             $('#CCAN_lbl_cname').hide();
             $('#CCAN_div_cancelform').hide();
             $('input:radio[name=CCAN_id]').attr('checked',false);
-            $('#CCAN_tble_id tr').remove();
-            $('#CCAN_tble_guest_cardno tr').remove();
+            $('#CCAN_tble_id > div').remove();
+            $('#CCAN_tble_guest_cardno > div').remove();
             var CCAN_namearray=[];
             for(var k=0;k<CCAN_all_result.length;k++)
             {
@@ -138,6 +152,7 @@ $(document).ready(function(){
 //------------CUSTOMER NAME CHANGE FUNCTION------------------
     var CCAN_name_recver;
     $('#CCAN_lb_selectname').change(function(){
+
         var CCAN_name=$(this).val();
         var CCAN_unit_no=$('#CCAN_lb_selectunit').val();
         if(CCAN_name=='SELECT')
@@ -146,9 +161,9 @@ $(document).ready(function(){
             $('#CCAN_div_cancelform').hide();
             $('#CCAN_div_buttons').hide();
             $('#CCAN_div_uncancelbuttons').hide();
-            $('#CCAN_tble_guest_cardno tr').remove();
+            $('#CCAN_tble_guest_cardno > div').remove();
             $('input:radio[name=CCAN_id]').attr('checked',false);
-            $('#CCAN_tble_id tr').remove();
+            $('#CCAN_tble_id > div').remove();
         }
         else{
             $(".preloader").show();
@@ -156,9 +171,9 @@ $(document).ready(function(){
             $('#CCAN_div_buttons').hide();
             $('#CCAN_div_uncancelbuttons').hide();
             $('#CCAN_div_cancelform').hide();
-            $('#CCAN_tble_guest_cardno tr').remove();
+            $('#CCAN_tble_guest_cardno > div').remove();
             $('input:radio[name=CCAN_id]').attr('checked',false);
-            $('#CCAN_tble_id tr').remove();
+            $('#CCAN_tble_id > div').remove();
             var CCAN_name_id_array=[];
             for(var k=0;k<CCAN_all_result.length;k++)
             {
@@ -181,21 +196,18 @@ $(document).ready(function(){
                 var CCAN_custid_radio='';
                 for (var i = 0; i < CCAN_name_id_array.length; i++) {
                     var final=CCAN_custname+' '+CCAN_name_id_array[i]
-                    CCAN_custid_radio = '<tr id=123><td><input type="radio" name="custid" id='+CCAN_name_id_array[i]+' value='+CCAN_name_id_array[i]+' class="CCAN_class_custid" /></td><td>' + final + '</td></tr>';
+                    CCAN_custid_radio = '<div class="col-sm-offset-3" style="padding-left:15px"><div class="radio"><label><input type="radio" name="custid" id='+CCAN_name_id_array[i]+' value='+CCAN_name_id_array[i]+' class="CCAN_class_custid" />' + final + '</label></div></div>';
                     $('#CCAN_tble_id').append(CCAN_custid_radio);
                 }
             }
             else{
-
-                for(var k=0;k<CCAN_all_result.length;k++)
-                {
-                    if(CCAN_all_result[k].customerid==CCAN_name_id_array[0])
-                    {
+                for(var k=0;k<CCAN_all_result.length;k++){
+                    if(CCAN_all_result[k].customerid==CCAN_name_id_array[0]){
                         CCAN_name_recver=(CCAN_all_result[k].recver);
                     }
                 }
                 cust_id=CCAN_name_id_array[0];
-//HANDLER TO GET CUSTOMER DETAIL'S
+               //HANDLER TO GET CUSTOMER DETAIL'S
                 var CCAN_select_type = $('input:radio[name=CCAN_mainradiobutton]:checked').val();
                 $.ajax({
                     type:'post',
@@ -207,10 +219,10 @@ $(document).ready(function(){
                     },
                     error:function(data){
 
-                        alert(JSON.stringify(data));
-                    }
+                          show_msgbox("CUSTOMER CANCELLATION",JSON.stringify(data),"error",false);
+                }
                 });
-                $('#CCAN_tble_id tr').remove();
+                $('#CCAN_tble_id > div').remove();
             }
         }
     });
@@ -241,6 +253,7 @@ $(document).ready(function(){
     var CCAN_all_result=[]
     function CCAN_loadUnitNo(CCAN_unitno)
     {
+        $("html, body").animate({ scrollTop: $(document).height() }, "slow");
         $(".preloader").hide();
         CCAN_all_result=CCAN_unitno;
         var CCAN_select_type = $('input:radio[name=CCAN_mainradiobutton]:checked').val();
@@ -301,7 +314,7 @@ $(document).ready(function(){
         $('#CCAN_div_buttons').hide();
         $('#CCAN_div_uncancelbuttons').hide();
         $('#CCAN_tble_comment').hide();
-        $('#CCAN_tble_guest_cardno tr').remove();
+        $('#CCAN_tble_guest_cardno > div').remove();
         $('input:radio[name=CCAN_selectcard]').attr('checked',false);
 //HANDLER TO GET CUSTOMER DETAIL'S
         var CCAN_select_type = $('input:radio[name=CCAN_mainradiobutton]:checked').val();
@@ -310,17 +323,18 @@ $(document).ready(function(){
             url:"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_get_customervalues",
             data:{'CCAN_select_type':CCAN_select_type,'CCAN_name_recver':CCAN_name_recver,'cust_id':CCAN_customer_id},
             success:function(data){
+
                 var response_unit=JSON.parse(data);
                 CCAN_load_customerdetails(response_unit)  ;
             },
             error:function(data){
 
-                alert(JSON.stringify(data));
+
+                    show_msgbox("CUSTOMER CANCELLATION",JSON.stringify(data),"error",false);
+
             }
 
-
         })
-//        google.script.run.withFailureHandler(CCAN_error).withSuccessHandler(CCAN_load_customerdetails).CCAN_get_customervalues(CCAN_customer_id,CCAN_select_type,CCAN_name_recver)
     });
 ///////////////************ FUNCTION TO LOAD CUSTOMER DETAILS***********////////////////////
     function CCAN_load_customerdetails(data)
@@ -344,15 +358,13 @@ $(document).ready(function(){
         }
         else{
             $('#CCAN_tb_cardno').attr("size",7)
-
         }
         var CCAN_startdate=CCAN_customer_details.startdate;
         CCAN_startdate=FormTableDateFormat(CCAN_startdate);
         var CCAN_enddate=CCAN_customer_details.enddate;
         CCAN_enddate=FormTableDateFormat(CCAN_enddate);
         var CCAN_passportdate=CCAN_customer_details.passportdate;
-        if(CCAN_passportdate!=null)
-        {
+        if(CCAN_passportdate!=null){
             CCAN_passportdate=FormTableDateFormat(CCAN_passportdate);
         }
         var CCAN_dob=CCAN_customer_details.dob;
@@ -391,35 +403,30 @@ $(document).ready(function(){
         $('#CCAN_tb_drycleanfee').val(CCAN_customer_details.drycleanfee);$('#CCAN_tb_checkoutcleaningfee').val(CCAN_customer_details.checkoutcleaningfee);
         $('#CCAN_tb_deposit').val(CCAN_customer_details.deposit);$('#CCAN_tb_rent').val(CCAN_customer_details.rental);
         $('#CCAN_tb_processingfee').val(CCAN_customer_details.processingfee);
-//        $('#CCAN_ta_comments').height(20);
         $('#CCAN_ta_comments').val(CCAN_customer_details.comments);
         $('#CCAN_tb_companyname').val(CCAN_customer_details.company);
         $('#CCAN_tb_nation').val(CCAN_customer_details.nationality);
         var CCAN_quaterlyfee=CCAN_customer_details.airconquartelyfee
         var CCAN_fixedfee=CCAN_customer_details.airconfixedfee
-        if(CCAN_quaterlyfee==null)
-        {
+        if(CCAN_quaterlyfee==null){
             $('#CCAN_tb_fixed').val(CCAN_customer_details.airconfixedfee)
             $('#CCAN_lbl_fixedfee').text("AIRCON FIXED FEE")
             $('#CCAN_tb_fixed').show();
         }
-        else
-        {
+        else {
             $('#CCAN_tb_fixed').val(CCAN_customer_details.airconquartelyfee)
             $('#CCAN_lbl_fixedfee').text("AIRCON QUATERLY FEE")
             $('#CCAN_tb_fixed').show();
         }
-        if(CCAN_guest_array.length!=0)
-        {
+        if(CCAN_guest_array.length!=0){
             var CCAN_guestcard='';
             for (var i = 0; i < CCAN_guest_array.length; i++) {
-                CCAN_guestcard = '<tr ><td >&nbsp;&nbsp;<label style="width:230px" >GUEST'+(i+1)+' CARD </label></td> <td><input type="text" name="CCAN_tb_cardno" id='+CCAN_guest_array[i]+' value='+CCAN_guest_array[i]+' style="width:50px;" class="rdonly" readonly  /></td></tr>';
+                CCAN_guestcard = "<div class='form-group'><label class='col-sm-3'>GUEST"+(i+1)+" CARD </label> <div class='col-sm-2'><input type='text' name='CCAN_tb_cardno' id='+CCAN_guest_array[i]+' value="+CCAN_guest_array[i]+"  class='form-control' readonly  /></div></div>";
                 $('#CCAN_tble_guest_cardno').append(CCAN_guestcard);
             }
         }
-        else
-        {
-            $('#CCAN_tble_guest_cardno tr').remove();
+        else{
+            $('#CCAN_tble_guest_cardno > div').remove();
         }
         $('#CCAN_tble_personaldetails').show();
         $('#CCAN_tble_third').show();
@@ -461,65 +468,70 @@ $(document).ready(function(){
         }
     }
 //*********************FUNCTION TO CLEAR FORM*************************
-//    function CCAN_clear(response)
-//    {
-//        $(".preloader").hide();
-//        $('#CCAN_div_cancelform').hide();
-//        $('#CCAN_lbl_cname').hide();
-//        $('#CCAN_lb_selectname').hide();
-//        $('#CCAN_lb_selectname').prop('selectedIndex',0);
-//        $('#CCAN_tble_id tr').remove();
-//        $('#CCAN_div_buttons').hide();
-//        $('#CCAN_div_uncancelbuttons').hide();
-//        $('input:radio[name=CCAN_id]').attr('checked',false);
-//        if(response==1)
-//        {
-//            $('#CCAN_lbl_unitno').hide();
-//            var CCAN_select_type = $('input:radio[name=CCAN_mainradiobutton]:checked').val();
+    function CCAN_clear(response)
+    {
+        $(".preloader").hide();
+        $('#CCAN_div_cancelform').hide();
+        $('#CCAN_lbl_cname').hide();
+        $('#CCAN_lb_selectname').hide();
+        $('#CCAN_custname').hide();
+        $('#CCAN_lb_selectname').prop('selectedIndex',0);
+        $('#CCAN_tble_id > div').remove();
+        $('#CCAN_div_buttons').hide();
+        $('#CCAN_div_uncancelbuttons').hide();
+        $('input:radio[name=CCAN_id]').attr('checked',false);
+        if(response[0]==1 && response[1]==1)
+        {
+            $('#CCAN_lbl_unitno').hide();
+            var CCAN_select_type = $('input:radio[name=CCAN_mainradiobutton]:checked').val();
 //            google.script.run.withFailureHandler(CCAN_error).withSuccessHandler(CCAN_loadUnitNo).CCAN_getcustomer_details(CCAN_select_type);
-//            $('#CCAN_lb_selectunit').prop('selectedIndex',0).hide();
-//            if(CCAN_select_type=="CANCEL CUSTOMER"){
-//                show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[0].EMC_DATA,"success",false);
-////                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[0],position:{top:150,left:500}}});
-//            }
-//            else{
-//                show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[4].EMC_DATA,"success",false);
-//
-////                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[4],position:{top:150,left:500}}});
-//            }
-//        }
-//        else if(response==0)
-//        {
-//            if(CCAN_select_type=="CANCEL CUSTOMER")
-//                show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[5].EMC_DATA,"success",false);
-////                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[5],position:{top:150,left:500}}});
-//            }
-//            else{
-//            show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[5].EMC_DATA,"success",false);
-////                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[5],position:{top:150,left:500}}});
-//            }
-//            $('#CCAN_lbl_unitno').show();
-//            $('#CCAN_lb_selectunit').prop('selectedIndex',0).show();
-//        }
-//        else if(response=='RESET'){
-//            $('#CCAN_lbl_unitno').show();
-//            $('#CCAN_lb_selectunit').prop('selectedIndex',0).show();
-//        }
-//        else{
-//            if(CCAN_select_type=="CANCEL CUSTOMER"){
-//                show_msgbox("CUSTOMER CANCELLATION",response,"success",false);
-////                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:response,position:{top:150,left:500}}});
-//            }
-//            else{
-//                show_msgbox("CUSTOMER CANCELLATION",response,"success",false);
-////                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:response,position:{top:150,left:500}}});
-//            }
-//
-//            $('#CCAN_lbl_unitno').show();
-//            $('#CCAN_lb_selectunit').prop('selectedIndex',0).show();
-//
-//        }
-//    }
+            $('#CCAN_lb_selectunit').prop('selectedIndex',0).hide();
+            if(CCAN_select_type=="CANCEL CUSTOMER"){
+                show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[0].EMC_DATA,"success",false);
+//                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[0],position:{top:150,left:500}}});
+            }
+            else{
+                show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[4].EMC_DATA,"success",false);
+
+//                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[4],position:{top:150,left:500}}});
+            }
+        }
+        else if(response[0]==1 && response[1]==0){
+
+
+
+        }
+        else if(response[0]==0)
+        {
+            if(CCAN_select_type=="CANCEL CUSTOMER")
+                show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[5].EMC_DATA,"success",false);
+//                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[5],position:{top:150,left:500}}});
+
+            else{
+            show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[5].EMC_DATA,"success",false);
+//                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[5],position:{top:150,left:500}}});
+            }
+            $('#CCAN_lbl_unitno').show();
+            $('#CCAN_lb_selectunit').prop('selectedIndex',0).show();
+         }
+        else if(response=='RESET'){
+            $('#CCAN_lbl_unitno').show();
+            $('#CCAN_lb_selectunit').prop('selectedIndex',0).show();
+        }
+        else{
+            if(CCAN_select_type=="CANCEL CUSTOMER"){
+                show_msgbox("CUSTOMER CANCELLATION",response,"success",false);
+//                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:response,position:{top:150,left:500}}});
+            }
+            else{
+                show_msgbox("CUSTOMER CANCELLATION",response,"success",false);
+//                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:response,position:{top:150,left:500}}});
+            }
+            $('#CCAN_lbl_unitno').show();
+            $('#CCAN_lb_selectunit').prop('selectedIndex',0).show();
+
+        }
+    }
 //FUNCTION TO CALL SUBMIT BUTTON
     $('#CCAN_btn_submitbutton').click(function(){
         $(".preloader").show();
@@ -529,30 +541,37 @@ $(document).ready(function(){
             url:"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_cancel",
             data:form_element+"&cust_id="+cust_id+"&CCAN_name_recver="+CCAN_name_recver,
             success:function(data){
-               alert(data);
-//                CCAN_clear(data);
+//                alert(data)
+                var final_value=JSON.parse(data);
+                CCAN_clear(data);
 
 
-            }
+            },
+            error:function(data){
 
-
+            show_msgbox("CUSTOMER CANCELLATION",JSON.stringify(data),"error",false);
+        }
 
         });
-//        google.script.run.withFailureHandler(CCAN_error).withSuccessHandler(CCAN_clear).CCAN_cancel(document.getElementById('CCAN_form_cancelform'))
     });
     $('#CCAN_btn_uncancelbutton').click(function(){
         $(".preloader").show();
+        var form_element=$('#CCAN_form_cancelform').serialize()
         $.ajax({
             type:'post',
             url:"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_uncancel",
             data:form_element+"&cust_id="+cust_id+"&CCAN_name_recver="+CCAN_name_recver,
             success:function(data){
+//                alert(data)
+                var final_value=JSON.parse(data);
+                CCAN_clear(data);
 
+            },
+            error:function(data){
 
-
-            }
+            show_msgbox("CUSTOMER CANCELLATION",JSON.stringify(data),"error",false);
+        }
         });
-//        google.script.run.withFailureHandler(CCAN_error).withSuccessHandler(CCAN_clear).CCAN_uncancel(document.getElementById('CCAN_form_cancelform'))
     });
 //FUNCTION TO CONVERT DATE FORMAT
     function FormTableDateFormat(inputdate){
@@ -736,7 +755,7 @@ $(document).ready(function(){
                     <label class="col-sm-3">CUSTOMER NAME <em>*</em></label>
                     <div class="col-sm-3"><select name="CCAN_name" id="CCAN_lb_selectname" class="CCAN_formvalidation form-control"></select></div>
                 </div>
-                <div class="form-group" id="CCAN_custid" hidden>
+                <div class="form-group" id="CCAN_tble_id" hidden>
                 </div>
 
                 <div id="CCAN_div_cancelform" hidden>
@@ -802,7 +821,7 @@ $(document).ready(function(){
                             <div class="col-sm-2"> <input type="text" name="CCAN_tb_cardno[]" id="CCAN_tb_cardno" class="form-control CCAN_formvalidation" placeholder="Customer Card" readonly/></div>
                         </div>
                     </div>
-                    <div  id="CCAN_tble_guest_cardno">
+                    <div  id="CCAN_tble_guest_cardno"></div>
                     <div id="CCAN_tble_feedetails">
                         <div class="form-group">
                             <label class="col-sm-3">CHECK IN DATE</label>
@@ -849,13 +868,12 @@ $(document).ready(function(){
                             <div class="col-sm-2"> <input type="text" name="CCAN_tb_processingfee" id="CCAN_tb_processingfee" maxlength="50" class="form-control CCAN_formvalidation" placeholder="Processing Cost" readonly/></div>
                         </div>
                     </div>
-                    <div id='CCAN_comment'>
+                    <div id='CCAN_tble_comment'>
                         <div class="form-group">
                             <label class="col-sm-3">COMMENTS</label>
                             <div class="col-sm-4"><textarea name="CCAN_ta_comments" id="CCAN_ta_comments" class="form-control CCAN_formvalidation" rows="5"></textarea></div>
                         </div>
                     </div>
-                    <div id="CCAN_guest_cardno" hidden>
                     </div>
                         <div class="form-group" id="CCAN_div_buttons"  hidden>
                             <div class="col-sm-offset-1 col-sm-3">
@@ -871,13 +889,6 @@ $(document).ready(function(){
                             </div>
                         </div>
 
-<!--                    <div class="form-group" id="buttons">-->
-<!--                        <div class="col-sm-offset-1 col-sm-3">-->
-<!--                            <input class="btn btn-info" type="button" id="CCAN_btn_submitbutton" name="ASSIGN" value="ASSIGN" disabled/>-->
-<!--                            <input class="btn btn-info" type="button" id="CCAN_btn_resetbutton" name="RESET" value="RESET"/>-->
-<!--                        </div>-->
-<!--                    </div>-->
-                </div>
             </fieldset>
         </div>
     </form>

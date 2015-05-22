@@ -129,7 +129,6 @@ $(document).ready(function(){
             }
         }
 
-//alert(('input[name="menu"]:checked').length)
         if($("input[name=menu]").is(":checked")==true)
         {
             $('#USR_SITE_btn_submitbutton').val('GRANT ACCESS');
@@ -286,7 +285,6 @@ $(document).ready(function(){
     //CLICK FUNCTON FOR SUBMIT BUTTON
     $(document).on('click','#USR_SITE_btn_submitbutton',function(){
         $('.preloader').show();
-        alert("<?php echo base_url();?>"+"index.php/Ctrl_Site_Maintenance/USR_SITE_update");
         $.ajax({
             type:'POST',
             'url':"<?php echo base_url();?>"+"index.php/Ctrl_Site_Maintenance/USR_SITE_update",

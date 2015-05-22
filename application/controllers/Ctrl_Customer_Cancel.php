@@ -1,5 +1,6 @@
 <?php
 include 'GET_USERSTAMP.php';
+include "GET_CONFIG.php";
 /**
  * Created by PhpStorm.
  * User: SSOMENS-022
@@ -13,7 +14,14 @@ class Ctrl_Customer_Cancel extends CI_Controller {
 
         $this->load->view('CUSTOMER/Vw_Customer_Cancel');
     }
-
+    public function Get_cal_service(){
+        $this->load->library('Google');
+        global $ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token;
+        $this->load->model('Eilib/Calender');
+        // FUNCTION TO CALL AND GET THE CALENDAR SERVICE
+        $cal= $this->Calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+        return $cal;
+    }
     public  function CCAN_getcustomer(){
 
         $this->load->model('Mdl_customer_cancel');
@@ -47,12 +55,28 @@ class Ctrl_Customer_Cancel extends CI_Controller {
         $CCAN_tb_firstname=$this->input->post('CCAN_tb_firstname');
         $CCAN_tb_lastname=$this->input->post('CCAN_tb_lastname');
         $CCAN_ta_comments=$this->input->post('CCAN_ta_comments');
+        $cal_service=$this->Get_cal_service();
         $this->load->model('Mdl_customer_cancel');
-        $final_value=$this->Mdl_customer_cancel->CCAN_cancel($UserStamp,$custid,$recver,$CCAN_unitnumber,$CCAN_tb_firstname,$CCAN_tb_lastname,$CCAN_ta_comments);
+        $final_value=$this->Mdl_customer_cancel->CCAN_cancel($UserStamp,$custid,$recver,$CCAN_unitnumber,$CCAN_tb_firstname,$CCAN_tb_lastname,$CCAN_ta_comments,$cal_service);
         echo json_encode($final_value);
 
 
 
+    }
+
+    public  function CCAN_uncancel(){
+        global $UserStamp;
+        $custid=$this->input->post('cust_id');
+        $recver= $this->input->post('CCAN_name_recver');
+        $cal_service=$this->Get_cal_service();
+        $CCAN_unitnumber= $this->input->post('CCAN_unitnumber');
+        $CCAN_tb_firstname=$this->input->post('CCAN_tb_firstname');
+        $CCAN_tb_lastname=$this->input->post('CCAN_tb_lastname');
+        $CCAN_ta_comments=$this->input->post('CCAN_ta_comments');
+        $CCAN_tb_roomtype=$this->input->post('CCAN_tb_roomtype');
+        $this->load->model('Mdl_customer_cancel');
+        $final_value=$this->Mdl_customer_cancel->CCAN_uncancel($UserStamp,$custid,$recver,$CCAN_unitnumber,$CCAN_tb_firstname,$CCAN_tb_lastname,$CCAN_ta_comments,$cal_service,$CCAN_tb_roomtype);
+        echo json_encode($final_value);
     }
 
 
