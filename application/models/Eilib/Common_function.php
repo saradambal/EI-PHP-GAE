@@ -6,12 +6,6 @@
 * Time: 5:59 PM
 */
 class Common_function extends CI_Model {
-//public $USERSTAMP=$USERSTAMP;
-////FUNCTION TO DROP TEMP TABLE
-//Public function DropTempTable($tablename)
-//{
-//$this->db->drop_table($tablename);
-//}
 //FUNCTION TO GET BANK_TRANSFER_MODELS
     public function getRecheckinCustomerUnit()
     {
@@ -997,5 +991,12 @@ function USRC_shareUnSharecalender($URSRC_loginid,$role,$ClientId,$ClientSecret,
         return 0;
     }
  }
-
+//FUNCTION TO FILE ID TO GET TITLE
+    public  function CUST_FileId_invoiceTem()
+    {
+        $this->db->select("CCN_DATA");
+        $this->db->from('CUSTOMER_CONFIGURATION');
+        $this->db->where("CCN_ID=11");
+        return $this->db->get()->row()->CCN_DATA;
+    }
 }

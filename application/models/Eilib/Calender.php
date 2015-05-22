@@ -1,49 +1,49 @@
 <?php
 /**
-* Created by PhpStorm.
-* User: SSOMENS-021
-* Date: 13/5/15
-* Time: 10:25 AM
-*/
+ * Created by PhpStorm.
+ * User: SSOMENS-021
+ * Date: 13/5/15
+ * Time: 10:25 AM
+ */
 class Calender  extends CI_Model {
-   //TIME CONVERSION
-public function CalenderTime_Convertion($startdate,$startdate_starttime,$startdate_endtime){
-$start = new Google_Service_Calendar_EventDateTime();
-$start->setDateTime($startdate.'T'.$startdate_starttime.':00.000+08:00');
-$end = new Google_Service_Calendar_EventDateTime();
-$end->setDateTime($startdate.'T'.$startdate_endtime.':00.000+08:00');
-return array($start,$end);
-}
+    //TIME CONVERSION
+    public function CalenderTime_Convertion($startdate,$startdate_starttime,$startdate_endtime){
+        $start = new Google_Service_Calendar_EventDateTime();
+        $start->setDateTime($startdate.'T'.$startdate_starttime.'.000+08:00');
+        $end = new Google_Service_Calendar_EventDateTime();
+        $end->setDateTime($startdate.'T'.$startdate_endtime.'.000+08:00');
+        return array($start,$end);
+    }
 //COMMON FUNCTION TO CREATE CALENDAR ID
-public function createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
+    public function createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
 //create start event
-$drive = new Google_Client();
-$drive->setClientId($ClientId);
-$drive->setClientSecret($ClientSecret);
-$drive->setRedirectUri($RedirectUri);
-$drive->setScopes(array($DriveScopes,$CalenderScopes));
-$drive->setAccessType('online');
-$authUrl = $drive->createAuthUrl();
-$refresh_token= $Refresh_Token;
-$drive->refreshToken($refresh_token);
-$cal = new Google_Service_Calendar($drive);
-return $cal;
-}
+        $drive = new Google_Client();
+        $drive->setClientId($ClientId);
+        $drive->setClientSecret($ClientSecret);
+        $drive->setRedirectUri($RedirectUri);
+        $drive->setScopes(array($DriveScopes,$CalenderScopes));
+        $drive->setAccessType('online');
+        $authUrl = $drive->createAuthUrl();
+        $refresh_token= $Refresh_Token;
+        $drive->refreshToken($refresh_token);
+        $cal = new Google_Service_Calendar($drive);
+        return $cal;
+    }
 //FUNCTION TO GET CALENDAR ID
-function GetEICalendarId()
-{
-$this->db->select('CCN_DATA');
-$this->db->from('CUSTOMER_CONFIGURATION');
-$this->db->where('CGN_ID',75);
-$URSRC_select_calenderid=$this->db->get();
-foreach($URSRC_select_calenderid->result_array() as $row){
-    $calendarId=$row["CCN_DATA"];
-}
-return $calendarId;
-}
+    function GetEICalendarId()
+    {
+        $this->db->select('CCN_DATA');
+        $this->db->from('CUSTOMER_CONFIGURATION');
+        $this->db->where('CGN_ID',75);
+        $URSRC_select_calenderid=$this->db->get();
+        foreach($URSRC_select_calenderid->result_array() as $row){
+            $calendarId=$row["CCN_DATA"];
+        }
+        return $calendarId;
+    }
 //SAMPLE TESTING
-public function test($cal){
-    $this->CUST_customercalendercreation($cal,10,"2015-09-14","10:00","10:30","2015-09-16","10:00","10:30","SARADA","MUNUSAMY","99999999","34324","TEST","SARADA@GMAIL.COM","0810","ROOM TYPE","ROOM TYPE");
+    public function test($cal){
+        $this->CUST_customercalendercreation($cal,10,"2015-09-14","10:00","10:30","2015-09-16","10:00","10:30","SARADA","MUNUSAMY","99999999","34324","TEST","SARADA@GMAIL.COM","0810","ROOM TYPE","ROOM TYPE");
 //$event = new Google_Service_Calendar_Event();
 //$start = new Google_Service_Calendar_EventDateTime();
 //$start->setDateTime('2016-04-15T10:00:00.000-00:00');//setDate('2014-11-18');
@@ -62,241 +62,241 @@ public function test($cal){
 //   $cal_flag=0;
 //   return $e->getMessage();
 //}
-}
+    }
 //CALENDAR EVENT CREATION FOR STARHUB N UNIT FORM
-public  function  StarHubUnit_CreateCalEvent($cal,$startdate,$startdate_starttime,$startdate_endtime,$enddate,$enddate_starttime,$enddate_endtime,$TypeOfExp,$unitno,$accountno,$starteventtype,$endeventtype,$eiornonei,$rent)
-{
-$calId=$this->GetEICalendarId();
-if($eiornonei=="X")
-{$eiornonei="EI";}
-else
-{$eiornonei="NON EI";}
-if($TypeOfExp=="STARHUB")
-{
-    $calseventtitle=$TypeOfExp." ".$unitno." - ".$starteventtype;//title of start event
-    $calseventdesc=$unitno." - ".$accountno." - ".$starteventtype;//description of start event
-    $calseventloc=$unitno." - ".$accountno;//location of start event
-}
-else//UNIT
-{
-    $calseventtitle=$unitno." - "."LEASE ".$starteventtype;//title of start event
-    $calseventdesc=$unitno." - ".$eiornonei." - "."RENT :".$rent;//description of start event
-    $calseventloc=$unitno." - ".$eiornonei;//location of start event
-}
-$event = new Google_Service_Calendar_Event();
-$startEndCal= $this->CalenderTime_Convertion($startdate,$startdate_starttime,$startdate_endtime);
-$event->setStart($startEndCal[0]);
-$event->setEnd($startEndCal[1]);
-$event->setDescription($calseventdesc);
-$event->setLocation($calseventloc);
-$event->setSummary($calseventtitle);
-$cal->events->insert($calId, $event);
-if($TypeOfExp=="STARHUB")
-{
-    $calseventtitle=$TypeOfExp." ".$unitno." - ".$endeventtype;//title of start event
-    $calseventdesc=$unitno." - ".$accountno." - ".$endeventtype;//description of start event
-    $calseventloc=$unitno." - ".$accountno;//location of start event
-}
-else//UNIT
-{
-    $calseventtitle=$unitno." - "."LEASE ".$endeventtype;//title of start event
-    $calseventdesc=$unitno." - ".$eiornonei." - "."RENT :".$rent;//description of start event
-    $calseventloc=$unitno." - ".$eiornonei;//location of start event
-}
-$startEndCal= $this->CalenderTime_Convertion($enddate,$enddate_starttime,$enddate_endtime);
-$event->setStart($startEndCal[0]);
-$event->setEnd($startEndCal[1]);
-$event->setDescription($calseventdesc);
-$event->setLocation($calseventloc);
-$event->setSummary($calseventtitle);
-$cal->events->insert($calId, $event);
-}
-//UNIT AND STARHUB CALENDAR UPDATION
-public  function StarHubUnit_DeleteCalEvent($cal,$startdate,$startdate_starttime,$startdate_endtime,$enddate,$enddate_starttime,$enddate_endtime,$TypeOfExp,$unitno,$accountno,$starteventtype,$endeventtype,$eiornonei,$rent
-    ,$oldStartDate,$oldEndDate){
-    $calId=$this->GetEICalendarId();
-    //create start event
-    $events = $cal->events->listEvents($calId);
-    foreach ($events->getItems() as $event) {
-        $summaryStarUnit= $event->getSummary();
-    if(preg_match("/-/",(String)$summaryStarUnit)){
-        $descriptionName=explode(' - ',$event->getSummary());
-        $startDateCheck=explode('T',$event->getstart()->dateTime);
-        $endDateCheck=explode('T',$event->getetart()->dateTime);
-        if($event->getSummary()!='')
-            $checkStartEndDateFlag=$descriptionName[1];
+    public  function  StarHubUnit_CreateCalEvent($cal,$startdate,$startdate_starttime,$startdate_endtime,$enddate,$enddate_starttime,$enddate_endtime,$TypeOfExp,$unitno,$accountno,$starteventtype,$endeventtype,$eiornonei,$rent)
+    {
+        $calId=$this->GetEICalendarId();
+        if($eiornonei=="X")
+        {$eiornonei="EI";}
         else
-            $checkStartEndDateFlag='';
-        if($TypeOfExp=='UNIT'){
-            $checkStarUnit=$unitno;
+        {$eiornonei="NON EI";}
+        if($TypeOfExp=="STARHUB")
+        {
+            $calseventtitle=$TypeOfExp." ".$unitno." - ".$starteventtype;//title of start event
+            $calseventdesc=$unitno." - ".$accountno." - ".$starteventtype;//description of start event
+            $calseventloc=$unitno." - ".$accountno;//location of start event
+        }
+        else//UNIT
+        {
+            $calseventtitle=$unitno." - "."LEASE ".$starteventtype;//title of start event
+            $calseventdesc=$unitno." - ".$eiornonei." - "."RENT :".$rent;//description of start event
+            $calseventloc=$unitno." - ".$eiornonei;//location of start event
+        }
+        $event = new Google_Service_Calendar_Event();
+        $startEndCal= $this->CalenderTime_Convertion($startdate,$startdate_starttime,$startdate_endtime);
+        $event->setStart($startEndCal[0]);
+        $event->setEnd($startEndCal[1]);
+        $event->setDescription($calseventdesc);
+        $event->setLocation($calseventloc);
+        $event->setSummary($calseventtitle);
+        $cal->events->insert($calId, $event);
+        if($TypeOfExp=="STARHUB")
+        {
+            $calseventtitle=$TypeOfExp." ".$unitno." - ".$endeventtype;//title of start event
+            $calseventdesc=$unitno." - ".$accountno." - ".$endeventtype;//description of start event
+            $calseventloc=$unitno." - ".$accountno;//location of start event
+        }
+        else//UNIT
+        {
+            $calseventtitle=$unitno." - "."LEASE ".$endeventtype;//title of start event
+            $calseventdesc=$unitno." - ".$eiornonei." - "."RENT :".$rent;//description of start event
+            $calseventloc=$unitno." - ".$eiornonei;//location of start event
+        }
+        $startEndCal= $this->CalenderTime_Convertion($enddate,$enddate_starttime,$enddate_endtime);
+        $event->setStart($startEndCal[0]);
+        $event->setEnd($startEndCal[1]);
+        $event->setDescription($calseventdesc);
+        $event->setLocation($calseventloc);
+        $event->setSummary($calseventtitle);
+        $cal->events->insert($calId, $event);
+    }
+//UNIT AND STARHUB CALENDAR UPDATION
+    public  function StarHubUnit_DeleteCalEvent($cal,$startdate,$startdate_starttime,$startdate_endtime,$enddate,$enddate_starttime,$enddate_endtime,$TypeOfExp,$unitno,$accountno,$starteventtype,$endeventtype,$eiornonei,$rent
+        ,$oldStartDate,$oldEndDate){
+        $calId=$this->GetEICalendarId();
+        //create start event
+        $events = $cal->events->listEvents($calId);
+        foreach ($events->getItems() as $event) {
+            $summaryStarUnit= $event->getSummary();
+            if(preg_match("/-/",(String)$summaryStarUnit)){
+                $descriptionName=explode(' - ',$event->getSummary());
+                $startDateCheck=explode('T',$event->getstart()->dateTime);
+                $endDateCheck=explode('T',$event->getetart()->dateTime);
+                if($event->getSummary()!='')
+                    $checkStartEndDateFlag=$descriptionName[1];
+                else
+                    $checkStartEndDateFlag='';
+                if($TypeOfExp=='UNIT'){
+                    $checkStarUnit=$unitno;
+                }
+                else{
+                    $checkStarUnit=$TypeOfExp.' '.$unitno;
+                    $checkStartEndDateFlag=$descriptionName[1];
+                }
+                if( $descriptionName[0] === $checkStarUnit && $startDateCheck[0] == $oldStartDate && $starteventtype==$checkStartEndDateFlag){
+                    $eventUpdate = $cal->events->get($calId, $event->getId());
+                    $startEndCal=$this->CalenderTime_Convertion($startdate,$startdate_starttime,$startdate_endtime);
+                    $eventUpdate->setStart($startEndCal[0]);
+                    $eventUpdate->setEnd($startEndCal[1]);
+                    $getDescLocTiltle=$this->getConcateOfDescLoc($TypeOfExp,$unitno,$starteventtype,$accountno,$eiornonei,$rent);
+                    $eventUpdate->setDescription($getDescLocTiltle[1]);
+                    $eventUpdate->setLocation($getDescLocTiltle[2]);
+                    $eventUpdate->setSummary($getDescLocTiltle[0]);
+                    $updatedEvent = $cal->events->update($calId, $eventUpdate->getId(), $eventUpdate);
+                }
+                if( $descriptionName[0] === $checkStarUnit && $endDateCheck[0] == $oldEndDate && $starteventtype==$checkStartEndDateFlag){
+                    $eventUpdate = $cal->events->get($calId, $event->getId());
+                    $startEndCal=$this->CalenderTime_Convertion($enddate,$enddate_starttime,$enddate_endtime);
+                    $eventUpdate->setStart($startEndCal[0]);
+                    $eventUpdate->setEnd($startEndCal[1]);
+                    $getDescLocTiltle=$this->getConcateOfDescLoc($TypeOfExp,$unitno,$starteventtype,$accountno,$eiornonei,$rent);
+                    $eventUpdate->setDescription($getDescLocTiltle[1]);
+                    $eventUpdate->setLocation($getDescLocTiltle[2]);
+                    $eventUpdate->setSummary($getDescLocTiltle[0]);
+                    $updatedEvent = $cal->events->update($calId, $eventUpdate->getId(), $eventUpdate);
+                }
+            }
+        }
+    }
+//COMMON FUNCTION FOR CONCATING THE STARHUB AND UNIT
+    function getConcateOfDescLoc($TypeOfExp,$unitno,$endeventtype,$accountno,$eiornonei,$rent){
+        if($TypeOfExp=="STARHUB")
+        {
+            $calseventtitle=$TypeOfExp." ".$unitno." - ".$endeventtype;//title of start event
+            $calseventdesc=$unitno." - ".$accountno." - ".$endeventtype;//description of start event
+            $calseventloc=$unitno." - ".$accountno;//location of start event
+        }
+        else//UNIT
+        {
+            $calseventtitle=$unitno." - "."LEASE ".$endeventtype;//title of start event
+            $calseventdesc=$unitno." - ".$eiornonei." - "."RENT :".$rent;//description of start event
+            $calseventloc=$unitno." - ".$eiornonei;//location of start event
+        }
+        return array($calseventtitle,$calseventdesc,$calseventloc);
+    }
+//FUNCTION TO CREATE CALENDAR EVENT FOR CUSTOMER
+    public function  CUST_customercalendercreation($calPrimary,$custid,$startdate,$startdate_starttime,$startdate_endtime,$enddate,$enddate_starttime,$enddate_endtime,$firstname,$lastname,$mobile,$intmobile,$office,$customermailid,$unit,$roomtype,$unitrmtype)
+    {
+        $calId=$this->GetEICalendarId();
+        $initialsdate=$startdate;
+        $initialedate=$enddate;
+        $calendername= $firstname.' '.$lastname;
+        $contactno="";
+        $contactaddr="";
+        if($mobile!=null)
+        {$contactno=$mobile;}
+        else if($intmobile!=null)
+        {$contactno=$intmobile;}
+        else if($office!=null)
+        {$contactno=$office;}
+        if($contactno!=null && $contactno!="")
+        {
+            $contactaddr=$custid." "."EMAIL :".$customermailid.",CONTACT NO :".$contactno;
+        }
+        else
+        {
+            $contactaddr=$custid." "."EMAIL :".$customermailid;
+        }
+        if($unitrmtype!="")
+        {
+            $details =$unit. " " . $calendername . " " .$unitrmtype." ". "CHECKIN";
+        }
+        else
+        {
+            $details =$unit. " " . $calendername . " " . "CHECKIN";
+        }
+        $details1 =$unit. " " .$roomtype ;
+        if($initialsdate!="")
+        {
+            $event = new Google_Service_Calendar_Event();
+            $startevents=$this->CalenderTime_Convertion($startdate, $startdate_starttime, $startdate_endtime);
+            $event->setStart($startevents[0]);
+            $event->setEnd($startevents[1]);
+            $event->setDescription($contactaddr);
+            $event->setLocation($details1);
+            $event->setSummary($details);
+            $createdEvent = $calPrimary->events->insert($calId, $event); // to create a event
+        }
+        $endevents=$this->CalenderTime_Convertion($enddate,$enddate_starttime,$enddate_endtime);
+        $detailsend =$unit. " " . $calendername . " " . "CHECKOUT";
+        $detailsend1 =$unit. " " .$roomtype ;
+        if($initialedate!="")
+        {
+            $event = new Google_Service_Calendar_Event();
+            $event->setStart($endevents[0]);
+            $event->setEnd($endevents[1]);
+            $event->setDescription($contactaddr);
+            $event->setLocation($detailsend1);
+            $event->setSummary($detailsend);
+            $createdEvent = $calPrimary->events->insert($calId, $event); // to create a event
+        }
+    }
+//FUNCTION TO DELETE CALENDER EVENTS
+    public function CUST_customercalenderdeletion($calPrimary,$custid,$startdate,$start_time_in,$start_time_out,$enddate,$end_time_in,$end_time_out,$formname)
+    {
+        $calId=$this->GetEICalendarId();
+        if($formname=='UNCANCEL')
+        {
+            $eventsCheckOut = $calPrimary->events->listEvents($calId);
+
+            foreach ($eventsCheckOut->getItems() as $event) {
+                if((intval(explode(' ',$event->getDescription())[0])==$custid && $startdate==(explode('T',$event->getstart())[0])) || (intval(explode(' ',$event->getDescription())[0])==$custid && $enddate==(explode('T',$event->getend())[0]))){
+                    $calPrimary->events->delete($calId, $event->getId());}
+            }
         }
         else{
-            $checkStarUnit=$TypeOfExp.' '.$unitno;
-            $checkStartEndDateFlag=$descriptionName[1];
-        }
-        if( $descriptionName[0] === $checkStarUnit && $startDateCheck[0] == $oldStartDate && $starteventtype==$checkStartEndDateFlag){
-            $eventUpdate = $cal->events->get($calId, $event->getId());
-            $startEndCal=$this->CalenderTime_Convertion($startdate,$startdate_starttime,$startdate_endtime);
-            $eventUpdate->setStart($startEndCal[0]);
-            $eventUpdate->setEnd($startEndCal[1]);
-            $getDescLocTiltle=$this->getConcateOfDescLoc($TypeOfExp,$unitno,$starteventtype,$accountno,$eiornonei,$rent);
-            $eventUpdate->setDescription($getDescLocTiltle[1]);
-            $eventUpdate->setLocation($getDescLocTiltle[2]);
-            $eventUpdate->setSummary($getDescLocTiltle[0]);
-            $updatedEvent = $cal->events->update($calId, $eventUpdate->getId(), $eventUpdate);
-        }
-        if( $descriptionName[0] === $checkStarUnit && $endDateCheck[0] == $oldEndDate && $starteventtype==$checkStartEndDateFlag){
-            $eventUpdate = $cal->events->get($calId, $event->getId());
-            $startEndCal=$this->CalenderTime_Convertion($enddate,$enddate_starttime,$enddate_endtime);
-            $eventUpdate->setStart($startEndCal[0]);
-            $eventUpdate->setEnd($startEndCal[1]);
-            $getDescLocTiltle=$this->getConcateOfDescLoc($TypeOfExp,$unitno,$starteventtype,$accountno,$eiornonei,$rent);
-            $eventUpdate->setDescription($getDescLocTiltle[1]);
-            $eventUpdate->setLocation($getDescLocTiltle[2]);
-            $eventUpdate->setSummary($getDescLocTiltle[0]);
-            $updatedEvent = $cal->events->update($calId, $eventUpdate->getId(), $eventUpdate);
+            $optDate= array('timeMax' => $startdate.'T'.$start_time_out.':00+08:00','timeMin' => $startdate.'T'.$start_time_in.':00+08:00');
+            $eventsCheckOut = $calPrimary->events->listEvents($calId,$optDate);
+            foreach ($eventsCheckOut->getItems() as $event) {
+                if(intval(explode(' ',$event->getDescription())[0])==$custid ){
+                    $calPrimary->events->delete($calId, $event->getId());}
+            }
+            $optDate= array('timeMax' => $enddate.'T'.$end_time_out.':00+08:00','timeMin' => $enddate.'T'.$end_time_in.':00+08:00');
+            $eventsEnddate = $calPrimary->events->listEvents($calId,$optDate);
+            foreach ($eventsEnddate->getItems() as $event) {
+                if(intval(explode(' ',$event->getDescription())[0])==$custid ){
+                    $calPrimary->events->delete($calId, $event->getId());}
+            }
         }
     }
-    }
-}
-//COMMON FUNCTION FOR CONCATING THE STARHUB AND UNIT
-function getConcateOfDescLoc($TypeOfExp,$unitno,$endeventtype,$accountno,$eiornonei,$rent){
-    if($TypeOfExp=="STARHUB")
-    {
-        $calseventtitle=$TypeOfExp." ".$unitno." - ".$endeventtype;//title of start event
-        $calseventdesc=$unitno." - ".$accountno." - ".$endeventtype;//description of start event
-        $calseventloc=$unitno." - ".$accountno;//location of start event
-    }
-    else//UNIT
-    {
-        $calseventtitle=$unitno." - "."LEASE ".$endeventtype;//title of start event
-        $calseventdesc=$unitno." - ".$eiornonei." - "."RENT :".$rent;//description of start event
-        $calseventloc=$unitno." - ".$eiornonei;//location of start event
-    }
-    return array($calseventtitle,$calseventdesc,$calseventloc);
-}
-//FUNCTION TO CREATE CALENDAR EVENT FOR CUSTOMER
-public function  CUST_customercalendercreation($calPrimary,$custid,$startdate,$startdate_starttime,$startdate_endtime,$enddate,$enddate_starttime,$enddate_endtime,$firstname,$lastname,$mobile,$intmobile,$office,$customermailid,$unit,$roomtype,$unitrmtype)
-{
-    $calId=$this->GetEICalendarId();
-    $initialsdate=$startdate;
-    $initialedate=$enddate;
-    $calendername= $firstname.' '.$lastname;
-    $contactno="";
-    $contactaddr="";
-    if($mobile!=null)
-    {$contactno=$mobile;}
-    else if($intmobile!=null)
-    {$contactno=$intmobile;}
-    else if($office!=null)
-    {$contactno=$office;}
-    if($contactno!=null && $contactno!="")
-    {
-        $contactaddr=$custid." "."EMAIL :".$customermailid.",CONTACT NO :".$contactno;
-    }
-    else
-    {
-        $contactaddr=$custid." "."EMAIL :".$customermailid;
-    }
-    if($unitrmtype!="")
-    {
-        $details =$unit. " " . $calendername . " " .$unitrmtype." ". "CHECKIN";
-    }
-    else
-    {
-        $details =$unit. " " . $calendername . " " . "CHECKIN";
-    }
-    $details1 =$unit. " " .$roomtype ;
-    if($initialsdate!="")
-    {
-        $event = new Google_Service_Calendar_Event();
-        $startevents=$this->CalenderTime_Convertion($startdate, $startdate_starttime, $startdate_endtime);
-        $event->setStart($startevents[0]);
-        $event->setEnd($startevents[1]);
-        $event->setDescription($contactaddr);
-        $event->setLocation($details1);
-        $event->setSummary($details);
-        $createdEvent = $calPrimary->events->insert($calId, $event); // to create a event
-    }
-    $endevents=$this->CalenderTime_Convertion($enddate,$enddate_starttime,$enddate_endtime);
-    $detailsend =$unit. " " . $calendername . " " . "CHECKOUT";
-    $detailsend1 =$unit. " " .$roomtype ;
-    if($initialedate!="")
-    {
-        $event = new Google_Service_Calendar_Event();
-        $event->setStart($endevents[0]);
-        $event->setEnd($endevents[1]);
-        $event->setDescription($contactaddr);
-        $event->setLocation($detailsend1);
-        $event->setSummary($detailsend);
-        $createdEvent = $calPrimary->events->insert($calId, $event); // to create a event
-    }
-}
-//FUNCTION TO DELETE CALENDER EVENTS
-public function CUST_customercalenderdeletion($calPrimary,$custid,$startdate,$start_time_in,$start_time_out,$enddate,$end_time_in,$end_time_out,$formname)
-{
-    $calId=$this->GetEICalendarId();
-    if($formname=='UNCANCEL')
-    {
-        $eventsCheckOut = $calPrimary->events->listEvents($calId);
-
-        foreach ($eventsCheckOut->getItems() as $event) {
-            if((intval(explode(' ',$event->getDescription())[0])==$custid && $startdate==(explode('T',$event->getstart())[0])) || (intval(explode(' ',$event->getDescription())[0])==$custid && $enddate==(explode('T',$event->getend())[0]))){
-                $calPrimary->events->delete($calId, $event->getId());}
-        }
-    }
-    else{
-        $optDate= array('timeMax' => $startdate.'T'.$start_time_out.':00+08:00','timeMin' => $startdate.'T'.$start_time_in.':00+08:00');
-        $eventsCheckOut = $calPrimary->events->listEvents($calId,$optDate);
-        foreach ($eventsCheckOut->getItems() as $event) {
-            if(intval(explode(' ',$event->getDescription())[0])==$custid ){
-                $calPrimary->events->delete($calId, $event->getId());}
-        }
-        $optDate= array('timeMax' => $enddate.'T'.$end_time_out.':00+08:00','timeMin' => $enddate.'T'.$end_time_in.':00+08:00');
-        $eventsEnddate = $calPrimary->events->listEvents($calId,$optDate);
-        foreach ($eventsEnddate->getItems() as $event) {
-            if(intval(explode(' ',$event->getDescription())[0])==$custid ){
-                $calPrimary->events->delete($calId, $event->getId());}
-        }
-    }
-}
 //FUNCTION TO DELETE CC CALENDER EVENTS
-public function CUST_CREATION_customercalenderdeletion($calPrimary,$customer_id,$calevent_array)
-{
-    $calId=$this->GetEICalendarId();
-    for($c=0;$c<count($calevent_array);$c++)
+    public function CUST_CREATION_customercalenderdeletion($calPrimary,$customer_id,$calevent_array)
     {
-        $eventdetails=$calevent_array[c];
-        $optDate= array('timeMax' => $eventdetails[0].'T'.$eventdetails[1].':00+08:00','timeMin' => $eventdetails[0].'T'.$eventdetails[2].':00+08:00');
+        $calId=$this->GetEICalendarId();
+        for($c=0;$c<count($calevent_array);$c++)
+        {
+            $eventdetails=$calevent_array[c];
+            $optDate= array('timeMax' => $eventdetails[0].'T'.$eventdetails[1].':00+08:00','timeMin' => $eventdetails[0].'T'.$eventdetails[2].':00+08:00');
+            $eventsCheckOut = $calPrimary->events->listEvents($calId,$optDate);
+            foreach ($eventsCheckOut->getItems() as $event) {
+                if(intval(explode(' ',$event->getDescription())[0])==$customer_id ){
+                    $calPrimary->events->delete($calId, $event->getId());}
+            }
+        }
+    }
+//FUNCTION TO DELETE CALENDER EVENTS FOR CUSTOMER TERMINATION N EXTENSION
+    public function CUST_customerTermcalenderdeletion($calPrimary,$custid,$startdate,$start_time_in,$start_time_out,$enddate,$end_time_in,$end_time_out,$formname)
+    {
+        $calId=$this->GetEICalendarId();
+        $optDate= array('timeMax' => $startdate.'T'.$start_time_out.':00+08:00','timeMin' => $startdate.'T'.$start_time_in.':00+08:00');
+        $events = $calPrimary->events->listEvents($calId,$optDate);
+        foreach ($events->getItems() as $event) {
+            $matchSummary=(String)$event->getSummary();
+            if(intval(explode(' ',$event->getDescription())[0])==$custid && preg_match("/CHECKIN/",(String)$matchSummary)==1)
+                $calPrimary->events->delete($calId, $event->getId());
+        }
+        //CHECKOUT DELETION
+        $optDate= array('timeMax' => $enddate.'T'.$end_time_out.':00+08:00','timeMin' => $enddate.'T'.$end_time_in.':00+08:00');
         $eventsCheckOut = $calPrimary->events->listEvents($calId,$optDate);
         foreach ($eventsCheckOut->getItems() as $event) {
-            if(intval(explode(' ',$event->getDescription())[0])==$customer_id ){
+            $matchSummary=(String)$event->getSummary();
+            if(intval(explode(' ',$event->getDescription())[0])==$custid && preg_match("/CHECKOUT/",(String)$matchSummary)==1){
                 $calPrimary->events->delete($calId, $event->getId());}
         }
     }
-}
-//FUNCTION TO DELETE CALENDER EVENTS FOR CUSTOMER TERMINATION N EXTENSION
-public function CUST_customerTermcalenderdeletion($calPrimary,$custid,$startdate,$start_time_in,$start_time_out,$enddate,$end_time_in,$end_time_out,$formname)
-{
-    $calId=$this->GetEICalendarId();
-    $optDate= array('timeMax' => $startdate.'T'.$start_time_out.':00+08:00','timeMin' => $startdate.'T'.$start_time_in.':00+08:00');
-    $events = $calPrimary->events->listEvents($calId,$optDate);
-    foreach ($events->getItems() as $event) {
-        $matchSummary=(String)$event->getSummary();
-        if(intval(explode(' ',$event->getDescription())[0])==$custid && preg_match("/CHECKIN/",(String)$matchSummary)==1)
-            $calPrimary->events->delete($calId, $event->getId());
-    }
-    //CHECKOUT DELETION
-    $optDate= array('timeMax' => $enddate.'T'.$end_time_out.':00+08:00','timeMin' => $enddate.'T'.$end_time_in.':00+08:00');
-    $eventsCheckOut = $calPrimary->events->listEvents($calId,$optDate);
-    foreach ($eventsCheckOut->getItems() as $event) {
-        $matchSummary=(String)$event->getSummary();
-        if(intval(explode(' ',$event->getDescription())[0])==$custid && preg_match("/CHECKOUT/",(String)$matchSummary)==1){
-            $calPrimary->events->delete($calId, $event->getId());}
-    }
-}
     //FUNCTION TO DELETE EXISTING EVENT N CREATE CURRENT CALENDAR EVENT DTS FOR EXTENSION N TERMINATION
-   public function CTermExtn_Calevent($calPrimary,$CTermExtn_custid,$CTermExtn_recver,$ctermformname,$successflag)
+    public function CTermExtn_Calevent($calPrimary,$CTermExtn_custid,$CTermExtn_recver,$ctermformname,$successflag)
     {
         $CTermExtn_custfirstname="";$CTermExtn_custlastname="";
         $CTermExtn_calevntchk_flag=0;
