@@ -72,4 +72,10 @@ class Ctrl_Staff_Daily_Entry_Search_Update_Delete extends CI_Controller{
         $data=$this->Mdl_staff_daily_entry_search_update_delete->fetch_staffsalarydata();
         echo json_encode($data);
     }
+//    //FUNCTION FOR GET EMP ND CPF NO
+//    public function STDLY_SEARCH_loadcpfno(){
+//        $this->load->model('Mdl_staff_daily_entry_search_update_delete');
+//        $Values = $this->Mdl_staff_daily_entry_search_update_delete->STDLY_SEARCH_getempcpfno();
+//        echo json_encode($Values);
+//    }
 }
