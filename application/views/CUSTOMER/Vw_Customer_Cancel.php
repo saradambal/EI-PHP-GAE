@@ -1,19 +1,8 @@
 <!--//*******************************************FILE DESCRIPTION*********************************************//
 //************************************CUSTOMER CANCEL***********************************************//
-//DONE BY:PUNI
-//VER 1.2-SD:22/12/2014 ED:22/12/2014;TRACKER NO:790;added droptemp table function from eilib
-//VER 1.1-SD:08/10/2014 ED:08/10/2014;TRACKER NO:790;CHANGED PRELOADER N MSGBOX POSITION
-//DONE BY:SAFIYULLAH.M
-//VER 1.0-31/07/2014 ED:04/08/2014;TRACKER NO:790;UPDATED SCRIPT SIDE ROLLBACK AND COMMIT
-//VER 0.09-SD:09/07/2014 ED:10/07/2014;TRACKER NO:790;UPDATED ALIGNMENT AND UPADTED EILIB CALENDER EVENT FUNCTION FOR UNCANCEL
-//VER 0.08-SD:17/06/2014 ED:17/06/2014;TRACKER NO:790;updated CALENDER ERROR MSG AND updated failure msg
-VER 0.07-SD:06/06/2014 ED:06/06/2014;TRACKER NO:770;CHANGED JQUERY LINK
-//VER 0.06-SD:20/05/2014 ED:20/05/2014:TRACKER NO:770;UPDATED RETURN FUNCTION
-//VER 0.05- SD:06/05/2014 ED:08/05/2014:TRACKER NO:770;UPDATED TEMP TABLE DYNAMICALLY.
-VER 0.04-SD:04/02/2014 ED:04/02/2014;TRACKER NO: 331;updated error msg getting from eilib,updated query as per entry details table updated and added convert function for spl char.
-VER 0.03- SD:30/12/2013 ED:30/12/2013;TRACKER NO: 331;updated Eilib functions
-VER 0.02 - SD:05/11/2013 ED:28/11/2013;TRACKER NO: 331;CHANGED SP ,FORM DESIGN AND CONNECTION STRING AND REMOVED SCRIPLET 
-VER 0.01 - INITIAL VERSION-SD:28/08/2013 ED:13/09/2013;TRACKER NO: 331
+//DONE BY:SAFI
+
+VER 0.01 - INITIAL VERSION-SD:20/05/2015
 //*********************************************************************************************************//
 -->
 <?php
@@ -28,7 +17,6 @@ $(document).ready(function(){
     $(".preloader").show();
     $('textarea').autogrow({onInitialize: true});
     var CCAN_errorAarray=[];
-
     $.ajax({
         type:'post',
         'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_getcustomer",
@@ -45,7 +33,6 @@ $(document).ready(function(){
                 $('#CCAN_form_cancelform').replaceWith('<p><label class="errormsg"> '+CCAN_err_msg+'</label></p>');
             }
         }
-
     });
     $('#CCAN_radio_cancellist').change(function(){
         var  newPos= adjustPosition($(this).position(),100,260);
@@ -112,6 +99,7 @@ $(document).ready(function(){
             $('#CCAN_tble_guest_cardno tr').remove();
             $('#CCAN_lb_selectname').hide();
             $('#CCAN_lb_selectname').prop('selectedIndex',0);
+            $('#CCAN_custname').hide();
             $('#CCAN_lbl_cname').hide();
             $('input:radio[name=CCAN_id]').attr('checked',false);
             $('#CCAN_tble_id tr').remove();
@@ -128,17 +116,14 @@ $(document).ready(function(){
             $('#CCAN_tble_id tr').remove();
             $('#CCAN_tble_guest_cardno tr').remove();
             var CCAN_namearray=[];
-
             for(var k=0;k<CCAN_all_result.length;k++)
             {
                 if(CCAN_all_result[k].unit==CCAN_unit)
                 {
-
                     CCAN_namearray.push(CCAN_all_result[k].name);
                 }
             }
             CCAN_namearray=unique(CCAN_namearray);
-
             var CCAN_custname_options ='<option>SELECT</option>'
             for (var i = 0; i < CCAN_namearray.length; i++) {
                 var CCAN_myarray=CCAN_namearray[i].split('_');
@@ -148,10 +133,10 @@ $(document).ready(function(){
             $('#CCAN_lb_selectname').html(CCAN_custname_options)
             $('#CCAN_lb_selectname').show();
             $('#CCAN_custname').show();
-
         }
     });
 //------------CUSTOMER NAME CHANGE FUNCTION------------------
+    var CCAN_name_recver;
     $('#CCAN_lb_selectname').change(function(){
         var CCAN_name=$(this).val();
         var CCAN_unit_no=$('#CCAN_lb_selectunit').val();
@@ -201,7 +186,7 @@ $(document).ready(function(){
                 }
             }
             else{
-                var CCAN_name_recver;
+
                 for(var k=0;k<CCAN_all_result.length;k++)
                 {
                     if(CCAN_all_result[k].customerid==CCAN_name_id_array[0])
@@ -209,20 +194,22 @@ $(document).ready(function(){
                         CCAN_name_recver=(CCAN_all_result[k].recver);
                     }
                 }
+                cust_id=CCAN_name_id_array[0];
 //HANDLER TO GET CUSTOMER DETAIL'S
                 var CCAN_select_type = $('input:radio[name=CCAN_mainradiobutton]:checked').val();
                 $.ajax({
                     type:'post',
-                    'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_get_customervalues",
-                    data:{'CCAN_select_type':CCAN_select_type,'CCAN_name_recver':CCAN_name_recver,'cust_name':CCAN_name_id_array[0]},
+                    url:"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_get_customervalues",
+                    data:{'CCAN_select_type':CCAN_select_type,'CCAN_name_recver':CCAN_name_recver,'cust_id':CCAN_name_id_array[0]},
                     success:function(data){
                         var response_unit=JSON.parse(data);
                         CCAN_load_customerdetails(response_unit)  ;
+                    },
+                    error:function(data){
+
+                        alert(JSON.stringify(data));
                     }
-
-
                 });
-//                google.script.run.withFailureHandler(CCAN_error).withSuccessHandler(CCAN_load_customerdetails).CCAN_get_customervalues(CCAN_name_id_array[0],CCAN_select_type,CCAN_name_recver)
                 $('#CCAN_tble_id tr').remove();
             }
         }
@@ -294,10 +281,12 @@ $(document).ready(function(){
         return result;
     }
 //FUNCTION TO CALL RADIO BUTTON CLICK
+    var cust_id;
     $(document).on("change",'.CCAN_class_custid', function ()
     {
         $(".preloader").show();
         var CCAN_customer_id=$("input[name=custid]:checked").val();
+        cust_id=CCAN_customer_id;
         var CCAN_name_recver;
         for(var k=0;k<CCAN_all_result.length;k++)
         {
@@ -316,7 +305,22 @@ $(document).ready(function(){
         $('input:radio[name=CCAN_selectcard]').attr('checked',false);
 //HANDLER TO GET CUSTOMER DETAIL'S
         var CCAN_select_type = $('input:radio[name=CCAN_mainradiobutton]:checked').val();
-        google.script.run.withFailureHandler(CCAN_error).withSuccessHandler(CCAN_load_customerdetails).CCAN_get_customervalues(CCAN_customer_id,CCAN_select_type,CCAN_name_recver)
+        $.ajax({
+            type:'POST',
+            url:"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_get_customervalues",
+            data:{'CCAN_select_type':CCAN_select_type,'CCAN_name_recver':CCAN_name_recver,'cust_id':CCAN_customer_id},
+            success:function(data){
+                var response_unit=JSON.parse(data);
+                CCAN_load_customerdetails(response_unit)  ;
+            },
+            error:function(data){
+
+                alert(JSON.stringify(data));
+            }
+
+
+        })
+//        google.script.run.withFailureHandler(CCAN_error).withSuccessHandler(CCAN_load_customerdetails).CCAN_get_customervalues(CCAN_customer_id,CCAN_select_type,CCAN_name_recver)
     });
 ///////////////************ FUNCTION TO LOAD CUSTOMER DETAILS***********////////////////////
     function CCAN_load_customerdetails(data)
@@ -387,7 +391,7 @@ $(document).ready(function(){
         $('#CCAN_tb_drycleanfee').val(CCAN_customer_details.drycleanfee);$('#CCAN_tb_checkoutcleaningfee').val(CCAN_customer_details.checkoutcleaningfee);
         $('#CCAN_tb_deposit').val(CCAN_customer_details.deposit);$('#CCAN_tb_rent').val(CCAN_customer_details.rental);
         $('#CCAN_tb_processingfee').val(CCAN_customer_details.processingfee);
-        $('#CCAN_ta_comments').height(20);
+//        $('#CCAN_ta_comments').height(20);
         $('#CCAN_ta_comments').val(CCAN_customer_details.comments);
         $('#CCAN_tb_companyname').val(CCAN_customer_details.company);
         $('#CCAN_tb_nation').val(CCAN_customer_details.nationality);
@@ -457,66 +461,98 @@ $(document).ready(function(){
         }
     }
 //*********************FUNCTION TO CLEAR FORM*************************
-    function CCAN_clear(response)
-    {
-        $(".preloader").hide();
-        $('#CCAN_div_cancelform').hide();
-        $('#CCAN_lbl_cname').hide();
-        $('#CCAN_lb_selectname').hide();
-        $('#CCAN_lb_selectname').prop('selectedIndex',0);
-        $('#CCAN_tble_id tr').remove();
-        $('#CCAN_div_buttons').hide();
-        $('#CCAN_div_uncancelbuttons').hide();
-        $('input:radio[name=CCAN_id]').attr('checked',false);
-        if(response==1)
-        {
-            $('#CCAN_lbl_unitno').hide();
-            var CCAN_select_type = $('input:radio[name=CCAN_mainradiobutton]:checked').val();
-            google.script.run.withFailureHandler(CCAN_error).withSuccessHandler(CCAN_loadUnitNo).CCAN_getcustomer_details(CCAN_select_type);
-            $('#CCAN_lb_selectunit').prop('selectedIndex',0).hide();
-            if(CCAN_select_type=="CANCEL CUSTOMER"){
-                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[0],position:{top:150,left:500}}});
-            }
-            else{
-                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[4],position:{top:150,left:500}}});
-            }
-        }
-        else if(response==0)
-        {
-            if(CCAN_select_type=="CANCEL CUSTOMER"){
-                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[5],position:{top:150,left:500}}});
-            }
-            else{
-                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[5],position:{top:150,left:500}}});
-            }
-            $('#CCAN_lbl_unitno').show();
-            $('#CCAN_lb_selectunit').prop('selectedIndex',0).show();
-        }
-        else if(response=='RESET'){
-            $('#CCAN_lbl_unitno').show();
-            $('#CCAN_lb_selectunit').prop('selectedIndex',0).show();
-        }
-        else{
-            if(CCAN_select_type=="CANCEL CUSTOMER"){
-                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:response,position:{top:150,left:500}}});
-            }
-            else{
-                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:response,position:{top:150,left:500}}});
-            }
-
-            $('#CCAN_lbl_unitno').show();
-            $('#CCAN_lb_selectunit').prop('selectedIndex',0).show();
-
-        }
-    }
+//    function CCAN_clear(response)
+//    {
+//        $(".preloader").hide();
+//        $('#CCAN_div_cancelform').hide();
+//        $('#CCAN_lbl_cname').hide();
+//        $('#CCAN_lb_selectname').hide();
+//        $('#CCAN_lb_selectname').prop('selectedIndex',0);
+//        $('#CCAN_tble_id tr').remove();
+//        $('#CCAN_div_buttons').hide();
+//        $('#CCAN_div_uncancelbuttons').hide();
+//        $('input:radio[name=CCAN_id]').attr('checked',false);
+//        if(response==1)
+//        {
+//            $('#CCAN_lbl_unitno').hide();
+//            var CCAN_select_type = $('input:radio[name=CCAN_mainradiobutton]:checked').val();
+//            google.script.run.withFailureHandler(CCAN_error).withSuccessHandler(CCAN_loadUnitNo).CCAN_getcustomer_details(CCAN_select_type);
+//            $('#CCAN_lb_selectunit').prop('selectedIndex',0).hide();
+//            if(CCAN_select_type=="CANCEL CUSTOMER"){
+//                show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[0].EMC_DATA,"success",false);
+////                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[0],position:{top:150,left:500}}});
+//            }
+//            else{
+//                show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[4].EMC_DATA,"success",false);
+//
+////                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[4],position:{top:150,left:500}}});
+//            }
+//        }
+//        else if(response==0)
+//        {
+//            if(CCAN_select_type=="CANCEL CUSTOMER")
+//                show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[5].EMC_DATA,"success",false);
+////                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[5],position:{top:150,left:500}}});
+//            }
+//            else{
+//            show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[5].EMC_DATA,"success",false);
+////                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[5],position:{top:150,left:500}}});
+//            }
+//            $('#CCAN_lbl_unitno').show();
+//            $('#CCAN_lb_selectunit').prop('selectedIndex',0).show();
+//        }
+//        else if(response=='RESET'){
+//            $('#CCAN_lbl_unitno').show();
+//            $('#CCAN_lb_selectunit').prop('selectedIndex',0).show();
+//        }
+//        else{
+//            if(CCAN_select_type=="CANCEL CUSTOMER"){
+//                show_msgbox("CUSTOMER CANCELLATION",response,"success",false);
+////                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:response,position:{top:150,left:500}}});
+//            }
+//            else{
+//                show_msgbox("CUSTOMER CANCELLATION",response,"success",false);
+////                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:response,position:{top:150,left:500}}});
+//            }
+//
+//            $('#CCAN_lbl_unitno').show();
+//            $('#CCAN_lb_selectunit').prop('selectedIndex',0).show();
+//
+//        }
+//    }
 //FUNCTION TO CALL SUBMIT BUTTON
     $('#CCAN_btn_submitbutton').click(function(){
         $(".preloader").show();
-        google.script.run.withFailureHandler(CCAN_error).withSuccessHandler(CCAN_clear).CCAN_cancel(document.getElementById('CCAN_form_cancelform'))
+        var form_element=$('#CCAN_form_cancelform').serialize()
+        $.ajax({
+            type:'post',
+            url:"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_cancel",
+            data:form_element+"&cust_id="+cust_id+"&CCAN_name_recver="+CCAN_name_recver,
+            success:function(data){
+               alert(data);
+//                CCAN_clear(data);
+
+
+            }
+
+
+
+        });
+//        google.script.run.withFailureHandler(CCAN_error).withSuccessHandler(CCAN_clear).CCAN_cancel(document.getElementById('CCAN_form_cancelform'))
     });
     $('#CCAN_btn_uncancelbutton').click(function(){
         $(".preloader").show();
-        google.script.run.withFailureHandler(CCAN_error).withSuccessHandler(CCAN_clear).CCAN_uncancel(document.getElementById('CCAN_form_cancelform'))
+        $.ajax({
+            type:'post',
+            url:"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_uncancel",
+            data:form_element+"&cust_id="+cust_id+"&CCAN_name_recver="+CCAN_name_recver,
+            success:function(data){
+
+
+
+            }
+        });
+//        google.script.run.withFailureHandler(CCAN_error).withSuccessHandler(CCAN_clear).CCAN_uncancel(document.getElementById('CCAN_form_cancelform'))
     });
 //FUNCTION TO CONVERT DATE FORMAT
     function FormTableDateFormat(inputdate){
@@ -686,12 +722,14 @@ $(document).ready(function(){
                         </label>
 
                     </div>
-                    <div><label id="CCAN_lbl_title" class="srctitle" style="text-align:CENTER;width:400px" hidden></label></div>
-                </div>
+
+                 </div>
+                <div><lable id="CCAN_lbl_errmsg" class="errormsg" hidden></lable></div>
+                <div><label id="CCAN_lbl_title" class="srctitle" style="text-align:CENTER;width:400px" hidden></label></div>
                 <div id='CCAN_tble_unitno'  hidden>
                      <div class="form-group" id="CCAN_unitno">
                        <label class="col-sm-3">UNIT NUMBER <em>*</em></label>
-                    <div class="col-sm-2"> <select name="CCAN_unitnumber" id="CCAN_lb_selectunit" class="form-control CCAN_formvalidation"></select></div>
+                    <div class="col-sm-2"> <select name="CCAN_unitnumber" id="CCAN_lb_selectunit" class="form-control "></select></div>
                 </div>
                 </div>
                 <div class="form-group" id="CCAN_custname" hidden>
@@ -700,15 +738,9 @@ $(document).ready(function(){
                 </div>
                 <div class="form-group" id="CCAN_custid" hidden>
                 </div>
-                <div class="form-group" id="CCAN_leaseperiod" hidden>
-                    <label class="col-sm-3">LEASE PERIOD <em>*</em></label>
-                    <div class="col-sm-2"><select name="CCAN_lb_leaseperiod" id="CCAN_lb_leaseperiod" class="CCAN_formvalidation form-control"></select></div>
-                </div>
-                <div class="col-sm-offset-3 col-sm-10" id="CCAN_error">
-                    <label id="CCAN_lbl_error" name="CCAN_lbl_error" class="errormsg"></label>
-                </div>
-                <div id="CCAN_CCANrdassigndiv" hidden>
-                    <div id='CCAN_personaldetails'>
+
+                <div id="CCAN_div_cancelform" hidden>
+                    <div id='CCAN_tble_personaldetails'>
                         <div class="form-group">
                             <label class="col-sm-3">FIRST NAME</label>
                             <div class="col-sm-3"> <input type="text" name="CCAN_tb_firstname" id="CCAN_tb_firstname"  class="form-control CCAN_formvalidation" maxlength="50" readonly placeholder="First Name"/></div>
@@ -770,23 +802,8 @@ $(document).ready(function(){
                             <div class="col-sm-2"> <input type="text" name="CCAN_tb_cardno[]" id="CCAN_tb_cardno" class="form-control CCAN_formvalidation" placeholder="Customer Card" readonly/></div>
                         </div>
                     </div>
-                    <div id="CCAN_cardno_radio">
-                        <div class="form-group">
-                            <label class="col-sm-3">SELECT THE CARD <em>*</em></label>
-                            <div class="col-md-9">
-                                <div class="radio">
-                                    <label><input type="radio" name="CCAN_selectcard" id="CCAN_rd_selectcard" value='CARD' class='radio_selected'>CARD NUMBER</label>
-                                    <label align='bottom' name='error' id='CCAN_lbl_radioerror' visible="false" class='errormsg'></label>
-                                </div>
-                                <div id="CCAN_avail_cardno" style="padding-left: 10px;display: none;" hidden="hidden">
-                                </div>
-                                <div class="radio">
-                                    <label><input type="radio" name="CCAN_selectcard" id="CCAN_radio_null" value='NULL' class='radio_selected'>NULL</label>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="CCAN_feedetails">
+                    <div  id="CCAN_tble_guest_cardno">
+                    <div id="CCAN_tble_feedetails">
                         <div class="form-group">
                             <label class="col-sm-3">CHECK IN DATE</label>
                             <div class="col-sm-2"> <input type="text" name="CCAN_tb_startdate" id="CCAN_tb_startdate" class="form-control CCAN_formvalidation" placeholder="Check in Date" readonly/></div>
@@ -840,12 +857,26 @@ $(document).ready(function(){
                     </div>
                     <div id="CCAN_guest_cardno" hidden>
                     </div>
-                    <div class="form-group" id="buttons">
-                        <div class="col-sm-offset-1 col-sm-3">
-                            <input class="btn btn-info" type="button" id="CCAN_btn_submitbutton" name="ASSIGN" value="ASSIGN" disabled/>
-                            <input class="btn btn-info" type="button" id="CCAN_btn_resetbutton" name="RESET" value="RESET"/>
+                        <div class="form-group" id="CCAN_div_buttons"  hidden>
+                            <div class="col-sm-offset-1 col-sm-3">
+                                <input class="btn" type="button"  id="CCAN_btn_submitbutton" name="submit" value="CANCEL"  />
+                               <input class="btn clear" type="button"  id="CCAN_btn_resetbutton" name="reset" value="RESET"  />
+                            </div>
                         </div>
-                    </div>
+                        <div  id="CCAN_div_uncancelbuttons" style="position:relative;left:130px;" hidden>
+                            <div class="col-sm-offset-1 col-sm-3">
+                               <input class="maxbtn" type="button"  id="CCAN_btn_uncancelbutton" name="submit" value="UNCANCEL"  />
+                               <input class="maxbtn clear" type="button"  id="CCAN_btn_resetbutton1" name="reset" value="RESET"  />
+
+                            </div>
+                        </div>
+
+<!--                    <div class="form-group" id="buttons">-->
+<!--                        <div class="col-sm-offset-1 col-sm-3">-->
+<!--                            <input class="btn btn-info" type="button" id="CCAN_btn_submitbutton" name="ASSIGN" value="ASSIGN" disabled/>-->
+<!--                            <input class="btn btn-info" type="button" id="CCAN_btn_resetbutton" name="RESET" value="RESET"/>-->
+<!--                        </div>-->
+<!--                    </div>-->
                 </div>
             </fieldset>
         </div>

@@ -307,13 +307,15 @@ class Mdl_staff_daily_entry_search_update_delete extends CI_Model{
     {
         $STDLY_SEARCH_sec_searchoption=$_POST['STDLY_SEARCH_sec_searchoption'];
         $STDLY_SEARCH_startdate=$_POST['STDLY_SEARCH_startdate'];
+        $STDLY_SEARCH_startdate = date('Y-m-d',strtotime($STDLY_SEARCH_startdate));
         $STDLY_SEARCH_enddate=$_POST['STDLY_SEARCH_enddate'];
-        $STDLY_SEARCH_typelist=$_POST['STDLY_SEARCH_typelist'];
+        $STDLY_SEARCH_enddate = date('Y-m-d',strtotime($STDLY_SEARCH_enddate));
+        $STDTL_SEARCH_autocomplete=[];
         if($STDLY_SEARCH_sec_searchoption==77)
         {
             $this->db->select("EA_COMMENTS");
             $this->db->from("EXPENSE_AGENT");
-            $this->db->where("EA_DATE BETWEEN '$STDLY_SEARCH_startdate' AND '$STDLY_SEARCH_enddate'");
+            $this->db->where("EA_DATE BETWEEN '$STDLY_SEARCH_startdate' AND '$STDLY_SEARCH_enddate' AND EA_COMMENTS IS NOT NULL ");
             $STDTL_SEARCH_COMMENTS = $this->db->get();
             foreach ($STDTL_SEARCH_COMMENTS->result_array() as $row)
             {
@@ -325,7 +327,7 @@ class Mdl_staff_daily_entry_search_update_delete extends CI_Model{
         {
             $this->db->select("ESS_SALARY_COMMENTS");
             $this->db->from("EXPENSE_STAFF_SALARY");
-            $this->db->where("ESS_INVOICE_DATE BETWEEN '$STDLY_SEARCH_startdate' AND '$STDLY_SEARCH_enddate'");
+            $this->db->where("ESS_INVOICE_DATE BETWEEN '$STDLY_SEARCH_startdate' AND '$STDLY_SEARCH_enddate' AND ESS_SALARY_COMMENTS IS NOT NULL");
             $STDTL_SEARCH_COMMENTS = $this->db->get();
             foreach ($STDTL_SEARCH_COMMENTS->result_array() as $row)
             {
@@ -438,5 +440,94 @@ class Mdl_staff_daily_entry_search_update_delete extends CI_Model{
 //            $query = $this->db->get();
 //            return $query->result();
 //        }
+    }
+    //INLINE SUBJECT UPDATE
+    public  function update_agentdata($USERSTAMP,$id)
+    {
+        $STDLY_SEARCH_lbtypeofexpense=$_POST['STDLY_SEARCH_typelist'];
+        $STDLY_SEARCH_date=$_POST['agentdate'];
+        $STDLY_SEARCH_date = date('Y-m-d',strtotime($STDLY_SEARCH_date));
+        $STDLY_SEARCH_commission_amount=$_POST['STDTL_SEARCH_agentcommissionamt'];
+        $STDLY_SEARCH_comments=$_POST['STDLY_SEARCH_comments'];
+               if($STDLY_SEARCH_comments==''){
+                   $STDLY_SEARCH_comments='null';
+        }
+        else{
+            $STDLY_SEARCH_comments="'$STDLY_SEARCH_comments'";
+        }
+        if($STDLY_SEARCH_lbtypeofexpense==39)
+        {
+            $updatequery = "UPDATE EXPENSE_AGENT SET EA_DATE='$STDLY_SEARCH_date',EA_COMM_AMOUNT='$STDLY_SEARCH_commission_amount',EA_COMMENTS=$STDLY_SEARCH_comments,ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE EA_ID='$id'";
+        $this->db->query($updatequery);
+        if ($this->db->affected_rows() > 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+        }
+    }
+    //GET DATA FOR SALARY SEARCH OPTIONS.................................FROM SALARY ENTRY...........
+    public function fetch_staffsalarydata()
+    {
+        $STDLY_SEARCH_searchoptio=$_POST['STDLY_SEARCH_searchoptio'];
+//echo $STDLY_SEARCH_searchoptio;
+
+        if($STDLY_SEARCH_searchoptio==80)
+        {
+//echo $STDLY_SEARCH_searchoptio;
+//            exit;
+            $STDLY_SEARCH_staffexpansecategory=$_POST['STDLY_SEARCH_staffexpansecategory'];
+            $STDLY_SEARCH_startdate=$_POST['STDLY_SEARCH_startdate'];
+            $STDLY_SEARCH_startdate = date('Y-m-d',strtotime($STDLY_SEARCH_startdate));
+            $STDLY_SEARCH_enddate=$_POST['STDLY_SEARCH_enddate'];
+            $STDLY_SEARCH_enddate = date('Y-m-d',strtotime($STDLY_SEARCH_enddate));
+            $STDLY_SEARCH_fromamount=$_POST['STDLY_SEARCH_fromamount'];
+            $STDLY_SEARCH_toamount=$_POST['STDLY_SEARCH_toamount'];
+//echo $STDLY_SEARCH_fromamount;echo $STDLY_SEARCH_toamount;
+//            exit;
+            $this->db->select("ES.ES_ID,EXPCONFIG.ECN_DATA AS STDLY_SEARCH_type,ES.ES_INVOICE_DATE AS STDLY_SEARCH_date,ES.ES_INVOICE_AMOUNT AS STDLY_SEARCH_amount,ES.ES_INVOICE_ITEMS AS STDLY_SEARCH_items,ES.ES_INVOICE_FROM AS STDLY_SEARCH_from,ES.ES_COMMENTS AS COMMENTS,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(ES.ES_TIMESTAMP,'+00:00','+05:30'), '%d-%m-%Y %T') AS timestamp");
+            $this->db->from('EXPENSE_STAFF ES,EXPENSE_CONFIGURATION EXPCONFIG ,USER_LOGIN_DETAILS ULD');
+            $this->db->where("ULD.ULD_ID=ES.ULD_ID AND (ES.ES_INVOICE_DATE BETWEEN '$STDLY_SEARCH_startdate' AND '$STDLY_SEARCH_enddate') AND (EXPCONFIG.ECN_DATA='$STDLY_SEARCH_staffexpansecategory') AND (EXPCONFIG.ECN_ID=ES.ECN_ID)");
+            $this->db->order_by("ES.ES_INVOICE_DATE", "ASC");
+            $query = $this->db->get();
+            return $query->result();
+        }
+       else if($STDLY_SEARCH_searchoptio==84)
+        {
+//echo $STDLY_SEARCH_searchoptio;
+//            exit;
+            $STDLY_SEARCH_staffexpansecategory=$_POST['STDLY_SEARCH_staffexpansecategory'];
+            $STDLY_SEARCH_startdate=$_POST['STDLY_SEARCH_startdate'];
+            $STDLY_SEARCH_startdate = date('Y-m-d',strtotime($STDLY_SEARCH_startdate));
+            $STDLY_SEARCH_enddate=$_POST['STDLY_SEARCH_enddate'];
+            $STDLY_SEARCH_enddate = date('Y-m-d',strtotime($STDLY_SEARCH_enddate));
+            $STDLY_SEARCH_fromamount=$_POST['STDLY_SEARCH_fromamount'];
+            $STDLY_SEARCH_toamount=$_POST['STDLY_SEARCH_toamount'];
+//echo $STDLY_SEARCH_fromamount;echo $STDLY_SEARCH_toamount;
+//            exit;
+            $this->db->select("ES.ES_ID,EXPCONFIG.ECN_DATA AS STDLY_SEARCH_type,ES.ES_INVOICE_DATE AS STDLY_SEARCH_date,ES.ES_INVOICE_AMOUNT AS STDLY_SEARCH_amount,ES.ES_INVOICE_ITEMS AS STDLY_SEARCH_items,ES.ES_INVOICE_FROM AS STDLY_SEARCH_from,ES.ES_COMMENTS AS COMMENTS,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(ES.ES_TIMESTAMP,'+00:00','+05:30'), '%d-%m-%Y %T') AS timestamp");
+            $this->db->from('EXPENSE_STAFF ES,EXPENSE_CONFIGURATION EXPCONFIG ,USER_LOGIN_DETAILS ULD');
+            $this->db->where("ULD.ULD_ID=ES.ULD_ID AND (ES.ES_INVOICE_DATE BETWEEN '$STDLY_SEARCH_startdate' AND '$STDLY_SEARCH_enddate') AND (ES.ES_INVOICE_AMOUNT BETWEEN '$STDLY_SEARCH_fromamount' AND '$STDLY_SEARCH_toamount') AND (EXPCONFIG.ECN_ID=ES.ECN_ID)");
+            $this->db->order_by("ES.ES_INVOICE_DATE", "ASC");
+            $query = $this->db->get();
+            return $query->result();
+        }
+       else if($STDLY_SEARCH_searchoptio==81)
+       {
+//echo $STDLY_SEARCH_searchoptio;
+//            exit;
+           $STDLY_SEARCH_staffexpansecategory=$_POST['STDLY_SEARCH_staffexpansecategory'];
+           $STDLY_SEARCH_startdate=$_POST['STDLY_SEARCH_startdate'];
+           $STDLY_SEARCH_startdate = date('Y-m-d',strtotime($STDLY_SEARCH_startdate));
+           $STDLY_SEARCH_enddate=$_POST['STDLY_SEARCH_enddate'];
+           $STDLY_SEARCH_enddate = date('Y-m-d',strtotime($STDLY_SEARCH_enddate));
+           $this->db->select("ES.ES_ID,EXPCONFIG.ECN_DATA AS STDLY_SEARCH_type,ES.ES_INVOICE_DATE AS STDLY_SEARCH_date,ES.ES_INVOICE_AMOUNT AS STDLY_SEARCH_amount,ES.ES_INVOICE_ITEMS AS STDLY_SEARCH_items,ES.ES_INVOICE_FROM AS STDLY_SEARCH_from,ES.ES_COMMENTS AS COMMENTS,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(ES.ES_TIMESTAMP,'+00:00','+05:30'), '%d-%m-%Y %T') AS timestamp");
+           $this->db->from('EXPENSE_STAFF ES,EXPENSE_CONFIGURATION EXPCONFIG ,USER_LOGIN_DETAILS ULD');
+           $this->db->where("ULD.ULD_ID=ES.ULD_ID AND (ES.ES_INVOICE_DATE BETWEEN '$STDLY_SEARCH_startdate' AND '$STDLY_SEARCH_enddate')  AND (EXPCONFIG.ECN_ID=ES.ECN_ID)");
+           $this->db->order_by("ES.ES_INVOICE_DATE", "ASC");
+           $query = $this->db->get();
+           return $query->result();
+       }
     }
 }

@@ -17,7 +17,7 @@ class Mdl_access_card_assign extends CI_Model{
         $CA_custid=$CA_cust_id;
         $this->db->select('CLP.UASD_ID');
         $this->db->from('CUSTOMER_LP_DETAILS CLP,CUSTOMER_ENTRY_DETAILS CED');
-        $this->db->where('CLP.CUSTOMER_ID='.$CA_custid.' AND CED.CED_REC_VER='.($CA_recver-1).' and CLP.CUSTOMER_ID=CED.CUSTOMER_ID AND CLP.CED_REC_VER=CED.CED_REC_VER AND CED.CED_PRETERMINATE IS NOT NULL AND CLP.UASD_ID IS NULL AND CLP.CED_REC_VER IN (SELECT CED_REC_VER  FROM VW_CARDASSIGN)');
+        $this->db->where('CLP.CUSTOMER_ID='.$CA_custid.' AND CED.CED_REC_VER='.($CA_recver-1).' and CLP.CUSTOMER_ID=CED.CUSTOMER_ID AND CLP.CED_REC_VER=CED.CED_REC_VER AND CED.CED_PRETERMINATE IS NOT NULL AND CLP.UASD_ID IS NULL AND CLP.CED_REC_VER IN (SELECT CED_REC_VER  FROM VW_CARDASSIGN WHERE CUSTOMER_ID='.$CA_custid.')');
         $query = $this->db->get();
         $resultrow = $query->result();
         if(count($resultrow)>=1){
@@ -27,7 +27,7 @@ class Mdl_access_card_assign extends CI_Model{
         if($flag==1){
             $this->db->select('CLP.UASD_ID');
             $this->db->from('CUSTOMER_LP_DETAILS CLP,CUSTOMER_ENTRY_DETAILS CED');
-            $this->db->where('CLP.CUSTOMER_ID='.$CA_custid.' AND CED.CED_REC_VER='.($prev_recver-1).' and CLP.CUSTOMER_ID=CED.CUSTOMER_ID AND CLP.CED_REC_VER=CED.CED_REC_VER AND CED.CED_PRETERMINATE IS NOT NULL AND CLP.UASD_ID IS NULL and CLP.CED_REC_VER in (select CED_REC_VER  FROM VW_CARDASSIGN)');
+            $this->db->where('CLP.CUSTOMER_ID='.$CA_custid.' AND CED.CED_REC_VER='.($prev_recver-1).' and CLP.CUSTOMER_ID=CED.CUSTOMER_ID AND CLP.CED_REC_VER=CED.CED_REC_VER AND CED.CED_PRETERMINATE IS NOT NULL AND CLP.UASD_ID IS NULL and CLP.CED_REC_VER in (SELECT CED_REC_VER  FROM VW_CARDASSIGN WHERE CUSTOMER_ID='.$CA_custid.')');
             $query = $this->db->get();
             $resultrow1 = $query->result();
             if(count($resultrow1)>=1){

@@ -1,10 +1,19 @@
 <?php
 include 'GET_USERSTAMP.php';
+include 'GET_CONFIG.php';
 $USERSTAMP=$UserStamp;
 $timeZoneFrmt=$timeZoneFormat;
 class Ctrl_Unit_Creation_Search_Update extends CI_Controller{
     public function index(){
         $this->load->view('UNIT/Vw_Unit_Creation_Search_Update');
+    }
+    public function Cal_service(){
+        $this->load->library('Google');
+        global $ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token;
+        $this->load->model('Eilib/Calender');
+        // FUNCTION TO CALL AND GET THE CALENDAR SERVICE
+        $cal= $this->Calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+        return $cal;
     }
     public function Initialdata(){
         $flag= $this->input->post('flag');
@@ -21,16 +30,18 @@ class Ctrl_Unit_Creation_Search_Update extends CI_Controller{
     }
     public function Unitsaveprocess(){
         global $USERSTAMP;
+        $calndr=$this->Cal_service();
         $UC_nonei= $this->input->post('UC_cb_nonEI');
         $UC_newroomtype = $this->input->post('UC_tb_newroomtype');
         $UC_newstamptype = $this->input->post('UC_tb_newstamptype');
         $UC_oldroomtype = $this->input->post('UC_lb_roomtype');
         $UC_oldstamptype = $this->input->post('UC_lb_stamptype');
         $this->load->model('Mdl_unit_creation_search_update');
-        $query=$this->Mdl_unit_creation_search_update->Unit_saveprocess($UC_nonei,$UC_newroomtype,$UC_newstamptype,$UC_oldroomtype,$UC_oldstamptype,$USERSTAMP);
+        $query=$this->Mdl_unit_creation_search_update->Unit_saveprocess($UC_nonei,$UC_newroomtype,$UC_newstamptype,$UC_oldroomtype,$UC_oldstamptype,$USERSTAMP,$calndr);
         echo json_encode($query);
     }
-    //--------------------------------------------UNIT SEARCH AND UPDATE---------------------------------------------//
+
+    //--------------------------------------------UNIT SEARCH AND UPDATE FUNCTIONS---------------------------------------------//
     public function USU_Initialdata(){
         $this->load->model('Mdl_unit_creation_search_update');
         $query=$this->Mdl_unit_creation_search_update->Usu_initial_data();
@@ -88,6 +99,7 @@ class Ctrl_Unit_Creation_Search_Update extends CI_Controller{
     public function USU_func_update(){
         global $timeZoneFrmt;
         global $USERSTAMP;
+        $calndr=$this->Cal_service();
         $USU_form_values=$this->input->post("USU_obj_formvalues");
         $USU_obj_rowvalue=$this->input->post("USU_obj_rowvalue");
         $USU_obj_flex=$this->input->post("USU_obj_flex");
@@ -154,7 +166,7 @@ class Ctrl_Unit_Creation_Search_Update extends CI_Controller{
             ,$USU_upd_lb_stamptype,$USU_upd_access,$USU_upd_access_comments,$USU_upd_accunitno,$USU_sep_upd_roomtype,$USU_sep_update_stamptype
             ,$USU_upd_lost,$USU_upd_inventory,$USU_update_lb_roomtype,$USU_upd_tb_stampamt,$USU_update_lb_stampdate,$USU_upd_typeofcard,$USU_cb_inventory
             ,$USU_cb_lost,$USU_obj_rowvalue,$USU_unit_searchby,$USU_dutyamt_fromamt,$USU_dutyamt_toamt,$USU_payment_frmamt,$USU_payment_toamt,$USU_frmdate
-            ,$USU_enddate,$USU_all_searchby,$USU_accesscard,$USU_parent_updation,$timeZoneFrmt,$USERSTAMP);
+            ,$USU_enddate,$USU_all_searchby,$USU_accesscard,$USU_parent_updation,$timeZoneFrmt,$USERSTAMP,$calndr);
         echo json_encode($resltquery);
     }
     public function USU_flexttablepdf(){

@@ -24,6 +24,7 @@ $(document).ready(function(){
     $('#STDLY_SEARCH_btn_salarybutton').hide();
     $('#STDLY_SEARCH_btn_staffbutton').hide();
     $('#STDLY_SEARCH_tble_agenttable').hide();
+    $('#STDLY_SEARCH_lb_staffsearchoption').hide();
     //search frm
     var STDLY_SEARCH_expenseArray=[];
     var STDLY_SEARCH_expenseArrayallid=[];
@@ -291,15 +292,15 @@ $(document).ready(function(){
                 if(($("#STDLY_SEARCH_db_startdate").val()!="")&&($("#STDLY_SEARCH_db_enddate").val()!="")&&($("#STDLY_SEARCH_tb_fromamount").val()!="")&&($("#STDLY_SEARCH_tb_toamount").val()!=""))
                 {
                     $('#STDLY_SEARCH_btn_staffbutton').removeAttr("disabled");
-                    if(ErrorControl.AmountCompare=='Valid')
-                    {
-                        $('#PDLY_SEARCH_lbl_amounterrormsg').hide();
-                    }
-                    else
-                    {
-                        $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
-                        $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
-                    }
+//                    if(ErrorControl.AmountCompare=='Valid')
+//                    {
+//                        $('#PDLY_SEARCH_lbl_amounterrormsg').hide();
+//                    }
+//                    else
+//                    {
+//                        $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
+//                        $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
+//                    }
                 }
                 else
                 {
@@ -440,27 +441,27 @@ $(document).ready(function(){
         {
             if(($("#STDLY_SEARCH_tb_fromamount").val()!="")&&($("#STDLY_SEARCH_tb_toamount").val()!=""))
             {
-                if(ErrorControl.AmountCompare=='Valid')
-                {
-                    $('#STDLY_SEARCH_lbl_amounterrormsg').hide();
-                }
-                else
-                {
-                    $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
-                }
+//                if(ErrorControl.AmountCompare=='Valid')
+//                {
+//                    $('#STDLY_SEARCH_lbl_amounterrormsg').hide();
+//                }
+//                else
+//                {
+//                    $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
+//                }
             }
             if(($("#STDLY_SEARCH_db_startdate").val()!="")&&($("#STDLY_SEARCH_db_enddate").val()!="")&&($("#STDLY_SEARCH_tb_fromamount").val()!="")&&($("#STDLY_SEARCH_tb_toamount").val()!=""))
             {
                 $('#STDLY_SEARCH_btn_staffbutton').removeAttr("disabled");
-                if(ErrorControl.AmountCompare=='Valid')
-                {
-                    $('#PDLY_SEARCH_lbl_amounterrormsg').hide();
-                }
-                else
-                {
-                    $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
-                    $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
-                }
+//                if(ErrorControl.AmountCompare=='Valid')
+//                {
+//                    $('#PDLY_SEARCH_lbl_amounterrormsg').hide();
+//                }
+//                else
+//                {
+//                    $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
+//                    $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
+//                }
             }
             else
             {
@@ -537,8 +538,8 @@ $(document).ready(function(){
             $("#staffdly_todt").hide();
             $("#staffdly_salaryamt").hide();
             $("#staffdly_ta_salarycomments").hide();
-            $("#STDTL_INPUT_lbl_comments").hide();
-            $("#STDLY_SEARCH_tble_multi").hide();
+//            $("#STDTL_INPUT_lbl_comments").hide();
+            $("#STDLY_SEARCH_tblSTDLY_SEARCH_tb_searchcommentse_multi").hide();
             $.ajax({
                 type: "POST",
                 url: "<?php echo site_url('Ctrl_Staff_Daily_Entry_Search_Update_Delete/STDLY_SEARCH_searchbyagentcommission'); ?>",
@@ -551,7 +552,6 @@ $(document).ready(function(){
                     STDLY_SEARCH_empdetailstaffsalary=STDLY_SEARCH_expenseArray[1];
                     STDLY_SEARCH_expensestaffsalary=STDLY_SEARCH_expenseArray[1];
                     STDLY_SEARCH_expensestaff=STDLY_SEARCH_expenseArray[1];
-
 //                    STDLY_SEARCH_loadcpfnosarray=STDLY_SEARCH_expenseArray[2];
                     if(expencetype!=''){
                         $('#STDLY_SEARCH_lb_typelist').append($('<option> SELECT </option>'));
@@ -650,7 +650,7 @@ $(document).ready(function(){
     $.ajax({
         type: "POST",
         url: "<?php echo site_url('Ctrl_Staff_Daily_Entry_Search_Update_Delete/Initialdata'); ?>",
-        data:{'ErrorList':'337,169,105,400'},
+        data:{'ErrorList':'337,169,105,400,45,106,107,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,169,170,315,377,378,379,401'},
         success: function(data){
             $('.preloader').hide();
             var value_array=JSON.parse(data);
@@ -1620,6 +1620,14 @@ function STDLY_INPUT_savestaff()
         $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
         $('#STDLY_SEARCH_lbl_headermesg').hide();
         $('#STDLY_SEARCH_lbl_byemployeename').hide();
+        $('#STDLY_SEARCH_db_startdate').hide();
+        $('#STDLY_SEARCH_lbl_startdate').hide();
+        $('#STDLY_SEARCH_lbl_enddate').hide();
+        $('#STDLY_SEARCH_db_enddate').hide();
+        $('#STDLY_SEARCH_lbl_fromamount').hide();
+        $('#STDLY_SEARCH_tb_fromamount').hide();
+        $('#STDLY_SEARCH_lbl_toamount').hide();
+        $('#STDLY_SEARCH_tb_toamount').hide();
         var STDLY_SEARCH_listoption=$('#STDLY_SEARCH_lb_typelist').val();
         if(STDLY_SEARCH_listoption=="SELECT")
         {
@@ -1801,6 +1809,28 @@ function STDLY_INPUT_savestaff()
             $('#STDLY_SEARCH_lbl_headermesg').hide();
         }
     });
+    function STDLY_SEARCH_loadstaffsearchoptionlistdata()
+    {
+        $(".preloader").hide();
+        var STDLY_SEARCH_typrval=$("#STDLY_SEARCH_lb_typelist").val();
+        if(STDLY_SEARCH_typrval==41)
+        {
+            var options =' ';
+            for (var i = 0; i < STDLY_SEARCH_expensestaff.length; i++) {
+                if( i>=11 && i<=16)
+                {
+                    var STDLY_SEARCH_expenseArrayallid=STDLY_SEARCH_expensestaff[i].ECN_ID;
+                    var STDLY_SEARCH_expenseArray=STDLY_SEARCH_expensestaff[i].ECN_DATA;
+                    options += '<option value="' + STDLY_SEARCH_expenseArrayallid+ '">' + STDLY_SEARCH_expenseArray+ '</option>';
+                }
+            }
+        }
+        $('#STDLY_SEARCH_tble_agenttable').show();
+        $('#STDLY_SEARCH_lb_staffsearchoption').html(options);
+        STDLY_SEARCH_Sortit('STDLY_SEARCH_lb_staffsearchoption');
+        $('#STDLY_SEARCH_lb_staffsearchoption').show();
+        $('#STDLY_SEARCH_lbl_staffsearchoption').show();
+    }
     //LOAD THE SALARY LIST SEARCH OPTION LIST BOX VALUE ..............................
     function STDLY_SEARCH_loadsearchoptionlistdata()
     {
@@ -2071,7 +2101,7 @@ function STDLY_INPUT_savestaff()
                 values_array=JSON.parse(data);
                 if(values_array.length!=0)
                 {
-                    var STDLY_SEARCH_table_value='<table id="STDLY_SEARCH_tbl_htmltable" border="1"  cellspacing="0" class="srcresult"  ><thead  bgcolor="#6495ed" style="color:white"><tr><th style="width:75px">AGENT DATE</th><th style="width:60px">COMMISSION AMOUNT</th><th style="width:300px;">COMMENTS</th><th style="width:200px;">USERSTAMP</th><th style="width:100px;">TIMESTAMP</th></tr></thead><tbody>'
+                    var STDLY_SEARCH_table_value='<table id="STDLY_SEARCH_tbl_htmltable" border="1"  cellspacing="0" class="srcresult"  ><thead  bgcolor="#6495ed" style="color:white"><tr><th></th><th style="width:75px">AGENT DATE</th><th style="width:60px">COMMISSION AMOUNT</th><th style="width:300px;">COMMENTS</th><th style="width:200px;">USERSTAMP</th><th style="width:100px;" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>'
 //                    var ET_SRC_UPD_DEL_errmsg =value_err_array[4].EMC_DATA.replace('[SCRIPT]',ET_SRC_UPD_DEL_name);
 //                    $('#ET_SRC_UPD_DEL_div_header').text(ET_SRC_UPD_DEL_errmsg).show();
                     for(var j=0;j<values_array.length;j++){
@@ -2085,17 +2115,18 @@ function STDLY_INPUT_savestaff()
                         STDLY_SEARCH_agentuserstamp=values_array[j].userstamp;
                         STDLY_SEARCH_agenttimestamp=values_array[j].timestamp;
                         id=values_array[j].EA_ID;
-                        STDLY_SEARCH_table_value+='<tr><td>'+STDLY_SEARCH_date+'</td><td>'+STDLY_SEARCH_agentcommamount+'</td><td>'+STDLY_SEARCH_agentcomments+'</td><td>'+STDLY_SEARCH_agentuserstamp+'</td><td>'+STDLY_SEARCH_agenttimestamp+'</td></tr>';
+                        STDLY_SEARCH_table_value+='<tr><td><span  id ='+id+' class="glyphicon glyphicon-trash deletebutton"></span></td><td id=agentdate_'+id+' class="staffedit">'+STDLY_SEARCH_date+'</td><td id=agentcommissionamt_'+id+' class="staffedit">'+STDLY_SEARCH_agentcommamount+'</td><td id=comments_'+id+' class="staffedit">'+STDLY_SEARCH_agentcomments+'</td><td>'+STDLY_SEARCH_agentuserstamp+'</td><td>'+STDLY_SEARCH_agenttimestamp+'</td></tr>';
                     }
                     STDLY_SEARCH_table_value+='</tbody></table>';
                     $('section').html(STDLY_SEARCH_table_value);
                     $('#STDLY_SEARCH_tbl_htmltable').DataTable({
-                        "bInfo" : false,
-                        "bPaginate": false,
-//                    "dom": '<"pull-left"f>tip',
-                        "dom": 'tip',
                         "aaSorting": [],
-                        'bSort': false });
+                        "pageLength": 10,
+                        "sPaginationType":"full_numbers",
+                        "aoColumnDefs" : [
+                            { "aTargets" : ["uk-date-column"] , "sType" : "uk_date"}, { "aTargets" : ["uk-timestp-column"] , "sType" : "uk_timestp"} ]
+
+                    });
                 }
                 else
                 {
@@ -2109,7 +2140,108 @@ function STDLY_INPUT_savestaff()
                 $('#STDLY_SEARCH_div_htmltable').show();
             }
         });
+        sorting()
     }
+    var previous_id;
+    var combineid;
+    var tdvalue;
+    var check;
+    var cpfid;
+    var checkamt;
+    var cpfnoid;
+    var levyamount_id;
+    var STDTL_SEARCH_agentcommissionamt;
+    var comments_id;
+    var STDTL_SEARCH_currentval;
+    var agentdate_id;
+    var agent_commissionamt;
+    //click function for INLINE EDIT
+    $(document).on('click','.staffedit', function (){
+        if(previous_id!=undefined){
+            $('#'+previous_id).replaceWith("<td class='staffedit' id='"+previous_id+"' >"+tdvalue+"</td>");
+        }
+        var cid = $(this).attr('id');
+        previous_id=cid;
+        var id=cid.split('_');
+        combineid=id[1];
+        tdvalue=$(this).text();
+        check=id[0]==('cpfno')
+        checkamt=id[1]==('cpfamt')
+        if(check==true){
+            cpfnoid='cpfnum_'+id[1];
+            $('#'+cid).replaceWith("<td class='new' id='"+previous_id+"'><input type='text' id='"+cpfnoid+"' name='data'  class='staffupdate' maxlength='9'  value='"+tdvalue+"'>");
+        }
+        else if(id[0]=='agentcommissionamt' && tdvalue!=''){
+            agent_commissionamt='agentamt_'+id[1];
+            $('#agentcommissionamt_'+id[1]).replaceWith("<td class='new' id='"+previous_id+"'><input type='text' id='"+agent_commissionamt+"' name='data'  class='staffupdate amountonly' maxlength='50'  value='"+tdvalue+"'>");
+            $(".amountonly").doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
+        }
+        else if(id[0]=='comments'){
+            comments_id='commentsid_'+id[1];
+            $('#comments_'+id[1]).replaceWith("<td class='new' id='"+previous_id+"'><textarea id='"+comments_id+"' name='data'  class='staffupdate' style='width: 200px'>"+tdvalue+"</textarea></td>");
+        }
+        else if(id[0]=='agentdate'){
+            agentdate_id='agentdateid_'+id[1];
+        $('#agentdate_'+id[1]).replaceWith("<td  class='new' id='"+agentdate_id+"'><input type='text' id='agent_date' name='data'  class='staffupdate form-control date-picker'  style='width: 110px' value='"+tdvalue+"'></td>");
+        }
+        $(".date-picker").datepicker({dateFormat:'dd-mm-yy',
+            changeYear: true,
+            changeMonth: true
+        });
+        $('.date-picker').datepicker("option","maxDate",new Date());
+    });
+    //blur function for subject update
+    $(document).on('change','.staffupdate',function(){
+        STDTL_SEARCH_currentval=$(this).val().trim();
+        STDTL_SEARCH_agentcommissionamt=$('#'+agent_commissionamt).val();
+        STDLY_SEARCH_comments=$('#'+comments_id).val();
+        if($('#agentdate_'+combineid).hasClass("staffedit")==true){
+
+            var agentdate=$('#agentdate_'+combineid).text();
+        }
+        else{
+            var agentdate=$('#agent_date').val();
+        }
+        if($('#agentcommissionamt_'+combineid).hasClass("staffedit")==true){
+            var STDTL_SEARCH_agentcommissionamt=$('#agentcommissionamt_'+combineid).text();
+        }
+        else{
+            var STDTL_SEARCH_agentcommissionamt=STDTL_SEARCH_agentcommissionamt;
+        }
+        if($('#comments_'+combineid).hasClass("staffedit")==true){
+            var STDLY_SEARCH_comments=$('#comments_'+combineid).text();
+        }
+        else{
+            var STDLY_SEARCH_comments=STDLY_SEARCH_comments;
+        }
+//        var data = $('#staffdlyentry_form').serialize();
+        var STDLY_SEARCH_typelist=$('#STDLY_SEARCH_lb_typelist').val();
+        $.ajax({
+            type: "POST",
+            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/updatefunction",
+            data:{'id':combineid,'STDLY_SEARCH_typelist':STDLY_SEARCH_typelist,'agentdate':agentdate,'STDLY_SEARCH_comments':STDLY_SEARCH_comments,'STDTL_SEARCH_agentcommissionamt':STDTL_SEARCH_agentcommissionamt},
+            success: function(STDLY_SEARCH_upd_res) {
+                if(STDLY_SEARCH_upd_res=='true')
+                {
+                    var replacetype=$('#STDLY_SEARCH_lb_typelist').find('option:selected').text();
+                    var STDLY_INPUT_CONFSAVEMSG = errormsg[2].EMC_DATA.replace('[TYPE]', replacetype);
+                    show_msgbox("STAFF EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE",STDLY_INPUT_CONFSAVEMSG,"error",false)
+                    previous_id=undefined;
+                    STDLY_SEARCH_searchdetails()
+                }
+                else
+                {
+                    show_msgbox("STAFF EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE",errormsg[38].EMC_DATA,"error",false)
+                }
+            }
+                });
+});
+    //click event for delete btn
+    var rowid='';
+    $(document).on('click','.deletebutton',function(){
+        rowid = $(this).attr('id');
+        show_msgbox("STAFF EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",errormsg[34].EMC_DATA,"success","delete");
+    });
     //FUNCTION TO GET COMMENTS WITH COUNT
     function STDLY_SEARCH_start_enddate(){
         $('#STDLY_SEARCH_lbl_errmsg').text('');
@@ -2122,7 +2254,6 @@ function STDLY_INPUT_savestaff()
                 var STDLY_SEARCH_sec_searchoption=$('#STDLY_SEARCH_lb_staffsearchoption').val();
             STDLY_SEARCH_success_comments(STDLY_SEARCH_sec_searchoption)
             $('.preloader').show();
-            alert(STDLY_SEARCH_sec_searchoption)
         }
     }
     var STDLY_SEARCH_res_comments;
@@ -2132,13 +2263,11 @@ function STDLY_INPUT_savestaff()
         var STDLY_SEARCH_startdate = $("#STDLY_SEARCH_db_startdate").val();
         var STDLY_SEARCH_enddate = $("#STDLY_SEARCH_db_enddate").val();
         var STDLY_SEARCH_typelist = $("#STDLY_SEARCH_lb_typelist").val();
-        alert("<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/STDLY_SEARCH_func_comments")
         $.ajax({
             type: "POST",
             'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/STDLY_SEARCH_func_comments",
             data: {'STDLY_SEARCH_sec_searchoption':STDLY_SEARCH_sec_searchoption,'STDLY_SEARCH_startdate':STDLY_SEARCH_startdate,'STDLY_SEARCH_enddate':STDLY_SEARCH_enddate,'STDLY_SEARCH_typelist':STDLY_SEARCH_typelist},
             success: function(data) {
-                alert(data)
                 STDLY_SEARCH_res_comments=JSON.parse(data);
                 if(STDLY_SEARCH_res_comments.length!=0)
                 {
@@ -2162,6 +2291,7 @@ function STDLY_INPUT_savestaff()
     var searchval = [];
     var STDLY_SEARCH_flag_autocom='';
     $( "#STDLY_SEARCH_tb_searchcomments" ).keypress(function(e){
+//        alert(searchval)
 //CALL FUNCTION TO HIGHLIGHT SEARCH TEXT
         STDLY_SEARCH_flag_autocom=0;
         STDLY_SEARCH_highlightSearchText();
@@ -2178,6 +2308,7 @@ function STDLY_INPUT_savestaff()
             source: searchval,
             select: STDLY_SEARCH_AutoCompleteSelectHandler
         });
+//        alert(searchval)
     });
     //FUNCTION TO HIGHLIGHT SEARCH TEXT
     function STDLY_SEARCH_highlightSearchText() {
@@ -2203,6 +2334,7 @@ function STDLY_INPUT_savestaff()
         }
         if(STDLY_SEARCH_listoption==40)
         {
+//            alert(STDLY_SEARCH_listoption)
             $('#STDLY_SEARCH_btn_salarybutton').show();
         }
         if(STDLY_SEARCH_listoption==41)
@@ -2852,7 +2984,7 @@ function STDLY_INPUT_savestaff()
                 values_array=JSON.parse(data);
                 if(values_array.length!=0)
                 {
-                    var STDLY_SEARCH_table_value='<table id="STDLY_SEARCH_tbl_salaryhtmltable" border="1"  cellspacing="0" class="srcresult"  ><thead  bgcolor="#6495ed" style="color:white"><tr><th style="width:90px">FIRST NAME</th><th style="width:90px;">LAST NAME</th><th style="width:80px;">INVOICE DATE</th><th style="width:80px;">FROM PERIOD</th><th style="width:90px;">TO PERIOD</th><th style="width:80px;">CPF NUMBER</th><th style="width:80px;">CPF AMOUNT</th><th style="width:70px;">LEVY AMOUNT</th><th style="width:70px;">SALARY AMOUNT</th><th style="width:250px;">COMMENTS</th><th style="width:150px;">USERSTAMP</th><th style="width:150px;">TIMESTAMP</th></tr></thead><tbody>'
+                    var STDLY_SEARCH_table_value='<table id="STDLY_SEARCH_tbl_salaryhtmltable" border="1"  cellspacing="0" class="srcresult"  ><thead  bgcolor="#6495ed" style="color:white"><tr><th style="width:90px">FIRST NAME</th><th style="width:90px;">LAST NAME</th><th style="width:80px;">INVOICE DATE</th><th style="width:80px;">FROM PERIOD</th><th style="width:90px;">TO PERIOD</th><th style="width:80px;">CPF NUMBER</th><th style="width:80px;">CPF AMOUNT</th><th style="width:70px;">LEVY AMOUNT</th><th style="width:70px;">SALARY AMOUNT</th><th style="width:250px;">COMMENTS</th><th style="width:150px;">USERSTAMP</th><th style="width:150px;" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>'
 //                    var ET_SRC_UPD_DEL_errmsg =value_err_array[4].EMC_DATA.replace('[SCRIPT]',ET_SRC_UPD_DEL_name);
 //                    $('#ET_SRC_UPD_DEL_div_header').text(ET_SRC_UPD_DEL_errmsg).show();
                     for(var j=0;j<values_array.length;j++){
@@ -2890,12 +3022,13 @@ function STDLY_INPUT_savestaff()
                     STDLY_SEARCH_table_value+='</tbody></table>';
                     $('section').html(STDLY_SEARCH_table_value);
                     $('#STDLY_SEARCH_tbl_salaryhtmltable').DataTable({
-                        "bInfo" : false,
-                        "bPaginate": false,
-//                    "dom": '<"pull-left"f>tip',
-                        "dom": 'tip',
                         "aaSorting": [],
-                        'bSort': false });
+                        "pageLength": 10,
+                        "sPaginationType":"full_numbers",
+                        "aoColumnDefs" : [
+                            { "aTargets" : ["uk-date-column"] , "sType" : "uk_date"}, { "aTargets" : ["uk-timestp-column"] , "sType" : "uk_timestp"} ]
+
+                    });
                 }
                 else
                 {
@@ -2909,6 +3042,902 @@ function STDLY_INPUT_savestaff()
                 $('#STDLY_SEARCH_div_salaryhtmltable').show();
             }
         });
+        sorting()
+    }
+    //STAFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+    //CALL BY STAFF SELECTED OPTION..................
+    $('#STDLY_SEARCH_lb_staffsearchoption').change(function(){
+        $('.datebox') .datepicker( "option", "minDate", null);
+        $('.datebox') .datepicker( "option", "minDate", new Date(1969, 10 , 19));
+        $('#STDLY_SEARCH_lbl_errmsg').text('');
+        $('#STDLY_SEARCH_lbl_byemployeename').hide();
+        $('#STDLY_SEARCH_lbl_salaryheadermesg').hide();
+        $(".preloader").show();
+        $('#STDLY_SEARCH_lbl_searchbydiv').hide();
+        $('#STDLY_SEARCH_ta_salarycommentsbox').hide();
+        $('#STDLY_SEARCH_lbl_salarycomments').hide();
+        $('#STDLY_SEARCH_lb_searchbyemployeename').hide();
+        $('#STDLY_SEARCH_lbl_searchbyemployeename').hide();
+        var STDLY_SEARCH_staffselectedoption=$('#STDLY_SEARCH_lb_staffsearchoption').val();
+        if(STDLY_SEARCH_staffselectedoption=="SELECT")
+        {$(".preloader").hide();
+            $('#STDLY_SEARCH_lbl_searchbydiv').hide();
+            $('#STDLY_SEARCH_lbl_byagentcomments').hide();
+            $('#STDLY_SEARCH_ta_salarycommentsbox').hide();
+            $('#STDLY_SEARCH_lbl_salarycomments').hide();
+            $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
+            $('#STDLY_SEARCH_lbl_headermesg').hide();
+            $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
+            $('#STDLY_SEARCH_lbl_headermesg').hide();
+            $('#STDLY_SEARCH_db_startdate').val('');
+            $('#STDLY_SEARCH_db_enddate').val('');
+            $('#STDLY_SEARCH_tb_fromamount').val('');
+            $('#STDLY_SEARCH_tb_toamount').val('');
+            $('#STDLY_SEARCH_tble_agentupdateform').hide();
+            $('#STDLY_SEARCH_tble_agenttable').hide();
+            $('#STDLY_SEARCH_div_htmltable').hide();
+            $('#STDLY_SEARCH_btn_searchbutton').hide();
+            $('#STDLY_SEARCH_btn_deletebutton').hide();
+            $('#STDLY_SEARCH_btn_sbutton').hide();
+            $('#STDLY_SEARCH_btn_rbutton').hide();
+            $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
+            $('#STDLY_SEARCH_tble_agenttable').hide();
+            $('#STDLY_SEARCH_lbl_byagentcomments').hide();
+            $('#STDLY_SEARCH_lbl_commentlbl').hide();
+            $('#STDLY_SEARCH_tb_searchcomments').hide();
+            $('#STDLY_SEARCH_tble_multi').hide();
+            $('#STDLY_SEARCH_div_salaryhtmltable').hide();
+            $('#STDLY_SEARCH_tble_agentupdateform').hide();
+            $('#STDLY_SEARCH_tbl_salaryupdatetable').hide();
+            $('#STDLY_SEARCH_btn_salarybutton').hide();
+            $('#STDLY_SEARCH_btn_staffbutton').hide();
+            $('#STDLY_SEARCH_lbl_staffexpansecategory').hide();
+            $('#STDLY_SEARCH_lb_staffexpansecategory').hide();
+            $('#STDLY_SEARCH_lbl_invfromcomt').val('').hide();
+            $('#STDLY_SEARCH_tb_invfromcomt').val('').hide();
+            $('#STDLY_SEARCH_lbl_invitemcom').hide();
+            $('#STDLY_SEARCH_tb_invitemcomt').val('').hide();
+        }
+        if(STDLY_SEARCH_staffselectedoption==80)
+        {$(".preloader").hide();
+            $('#STDLY_SEARCH_lbl_searchbydiv').show();
+            STDLY_SEARCH_staffallcategory();
+            $('#STDLY_SEARCH_lbl_commentlbl').hide();
+            $('#STDLY_SEARCH_tb_searchcomments').hide();
+        }
+        if(STDLY_SEARCH_staffselectedoption==84)
+        {$(".preloader").hide();
+            $('#STDLY_SEARCH_lbl_searchbydiv').show();
+            $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
+            $('#STDLY_SEARCH_lbl_headermesg').hide();
+            $('#STDLY_SEARCH_lbl_commentlbl').hide();
+            $('#STDLY_SEARCH_tb_searchcomments').hide();
+            $('#STDLY_SEARCH_lbl_invfromcomt').val('').hide();
+            $('#STDLY_SEARCH_tb_invfromcomt').val('').hide();
+            $('#STDLY_SEARCH_lbl_commentlbl').hide();
+            $('#STDLY_SEARCH_tb_searchcomments').val('').hide();
+            $('#STDLY_SEARCH_lbl_staffexpansecategory').hide();
+            $('#STDLY_SEARCH_lb_staffexpansecategory').hide();
+            $('#STDLY_SEARCH_lbl_startdate').show();
+            $('#STDLY_SEARCH_lbl_enddate').show();
+            $('#STDLY_SEARCH_lbl_fromamount').show();
+            $('#STDLY_SEARCH_lbl_toamount').show();
+            $('#STDLY_SEARCH_tble_agenttable').show();
+            $('#STDLY_SEARCH_db_startdate').val('').show();
+            $('#STDLY_SEARCH_db_enddate').val('').show();
+            $('#STDLY_SEARCH_tb_fromamount').val('').show();
+            $('#STDLY_SEARCH_tb_toamount').val('').show();
+            $('#STDLY_SEARCH_btn_staffbutton').show();
+            $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
+            $('#STDLY_SEARCH_tble_multi').hide();
+            $('#STDLY_SEARCH_div_htmltable').hide();
+            $('#STDLY_SEARCH_div_salaryhtmltable').hide();
+            $('#STDLY_SEARCH_tble_agentupdateform').hide();
+            $('#STDLY_SEARCH_tbl_salaryupdatetable').hide();
+            $('#STDLY_SEARCH_btn_deletebutton').hide();
+            $('#STDLY_SEARCH_btn_salarybutton').hide();
+            $('#STDLY_SEARCH_btn_agentsbutton').hide();
+            $('#STDLY_SEARCH_btn_sbutton').hide();
+            $('#STDLY_SEARCH_btn_searchbutton').hide();
+            $('#STDLY_SEARCH_btn_rbutton').hide();
+            $('#STDLY_SEARCH_lbl_byagentcomments').text($('#STDLY_SEARCH_lb_staffsearchoption').find('option:selected').text()).show();
+            $('#STDLY_SEARCH_lbl_invitemcom').hide();
+            $('#STDLY_SEARCH_tb_invitemcomt').val('').hide();
+            $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
+            $('#STDLY_SEARCH_lbl_headermesg').hide();
+        }
+        if(STDLY_SEARCH_staffselectedoption==81)
+        {$(".preloader").hide();
+            $('#STDLY_SEARCH_lbl_searchbydiv').show();
+            $('#STDLY_SEARCH_lbl_commentlbl').hide();
+            $('#STDLY_SEARCH_tb_searchcomments').hide();
+            $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
+            $('#STDLY_SEARCH_lbl_headermesg').hide();
+            $('#STDLY_SEARCH_lbl_fromamount').hide();
+            $('#STDLY_SEARCH_lbl_toamount').hide();
+            $('#STDLY_SEARCH_tb_fromamount').val('').hide();
+            $('#STDLY_SEARCH_tb_toamount').val('').hide();
+            $('#STDLY_SEARCH_lbl_invfromcomt').val('').hide();
+            $('#STDLY_SEARCH_tb_invfromcomt').val('').hide();
+            $('#STDLY_SEARCH_lbl_commentlbl').hide();
+            $('#STDLY_SEARCH_tb_searchcomments').val('').hide();
+            $('#STDLY_SEARCH_lbl_staffexpansecategory').hide();
+            $('#STDLY_SEARCH_lb_staffexpansecategory').hide();
+            $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
+            $('#STDLY_SEARCH_lbl_startdate').show();
+            $('#STDLY_SEARCH_lbl_enddate').show();
+            $('#STDLY_SEARCH_tble_agenttable').show();
+            $('#STDLY_SEARCH_db_startdate').val('').show();
+            $('#STDLY_SEARCH_db_enddate').val('').show();
+            $('#STDLY_SEARCH_btn_staffbutton').show();
+            $('#STDLY_SEARCH_tble_multi').hide();
+            $('#STDLY_SEARCH_div_htmltable').hide();
+            $('#STDLY_SEARCH_div_salaryhtmltable').hide();
+            $('#STDLY_SEARCH_tble_agentupdateform').hide();
+            $('#STDLY_SEARCH_tbl_salaryupdatetable').hide();
+            $('#STDLY_SEARCH_btn_deletebutton').hide();
+            $('#STDLY_SEARCH_btn_salarybutton').hide();
+            $('#STDLY_SEARCH_btn_agentsbutton').hide();
+            $('#STDLY_SEARCH_btn_sbutton').hide();
+            $('#STDLY_SEARCH_btn_searchbutton').hide();
+            $('#STDLY_SEARCH_btn_rbutton').hide();
+            $('#STDLY_SEARCH_lbl_byagentcomments').text($('#STDLY_SEARCH_lb_staffsearchoption').find('option:selected').text()).show();
+            $('#STDLY_SEARCH_lbl_invitemcom').hide();
+            $('#STDLY_SEARCH_tb_invitemcomt').val('').hide();
+            $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
+            $('#STDLY_SEARCH_lbl_headermesg').hide();
+        }
+        if(STDLY_SEARCH_staffselectedoption==82)
+        {$(".preloader").hide();
+            $('#STDLY_SEARCH_lbl_searchbydiv').show();
+            $('#STDLY_SEARCH_lbl_commentlbl').hide();
+            $('#STDLY_SEARCH_tb_searchcomments').hide();
+            $('#STDLY_SEARCH_lbl_fromamount').hide();
+            $('#STDLY_SEARCH_lbl_toamount').hide();
+            $('#STDLY_SEARCH_tb_fromamount').val('').hide();
+            $('#STDLY_SEARCH_tb_toamount').val('').hide();
+            $('#STDLY_SEARCH_lbl_commentlbl').hide();
+            $('#STDLY_SEARCH_tb_searchcomments').val('').hide();
+            $('#STDLY_SEARCH_lbl_staffexpansecategory').hide();
+            $('#STDLY_SEARCH_lb_staffexpansecategory').hide();
+            $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
+            $('#STDLY_SEARCH_lbl_startdate').show();
+            $('#STDLY_SEARCH_lbl_enddate').show();
+            $('#STDLY_SEARCH_tble_agenttable').show();
+            $('#STDLY_SEARCH_lbl_invfromcomt').val('').hide();
+            $('#STDLY_SEARCH_tb_invfromcomt').val('').hide();
+            $('#STDLY_SEARCH_db_startdate').val('').show();
+            $('#STDLY_SEARCH_db_enddate').val('').show();
+            $('#STDLY_SEARCH_btn_staffbutton').hide();
+            $('#STDLY_SEARCH_tble_multi').hide();
+            $('#STDLY_SEARCH_div_htmltable').hide();
+            $('#STDLY_SEARCH_div_salaryhtmltable').hide();
+            $('#STDLY_SEARCH_tble_agentupdateform').hide();
+            $('#STDLY_SEARCH_tbl_salaryupdatetable').hide();
+            $('#STDLY_SEARCH_btn_deletebutton').hide();
+            $('#STDLY_SEARCH_btn_salarybutton').hide();
+            $('#STDLY_SEARCH_btn_agentsbutton').hide();
+            $('#STDLY_SEARCH_btn_sbutton').hide();
+            $('#STDLY_SEARCH_btn_searchbutton').hide();
+            $('#STDLY_SEARCH_btn_rbutton').hide();
+            $('#STDLY_SEARCH_lbl_byagentcomments').text($('#STDLY_SEARCH_lb_staffsearchoption').find('option:selected').text()).show();
+            $('#STDLY_SEARCH_lbl_invitemcom').hide();
+            $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
+            $('#STDLY_SEARCH_lbl_headermesg').hide();
+            $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
+            $('#STDLY_SEARCH_lbl_headermesg').hide();
+            $('#STDLY_SEARCH_tb_invitemcomt').hide();
+        }
+        if(STDLY_SEARCH_staffselectedoption==83)
+        {$(".preloader").hide();
+            $('#STDLY_SEARCH_lbl_searchbydiv').show();
+            $('#STDLY_SEARCH_lbl_commentlbl').hide();
+            $('#STDLY_SEARCH_tb_searchcomments').hide();
+            $('#STDLY_SEARCH_lbl_invfromcomt').val('').hide();
+            $('#STDLY_SEARCH_tb_invfromcomt').val('').hide();
+            $('#STDLY_SEARCH_lbl_commentlbl').hide();
+            $('#STDLY_SEARCH_tb_searchcomments').val('').hide();
+            $('#STDLY_SEARCH_lbl_staffexpansecategory').hide();
+            $('#STDLY_SEARCH_lb_staffexpansecategory').hide();
+            $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
+            $('#STDLY_SEARCH_lbl_startdate').show();
+            $('#STDLY_SEARCH_lbl_enddate').show();
+            $('#STDLY_SEARCH_tble_agenttable').show();
+            $('#STDLY_SEARCH_lbl_invitemcom').hide();
+            $('#STDLY_SEARCH_tb_invitemcomt').val('').hide();
+            $('#STDLY_SEARCH_db_startdate').val('').show();
+            $('#STDLY_SEARCH_db_enddate').val('').show();
+            $('#STDLY_SEARCH_btn_staffbutton').hide();
+            $('#STDLY_SEARCH_lbl_fromamount').hide();
+            $('#STDLY_SEARCH_lbl_toamount').hide();
+            $('#STDLY_SEARCH_tb_fromamount').val('').hide();
+            $('#STDLY_SEARCH_tb_toamount').val('').hide();
+            $('#STDLY_SEARCH_tble_multi').hide();
+            $('#STDLY_SEARCH_div_htmltable').hide();
+            $('#STDLY_SEARCH_div_salaryhtmltable').hide();
+            $('#STDLY_SEARCH_tble_agentupdateform').hide();
+            $('#STDLY_SEARCH_tbl_salaryupdatetable').hide();
+            $('#STDLY_SEARCH_btn_deletebutton').hide();
+            $('#STDLY_SEARCH_btn_salarybutton').hide();
+            $('#STDLY_SEARCH_btn_agentsbutton').hide();
+            $('#STDLY_SEARCH_btn_sbutton').hide();
+            $('#STDLY_SEARCH_btn_searchbutton').hide();
+            $('#STDLY_SEARCH_btn_rbutton').hide();
+            $('#STDLY_SEARCH_lbl_byagentcomments').text($('#STDLY_SEARCH_lb_staffsearchoption').find('option:selected').text()).show();
+            $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
+            $('#STDLY_SEARCH_lbl_headermesg').hide();
+            $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
+            $('#STDLY_SEARCH_lbl_headermesg').hide();
+        }
+        if(STDLY_SEARCH_staffselectedoption==79)
+        {$(".preloader").hide();
+            $('#STDLY_SEARCH_lbl_searchbydiv').show();
+            $('#STDLY_SEARCH_lbl_invitemcom').hide();
+            $('#STDLY_SEARCH_tb_invitemcomt').val('').hide();
+            $('#STDLY_SEARCH_lbl_invfromcomt').val('').hide();
+            $('#STDLY_SEARCH_tb_invfromcomt').val('').hide();
+            $('#STDLY_SEARCH_lbl_staffexpansecategory').hide();
+            $('#STDLY_SEARCH_lb_staffexpansecategory').hide();
+            $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
+            $('#STDLY_SEARCH_lbl_startdate').show();
+            $('#STDLY_SEARCH_lbl_enddate').show();
+            $('#STDLY_SEARCH_tble_agenttable').show();
+            $('#STDLY_SEARCH_lbl_commentlbl').hide();
+            $('#STDLY_SEARCH_lbl_fromamount').hide();
+            $('#STDLY_SEARCH_lbl_toamount').hide();
+            $('#STDLY_SEARCH_tb_fromamount').val('').hide();
+            $('#STDLY_SEARCH_tb_toamount').val('').hide();
+            $('#STDLY_SEARCH_tb_searchcomments').val('').hide();
+            $('#STDLY_SEARCH_db_startdate').val('').show();
+            $('#STDLY_SEARCH_db_enddate').val('').show();
+            $('#STDLY_SEARCH_btn_staffbutton').hide();
+            $('#STDLY_SEARCH_tble_multi').hide();
+            $('#STDLY_SEARCH_div_htmltable').hide();
+            $('#STDLY_SEARCH_div_salaryhtmltable').hide();
+            $('#STDLY_SEARCH_tble_agentupdateform').hide();
+            $('#STDLY_SEARCH_tbl_salaryupdatetable').hide();
+            $('#STDLY_SEARCH_btn_deletebutton').hide();
+            $('#STDLY_SEARCH_btn_salarybutton').hide();
+            $('#STDLY_SEARCH_btn_agentsbutton').hide();
+            $('#STDLY_SEARCH_btn_sbutton').hide();
+            $('#STDLY_SEARCH_btn_searchbutton').hide();
+            $('#STDLY_SEARCH_btn_rbutton').hide();
+            $('#STDLY_SEARCH_lbl_byagentcomments').text($('#STDLY_SEARCH_lb_staffsearchoption').find('option:selected').text()).show();
+            $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
+            $('#STDLY_SEARCH_lbl_headermesg').hide();
+            $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
+            $('#STDLY_SEARCH_lbl_headermesg').hide();
+        }});
+    $('#STDLY_SEARCH_div_salaryhtmltable').hide();
+    $('#STDLY_SEARCH_div_htmltable').hide();
+    $('#STDLY_SEARCH_btn_salarybutton').hide();
+    $('#STDLY_SEARCH_btn_sbutton').hide();
+    $('#STDLY_SEARCH_btn_searchbutton').hide();
+    $('#STDLY_SEARCH_btn_deletebutton').hide();
+    $('#STDLY_SEARCH_btn_rbutton').hide();
+    $('#STDLY_SEARCH_btn_staffbutton').hide();
+    $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
+    $('#STDLY_SEARCH_lbl_emp').hide();
+    $('#STDLY_SEARCH_btn_agentsbutton').hide();
+//LOAD ALL STAFF CATEGORY.......................
+    function STDLY_SEARCH_staffallcategory()//STDLY_SEARCH_category
+    {$(".preloader").hide();
+        var options ='';
+        for (var i = 0; i < STDLY_SEARCH_expensestaff.length; i++) {
+            if( i>=0 && i<=4)
+            {
+                var STDLY_SEARCH_expenseArrayallid=STDLY_SEARCH_expensestaff[i].ECN_ID;
+                var STDLY_SEARCH_expenseArray=STDLY_SEARCH_expensestaff[i].ECN_DATA;
+                options += '<option value="' + STDLY_SEARCH_expenseArrayallid+ '">' + STDLY_SEARCH_expenseArray+ '</option>';
+            }
+        }
+        $('#STDLY_SEARCH_lb_staffexpansecategory').html(options);
+        STDLY_SEARCH_Sortit('STDLY_SEARCH_lb_staffexpansecategory');
+        $('#STDLY_SEARCH_tble_agenttable').show();
+        $('#STDLY_SEARCH_lbl_byagentcomments').text($('#STDLY_SEARCH_lb_staffsearchoption').find('option:selected').text()).show();
+        $('#STDLY_SEARCH_lbl_staffexpansecategory').show();
+        $('#STDLY_SEARCH_lb_staffexpansecategory').show();
+        $('#STDLY_SEARCH_lbl_startdate').show();
+        $('#STDLY_SEARCH_db_startdate').val('').show();
+        $('#STDLY_SEARCH_lbl_enddate').show();
+        $('#STDLY_SEARCH_db_enddate').val('').show();
+        $('#STDLY_SEARCH_btn_staffbutton').show();
+        $('#STDLY_SEARCH_ta_salarycommentsbox').hide();
+        $('#STDLY_SEARCH_lbl_salarycomments').hide();
+        $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
+        $('#STDLY_SEARCH_lb_searchbycpfno').hide();
+        $('#STDLY_SEARCH_lbl_searchbycpfno').hide();
+        $('#STDLY_SEARCH_btn_salarybutton').hide();
+        $('#STDLY_SEARCH_tble_multi').hide();
+        $('#STDLY_SEARCH_lbl_invfromcomt').val('').hide();
+        $('#STDLY_SEARCH_tb_invfromcomt').val('').hide();
+        $('#STDLY_SEARCH_div_htmltable').hide();
+        $('#STDLY_SEARCH_div_salaryhtmltable').hide();
+        $('#STDLY_SEARCH_tble_agentupdateform').hide();
+        $('#STDLY_SEARCH_tbl_salaryupdatetable').hide();
+        $('#STDLY_SEARCH_btn_deletebutton').hide();
+        $('#STDLY_SEARCH_btn_salarybutton').hide();
+        $('#STDLY_SEARCH_btn_agentsbutton').hide();
+        $('#STDLY_SEARCH_btn_sbutton').hide();
+        $('#STDLY_SEARCH_btn_searchbutton').hide();
+        $('#STDLY_SEARCH_btn_rbutton').hide();
+        $('#STDLY_SEARCH_tb_searchcomments').val('').hide();
+        $('#STDLY_SEARCH_lbl_invitemcom').hide();
+        $('#STDLY_SEARCH_tb_invitemcomt').val('').hide();
+        $('#STDLY_SEARCH_lbl_fromamount').hide();
+        $('#STDLY_SEARCH_lbl_toamount').hide();
+        $('#STDLY_SEARCH_tb_fromamount').val('').hide();
+        $('#STDLY_SEARCH_tb_toamount').val('').hide();
+    }
+    // STARTING AGENT SEARCH BUTTON VALIDATION.....................
+        $(".submitvalagent").change(function(){
+            $('textarea').height(20);
+            $('#STDLY_SEARCH_ta_salarycommentsbox').hide();
+            $('#STDLY_SEARCH_lbl_salarycomments').hide();
+            $('#STDLY_SEARCH_lbl_nodataerrormsg').hide();
+            $('#STDLY_SEARCH_lbl_headermesg').hide();
+            $('#STDLY_SEARCH_tble_multi').hide();
+            $('#STDLY_SEARCH_div_htmltable').hide();
+            $('#STDLY_SEARCH_div_salaryhtmltable').hide();
+            $('#STDLY_SEARCH_tble_agentupdateform').hide();
+            $('#STDLY_SEARCH_tbl_salaryupdatetable').hide();
+            $('#STDLY_SEARCH_btn_deletebutton').hide();
+            $('#STDLY_SEARCH_btn_sbutton').hide();
+            $('#STDLY_SEARCH_btn_searchbutton').hide();
+            $('#STDLY_SEARCH_btn_rbutton').hide();
+            var STDLY_SEARCH_optionval=$("#STDLY_SEARCH_lb_searchoption").val();
+            var STDLY_SEARCH_salaryoptionval=$("#STDLY_SEARCH_lb_salarysearchoption").val();
+            var STDLY_SEARCH_staffoptionval=$("#STDLY_SEARCH_lb_staffsearchoption").val();
+            if(STDLY_SEARCH_optionval==78)
+            {
+                if(($("#STDLY_SEARCH_tb_fromamount").val()!="")&&($("#STDLY_SEARCH_tb_toamount").val()!=""))
+                {
+                    if(ErrorControl.AmountCompare=='Valid')
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').hide();
+                    }
+                    else
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
+                    }
+                }
+                if(($("#STDLY_SEARCH_db_startdate").val()!="")&&($("#STDLY_SEARCH_db_enddate").val()!="")&&($("#STDLY_SEARCH_tb_fromamount").val()!="")&&($("#STDLY_SEARCH_tb_toamount").val()!=""))
+                {
+                    $('#STDLY_SEARCH_btn_agentsbutton').removeAttr("disabled");
+                    if(ErrorControl.AmountCompare=='Valid')
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').hide();
+                    }
+                    else
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
+                        $('#STDLY_SEARCH_btn_agentsbutton').attr("disabled", "disabled");
+                    }
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_agentsbutton').attr("disabled", "disabled");
+                }
+            }
+            if(STDLY_SEARCH_optionval==77)
+            {
+                if(($("#STDLY_SEARCH_db_startdate").val()=="")||($("#STDLY_SEARCH_db_enddate").val()=="")||($("#STDLY_SEARCH_tb_searchcomments").val()==""))
+                {
+                    $('#STDLY_SEARCH_btn_agentsbutton').attr("disabled", "disabled");
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_agentsbutton').removeAttr("disabled");
+                }
+            }
+            if(STDLY_SEARCH_optionval==76)
+            {
+                if(($("#STDLY_SEARCH_db_startdate").val()=="")||($("#STDLY_SEARCH_db_enddate").val()==""))
+                {
+                    $('#STDLY_SEARCH_btn_agentsbutton').attr("disabled", "disabled");
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_agentsbutton').removeAttr("disabled");
+                }
+            }
+            if(STDLY_SEARCH_salaryoptionval==86)
+            {
+                if(($("#STDLY_SEARCH_tb_fromamount").val()!="")&&($("#STDLY_SEARCH_tb_toamount").val()!=""))
+                {
+                    if(ErrorControl.AmountCompare=='Valid')
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').hide();
+                    }
+                    else
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
+                    }
+                }
+                if(($("#STDLY_SEARCH_db_startdate").val()!="")&&($("#STDLY_SEARCH_db_enddate").val()!="")&&($("#STDLY_SEARCH_tb_fromamount").val()!="")&&($("#STDLY_SEARCH_tb_toamount").val()!=""))
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').removeAttr("disabled");
+                    if(ErrorControl.AmountCompare=='Valid')
+                    {
+                        $('#PDLY_SEARCH_lbl_amounterrormsg').hide();
+                    }
+                    else
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
+                        $('#STDLY_SEARCH_btn_salarybutton').attr("disabled", "disabled");
+                    }
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').attr("disabled", "disabled");
+                }
+            }
+            if(STDLY_SEARCH_salaryoptionval==93)
+            {
+                if(($("#STDLY_SEARCH_lb_searchbycpfno").val()=="SELECT"))
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').attr("disabled", "disabled");
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').removeAttr("disabled");
+                }
+            }
+//VALIDATION BY EMPLOYEE NAME...............................................
+            if(STDLY_SEARCH_salaryoptionval==90)
+            {
+                if(($("#STDLY_SEARCH_lb_searchbyemployeename").val()=="SELECT"))
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').attr("disabled", "disabled");
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').removeAttr("disabled");
+                }
+            }
+//VALIDATION BY SALARY AMOUNT..................
+            if(STDLY_SEARCH_salaryoptionval==88)
+            {
+                if(($("#STDLY_SEARCH_tb_fromamount").val()!="")&&($("#STDLY_SEARCH_tb_toamount").val()!=""))
+                {
+                    if(ErrorControl.AmountCompare=='Valid')
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').hide();
+                    }
+                    else
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
+                    }
+                }
+                if(($("#STDLY_SEARCH_db_startdate").val()!="")&&($("#STDLY_SEARCH_db_enddate").val()!="")&&($("#STDLY_SEARCH_tb_fromamount").val()!="")&&($("#STDLY_SEARCH_tb_toamount").val()!=""))
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').removeAttr("disabled");
+                    if(ErrorControl.AmountCompare=='Valid')
+                    {
+                        $('#PDLY_SEARCH_lbl_amounterrormsg').hide();
+                    }
+                    else
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
+                        $('#STDLY_SEARCH_btn_salarybutton').attr("disabled", "disabled");
+                    }
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').attr("disabled", "disabled");
+                }
+            }
+//VALIDATION BY SALARY COMMENTS..................
+            if(STDLY_SEARCH_salaryoptionval==85)
+            {
+                if(($("#STDLY_SEARCH_db_startdate").val()=="")||($("#STDLY_SEARCH_db_enddate").val()=="")||($("#STDLY_SEARCH_tb_searchcomments").val()==""))
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').attr("disabled", "disabled");
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').removeAttr("disabled");
+                }
+            }
+//VALIDATION BY SALARY COMMENTS..................
+            if(STDLY_SEARCH_salaryoptionval==91)
+            {
+                if(($("#STDLY_SEARCH_db_startdate").val()=="")||($("#STDLY_SEARCH_db_enddate").val()==""))
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').attr("disabled", "disabled");
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').removeAttr("disabled");
+                }
+            }
+//VALIDATION BY LEVY AMOUNT..................
+            if(STDLY_SEARCH_salaryoptionval==87)
+            {
+                if(($("#STDLY_SEARCH_tb_fromamount").val()!="")&&($("#STDLY_SEARCH_tb_toamount").val()!=""))
+                {
+                    if(ErrorControl.AmountCompare=='Valid')
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').hide();
+                    }
+                    else
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
+                    }
+                }
+                if(($("#STDLY_SEARCH_db_startdate").val()!="")&&($("#STDLY_SEARCH_db_enddate").val()!="")&&($("#STDLY_SEARCH_tb_fromamount").val()!="")&&($("#STDLY_SEARCH_tb_toamount").val()!=""))
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').removeAttr("disabled");
+                    if(ErrorControl.AmountCompare=='Valid')
+                    {
+                        $('#PDLY_SEARCH_lbl_amounterrormsg').hide();
+                    }
+                    else
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
+                        $('#STDLY_SEARCH_btn_salarybutton').attr("disabled", "disabled");
+                    }
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').attr("disabled", "disabled");
+                }
+            }
+//VALIDATION BYSALARY PAID DATE................
+            if(STDLY_SEARCH_salaryoptionval==89)
+            {
+                if(($("#STDLY_SEARCH_db_startdate").val()=="")||($("#STDLY_SEARCH_db_enddate").val()==""))
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').attr("disabled", "disabled");
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').removeAttr("disabled");
+                }
+            }
+//VALIDATION BY SEARCH BY TO PERIOD//
+            if(STDLY_SEARCH_salaryoptionval==92)
+            {
+                if(($("#STDLY_SEARCH_db_startdate").val()=="")||($("#STDLY_SEARCH_db_enddate").val()==""))
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').attr("disabled", "disabled");
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_salarybutton').removeAttr("disabled");
+                }
+            }
+//STAFF SEARCHING//
+//STAFF SEARCHING = SEARCH BY CATEGORY//
+            if(STDLY_SEARCH_staffoptionval==80)
+            {
+                if(($("#STDLY_SEARCH_lb_staffexpansecategory").val()=="SELECT")||($("#STDLY_SEARCH_db_startdate").val()=="")||($("#STDLY_SEARCH_db_enddate").val()==""))
+                {
+                    $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_staffbutton').removeAttr("disabled");
+                }
+            }
+//VALIDATION TO SEARCH ,BY STAFF INVOICE AMOUNT//
+            if(STDLY_SEARCH_staffoptionval==84)
+            {
+                if(($("#STDLY_SEARCH_tb_fromamount").val()!="")&&($("#STDLY_SEARCH_tb_toamount").val()!=""))
+                {
+                    if(ErrorControl.AmountCompare=='Valid')
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').hide();
+                    }
+                    else
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
+                    }
+                }
+                if(($("#STDLY_SEARCH_db_startdate").val()!="")&&($("#STDLY_SEARCH_db_enddate").val()!="")&&($("#STDLY_SEARCH_tb_fromamount").val()!="")&&($("#STDLY_SEARCH_tb_toamount").val()!=""))
+                {
+                    $('#STDLY_SEARCH_btn_staffbutton').removeAttr("disabled");
+                    if(ErrorControl.AmountCompare=='Valid')
+                    {
+                        $('#PDLY_SEARCH_lbl_amounterrormsg').hide();
+                    }
+                    else
+                    {
+                        $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
+                        $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
+                    }
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
+                }
+            }
+//VALIDATION TO SEARCH  , SEARCH BY INVOICE DATE//
+            if(STDLY_SEARCH_staffoptionval==81)
+            {
+                if(($("#STDLY_SEARCH_db_enddate").val()=="")||($("#STDLY_SEARCH_db_startdate").val()==""))
+                {
+                    $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_staffbutton').removeAttr("disabled");
+                }
+            }
+//VALIDATION TO SEARCH , SEARCH BY INVOICE FROM.//
+            if(STDLY_SEARCH_staffoptionval==82)
+            {
+                if(($("#STDLY_SEARCH_tb_invfromcomt").val()=="")||($("#STDLY_SEARCH_db_enddate").val()=="")||($("#STDLY_SEARCH_db_startdate").val()==""))
+                {
+                    $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_staffbutton').removeAttr("disabled");
+                }
+            }
+//VALIDATION TO SEARCH , SEARCH BY INVOICE ITEMS.........
+            if(STDLY_SEARCH_staffoptionval==83)
+            {
+                if(($("#STDLY_SEARCH_tb_invitemcomt").val()=="")||($("#STDLY_SEARCH_db_enddate").val()=="")||($("#STDLY_SEARCH_db_startdate").val()==""))
+                {
+                    $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_staffbutton').removeAttr("disabled");
+                }
+            }
+//VALIDATION TO SEARCH , SEARCH BY STAFF COMMENTS.........
+            if(STDLY_SEARCH_staffoptionval==79)
+            {
+                if(($("#STDLY_SEARCH_tb_searchcomments").val()=="")||($("#STDLY_SEARCH_db_enddate").val()=="")||($("#STDLY_SEARCH_db_startdate").val()==""))
+                {
+                    $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
+                }
+                else
+                {
+                    $('#STDLY_SEARCH_btn_staffbutton').removeAttr("disabled");
+                }
+            }
+        });
+    //SEARCHING BY  STAFF CATEGORY FOR FLEX TABLE..................
+    $('#STDLY_SEARCH_btn_staffbutton').click(function(){
+//        var  newPos= adjustPosition($(this).position(),100,120);
+//        resetPreloader(newPos);
+//        STDLY_SEARCH_flag_srchUpdDel=0;
+        STDLY_SEARCH_staffsearching();
+    });
+    function STDLY_SEARCH_staffsearching()
+    {
+        $(".preloader").show();
+        $('#STDLY_SEARCH_tble_multi').hide();
+        var STDLY_SEARCH_staffoptionvalmatch=$("#STDLY_SEARCH_lb_staffsearchoption").val();
+        if(STDLY_SEARCH_staffoptionvalmatch==80)
+        {
+            var STDLY_SEARCH_startdate=$('#STDLY_SEARCH_db_startdate').val();
+            var STDLY_SEARCH_enddate=$('#STDLY_SEARCH_db_enddate').val();
+            var STDLY_SEARCH_fromamount="";
+            var STDLY_SEARCH_toamount="";
+            var STDLY_SEARCH_searchcomments="";
+            var STDLY_SEARCH_invitemcom="";
+            var STDLY_SEARCH_invfromcomt="";
+            var STDLY_SEARCH_staffexpansecategory=$('#STDLY_SEARCH_lb_staffexpansecategory').val();
+            STDLY_SEARCH_staffsearchdetails()
+//            google.script.run.withFailureHandler(STDLY_SEARCH_onFailure).withSuccessHandler(STDLY_SEARCH_staffsearchdetails).STDLY_SEARCH_searchbystaff(STDLY_SEARCH_staffoptionvalmatch,STDLY_SEARCH_startdate,STDLY_SEARCH_enddate,STDLY_SEARCH_staffexpansecategory,STDLY_SEARCH_fromamount,STDLY_SEARCH_toamount,STDLY_SEARCH_searchcomments,STDLY_SEARCH_invitemcom,STDLY_SEARCH_invfromcomt);
+        }
+        if(STDLY_SEARCH_staffoptionvalmatch==84)
+        {
+            var STDLY_SEARCH_startdate=$('#STDLY_SEARCH_db_startdate').val();
+            var STDLY_SEARCH_enddate=$('#STDLY_SEARCH_db_enddate').val();
+            var STDLY_SEARCH_fromamount=$('#STDLY_SEARCH_tb_fromamount').val();
+            var STDLY_SEARCH_toamount=$('#STDLY_SEARCH_tb_toamount').val();
+            var STDLY_SEARCH_searchcomments="";
+            var STDLY_SEARCH_invitemcom="";
+            var STDLY_SEARCH_invfromcomt="";
+            var STDLY_SEARCH_staffexpansecategory=$('#STDLY_SEARCH_lb_staffexpansecategory').val();
+            STDLY_SEARCH_staffsearchdetails()
+//            google.script.run.withFailureHandler(STDLY_SEARCH_onFailure).withSuccessHandler(STDLY_SEARCH_staffsearchdetails).STDLY_SEARCH_searchbystaff(STDLY_SEARCH_staffoptionvalmatch,STDLY_SEARCH_startdate,STDLY_SEARCH_enddate,STDLY_SEARCH_staffexpansecategory,STDLY_SEARCH_fromamount,STDLY_SEARCH_toamount,STDLY_SEARCH_searchcomments,STDLY_SEARCH_invitemcom,STDLY_SEARCH_invfromcomt);
+        }
+        if(STDLY_SEARCH_staffoptionvalmatch==81)
+        {
+            var STDLY_SEARCH_startdate=$('#STDLY_SEARCH_db_startdate').val();
+            var STDLY_SEARCH_enddate=$('#STDLY_SEARCH_db_enddate').val();
+            var STDLY_SEARCH_fromamount="";
+            var STDLY_SEARCH_toamount="";
+            var STDLY_SEARCH_searchcomments="";
+            var STDLY_SEARCH_invitemcom="";
+            var STDLY_SEARCH_invfromcomt="";
+            var STDLY_SEARCH_staffexpansecategory=$('#STDLY_SEARCH_lb_staffexpansecategory').val();
+            STDLY_SEARCH_staffsearchdetails()
+//            google.script.run.withFailureHandler(STDLY_SEARCH_onFailure).withSuccessHandler(STDLY_SEARCH_staffsearchdetails).STDLY_SEARCH_searchbystaff(STDLY_SEARCH_staffoptionvalmatch,STDLY_SEARCH_startdate,STDLY_SEARCH_enddate,STDLY_SEARCH_staffexpansecategory,STDLY_SEARCH_fromamount,STDLY_SEARCH_toamount,STDLY_SEARCH_searchcomments,STDLY_SEARCH_invitemcom,STDLY_SEARCH_invfromcomt);
+        }
+        if(STDLY_SEARCH_staffoptionvalmatch==82)
+        {
+            var STDLY_SEARCH_startdate=$('#STDLY_SEARCH_db_startdate').val();
+            var STDLY_SEARCH_enddate=$('#STDLY_SEARCH_db_enddate').val();
+            var STDLY_SEARCH_fromamount="";
+            var STDLY_SEARCH_toamount="";
+            var STDLY_SEARCH_searchcomments="";
+            var STDLY_SEARCH_invfromcomt=$('#STDLY_SEARCH_tb_invfromcomt').val();
+            var STDLY_SEARCH_invitemcom="";
+            var STDLY_SEARCH_staffexpansecategory=$('#STDLY_SEARCH_lb_staffexpansecategory').val();
+            STDLY_SEARCH_staffsearchdetails()
+//            google.script.run.withFailureHandler(STDLY_SEARCH_onFailure).withSuccessHandler(STDLY_SEARCH_staffsearchdetails).STDLY_SEARCH_searchbystaff(STDLY_SEARCH_staffoptionvalmatch,STDLY_SEARCH_startdate,STDLY_SEARCH_enddate,STDLY_SEARCH_staffexpansecategory,STDLY_SEARCH_fromamount,STDLY_SEARCH_toamount,STDLY_SEARCH_searchcomments,STDLY_SEARCH_invitemcom,STDLY_SEARCH_invfromcomt);
+        }
+        if(STDLY_SEARCH_staffoptionvalmatch==83)
+        {
+            var STDLY_SEARCH_startdate=$('#STDLY_SEARCH_db_startdate').val();
+            var STDLY_SEARCH_enddate=$('#STDLY_SEARCH_db_enddate').val();
+            var STDLY_SEARCH_fromamount="";
+            var STDLY_SEARCH_toamount="";
+            var STDLY_SEARCH_searchcomments="";
+            var STDLY_SEARCH_invitemcom=$('#STDLY_SEARCH_tb_invitemcomt').val();
+            var STDLY_SEARCH_invfromcomt="";
+            var STDLY_SEARCH_staffexpansecategory=$('#STDLY_SEARCH_lb_staffexpansecategory').val();
+            STDLY_SEARCH_staffsearchdetails()
+//            google.script.run.withFailureHandler(STDLY_SEARCH_onFailure).withSuccessHandler(STDLY_SEARCH_staffsearchdetails).STDLY_SEARCH_searchbystaff(STDLY_SEARCH_staffoptionvalmatch,STDLY_SEARCH_startdate,STDLY_SEARCH_enddate,STDLY_SEARCH_staffexpansecategory,STDLY_SEARCH_fromamount,STDLY_SEARCH_toamount,STDLY_SEARCH_searchcomments,STDLY_SEARCH_invitemcom,STDLY_SEARCH_invfromcomt);
+        }
+        if(STDLY_SEARCH_staffoptionvalmatch==79)
+        {
+            var STDLY_SEARCH_startdate=$('#STDLY_SEARCH_db_startdate').val();
+            var STDLY_SEARCH_enddate=$('#STDLY_SEARCH_db_enddate').val();
+            var STDLY_SEARCH_fromamount="";
+            var STDLY_SEARCH_toamount="";
+            var STDLY_SEARCH_searchcomments=$('#STDLY_SEARCH_tb_searchcomments').val();
+            var STDLY_SEARCH_staffexpansecategory=$('#STDLY_SEARCH_lb_staffexpansecategory').val();
+            var STDLY_SEARCH_invitemcom="";
+            var STDLY_SEARCH_invfromcomt="";
+            STDLY_SEARCH_staffsearchdetails()
+//            google.script.run.withFailureHandler(STDLY_SEARCH_onFailure).withSuccessHandler(STDLY_SEARCH_staffsearchdetails).STDLY_SEARCH_searchbystaff(STDLY_SEARCH_staffoptionvalmatch,STDLY_SEARCH_startdate,STDLY_SEARCH_enddate,STDLY_SEARCH_staffexpansecategory,STDLY_SEARCH_fromamount,STDLY_SEARCH_toamount,STDLY_SEARCH_searchcomments,STDLY_SEARCH_invitemcom,STDLY_SEARCH_invfromcomt);
+        }
+    }
+
+    var STDLY_SEARCH_comments;var STDLY_SEARCH_userstamp;var STDLY_SEARC_timestamp;var id;
+    function  STDLY_SEARCH_staffsearchdetails()
+    {
+        var STDLY_SEARCH_startdate = $("#STDLY_SEARCH_db_startdate").val();
+        var STDLY_SEARCH_enddate = $("#STDLY_SEARCH_db_enddate").val();
+        var STDLY_SEARCH_fromamount = $("#STDLY_SEARCH_tb_fromamount").val();
+        var STDLY_SEARCH_toamount = $("#STDLY_SEARCH_tb_toamount").val();
+//        var STDLY_SEARCH_searchoptio=$('#STDLY_SEARCH_lb_salarysearchoption').val();
+        var STDLY_SEARCH_searchcomments=$('#STDLY_SEARCH_tb_searchcomments').val();
+        var STDLY_SEARCH_staffexpansecategory=$('#STDLY_SEARCH_lb_staffexpansecategory').find('option:selected').text();
+        var STDLY_SEARCH_searchoptio=$('#STDLY_SEARCH_lb_staffsearchoption').val();
+        $('.preloader').hide();
+        $.ajax({
+            type: "POST",
+            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/STDLY_SEARCH_sendallstaffdata",
+            data: {'STDLY_SEARCH_searchoptio':STDLY_SEARCH_searchoptio,'STDLY_SEARCH_staffexpansecategory':STDLY_SEARCH_staffexpansecategory,'STDLY_SEARCH_startdate':STDLY_SEARCH_startdate,'STDLY_SEARCH_enddate':STDLY_SEARCH_enddate,'STDLY_SEARCH_fromamount':STDLY_SEARCH_fromamount,'STDLY_SEARCH_toamount':STDLY_SEARCH_toamount,'STDLY_SEARCH_searchcomments':STDLY_SEARCH_searchcomments},
+            success: function(data) {
+                values_array=JSON.parse(data);
+                if(values_array.length!=0)
+                {
+                    var STDLY_SEARCH_table_value='<table id="STDLY_SEARCH_tbl_salaryhtmltable" border="1"  cellspacing="0" class="srcresult"  ><thead  bgcolor="#6495ed" style="color:white"><tr><th style="width:150px;">STAFF EXPENSE</th><th style="width:75px;">INVOICE DATE</th><th style="width:65px;">INVOICE AMOUNT</th><th style="width:150px;">INVOICE ITEMS</th><th style="width:150px;">INVOICE FROM</th><th style="width:150px;">COMMENTS</th><th style="width:150px;">USERSTAMP</th><th style="width:130px;" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>'
+//                    var ET_SRC_UPD_DEL_errmsg =value_err_array[4].EMC_DATA.replace('[SCRIPT]',ET_SRC_UPD_DEL_name);
+//                    $('#ET_SRC_UPD_DEL_div_header').text(ET_SRC_UPD_DEL_errmsg).show();
+                    for(var j=0;j<values_array.length;j++){
+                        var STDLY_SEARCH_values=values_array[j];
+                         id=values_array[j].ES_ID;
+                         STDLY_SEARCH_comments=values_array[j].COMMENTS;
+                        if((STDLY_SEARCH_comments=='null')||(STDLY_SEARCH_comments==undefined))
+                        {
+                            STDLY_SEARCH_comments='';
+                        }
+                        STDLY_SEARCH_userstamp=values_array[j].USERSTAMP;
+                        STDLY_SEARC_timestamp=values_array[j].timestamp;
+                        STDLY_SEARCH_table_value+='<tr><td>'+STDLY_SEARCH_values.STDLY_SEARCH_type+'</td><td id=staffdate_'+id+' class="stafflistedit">'+STDLY_SEARCH_values.STDLY_SEARCH_date+'</td><td id=staffamountlist_'+id+' class="stafflistedit" >'+STDLY_SEARCH_values.STDLY_SEARCH_amount+'</td><td id=staffinvoiceitem_'+id+' class="stafflistedit">'+STDLY_SEARCH_values.STDLY_SEARCH_items+'</td><td id=staffinvoicefrom_'+id+' class="stafflistedit">'+STDLY_SEARCH_values.STDLY_SEARCH_from+'</td><td id=comments_'+id+' class="stafflistedit">'+STDLY_SEARCH_comments+'</td><td>'+STDLY_SEARCH_userstamp+'</td><td>'+STDLY_SEARC_timestamp+'</td></tr>';
+                    }
+                    STDLY_SEARCH_table_value+='</tbody></table>';
+                    $('section').html(STDLY_SEARCH_table_value);
+                    $('#STDLY_SEARCH_tbl_salaryhtmltable').DataTable({
+                        "aaSorting": [],
+                        "pageLength": 10,
+                        "sPaginationType":"full_numbers",
+                        "aoColumnDefs" : [
+                            { "aTargets" : ["uk-date-column"] , "sType" : "uk_date"}, { "aTargets" : ["uk-timestp-column"] , "sType" : "uk_timestp"} ]
+
+                    });
+                }
+                else
+                {
+                    $('#ET_SRC_UPD_DEL_div_header').hide();
+                    $('#ET_SRC_UPD_DEL_div_table').hide();
+//                    $('#ET_SRC_UPD_DEL_div_headernodata').text(value_err_array[2].EMC_DATA).show();
+                    $('#STDLY_SEARCH_tbl_salaryhtmltable').hide();
+                    $('section').html('');
+                    $('.preloader').hide();
+                }
+                $('#STDLY_SEARCH_div_salaryhtmltable').show();
+            }
+        });
+        sorting()
+    }
+    var previous_id;
+    var combineid;
+    var tdvalue;
+    var check;
+    var cpfid;
+    var checkamt;
+    var cpfnoid;
+    var staffinvoice_from;
+    var staffinvoice_item;
+    var comments_id;
+    var STDTL_SEARCH_currentval;
+    var staffdate_id;
+    var staff_amountlist;
+    //click function for INLINE EDIT
+    $(document).on('click','.stafflistedit', function (){
+        if(previous_id!=undefined){
+            $('#'+previous_id).replaceWith("<td class='stafflistedit' id='"+previous_id+"' >"+tdvalue+"</td>");
+        }
+        var cid = $(this).attr('id');
+        previous_id=cid;
+        var id=cid.split('_');
+        combineid=id[1];
+        tdvalue=$(this).text();
+//        alert(id[0])
+//        alert(id[1])
+//        check=id[0]==('cpfno')
+//        checkamt=id[1]==('cpfamt')
+//        if(check==true){
+//            cpfnoid='cpfnum_'+id[1];
+//            $('#'+cid).replaceWith("<td class='new' id='"+previous_id+"'><input type='text' id='"+cpfnoid+"' name='data'  class='staffupdate' maxlength='9'  value='"+tdvalue+"'>");
+//        }
+         if(id[0]=='staffamountlist' && tdvalue!=''){
+            staff_amountlist='staffamtlist_'+id[1];
+//            alert(staff_amount)
+//            alert('#staffamountlist_'+id[1])
+//            $('#staffamount_'+id[1]).replaceWith("<td class='new' id='"+previous_id+"'><input type='text' id='"+staff_amount+"' name='data'  class='stafflistupdate amountonly'   value='"+tdvalue+"'>");
+            $('#staffamountlist_439').replaceWith("<td class='new' id='"+previous_id+"'><input type='text' id='"+staff_amountlist+"' name='data'  class='staffupdate amountonly'  value='"+tdvalue+"'></td>");
+
+//            $('#staffamountlist_'+id[1]).replaceWith("<td>list</td>");
+//            $(".amountonly").doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
+        }
+        else if(id[0]=='staffinvoiceitem'){
+            staffinvoice_item='staff_invoiceitem'+id[1];
+            $('#staffinvoiceitem_'+id[1]).replaceWith("<td class='new' id='"+previous_id+"'><textarea id='"+staffinvoice_item+"' name='data'  class='stafflistupdate' style='width: 200px'>"+tdvalue+"</textarea></td>");
+        }
+//        else if(id[0]=='staffinvoicefrom'){
+//            staffinvoice_from='staff_invoicefrom'+id[1];
+//            $('#staffinvoicefrom_'+id[1]).replaceWith("<td class='new' id='"+previous_id+"'><input type='text' id='"+staffinvoice_from+"' name='data'  class='stafflistupdate ' maxlength='20'  value='"+tdvalue+"'>");
+//        }
+//        else if(id[0]=='comments'){
+//            comments_id='commentval'+id[1];
+//            $('#comments_'+id[1]).replaceWith("<td class='new' id='"+previous_id+"'><textarea id='"+comments_id+"' name='data'  class='stafflistupdate' style='width: 200px'>"+tdvalue+"</textarea></td>");
+//        }
+//        else if(id[0]=='staffdate'){
+//            staffdate_id='staffdateid_'+id[1];
+//            $('#staffdate_'+id[1]).replaceWith("<td  class='new' id='"+staffdate_id+"'><input type='text' id='staff_date' name='data'  class='stafflistupdate form-control date-picker'  style='width: 110px' value='"+tdvalue+"'></td>");
+//        }
+//        $(".date-picker").datepicker({dateFormat:'dd-mm-yy',
+//            changeYear: true,
+//            changeMonth: true
+//        });
+//        $('.date-picker').datepicker("option","maxDate",new Date());
+    });
+    //FUNCTION FOR SORTING
+    function sorting(){
+        jQuery.fn.dataTableExt.oSort['uk_date-asc']  = function(a,b) {
+            var x = new Date( Date.parse(FormTableDateFormat(a)));
+            var y = new Date( Date.parse(FormTableDateFormat(b)) );
+            return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+        };
+        jQuery.fn.dataTableExt.oSort['uk_date-desc'] = function(a,b) {
+            var x = new Date( Date.parse(FormTableDateFormat(a)));
+            var y = new Date( Date.parse(FormTableDateFormat(b)) );
+            return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
+        };
+        jQuery.fn.dataTableExt.oSort['uk_timestp-asc']  = function(a,b) {
+            var x = new Date( Date.parse(FormTableDateFormat(a.split(' ')[0]))).setHours(a.split(' ')[1].split(':')[0],a.split(' ')[1].split(':')[1],a.split(' ')[1].split(':')[2]);
+            var y = new Date( Date.parse(FormTableDateFormat(b.split(' ')[0]))).setHours(b.split(' ')[1].split(':')[0],b.split(' ')[1].split(':')[1],b.split(' ')[1].split(':')[2]);
+            return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+        };
+        jQuery.fn.dataTableExt.oSort['uk_timestp-desc'] = function(a,b) {
+            var x = new Date( Date.parse(FormTableDateFormat(a.split(' ')[0]))).setHours(a.split(' ')[1].split(':')[0],a.split(' ')[1].split(':')[1],a.split(' ')[1].split(':')[2]);
+            var y = new Date( Date.parse(FormTableDateFormat(b.split(' ')[0]))).setHours(b.split(' ')[1].split(':')[0],b.split(' ')[1].split(':')[1],b.split(' ')[1].split(':')[2]);
+            return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
+        };
     }
 });
 </script>
@@ -3119,6 +4148,10 @@ function STDLY_INPUT_savestaff()
                         <label class=" col-sm-3" id='STDLY_SEARCH_lbl_salarysearchoption' hidden>SEARCH OPTION <em>*</em></label>
                         <div class="col-sm-3"> <select name="STDLY_SEARCH_lb_salarysearchoption" id="STDLY_SEARCH_lb_salarysearchoption" class="form-control"></select></div>
                     </div>
+                    <div class="form-group">
+                        <label class=" col-sm-3" id='STDLY_SEARCH_lbl_staffsearchoption' hidden>SEARCH OPTION <em>*</em></label>
+                        <div class="col-sm-3"> <select name="STDLY_SEARCH_lb_staffsearchoption" id="STDLY_SEARCH_lb_staffsearchoption" class="form-control"></select></div>
+                    </div>
                     <div class="srctitle" name="STDLY_SEARCH_lbl_byagentcomments" id="STDLY_SEARCH_lbl_byagentcomments"></div>
                     <div class="form-group">
                         <label  id='STDLY_SEARCH_lbl_startdate' class="col-sm-3" hidden> START DATE <em>*</em></label>
@@ -3153,6 +4186,10 @@ function STDLY_INPUT_savestaff()
                             <label id="STDLY_SEARCH_lbl_errmsg" name="STDLY_SEARCH_lbl_errmsg" class="errormsg" disabled=""></label>
                         </div>
                     </div>
+                        <div class="form-group">
+                            <label class=" col-sm-3" id='STDLY_SEARCH_lbl_staffexpansecategory' hidden>STAFF EXPENSE CATEGORY <em>*</em></label>
+                            <div class="col-sm-3 submitvalagent"> <select name="STDLY_SEARCH_lb_staffexpansecategory" id="STDLY_SEARCH_lb_staffexpansecategory" class="form-control"></select></div>
+                        </div>
                     </div>
                     <div class="col-lg-offset-3">
                         <input type="button"   id="STDLY_SEARCH_btn_agentsbutton" disabled  value="SEARCH" class="btn" hidden />
@@ -3177,4 +4214,3 @@ function STDLY_INPUT_savestaff()
 </div>
 </body>
 </html>
-                

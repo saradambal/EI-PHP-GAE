@@ -51,7 +51,7 @@ class Mdl_unit_creation_search_update extends CI_Model{
         }
         return $UC_flag;
     }
-    public function Unit_saveprocess($nonei,$newroomtype,$newstamptype,$oldroomtype,$oldstamptype,$UserStamp){
+    public function Unit_saveprocess($nonei,$newroomtype,$newstamptype,$oldroomtype,$oldstamptype,$UserStamp,$cal){
         try{
             $UC_unitnumber = $_POST['UC_tb_unitno'];
             $UC_unitrental = $_POST['UC_tb_unitrentalamt'];
@@ -158,12 +158,10 @@ class Mdl_unit_creation_search_update extends CI_Model{
                 $UC_flag_created=0;
             }
             if($UC_flag_save==1){
-                $this->load->library('Google');
                 $this->load->model('Eilib/Common_function');
                 $this->load->model('Eilib/Calender');
-                $UC_calenderIDcode=$this->Common_function->CUST_getCalenderId();
                 $UC_sh_arr=$this->Common_function->getStarHubUnitCalTime();
-                $this->Calender->StarHubUnit_CreateCalEvent($UC_calenderIDcode,$UC_startdate,$UC_sh_arr[0],$UC_sh_arr[1],$UC_enddate,$UC_sh_arr[0],$UC_sh_arr[1],'',$UC_unitnumber,'','START DATE','END DATE',$UC_nonei_calendar,$UC_unitrental);
+                $value=$this->Calender->StarHubUnit_CreateCalEvent($cal,$UC_startdate,$UC_sh_arr[0]['ECN_DATA'],$UC_sh_arr[1]['ECN_DATA'],$UC_enddate,$UC_sh_arr[0]['ECN_DATA'],$UC_sh_arr[1]['ECN_DATA'],'',$UC_unitnumber,'','START DATE','END DATE',$UC_nonei_calendar,$UC_unitrental);
             }
             $UC_getroomstamp=$this->Initial_data($UC_flag_created);
             if ($this->db->trans_status() === FALSE){
@@ -182,7 +180,7 @@ class Mdl_unit_creation_search_update extends CI_Model{
                 $this->db->trans_rollback();
             }
             if($UC_flag_save==1){
-//                $this->Calender->StarHubUnit_DeleteCalEvent($UC_unitnumber,$UC_calenderIDcode,$UC_startdate,$UC_sh_arr[0],$UC_sh_arr[1],$UC_enddate,$UC_sh_arr[0],$UC_sh_arr[1],'UNIT');
+//                $value=$this->Calender->StarHubUnit_DeleteCalEvent($UC_unitnumber,$cal,$UC_startdate,$UC_sh_arr[0],$UC_sh_arr[1],$UC_enddate,$UC_sh_arr[0],$UC_sh_arr[1],'UNIT');
             }
             log_message('error:',$ex->getMessage());
             return;
@@ -408,7 +406,7 @@ class Mdl_unit_creation_search_update extends CI_Model{
             }
             elseif($USU_unit_searchby==7){//SEARCH BY UNIT
                 $USU_select_unit_startenddate = "SELECT U.UNIT_NO,U.UNIT_ID, UAD.UACD_ACC_NO, UAD.UACD_ACC_NAME, UAD.UACD_BANK_CODE, UAD.UACD_BRANCH_CODE,UAD.UACD_BANK_ADDRESS,DATE_FORMAT(CONVERT_TZ(UD.UD_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS TIMESTAMP, ULD.ULD_LOGINID,UD.UD_NON_EI,DATE_FORMAT(UD.UD_START_DATE,'%d-%m-%Y') AS UD_START_DATE,DATE_FORMAT(UD.UD_END_DATE,'%d-%m-%Y') AS UD_END_DATE,UD.UD_OBSOLETE,UD.UD_PAYMENT, UD.UD_DEPOSIT,UD.UD_COMMENTS FROM UNIT U LEFT JOIN UNIT_ACCOUNT_DETAILS UAD ON (U.UNIT_ID = UAD.UNIT_ID) LEFT JOIN UNIT_DETAILS UD ON (U.UNIT_ID = UD.UNIT_ID) ,USER_LOGIN_DETAILS ULD WHERE ULD.ULD_ID=UD.ULD_ID AND U.UNIT_NO =".$USU_all_searchby."" ;
-                $USU_select_unit_stampdetail="SELECT UASD.UASD_ACCESS_CARD,UASD.UASD_ACCESS_ACTIVE,UASD.UASD_ACCESS_INVENTORY,UASD.UASD_ACCESS_LOST,URTD.URTD_ROOM_TYPE,DATE_FORMAT(UASD.UASD_STAMPDUTYDATE,'%d-%m-%Y') AS UASD_STAMPDUTYDATE,UASD.UASD_STAMPDUTYAMT,USDT.USDT_DATA,UASD.UASD_COMMENTS,ULD.ULD_LOGINID,DATE_FORMAT(CONVERT_TZ(UASD.UASD_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS TIMESTAMP FROM  UNIT_ACCESS_STAMP_DETAILS UASD LEFT JOIN UNIT_ROOM_TYPE_DETAILS URTD ON (UASD.URTD_ID = URTD.URTD_ID) LEFT JOIN UNIT_STAMP_DUTY_TYPE USDT ON (USDT.USDT_ID = UASD.USDT_ID),UNIT U ,USER_LOGIN_DETAILS ULD WHERE ULD.ULD_ID=UASD.ULD_ID AND (UASD.UNIT_ID = U.UNIT_ID) AND (U.UNIT_NO=".$USU_all_searchby.")";
+                $USU_select_unit_stampdetail="SELECT UASD.UASD_ACCESS_CARD,UASD.UASD_ACCESS_ACTIVE,UASD.UASD_ACCESS_INVENTORY,UASD.UASD_ACCESS_LOST,URTD.URTD_ROOM_TYPE,DATE_FORMAT(UASD.UASD_STAMPDUTYDATE,'%d-%m-%Y') AS UASD_STAMPDUTYDATE,USDT.USDT_DATA,UASD.UASD_STAMPDUTYAMT,UASD.UASD_COMMENTS,ULD.ULD_LOGINID,DATE_FORMAT(CONVERT_TZ(UASD.UASD_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS TIMESTAMP FROM  UNIT_ACCESS_STAMP_DETAILS UASD LEFT JOIN UNIT_ROOM_TYPE_DETAILS URTD ON (UASD.URTD_ID = URTD.URTD_ID) LEFT JOIN UNIT_STAMP_DUTY_TYPE USDT ON (USDT.USDT_ID = UASD.USDT_ID),UNIT U ,USER_LOGIN_DETAILS ULD WHERE ULD.ULD_ID=UASD.ULD_ID AND (UASD.UNIT_ID = U.UNIT_ID) AND (U.UNIT_NO=".$USU_all_searchby.")";
                 $USU_rs_unit_stampdetail=$this->db->query($USU_select_unit_stampdetail);
                 // for table fields
                 $headerarrdata=array();
@@ -515,7 +513,7 @@ class Mdl_unit_creation_search_update extends CI_Model{
         ,$USU_upd_lb_stamptype,$USU_upd_access,$USU_upd_access_comments,$USU_upd_accunitno,$USU_sep_upd_roomtype,$USU_sep_update_stamptype
         ,$USU_upd_lost,$USU_upd_inventory,$USU_update_lb_roomtype,$USU_upd_tb_stampamt,$USU_update_lb_stampdate,$USU_upd_typeofcard,$USU_cb_inventory
         ,$USU_cb_lost,$USU_obj_rowvalue,$USU_unit_searchby,$USU_dutyamt_fromamt,$USU_dutyamt_toamt,$USU_payment_frmamt,$USU_payment_toamt,$USU_frmdate
-        ,$USU_enddate,$USU_all_searchby,$USU_accesscard,$USU_parent_updation,$timeZoneFrmt,$UserStamp){
+        ,$USU_enddate,$USU_all_searchby,$USU_accesscard,$USU_parent_updation,$timeZoneFrmt,$UserStamp,$cal){
         try{
             if(($USU_upd_startdate_update!='')||($USU_upd_enddate_update!=''))
             {
@@ -621,15 +619,13 @@ class Mdl_unit_creation_search_update extends CI_Model{
             $USU_flag_flag_update=$USU_flag_rs->row()->FLAG_UPDATE;
             if($USU_flag_flag_update==1){
                 if(($USU_upd_selectoption_unit==3)||($USU_upd_selectoption_unit==4)||($USU_upd_selectoption_unit==6)||($USU_upd_selectoption_unit==7)){
-                    $this->load->library('Google');
                     $this->load->model('Eilib/Common_function');
                     $this->load->model('Eilib/Calender');
-                    $USU_calenderIDcode=$this->Common_function->CUST_getCalenderId();
                     $USU_sh_arr=$this->Common_function->getStarHubUnitCalTime();
                     $USU_oldvalues_sdate = date('Y-m-d',strtotime($USU_obj_rowvalue['USU_tr_second']));
                     $USU_oldvalues_edate = date('Y-m-d',strtotime($USU_obj_rowvalue['USU_tr_third']));
-//                    $this->Calender->StarHubUnit_DeleteCalEvent($USU_obj_rowvalue['USU_tr_first'],$USU_calenderIDcode,$USU_oldvalues_sdate,$USU_sh_arr[0],$USU_sh_arr[1],$USU_oldvalues_edate,$USU_sh_arr[0],$USU_sh_arr[1],'UNIT');
-//                    $this->Calender->StarHubUnit_CreateCalEvent($USU_calenderIDcode,$USU_upd_startdate_update,$USU_sh_arr[0],$USU_sh_arr[1],$USU_upd_enddate_update,$USU_sh_arr[0],$USU_sh_arr[1],'',$USU_upd_unitno,'','START DATE','END DATE',$USU_upd_nonei_event,$USU_upd_unitpayment);
+//                    $value=$this->Calender->StarHubUnit_DeleteCalEvent($USU_obj_rowvalue['USU_tr_first'],$USU_calenderIDcode,$USU_oldvalues_sdate,$USU_sh_arr[0],$USU_sh_arr[1],$USU_oldvalues_edate,$USU_sh_arr[0],$USU_sh_arr[1],'UNIT');
+                    $value=$this->Calender->StarHubUnit_CreateCalEvent($cal,$USU_upd_startdate_update,$USU_sh_arr[0]['ECN_DATA'],$USU_sh_arr[1]['ECN_DATA'],$USU_upd_enddate_update,$USU_sh_arr[0]['ECN_DATA'],$USU_sh_arr[1]['ECN_DATA'],'',$USU_upd_unitno,'','START DATE','END DATE',$USU_upd_nonei_event,$USU_upd_unitpayment);
                 }
             }
             if($USU_temp_chktrans!=''){
@@ -690,8 +686,8 @@ class Mdl_unit_creation_search_update extends CI_Model{
                 $drop_query = "DROP TABLE ".$USU_temp_custlp;
                 $this->db->query($drop_query);
             }
-//            $this->Calender->StarHubUnit_DeleteCalEvent($USU_obj_rowvalue['USU_tr_first'],$USU_calenderIDcode,$USU_oldvalues_sdate,$USU_sh_arr[0],$USU_sh_arr[1],$USU_oldvalues_edate,$USU_sh_arr[0],$USU_sh_arr[1],'UNIT');
-//            $this->Calender->StarHubUnit_CreateCalEvent($USU_calenderIDcode,$USU_upd_startdate_update,$USU_sh_arr[0],$USU_sh_arr[1],$USU_upd_enddate_update,$USU_sh_arr[0],$USU_sh_arr[1],'',$USU_upd_unitno,'','START DATE','END DATE',$USU_upd_nonei_event,$USU_upd_unitpayment);
+//            $value=$this->Calender->StarHubUnit_DeleteCalEvent($USU_obj_rowvalue['USU_tr_first'],$USU_calenderIDcode,$USU_oldvalues_sdate,$USU_sh_arr[0],$USU_sh_arr[1],$USU_oldvalues_edate,$USU_sh_arr[0],$USU_sh_arr[1],'UNIT');
+//            $value=$this->Calender->StarHubUnit_CreateCalEvent($USU_calenderIDcode,$USU_upd_startdate_update,$USU_sh_arr[0],$USU_sh_arr[1],$USU_upd_enddate_update,$USU_sh_arr[0],$USU_sh_arr[1],'',$USU_upd_unitno,'','START DATE','END DATE',$USU_upd_nonei_event,$USU_upd_unitpayment);
             log_message('error:',$ex->getMessage());
             return;
         }
@@ -739,17 +735,17 @@ class Mdl_unit_creation_search_update extends CI_Model{
             }
             elseif($USU_unit_searchby==7){//SEARCH BY UNIT
                 $USU_select_unit_startenddate = "SELECT U.UNIT_NO,U.UNIT_ID, UAD.UACD_ACC_NO, UAD.UACD_ACC_NAME, UAD.UACD_BANK_CODE, UAD.UACD_BRANCH_CODE,UAD.UACD_BANK_ADDRESS,DATE_FORMAT(CONVERT_TZ(UD.UD_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS TIMESTAMP, ULD.ULD_LOGINID,UD.UD_NON_EI,DATE_FORMAT(UD.UD_START_DATE,'%d-%m-%Y') AS UD_START_DATE,DATE_FORMAT(UD.UD_END_DATE,'%d-%m-%Y') AS UD_END_DATE,UD.UD_OBSOLETE,UD.UD_PAYMENT, UD.UD_DEPOSIT,UD.UD_COMMENTS FROM UNIT U LEFT JOIN UNIT_ACCOUNT_DETAILS UAD ON (U.UNIT_ID = UAD.UNIT_ID) LEFT JOIN UNIT_DETAILS UD ON (U.UNIT_ID = UD.UNIT_ID) ,USER_LOGIN_DETAILS ULD WHERE ULD.ULD_ID=UD.ULD_ID AND U.UNIT_NO =".$USU_all_searchby."" ;
-                $USU_select_unit_stampdetail="SELECT UASD.UASD_ACCESS_CARD,UASD.UASD_ACCESS_ACTIVE,UASD.UASD_ACCESS_INVENTORY,UASD.UASD_ACCESS_LOST,URTD.URTD_ROOM_TYPE,DATE_FORMAT(UASD.UASD_STAMPDUTYDATE,'%d-%m-%Y') AS UASD_STAMPDUTYDATE,UASD.UASD_STAMPDUTYAMT,USDT.USDT_DATA,UASD.UASD_COMMENTS,ULD.ULD_LOGINID,DATE_FORMAT(CONVERT_TZ(UASD.UASD_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS TIMESTAMP FROM  UNIT_ACCESS_STAMP_DETAILS UASD LEFT JOIN UNIT_ROOM_TYPE_DETAILS URTD ON (UASD.URTD_ID = URTD.URTD_ID) LEFT JOIN UNIT_STAMP_DUTY_TYPE USDT ON (USDT.USDT_ID = UASD.USDT_ID),UNIT U ,USER_LOGIN_DETAILS ULD WHERE ULD.ULD_ID=UASD.ULD_ID AND (UASD.UNIT_ID = U.UNIT_ID) AND (U.UNIT_NO=".$USU_all_searchby.")";
+                $USU_select_unit_stampdetail="SELECT UASD.UASD_ACCESS_CARD,UASD.UASD_ACCESS_ACTIVE,UASD.UASD_ACCESS_INVENTORY,UASD.UASD_ACCESS_LOST,URTD.URTD_ROOM_TYPE,DATE_FORMAT(UASD.UASD_STAMPDUTYDATE,'%d-%m-%Y') AS UASD_STAMPDUTYDATE,USDT.USDT_DATA,UASD.UASD_STAMPDUTYAMT,UASD.UASD_COMMENTS,ULD.ULD_LOGINID,DATE_FORMAT(CONVERT_TZ(UASD.UASD_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS TIMESTAMP FROM  UNIT_ACCESS_STAMP_DETAILS UASD LEFT JOIN UNIT_ROOM_TYPE_DETAILS URTD ON (UASD.URTD_ID = URTD.URTD_ID) LEFT JOIN UNIT_STAMP_DUTY_TYPE USDT ON (USDT.USDT_ID = UASD.USDT_ID),UNIT U ,USER_LOGIN_DETAILS ULD WHERE ULD.ULD_ID=UASD.ULD_ID AND (UASD.UNIT_ID = U.UNIT_ID) AND (U.UNIT_NO=".$USU_all_searchby.")";
                 $USU_rs_unit_stampdetail=$this->db->query($USU_select_unit_stampdetail);
                 // for table fields
                 $headerarrdata=array();
-                $USU_tr_stampunit='<br><br><table width="1800px" id="USU_tble_stamphtmltable" border="1" style="border-collapse: collapse;" cellspacing="0" data-class="table" class="srcresult"><sethtmlpageheader name="header" page="all" value="on" show-this-page="1"/><thead bgcolor="#6495ed" style="color:white"><tr><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:50px">ACCESS CARD</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:50px">ACCESS ACTIVE</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:50px">ACCESS INVENTORY</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:50px">ACCESS LOST</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:160px">ROOM TYPE</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:75px">STAMP DUTY DATE</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:140px">STAMP DUTY TYPE</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:50px">STAMP DUTY AMOUNT</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:300px">COMMENTS</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:180px">USERSTAMP</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:150px">TIMESTAMP</th></tr></thead><tbody>';
                 foreach ($USU_rs_unit_stampdetail->list_fields() as $field)
                 {
                     $headerarrdata[] = $field;
                 }
                 if ($USU_rs_unit_stampdetail->num_rows() > 0)
                 {
+                    $USU_tr_stampunit='<br><br><table width="1800px" id="USU_tble_stamphtmltable" border="1" style="border-collapse: collapse;" cellspacing="0" data-class="table" class="srcresult"><sethtmlpageheader name="header" page="all" value="on" show-this-page="1"/><thead bgcolor="#6495ed" style="color:white"><tr><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:50px">ACCESS CARD</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:50px">ACCESS ACTIVE</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:50px">ACCESS INVENTORY</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:50px">ACCESS LOST</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:160px">ROOM TYPE</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:75px">STAMP DUTY DATE</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:120px">STAMP DUTY TYPE</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:50px">STAMP DUTY AMOUNT</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:300px">COMMENTS</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:180px">USERSTAMP</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:150px">TIMESTAMP</th></tr></thead><tbody>';
                     foreach($USU_rs_unit_stampdetail->result_array() as $row){
                         $j=$j+1;
                         $USU_tr_stampunit.='<tr>';
@@ -764,8 +760,8 @@ class Mdl_unit_creation_search_update extends CI_Model{
                         }
                         $USU_tr_stampunit.='</tr>';
                     }
+                    $USU_tr_stampunit.='</tbody></table>';
                 }
-                $USU_tr_stampunit.='</tbody></table>';
             }
             elseif($USU_unit_searchby==4){//SEARCH BY PAYMENT
                 $USU_select_unit_startenddate = "SELECT U.UNIT_NO,U.UNIT_ID, UAD.UACD_ACC_NO, UAD.UACD_ACC_NAME, UAD.UACD_BANK_CODE, UAD.UACD_BRANCH_CODE,UAD.UACD_BANK_ADDRESS,DATE_FORMAT(CONVERT_TZ(UD.UD_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS TIMESTAMP, ULD.ULD_LOGINID,UD.UD_NON_EI,DATE_FORMAT(UD.UD_START_DATE,'%d-%m-%Y') AS UD_START_DATE,DATE_FORMAT(UD.UD_END_DATE,'%d-%m-%Y') AS UD_END_DATE,UD.UD_OBSOLETE,UD.UD_PAYMENT, UD.UD_DEPOSIT,UD.UD_COMMENTS FROM UNIT U LEFT JOIN UNIT_ACCOUNT_DETAILS UAD ON (U.UNIT_ID = UAD.UNIT_ID) LEFT JOIN UNIT_DETAILS UD ON (U.UNIT_ID = UD.UNIT_ID) ,USER_LOGIN_DETAILS ULD WHERE ULD.ULD_ID=UD.ULD_ID AND  UD.UD_PAYMENT BETWEEN ".$USU_payment_frmamt." and ".$USU_payment_toamt." ORDER BY U.UNIT_NO,UD.UD_PAYMENT";
