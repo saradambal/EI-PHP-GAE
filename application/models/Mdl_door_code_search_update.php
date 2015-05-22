@@ -38,5 +38,16 @@ class Mdl_door_code_search_update extends CI_Model{
         }
         return $DCSU_array_login;
     }
+    public function DCSU_update_Doorcode($DCSU_login_id,$DCSU_unitnumber,$DCSU_doorcode,$DCSU_weblogin,$DCSU_webpass,$UserStamp,$timeZoneFormat){
+        if($DCSU_weblogin!=''){
+            $DCSU_weblogin=$this->db->escape_like_str($DCSU_weblogin);
+        }
+        $DCSU_creatstmtLogin ="CALL SP_UNIT_LOGIN_DOORCODE_UPDATE(".$DCSU_unitnumber.",'".$DCSU_doorcode."','".$DCSU_weblogin."','".$DCSU_webpass."','".$UserStamp."',@FLAG)";
+        $this->db->query($DCSU_creatstmtLogin);
+        $DCSU_flag_rs=$this->db->query("SELECT @FLAG AS FLAG");
+        $DCSU_flag=$DCSU_flag_rs->row()->FLAG;
+        $DCSU_refresh=$this->DCSU_login_details($DCSU_unitnumber,$DCSU_flag,$timeZoneFormat);
+        return $DCSU_refresh;
+    }
 
 }

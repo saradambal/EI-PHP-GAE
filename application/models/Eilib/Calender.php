@@ -66,50 +66,56 @@ class Calender  extends CI_Model {
 //CALENDAR EVENT CREATION FOR STARHUB N UNIT FORM
     public  function  StarHubUnit_CreateCalEvent($cal,$startdate,$startdate_starttime,$startdate_endtime,$enddate,$enddate_starttime,$enddate_endtime,$TypeOfExp,$unitno,$accountno,$starteventtype,$endeventtype,$eiornonei,$rent)
     {
-        $calId=$this->GetEICalendarId();
-        if($eiornonei=="X")
-        {$eiornonei="EI";}
-        else
-        {$eiornonei="NON EI";}
-        if($TypeOfExp=="STARHUB")
-        {
-            $calseventtitle=$TypeOfExp." ".$unitno." - ".$starteventtype;//title of start event
-            $calseventdesc=$unitno." - ".$accountno." - ".$starteventtype;//description of start event
-            $calseventloc=$unitno." - ".$accountno;//location of start event
+        try{
+            $calId=$this->GetEICalendarId();
+            if($eiornonei=="X")
+            {$eiornonei="EI";}
+            else
+            {$eiornonei="NON EI";}
+            if($TypeOfExp=="STARHUB")
+            {
+                $calseventtitle=$TypeOfExp." ".$unitno." - ".$starteventtype;//title of start event
+                $calseventdesc=$unitno." - ".$accountno." - ".$starteventtype;//description of start event
+                $calseventloc=$unitno." - ".$accountno;//location of start event
+            }
+            else//UNIT
+            {
+                $calseventtitle=$unitno." - "."LEASE ".$starteventtype;//title of start event
+                $calseventdesc=$unitno." - ".$eiornonei." - "."RENT :".$rent;//description of start event
+                $calseventloc=$unitno." - ".$eiornonei;//location of start event
+            }
+            $event = new Google_Service_Calendar_Event();
+            $startEndCal= $this->CalenderTime_Convertion($startdate,$startdate_starttime,$startdate_endtime);
+            $event->setStart($startEndCal[0]);
+            $event->setEnd($startEndCal[1]);
+            $event->setDescription($calseventdesc);
+            $event->setLocation($calseventloc);
+            $event->setSummary($calseventtitle);
+            $cal->events->insert($calId, $event);
+            if($TypeOfExp=="STARHUB")
+            {
+                $calseventtitle=$TypeOfExp." ".$unitno." - ".$endeventtype;//title of start event
+                $calseventdesc=$unitno." - ".$accountno." - ".$endeventtype;//description of start event
+                $calseventloc=$unitno." - ".$accountno;//location of start event
+            }
+            else//UNIT
+            {
+                $calseventtitle=$unitno." - "."LEASE ".$endeventtype;//title of start event
+                $calseventdesc=$unitno." - ".$eiornonei." - "."RENT :".$rent;//description of start event
+                $calseventloc=$unitno." - ".$eiornonei;//location of start event
+            }
+            $startEndCal= $this->CalenderTime_Convertion($enddate,$enddate_starttime,$enddate_endtime);
+            $event->setStart($startEndCal[0]);
+            $event->setEnd($startEndCal[1]);
+            $event->setDescription($calseventdesc);
+            $event->setLocation($calseventloc);
+            $event->setSummary($calseventtitle);
+            $cal->events->insert($calId, $event);
         }
-        else//UNIT
-        {
-            $calseventtitle=$unitno." - "."LEASE ".$starteventtype;//title of start event
-            $calseventdesc=$unitno." - ".$eiornonei." - "."RENT :".$rent;//description of start event
-            $calseventloc=$unitno." - ".$eiornonei;//location of start event
+        catch(Exception $ex){
+
+            return $ex->getMessage();
         }
-        $event = new Google_Service_Calendar_Event();
-        $startEndCal= $this->CalenderTime_Convertion($startdate,$startdate_starttime,$startdate_endtime);
-        $event->setStart($startEndCal[0]);
-        $event->setEnd($startEndCal[1]);
-        $event->setDescription($calseventdesc);
-        $event->setLocation($calseventloc);
-        $event->setSummary($calseventtitle);
-        $cal->events->insert($calId, $event);
-        if($TypeOfExp=="STARHUB")
-        {
-            $calseventtitle=$TypeOfExp." ".$unitno." - ".$endeventtype;//title of start event
-            $calseventdesc=$unitno." - ".$accountno." - ".$endeventtype;//description of start event
-            $calseventloc=$unitno." - ".$accountno;//location of start event
-        }
-        else//UNIT
-        {
-            $calseventtitle=$unitno." - "."LEASE ".$endeventtype;//title of start event
-            $calseventdesc=$unitno." - ".$eiornonei." - "."RENT :".$rent;//description of start event
-            $calseventloc=$unitno." - ".$eiornonei;//location of start event
-        }
-        $startEndCal= $this->CalenderTime_Convertion($enddate,$enddate_starttime,$enddate_endtime);
-        $event->setStart($startEndCal[0]);
-        $event->setEnd($startEndCal[1]);
-        $event->setDescription($calseventdesc);
-        $event->setLocation($calseventloc);
-        $event->setSummary($calseventtitle);
-        $cal->events->insert($calId, $event);
     }
 //UNIT AND STARHUB CALENDAR UPDATION
     public  function StarHubUnit_DeleteCalEvent($cal,$startdate,$startdate_starttime,$startdate_endtime,$enddate,$enddate_starttime,$enddate_endtime,$TypeOfExp,$unitno,$accountno,$starteventtype,$endeventtype,$eiornonei,$rent

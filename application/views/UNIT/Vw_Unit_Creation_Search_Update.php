@@ -1025,12 +1025,12 @@ require_once "Header.php";
                                 var USU_tr_common_stamp ='<th style="width:50px">ACCESS CARD</th><th style="width:50px">ACCESS ACTIVE</th><th style="width:50px">ACCESS INVENTORY</th><th style="width:50px">ACCESS LOST</th><th style="width:160px">ROOM TYPE</th><th style="width:75px">STAMP DUTY DATE</th><th style="width:140px">STAMP DUTY TYPE</th><th style="width:50px">STAMP DUTY AMOUNT</th><th style="width:500px">COMMENTS</th><th style="width:170px">USERSTAMP</th><th style="width:140px">TIMESTAMP</th></tr></thead><tbody>' ;
                                 if(USU_flex_flag==8)//STAMP TYPE
                                 {
-                                    USU_tr +='<table id="USU_tble_htmltable" border="1" cellspacing="0" data-class="table" class="srcresult"><thead bgcolor="#6495ed" style="color:white"><tr><th style="width:200px">STAMP DUTY TYPE</th><th style="width:200px">USERSTAMP</th><th style="width:130px">TIMESTAMP</th></tr></thead><tbody>';
+                                    USU_tr +='<table id="USU_tble_htmltable" border="1" cellspacing="0" data-class="table" class="srcresult"><thead bgcolor="#6495ed" style="color:white"><tr><th style="width:200px">STAMP DUTY TYPE <em>*</em></th><th style="width:200px">USERSTAMP</th><th style="width:130px">TIMESTAMP</th></tr></thead><tbody>';
 //                                    $('#USU_lbl_msg').text($('#USU_lb_all_searchby').val())
                                 }
                                 else if(USU_flex_flag==5)//ROOM TYPE
                                 {
-                                    USU_tr += '<table id="USU_tble_htmltable" border="1" cellspacing="0" data-class="table" class="srcresult"><thead bgcolor="#6495ed" style="color:white"><tr><th style="width:200px">ROOM TYPE</th><th style="width:200px">USERSTAMP</th><th style="width:130px">TIMESTAMP</th></tr></thead><tbody>';
+                                    USU_tr += '<table id="USU_tble_htmltable" border="1" cellspacing="0" data-class="table" class="srcresult"><thead bgcolor="#6495ed" style="color:white"><tr><th style="width:200px">ROOM TYPE <em>*</em></th><th style="width:200px">USERSTAMP</th><th style="width:130px">TIMESTAMP</th></tr></thead><tbody>';
                                 }
                                 else if((USU_flex_flag==7)||(USU_flex_flag==6)||(USU_flex_flag==3)||(USU_flex_flag==4))//UNIT,START DATE,END DATE,PAYMENT
                                 {
