@@ -8,27 +8,72 @@ require_once "Header.php";
 </style>
 <script>
     $(document).ready(function(){
+        $('#BankTT_Updation_Form').hide();
         var Allunits;
         var SRC_ErrorMsg;
         var modelnames;
+        $('.amtonly').doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
+        $('.autogrowcomments').autogrow({onInitialize: true});
+        $("#Banktt_SRC_Accno").doValidation({rule:'numbersonly',prop:{realpart:25,leadzero:true}});
+        $(".autosize").doValidation({rule:'general',prop:{whitespace:true,autosize:true}});
+        $("#Banktt_SRC_Bankcode").doValidation({rule:'numbersonly',prop:{realpart:4,leadzero:true}});
+        $("#Banktt_SRC_Branchcode").doValidation({rule:'numbersonly',prop:{realpart:3,leadzero:true}});
+        $("#Banktt_SRC_Date").datepicker({dateFormat:'dd-mm-yy',changeYear: true,changeMonth: true});
+        $('#Banktt_SRC_Date').datepicker("option","maxDate",new Date());
+        $('#Banktt_SRC_Debitedon').datepicker({
+            dateFormat: "dd-mm-yy",
+            changeYear: true,
+            changeMonth: true
+        });
         $.ajax({
             type: "POST",
             url: "/index.php/Ctrl_Banktt_Search_Forms/Banktt_initialdatas",
             data:{'ErrorList':'1,2,4,6,45,247,385,401'},
             success: function(data){
-                $('.preloader').show();
+                $('.preloader').hide();
                 var value=JSON.parse(data);
                 var searchoption=value[0];
                 Allunits=value[2];
                 SRC_ErrorMsg=value[1];
                 modelnames=value[3];
                 var searchoptions='<OPTION>SELECT</OPTION>';
+                var statusoptions='<OPTION>SELECT</OPTION>';
+                var chargestooptions='<OPTION>SELECT</OPTION>';
+                var createdbyoptions='<OPTION>SELECT</OPTION>';
                 for (var i = 0; i < searchoption.length; i++)
                 {
                     var data=searchoption[i];
-                    searchoptions += '<option value="' + data.BCN_ID + '">' + data.BCN_DATA + '</option>';
+                    if(data.CGN_ID==56)
+                    {
+                        searchoptions += '<option value="' + data.BCN_ID + '">' + data.BCN_DATA + '</option>';
+                    }
+                    if(data.CGN_ID==70)
+                    {
+                        if(data.BCN_ID!=13 && data.BCN_ID!=14)
+                        {
+                         statusoptions += '<option value="' + data.BCN_DATA + '">' + data.BCN_DATA + '</option>';
+                        }
+                    }
+                    if(data.CGN_ID==71)
+                    {
+                        chargestooptions += '<option value="' + data.BCN_DATA + '">' + data.BCN_DATA + '</option>';
+                    }
+                    if(data.CGN_ID==72)
+                    {
+                        createdbyoptions += '<option value="' + data.BCN_DATA + '">' + data.BCN_DATA + '</option>';
+                    }
+                }
+                $('#Banktt_SRC_Status').html(statusoptions);
+                $('#Banktt_SRC_Chargesto').html(chargestooptions);
+                $('#Banktt_SRC_Createdby').html(createdbyoptions);
+                var modeloptions='<OPTION>SELECT</OPTION>';
+                for (var i = 0; i < modelnames.length; i++)
+                {
+                    var data=modelnames[i];
+                    modeloptions += '<option value="' + data.BTM_DATA + '">' + data.BTM_DATA + '</option>';
                 }
                 $('#Banktt_SRC_SearchOption').html(searchoptions);
+                $('#Banktt_SRC_Modelnames').html(modeloptions);
                 $('.preloader').hide();
             },
             error: function(data){
@@ -38,6 +83,7 @@ require_once "Header.php";
         var AllaccnameArray=[];
         $(document).on('change','#Banktt_SRC_SearchOption',function() {
             $('#Banktt_Search_DataTable').hide();
+            $('#BankTT_Updation_Form').hide();
             var searchoption=$('#Banktt_SRC_SearchOption').val();
             if(searchoption==1)
             {
@@ -343,6 +389,7 @@ require_once "Header.php";
         });
         var BT_id=[];
         $(document).on('click','#Banktt_src_btn_search',function() {
+            $('#BankTT_Updation_Form').hide();
             var searchoption=$('#Banktt_SRC_SearchOption').val();
             $("#Banktt_src_btn_search").attr("disabled", "disabled");
             $('.preloader').show();
@@ -400,29 +447,30 @@ require_once "Header.php";
                 url: '/index.php/Ctrl_Banktt_Search_Forms/Banktt_Search_Details',
                 data:inputdata,
                 success: function(data){
-                   var valuearray=JSON.parse(data);
+                    var valuearray=JSON.parse(data);
                     var tabledata="<table id='Banktt_Datatable' border=1 cellspacing='0' data-class='table'  class='srcresult table' style='width:3000px;' >";
                     tabledata+="<thead class='headercolor'><tr class='head' style='text-align:center'>";
-                    tabledata+="<th style='text-align:center;vertical-align: top'>EDIT/UPDATE</th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top'>TRANSACTION TYPE<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>DATE<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>ACCOUNT NAME<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>ACCOUNT NO<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>AMOUNT<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>UNIT</th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>CUSTOMER<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>STATUS<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>DEBITED / REJECTED DATE<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>BANK CODE</th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>BRANCH CODE</th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>BANK ADDRESS</th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>SWIFT CODE</th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>CHARGES TO</th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>CUST REF</th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>INV DETAILSS</th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>COMMENTS</th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>USERSTAMP</th>";
-                    tabledata+="<th style='text-align:center;vertical-align: top''>TIMESTAMP</th>";
+                    tabledata+="<th style='width:80px !important;text-align:center;vertical-align: top'>EDIT/UPDATE</th>";
+                    tabledata+="<th style='width:130px !important;text-align:center;vertical-align: top'>TRANSACTION TYPE<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:100px !important;text-align:center;vertical-align: top'>DATE<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:200px !important;text-align:center;vertical-align: top'>ACCOUNT NAME<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:200px !important;text-align:center;vertical-align: top'>ACCOUNT NO<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:120px !important;text-align:center;vertical-align: top'>AMOUNT<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:100px !important;text-align:center;vertical-align: top'>UNIT</th>";
+                    tabledata+="<th style='width:200px !important;text-align:center;vertical-align: top'>CUSTOMER<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:100px !important;text-align:center;vertical-align: top'>STATUS<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:150px !important;text-align:center;vertical-align: top'>DEBITED / REJECTED DATE<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:120px !important;text-align:center;vertical-align: top'>BANK CODE</th>";
+                    tabledata+="<th style='width:120px !important;text-align:center;vertical-align: top'>BRANCH CODE</th>";
+                    tabledata+="<th style='width:200px !important;text-align:center;vertical-align: top'>BANK ADDRESS</th>";
+                    tabledata+="<th style='width:150px !important;text-align:center;vertical-align: top'>SWIFT CODE</th>";
+                    tabledata+="<th style='width:150px !important;text-align:center;vertical-align: top'>CHARGES TO</th>";
+                    tabledata+="<th style='width:200px !important;text-align:center;vertical-align: top'>CUST REF</th>";
+                    tabledata+="<th style='width:200px !important;text-align:center;vertical-align: top'>INV DETAILSS</th>";
+                    tabledata+="<th style='width:200px !important;text-align:center;vertical-align: top'>COMMENTS</th>";
+                    tabledata+="<th style='width:150px !important;text-align:center;vertical-align: top'>CREATED BY</th>";
+                    tabledata+="<th style='width:150px !important;text-align:center;vertical-align: top'>USERSTAMP</th>";
+                    tabledata+="<th style='width:150px !important;text-align:center;vertical-align: top'>TIMESTAMP</th>";
                     tabledata+="</tr></thead><tbody>";
                     for(var i=0;i<valuearray.length;i++)
                     {
@@ -444,45 +492,270 @@ require_once "Header.php";
                         if(valuearray[i].BT_CUST_REF==null){var custoref='';}else{custoref=valuearray[i].BT_CUST_REF;}
                         if(valuearray[i].BT_INV_DETAILS==null){var invdetails='';}else{invdetails=valuearray[i].BT_INV_DETAILS;}
                         if(valuearray[i].BT_COMMENTS==null){var comments='';}else{comments=valuearray[i].BT_COMMENTS;}
+                        if(valuearray[i].BANK_TRANSFER_CREATED_BY==null){var createdby='';}else{createdby=valuearray[i].BANK_TRANSFER_CREATED_BY;}
                         tabledata+='<tr id='+valuearray[i].BT_ID+'>' +
-                            "<td style='width:80px !important;vertical-align: middle'><div class='col-lg-2'><span style='display: block;color:green' title='Edit' class='glyphicon glyphicon-edit Cheque_editbutton' disabled id="+edit+"></div></td>" +
-                            "<td style='width:100px !important;vertical-align: middle;text-align: center'>"+valuearray[i].BANK_TRANSFER_TYPE+"</td>" +
+                            "<td style='width:80px !important;vertical-align: middle'><div class='col-lg-2'><span style='display: block;color:green' title='Edit' class='glyphicon glyphicon-edit Banktt_editbutton' id="+edit+"></div></td>" +
+                            "<td style='width:130px !important;vertical-align: middle;text-align: center'>"+valuearray[i].BANK_TRANSFER_TYPE+"</td>" +
                             "<td style='width:100px !important;vertical-align: middle;text-align: center' >"+valuearray[i].BT_DATE+"</td>" +
-                            "<td style='width:250px !important;vertical-align: middle'>"+accname+"</td>" +
-                            "<td style='width:250px !important;vertical-align: middle'>"+accno+"</td>" +
+                            "<td style='width:200px !important;vertical-align: middle'>"+accname+"</td>" +
+                            "<td style='width:200px !important;vertical-align: middle'>"+accno+"</td>" +
                             "<td style='width:120px !important;vertical-align: middle;text-align: center'>"+valuearray[i].BT_AMOUNT+"</td>" +
-                            "<td style='width:150px !important;vertical-align: middle;text-align: center'>"+unit+"</td>" +
-                            "<td style='width:100px !important;vertical-align: middle;text-align: center'>"+customer+"</td>" +
+                            "<td style='width:100px !important;vertical-align: middle;text-align: center'>"+unit+"</td>" +
+                            "<td style='width:200px !important;vertical-align: middle;text-align: center'>"+customer+"</td>" +
                             "<td style='width:100px !important;vertical-align: middle;text-align: center'>"+status+"</td>" +
-                            "<td style='width:250px !important;vertical-align: middle'>"+debitedon+"</td>" +
-                            "<td style='width:200px !important;vertical-align: middle'>"+bankcode+"</td>" +
-                            "<td style='width:150px !important;vertical-align: middle'>"+branchcode+"</td>" +
+                            "<td style='width:150px !important;vertical-align: middle'>"+debitedon+"</td>" +
+                            "<td style='width:120px !important;vertical-align: middle'>"+bankcode+"</td>" +
+                            "<td style='width:120px !important;vertical-align: middle'>"+branchcode+"</td>" +
                             "<td style='width:200px !important;vertical-align: middle'>"+bankaddress+"</td>" +
-                            "<td style='width:200px !important;vertical-align: middle'>"+swiftcode+"</td>" +
-                            "<td style='width:200px !important;vertical-align: middle'>"+chargesto+"</td>" +
+                            "<td style='width:150px !important;vertical-align: middle'>"+swiftcode+"</td>" +
+                            "<td style='width:150px !important;vertical-align: middle'>"+chargesto+"</td>" +
                             "<td style='width:200px !important;vertical-align: middle'>"+custoref+"</td>" +
                             "<td style='width:200px !important;vertical-align: middle'>"+invdetails+"</td>" +
                             "<td style='width:200px !important;vertical-align: middle'>"+comments+"</td>" +
-                            "<td style='width:200px !important;vertical-align: middle'>"+valuearray[i].ULD_LOGINID+"</td>" +
-                            "<td style='width:200px !important;vertical-align: middle'>"+valuearray[i].BT_TIME_STAMP+"</td>" +
+                            "<td style='width:150px !important;vertical-align: middle'>"+createdby+"</td>" +
+                            "<td style='width:150px !important;vertical-align: middle'>"+valuearray[i].ULD_LOGINID+"</td>" +
+                            "<td style='width:150px !important;vertical-align: middle'>"+valuearray[i].BT_TIME_STAMP+"</td>" +
                             "</tr>";
                     }
                     tabledata+="</body>";
+                    $('#tableheader').text(header);
                     $('section').html(tabledata);
+                    $('.preloader').hide();
                     $('#Banktt_Search_DataTable').show();
                     $('#Banktt_Datatable').DataTable( {
                         "aaSorting": [],
                         "pageLength": 10,
                         "sPaginationType":"full_numbers"
                     });
+                    },
+                error: function(data){
+                    alert('error in getting'+JSON.stringify(data));
+                    $('.preloader').hide();
+                }
+            });
+        });
+        $(document).on('click','.Banktt_editbutton',function() {
+        var cid = $(this).attr('id');
+        var SplittedData=cid.split('_');
+        var Rowid=SplittedData[1];
+        $('#BankTT_Updation_Form').hide();
+        $("#Banktt_SRC_Updatebutton").attr("disabled", "disabled");
+        $('#BankTT_Updation_Form')[0].reset();
+        $('#Temp_Bt_id').val(Rowid);
+        var tds = $('#'+Rowid).children('td');
+            if($(tds[1]).html()=='TT')
+            {
+                $('#ttgiropart1').show();
+                $('#ttgiropart2').show();
+                $('#giropart').hide();
+                $('#modeldiv').hide();
+                $('#ttpart').show();
+                $('#Banktt_SRC_TTtype').val($(tds[1]).html());
+                $('#Banktt_SRC_Accname').val($(tds[3]).html());
+                $('#Banktt_SRC_Accno').val($(tds[4]).html());
+                $('#Banktt_SRC_Unit').val($(tds[6]).html());
+                $('#Banktt_SRC_Customername').val($(tds[7]).html());
+                $('#Banktt_SRC_Swiftcode').val($(tds[13]).html());
+                $('#Banktt_SRC_Chargesto').val($(tds[14]).html());
+            }
+            else if($(tds[1]).html()=='GIRO')
+            {
+                $('#ttgiropart1').show();
+                $('#ttgiropart2').show();
+                $('#ttpart').hide();
+                $('#modeldiv').hide();
+                $('#giropart').show();
+                $('#Banktt_SRC_TTtype').val($(tds[1]).html());
+                $('#Banktt_SRC_Accname').val($(tds[3]).html());
+                $('#Banktt_SRC_Accno').val($(tds[4]).html());
+                $('#Banktt_SRC_Unit').val($(tds[6]).html());
+                $('#Banktt_SRC_Customername').val($(tds[7]).html());
+                $('#Banktt_SRC_Bankcode').val($(tds[10]).html());
+                $('#Banktt_SRC_Branchcode').val($(tds[11]).html());
+            }
+            else
+            {
+                $('#ttgiropart1').hide();
+                $('#ttgiropart2').hide();
+                $('#ttpart').hide();
+                $('#giropart').hide();
+                $('#modeldiv').show();
+                $('#Banktt_SRC_TTtype').val('MODEL');
+                $('#Banktt_SRC_Modelnames').val($(tds[1]).html());
+            }
+            $('#Banktt_SRC_Date').val($(tds[2]).html());
+            $('#Banktt_SRC_Amount').val($(tds[5]).html());
+            $('#Banktt_SRC_Status').val($(tds[8]).html());
+            $('#Banktt_SRC_Debitedon').val($(tds[9]).html());
+            $('#Banktt_SRC_BankAddress').val($(tds[12]).html());
+            $('#Banktt_SRC_Customerref').val($(tds[15]).html());
+            $('#Banktt_SRC_Invdetails').val($(tds[16]).html());
+            if($(tds[18]).html()!='')
+            {
+                $('#Banktt_SRC_Createdby').val($(tds[18]).html());
+            }
+            $('#Banktt_SRC_Comments').val($(tds[17]).html());
+            var bankttdate=$(tds[2]).html();
+            var BANKTT_db_chkindate1 = new Date( Date.parse( FormTableDateFormat(bankttdate)));
+            BANKTT_db_chkindate1.setDate( BANKTT_db_chkindate1.getDate());
+            var BANKTT_db_chkindate1 = BANKTT_db_chkindate1.toDateString();
+            BANKTT_db_chkindate1 = new Date( Date.parse( BANKTT_db_chkindate1 ) );
+            $('#Banktt_SRC_Date').datepicker("option","minDate",new Date(BANKTT_db_chkindate1.getFullYear()-1,BANKTT_db_chkindate1.getMonth(),BANKTT_db_chkindate1.getDate()));
+            if($(tds[9]).html()=='')
+            {
+                 $('#debittedondiv').hide().val('');
+            }
+            else
+            {
+                $('#debittedondiv').show();
+            }
+            $('#Banktt_SRC_Debitedon').datepicker("option","maxDate",BANKTT_db_chkindate1);
+            $('#Banktt_SRC_Debitedon').datepicker("option","maxDate",new Date());
+            $('#BankTT_Updation_Form').show();
+        });
+        $(document).on('change','#Banktt_SRC_Date',function() {
+            var debiteddate=$('#Banktt_SRC_Date').val();
+            var CCRE_db_chkindate1 = new Date( Date.parse( FormTableDateFormat(debiteddate)));
+            CCRE_db_chkindate1.setDate( CCRE_db_chkindate1.getDate());
+            var CCRE_db_chkindate1 = CCRE_db_chkindate1.toDateString();
+            CCRE_db_chkindate1 = new Date( Date.parse( CCRE_db_chkindate1 ) );
+            $('#Banktt_SRC_Debitedon').datepicker("option","minDate",CCRE_db_chkindate1);
+        });
+        $(document).on('change','#Banktt_SRC_Status',function() {
+            var debiteddate=$('#Banktt_SRC_Date').val();
+            var CCRE_db_chkindate1 = new Date( Date.parse( FormTableDateFormat(debiteddate)));
+            CCRE_db_chkindate1.setDate( CCRE_db_chkindate1.getDate());
+            var CCRE_db_chkindate1 = CCRE_db_chkindate1.toDateString();
+            CCRE_db_chkindate1 = new Date( Date.parse( CCRE_db_chkindate1 ) );
+            $('#Banktt_SRC_Debitedon').datepicker("option","minDate",CCRE_db_chkindate1);
+            $('#Banktt_SRC_Debitedon').datepicker("option","maxDate",new Date());
+            if(($('#Banktt_SRC_Status').val()!="SELECT")&&($('#Banktt_SRC_Status').val()!="ENTERED")&&($('#Banktt_SRC_Status').val()!="CREATED"))
+            {
+                $('#debittedondiv').show();
+                $('#Banktt_SRC_Debitedon').val('');
+            }
+            else
+            {
+                $('#debittedondiv').hide();
+                $('#Banktt_SRC_Debitedon').val('');
+            }
+        });
+        /////////////UPDATE FORM VALIDATION///////
+        $(document).on('change blur','#BankTT_Updation_Form',function() {
+            var type=$('#Banktt_SRC_TTtype').val();
+            $("#Banktt_SRC_Updatebutton").attr("disabled", "disabled");
+            if((type=='TT')||(type=="GIRO"))
+            {
+                if(($('#Banktt_SRC_Status').val()!="SELECT") && ($('#Banktt_SRC_Status').val()!="ENTERED")&& ($('#Banktt_SRC_Status').val()!="CREATED"))
+                {
+                    if(type=='TT')
+                    {
+                        if($('#Banktt_SRC_Accname').val()!="" && $('#Banktt_SRC_Accno').val()!="" && $('#Banktt_SRC_Date').val()!="" && $('#Banktt_SRC_Amount').val()!="" && $('#Banktt_SRC_Swiftcode').val()!="" && $('#Banktt_SRC_Chargesto').val()!="SELECT" && $('#Banktt_SRC_Debitedon').val()!="")
+                        {
+                            $("#Banktt_SRC_Updatebutton").removeAttr("disabled");
+                        }
+                        else
+                        {
+                            $("#Banktt_SRC_Updatebutton").attr("disabled", "disabled");
+                        }
+                    }
+                    if(type=='GIRO')
+                    {
+                        if($('#Banktt_SRC_Accname').val()!="" && $('#Banktt_SRC_Accno').val()!="" && $('#Banktt_SRC_Date').val()!="" && $('#Banktt_SRC_Amount').val()!="" && $('#Banktt_SRC_Debitedon').val()!="" )
+                        {
+                            $("#Banktt_SRC_Updatebutton").removeAttr("disabled");
+                        }
+                        else
+                        {
+                            $("#Banktt_SRC_Updatebutton").attr("disabled", "disabled");
+                        }
+                    }
+                }
+                else
+                {
+                    if(type=='TT')
+                    {
+                        if($('#Banktt_SRC_Accname').val()!="" && $('#Banktt_SRC_Accno').val()!="" && $('#Banktt_SRC_Date').val()!="" && $('#Banktt_SRC_Amount').val()!="" && $('#Banktt_SRC_Swiftcode').val()!="" && $('#Banktt_SRC_Status').val()!="SELECT" && $('#Banktt_SRC_Chargesto').val()!="SELECT")
+                        {
+                            $("#Banktt_SRC_Updatebutton").removeAttr("disabled");
+                        }
+                        else
+                        {
+                            $("#Banktt_SRC_Updatebutton").attr("disabled", "disabled");
+                        }
+                    }
+                    if(type=='GIRO')
+                    {
+                        if($('#Banktt_SRC_Accname').val()!="" && $('#Banktt_SRC_Accno').val()!="" && $('#Banktt_SRC_Date').val()!="" && $('#Banktt_SRC_Amount').val()!="" && $('#Banktt_SRC_Status').val()!="SELECT" )
+                        {
+                            $("#Banktt_SRC_Updatebutton").removeAttr("disabled");
+                        }
+                        else
+                        {
+                            $("#Banktt_SRC_Updatebutton").attr("disabled", "disabled");
+                        }
+                    }
+                }
+            }
+            else
+            {
+                if(($('#Banktt_SRC_Status').val()!="SELECT") && ($('#Banktt_SRC_Status').val()!="ENTERED") && ($('#Banktt_SRC_Status').val()!="CREATED"))
+                {
+                    if($('#Banktt_SRC_Date').val()!="" && $('#Banktt_SRC_Amount').val()!="" && $('#Banktt_SRC_Modelnames').val()!="SELECT" && $('#Banktt_SRC_Debitedon').val()!="")
+                    {
+                        $("#Banktt_SRC_Updatebutton").removeAttr("disabled");
+                    }
+                    else
+                    {
+                        $("#Banktt_SRC_Updatebutton").attr("disabled", "disabled");
+                    }
+                }
+                else
+                {
+                    if($('#BANKTT_SRC_db_date').val()!="" && $('#Banktt_SRC_Amount').val()!="" && $('#Banktt_SRC_Modelnames').val()!="SELECT" && $('#BANKTT_SRC_lb_status').val()!="SELECT")
+                    {
+                        $("#Banktt_SRC_Updatebutton").removeAttr("disabled");
+                    }
+                    else
+                    {
+                        $("#Banktt_SRC_Updatebutton").attr("disabled", "disabled");
+                    }
+                }
+            }
+        });
+        function FormTableDateFormat(inputdate){
+            var string = inputdate.split("-");
+            return string[2]+'-'+ string[1]+'-'+string[0];
+        }
+        $(document).on('click','#Banktt_SRC_Updatebutton',function() {
+            $('.preloader').show();
+            var FormElements=$('#BankTT_Updation_Form').serialize();
+            $.ajax({
+                type: "POST",
+                url: "/index.php/Ctrl_Banktt_Search_Forms/Banktt_Update_Save",
+                data:FormElements,
+                success: function(data){
+                    var returnvalue=JSON.parse(data);
+                    if(returnvalue==1)
+                    {
+                        show_msgbox("BANK TT ENTRY",SRC_ErrorMsg[2].EMC_DATA,"success",false);
+                        $('#BankTT_Updation_Form').hide();
+                        $('#Banktt_Search_DataTable').hide();
+                        $("#Banktt_SRC_Updatebutton").attr("disabled", "disabled");
+                        $('.preloader').hide();
+                    }
+                    else
+                    {
+                        show_msgbox("BANK TT ENTRY",SRC_ErrorMsg[7].EMC_DATA,"success",false);
+                    }
                     $('.preloader').hide();
                 },
                 error: function(data){
                     alert('error in getting'+JSON.stringify(data));
                     $('.preloader').hide();
                 }
-              });
-          });
+            });
+        });
     });
 </script>
 <body>
@@ -503,8 +776,7 @@ require_once "Header.php";
                             </SELECT>
                         </div>
                     </div>
-                    <br>
-                    <div id="Banktt_SearchformDiv">
+                    <div id="Banktt_SearchformDiv" style="padding-left:20px;">
 
                     </div>
                     <div id="Banktt_Search_DataTable" class="table-responsive" hidden>
@@ -513,6 +785,178 @@ require_once "Header.php";
 
                         </section>
                     </div>
+                    <form id="BankTT_Updation_Form" style="padding-left:20px;"><br>
+                        <h4 style="color:#498af3;">BANK TT UPDATION</h4><br>
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <label>TRANSACTION TYPE<span class="labelrequired"><em>*</em></span></label>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control" name="Banktt_SRC_TTtype" required id="Banktt_SRC_TTtype" readonly style="max-width:150px;"/><input type="hidden" class="form-control" id="Temp_Bt_id" name="Temp_Bt_id" hidden>
+                            </div>
+                        </div>
+                        <div id="modeldiv">
+                            <div class="row form-group">
+                                <div class="col-md-3">
+                                    <label>MODEL NAME<span class="labelrequired"><em>*</em></span></label>
+                                </div>
+                                <div class="col-md-3">
+                                    <SELECT class="form-control" name="Banktt_SRC_Modelnames"  required id="Banktt_SRC_Modelnames" ><OPTION>SELECT</OPTION></SELECT>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <label>DATE<span class="labelrequired"><em>*</em></span></label>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control datemandtry" name="Banktt_SRC_Date"  required id="Banktt_SRC_Date" style="max-width:120px;"/>
+                            </div>
+                        </div>
+                        <div id="ttgiropart1">
+                            <div class="row form-group">
+                                <div class="col-md-3">
+                                    <label>ACCOUNT NAME<span class="labelrequired"><em>*</em></span></label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control autosize" name="Banktt_SRC_Accname" maxlength="40" required id="Banktt_SRC_Accname"/>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-3">
+                                    <label>ACCOUNT NO<span class="labelrequired"><em>*</em></span></label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control" name="Banktt_SRC_Accno" maxlength="25" required id="Banktt_SRC_Accno"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <label>AMOUNT<span class="labelrequired"><em>*</em></span></label>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control amtonly" name="Banktt_SRC_Amount" maxlength="7" required id="Banktt_SRC_Amount" style="max-width:120px;"/>
+                            </div>
+                        </div>
+                        <div id="ttgiropart2">
+                            <div class="row form-group">
+                                <div class="col-md-3">
+                                    <label>UNIT<span class="labelrequired"><em>*</em></span></label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control" name="Banktt_SRC_Unit"  required id="Banktt_SRC_Unit" style="max-width:120px;" readonly/>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-3">
+                                    <label>CUSTOMER<span class="labelrequired"><em>*</em></span></label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control" name="Banktt_SRC_Customername"  required id="Banktt_SRC_Customername" readonly/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <label>STATUS<span class="labelrequired"><em>*</em></span></label>
+                            </div>
+                            <div class="col-md-3">
+                                <SELECT class="form-control" name="Banktt_SRC_Status"  required id="Banktt_SRC_Status" style="max-width:150px;"/><OPTION>SELECT</OPTION></SELECT>
+                            </div>
+                        </div>
+                        <div id="debittedondiv">
+                            <div class="row form-group">
+                                <div class="col-md-3">
+                                    <label>DEBITED/REJECTED DATE<span class="labelrequired"><em>*</em></span></label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control" name="Banktt_SRC_Debitedon"  required id="Banktt_SRC_Debitedon" style="max-width:120px;"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="giropart">
+                            <div class="row form-group">
+                                <div class="col-md-3">
+                                    <label>BANK CODE</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control alphanumeric" name="Banktt_SRC_Bankcode" maxlength="4" required id="Banktt_SRC_Bankcode" style="max-width:80px;"/>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-3">
+                                    <label>BRANCH CODE</label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control alphanumeric" name="Banktt_SRC_Branchcode" maxlength="3" required id="Banktt_SRC_Branchcode" style="max-width:80px;"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <label>BANK ADDRESS</label>
+                            </div>
+                            <div class="col-md-3">
+                                <textarea class="form-control autogrowcomments" name="Banktt_SRC_BankAddress"  required id="Banktt_SRC_BankAddress"></textarea>
+                            </div>
+                        </div>
+                        <div id="ttpart">
+                            <div class="row form-group">
+                                <div class="col-md-3">
+                                    <label>SWIFT CODE<span class="labelrequired"><em>*</em></span></label>
+                                </div>
+                                <div class="col-md-3">
+                                    <input class="form-control alphanumeric" name="Banktt_SRC_Swiftcode" maxlength="12" required id="Banktt_SRC_Swiftcode"/>
+                                </div>
+                            </div>
+                            <div class="row form-group">
+                                <div class="col-md-3">
+                                    <label>CHARGES TO<span class="labelrequired"><em>*</em></span></label>
+                                </div>
+                                <div class="col-md-3">
+                                    <SELECT class="form-control" name="Banktt_SRC_Chargesto"  required id="Banktt_SRC_Chargesto"><OPTION>SELECT</OPTION></SELECT>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <label>CUSTOMER REF</label>
+                            </div>
+                            <div class="col-md-3">
+                                <input class="form-control autosize" name="Banktt_SRC_Customerref" maxlength="200" required id="Banktt_SRC_Customerref"/>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <label>INV DETAILS</label>
+                            </div>
+                            <div class="col-md-3">
+                                <textarea class="form-control autogrowcomments" name="Banktt_SRC_Invdetails" maxlength="300" required id="Banktt_SRC_Invdetails"></textarea>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <label>CREATED BY</label>
+                            </div>
+                            <div class="col-md-3">
+                                <SELECT class="form-control" name="Banktt_SRC_Createdby"  required id="Banktt_SRC_Createdby" style="max-width:200px;"/><OPTION>SELECT</OPTION></SELECT>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <label>COMMENTS</label>
+                            </div>
+                            <div class="col-md-3">
+                                <textarea class="form-control autogrowcomments" name="Banktt_SRC_Comments" maxlength="300" required id="Banktt_SRC_Comments"/></textarea>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-lg-offset-2 col-lg-3">
+                                <input type="button" id="Banktt_SRC_Updatebutton" class="btn" value="UPDATE" disabled>
+                            </div>
+                        </div>
+                    </form>
                 </fieldset>
             </div>
         </div>

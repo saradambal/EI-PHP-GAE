@@ -44,4 +44,11 @@ class Ctrl_Banktt_Search_Forms extends CI_Controller
         $SearchResults=$this->Banktt_entry_model->get_SearchResults($option,$UserStamp,$timeZoneFormat,$unit,$customer);
         echo json_encode($SearchResults);
     }
+    public function Banktt_Update_Save()
+    {
+        global $UserStamp;
+        $this->load->model('Banktt_entry_model');
+        $Confirm_message=$this->Banktt_entry_model->getBanktt_UpdateSave($UserStamp);
+        echo json_encode($Confirm_message);
+    }
 }

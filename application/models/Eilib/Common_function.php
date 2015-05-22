@@ -13,6 +13,15 @@ class Common_function extends CI_Model {
 //$this->db->drop_table($tablename);
 //}
 //FUNCTION TO GET BANK_TRANSFER_MODELS
+    public function getRecheckinCustomerUnit()
+    {
+        $this->db->select("UNIT_NO");
+        $this->db->order_by("UNIT_NO", "ASC");
+        $this->db->from('VW_RECHECKIN_CUSTOMER');
+        $this->db->distinct();
+        $query = $this->db->get();
+        return $query->result();
+    }
 Public function getBankTransferModels()
 {
 $this->db->select("BTM_ID,BTM_DATA");
