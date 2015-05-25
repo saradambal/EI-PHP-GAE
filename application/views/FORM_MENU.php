@@ -190,8 +190,9 @@ $(document).ready(function(){
 </div>
 <iframe src="https://www.google.com/calendar/embed?showTitle=0;src=ssomens.com_sf0vt1s2tultotlshpcsiob75o@group.calendar.google.com&ctz=Asia/Calcutta" style="border: 0" width="1350" height="680" frameborder="0" scrolling="no"></iframe>
 <div class="wrapper">
-    <div  id="confrmmaskpanel" class="preloader MaskPanel" hidden></div>
-    <div  id="mainmaskpanel" class="preloader MaskPanel" hidden><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif"  /></div></div></div>
+<!--    <div  id="confrmmaskpanel" class="preloader MaskPanel" hidden></div>-->
+<!--    <div  id="mainmaskpanel" class="preloader MaskPanel" hidden><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif"  /></div></div></div>-->
+    <div class="preloader"><span class="Centerer"></span><img class="preloaderimg"/> </div>
         <nav class="navbar navbar-default" id="menu_nav">
             <div class="navbar-header">
                 <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">

@@ -54,7 +54,7 @@ class Ctrl_Staff_Daily_Entry_Search_Update_Delete extends CI_Controller{
         global $USERSTAMP;
         $this->load->database();
         $this->load->model('Mdl_staff_daily_entry_search_update_delete');
-        $data=$this->Mdl_staff_daily_entry_search_update_delete->STDLY_SEARCH_comments($USERSTAMP);
+        $data=$this->Mdl_staff_daily_entry_search_update_delete->STDLY_SEARCH_comments($USERSTAMP,$this->input->post('STDLY_SEARCH_srchoption'));
         echo json_encode($data);
     }
     //FUNCTION FOR UPDATE PART
@@ -64,6 +64,13 @@ class Ctrl_Staff_Daily_Entry_Search_Update_Delete extends CI_Controller{
         $this->load->model('Mdl_staff_daily_entry_search_update_delete');
         $result = $this->Mdl_staff_daily_entry_search_update_delete->update_agentdata($USERSTAMP,$this->input->post('id')) ;
         echo JSON_encode($result);
+    } //FUNCTION FOR UPDATE PART
+    public function updatefunction_staffentry()
+    {
+        global $USERSTAMP;
+        $this->load->model('Mdl_staff_daily_entry_search_update_delete');
+        $result = $this->Mdl_staff_daily_entry_search_update_delete->update_staffentrydata($USERSTAMP,$this->input->post('id')) ;
+        echo JSON_encode($result);
     }
     // fetch data
     public function STDLY_SEARCH_sendallstaffdata()
@@ -72,10 +79,17 @@ class Ctrl_Staff_Daily_Entry_Search_Update_Delete extends CI_Controller{
         $data=$this->Mdl_staff_daily_entry_search_update_delete->fetch_staffsalarydata();
         echo json_encode($data);
     }
-//    //FUNCTION FOR GET EMP ND CPF NO
-//    public function STDLY_SEARCH_loadcpfno(){
-//        $this->load->model('Mdl_staff_daily_entry_search_update_delete');
-//        $Values = $this->Mdl_staff_daily_entry_search_update_delete->STDLY_SEARCH_getempcpfno();
-//        echo json_encode($Values);
-//    }
+    //FUNCTION FOR GET EMP ND CPF NO
+    public function STDLY_SEARCH_loadcpfno(){
+        $this->load->model('Mdl_staff_daily_entry_search_update_delete');
+        $Values = $this->Mdl_staff_daily_entry_search_update_delete->STDLY_SEARCH_getempcpfno();
+        echo json_encode($Values);
+    }
+    //FUNCTION FOR DELETE CONFORM
+    public function deleteconformoption(){
+        global $USERSTAMP;
+        $this->load->model('Mdl_staff_daily_entry_search_update_delete');
+        $result = $this->Mdl_staff_daily_entry_search_update_delete->DeleteRecord($USERSTAMP,$this->input->post('rowid')) ;
+        echo JSON_encode($result);
+    }
 }

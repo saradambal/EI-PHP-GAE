@@ -550,21 +550,29 @@ function show_msgbox(title,msg,status,confirmation)
 $(document).on("click",'.msgcancel,.msgconfirm,.menuconfirm,.deleteconfirm', function (){
     $(".msgbox").hide();
 });
-//$(function() {
-//    $('.preloaderimg').attr('src','CSS/images/preloader.gif');
-//    $(document).on('click','.messageclose',function(){
-//        $('#focustext').focus();
-//    });
-//
-//    if(!$('#focustext').length)
-//        $('#fhead').append('<input type="button" id="focustext" style="border:none;  position:relative; top:-200px;  z-index:-50;" />');
-//});
-// $(function() {
-//     $('.preloaderimg').attr('src','https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif');
-//     $(document).on('click','.messageclose',function(){
-//         $('#focustext').focus();
-//     });
+function resetPreloader(pos){
+    $(".statusarea").css({marginTop:pos.top+'px', marginLeft:pos.left+'px'});
+}
+function adjustPosition(oldPosition,top,left){
+    var newTop=oldPosition.top+top;
+    var newLeft=oldPosition.left+left;
+    return {top:newTop,left:newLeft};
+}
+$(function() {
+    $('.preloaderimg').attr('src','CSS/images/preloader.gif');
+    $(document).on('click','.messageclose',function(){
+        $('#focustext').focus();
+    });
 
-//     if(!$('#focustext').length)
-//         $('#fhead').append('<input type="button" id="focustext" style="border:none;  position:relative; top:-200px;  z-index:-50;" />');
-// });
+    if(!$('#focustext').length)
+        $('#fhead').append('<input type="button" id="focustext" style="border:none;  position:relative; top:-200px;  z-index:-50;" />');
+});
+$(function() {
+    $('.preloaderimg').attr('src','https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif');
+    $(document).on('click','.messageclose',function(){
+        $('#focustext').focus();
+    });
+
+    if(!$('#focustext').length)
+        $('#fhead').append('<input type="button" id="focustext" style="border:none;  position:relative; top:-200px;  z-index:-50;" />');
+});
