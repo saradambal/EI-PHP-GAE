@@ -110,4 +110,103 @@ class Mdl_existing_unit extends CI_Model{
             return [$EU_deposit_roomstamp[0],$EU_deposit];
         }
     }
+    public function EU_update_Form($EU_unitnumber,$EU_flag,$EU_doorcode,$EU_weblogin,$EU_webpass,$EU_accntnumber,$EU_accntname,
+                                   $EU_bankcode,$EU_branchcode,$EU_bankaddrs,$EU_unitdeposite,$EU_accesscard,$EU_oldroomtype,$EU_newroomtype,$EU_stampdutydate,$EU_oldstamptype,
+                                   $EU_newstamptype,$EU_stampamount,$EU_comments,$UserStamp){
+        $EU_finalroomtype='';
+        $EU_finalstamptype='';
+        if($EU_newroomtype!=''){
+            $EU_finalroomtype =$EU_newroomtype;
+        }
+        elseif($EU_oldroomtype!=''){
+            $EU_finalroomtype =$EU_oldroomtype;
+        }
+        if($EU_newstamptype!=''){
+            $EU_finalstamptype =$EU_newstamptype;
+        }
+        elseif($EU_oldstamptype!=''){
+            $EU_finalstamptype =$EU_oldstamptype;
+        }
+        if(($EU_finalroomtype=='SELECT')||($EU_finalroomtype=='')){
+            $EU_finalroomtype='null';
+        }
+        else{
+            $EU_finalroomtype=$this->db->escape_like_str($EU_finalroomtype);
+            $EU_finalroomtype="'".$EU_finalroomtype."'";
+        }
+        if(($EU_finalstamptype=='SELECT')||($EU_finalstamptype=='')){
+            $EU_finalstamptype='null';
+        }
+        else{
+            $EU_finalstamptype=$this->db->escape_like_str($EU_finalstamptype);
+            $EU_finalstamptype="'".$EU_finalstamptype."'";
+        }
+        if($EU_stampdutydate==""){
+            $EU_stampdutydate='null';
+        }
+        else
+        {
+            $EU_stampdate_string = explode("-",$EU_stampdutydate);
+            $EU_stampdutydate=$EU_stampdate_string[2].'-'.$EU_stampdate_string[1].'-'.$EU_stampdate_string[0];
+            $EU_stampdutydate="'".$EU_stampdutydate."'";
+        }
+        $EU_alreadyexist_flag_card='';$EU_alreadyexist_flag_stamp='';$EU_alreadyexist_flag_room='';
+        if($EU_unitdeposite==''){
+            $EU_unitdeposite='null';
+        }
+        if($EU_stampamount==''){
+            $EU_stampamount='null';
+        }
+        if(($EU_newroomtype!='')&&($EU_newroomtype!='')){
+            $EU_alreadyexist_flag_room=$this->EU_already_exists($EU_newroomtype,'EU_tb_newroomtype');
+        }
+        if(($EU_newstamptype!='')&&($EU_newstamptype!='')){
+            $EU_alreadyexist_flag_stamp=$this->EU_already_exists($EU_newstamptype,'EU_tb_newstamptype');
+        }
+        if($EU_accesscard==''){
+            $EU_accesscard='null';
+        }
+        else{
+            $EU_alreadyexist_flag_card=$this->EU_already_exists($EU_accesscard,'EU_tb_accesscard');
+        }
+        if(($EU_alreadyexist_flag_card=='true')||($EU_alreadyexist_flag_stamp=='true')||($EU_alreadyexist_flag_room=='true')){
+            $EU_alreadyexist_flag=true;
+            return ["EU_obj_flag_existing"=>$EU_alreadyexist_flag];
+        }
+        if($EU_comments!=''){
+            $EU_comments=$this->db->escape_like_str($EU_comments);
+        }
+        if($EU_accntname!=''){
+            $EU_accntname=$this->db->escape_like_str($EU_accntname);
+        }
+        if($EU_bankaddrs!=''){
+            $EU_bankaddrs=$this->db->escape_like_str($EU_bankaddrs);
+        }
+        if($EU_weblogin!=''){
+            $EU_weblogin=$this->db->escape_like_str($EU_weblogin);
+        }
+        if($EU_flag=='EU_doorlogpwd')
+        {
+            $EU_creatstmtLogin ="CALL SP_EXISTING_UNIT_LOGIN_DETAILS_INSERT(".$EU_unitnumber.",'".$EU_doorcode."','".$EU_weblogin."','".$EU_webpass."','".$UserStamp."',@FLAG)";
+            $this->db->query($EU_creatstmtLogin);
+        }
+        if($EU_flag=='EU_acctdetails')
+        {
+            $EU_creatstmtAccount ="CALL SP_EXISTING_UNIT_ACCOUNT_DETAILS_INSERT(".$EU_unitnumber.",'".$EU_accntnumber."','".$EU_accntname."','".$EU_bankcode."','".$EU_branchcode."','".$EU_bankaddrs."','".$UserStamp."',@FLAG)";
+            $this->db->query($EU_creatstmtAccount);
+        }
+        if($EU_flag=='EU_others')
+        {
+            $EU_creatstmtAccessStamp ="CALL SP_EXISTING_UNIT_ACCESS_STAMP_DETAILS_INSERT(".$EU_unitnumber.",".$EU_accesscard.",".$EU_finalroomtype.",".$EU_stampdutydate.",".$EU_finalstamptype.",".$EU_stampamount.",'".$UserStamp."',".$EU_unitdeposite.",'".$EU_comments."',@FLAG)";
+            $this->db->query($EU_creatstmtAccessStamp);
+        }
+        $EU_flag_rs=$this->db->query("SELECT @FLAG AS FLAG");
+        if($EU_flag_rs->row()->FLAG==0){
+            $EU_obj_final= ["EU_obj_flag"=>0];
+        }
+        else{
+            $EU_obj_final= ["EU_obj_flag"=>1,"EU_obj_no"=>$EU_unitnumber,"EU_obj_flag_existing"=>false];
+        }
+        return $EU_obj_final;
+    }
 }

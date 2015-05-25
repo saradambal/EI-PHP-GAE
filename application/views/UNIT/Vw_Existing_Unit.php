@@ -338,6 +338,7 @@ require_once "Header.php";
                     if(EU_unit_source=='EU_radio_activeunit'){
                         $(".EU_td_webotheraccount").show();
                         $(".EU_class_nonstampdetail").show();
+                        $("html, body").animate({ scrollTop: $(document).height() }, "slow");
                     }
                     else if(EU_unit_source=='EU_radio_nonactiveunit'){
                         $('#EU_div_errstamp').text('');
@@ -352,6 +353,7 @@ require_once "Header.php";
                             success: function(accdata) {
                                 var accdata_values=JSON.parse(accdata);
                                 EU_result(accdata_values);
+                                $("html, body").animate({ scrollTop: $(document).height() }, "slow");
                             },
                             error:function(data){
                                 var errordata=(JSON.stringify(data));
@@ -406,6 +408,7 @@ require_once "Header.php";
                         success: function(logdata) {
                             var logdata_values=JSON.parse(logdata);
                             EU_loginSuccess(logdata_values);
+                            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
                         },
                         error:function(data){
                             var errordata=(JSON.stringify(data));
@@ -427,6 +430,7 @@ require_once "Header.php";
                         success: function(accdata) {
                             var accdata_values=JSON.parse(accdata);
                             EU_acctSuccess(accdata_values);
+                            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
                         },
                         error:function(data){
                             var errordata=(JSON.stringify(data));
@@ -444,6 +448,7 @@ require_once "Header.php";
                         success: function(resdata) {
                             var resdata_values=JSON.parse(resdata);
                             EU_result(resdata_values);
+                            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
                         },
                         error:function(data){
                             var errordata=(JSON.stringify(data));
@@ -572,8 +577,21 @@ require_once "Header.php";
                 }
                 if(EU_unit_source=='EU_radio_nonactiveunit')
                     $("#EU_hidden_flag").val('EU_others');
-//                google.script.run.withSuccessHandler(EU_updateSuccess).withFailureHandler(EU_onFailure).EU_updateForm(document.getElementById('EU_form_existingUnit'));
-                $('textarea').height(114);
+                var formelement=$('#EU_form_existingUnit').serialize();
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url('Ctrl_Existing_Unit/EU_updateForm'); ?>",
+                    data: formelement,
+                    success: function(savedata) {
+                        var saved_values=JSON.parse(savedata);
+                        EU_updateSuccess(saved_values);
+                    },
+                    error:function(data){
+                        var errordata=(JSON.stringify(data));
+                        show_msgbox("EXISTING UNIT",errordata,'error',false);
+                    }
+                });
+                $('textarea').height(116);
             });
         // SUCCESS FUNCTION FOR WHICH ARE INSERTING VALUES
             function EU_updateSuccess(EU_response){
@@ -581,12 +599,12 @@ require_once "Header.php";
                 if((EU_response.EU_obj_flag==1)&&(EU_response.EU_obj_flag_existing==false)){
                     var EU_errorMsg=EU_errorMsg_array[7].EMC_DATA.replace('[UNIT NO]',EU_response.EU_obj_no);
                     show_msgbox("EXISTING UNIT",EU_errorMsg,'success',false);
+                    $("#EU_unitno").hide();
                     $(':input','#EU_form_existingUnit')
                         .not(':button')
                         .val('')
                         .removeAttr('selected');
                     $("#EU_div_form").hide();
-                    $("#EU_tble_unitno").hide();
                     $('#EU_radio_activeunit,#EU_radio_nonactiveunit').attr('checked', false);
                 }
                 else if(EU_response.EU_obj_flag==0){
@@ -800,7 +818,7 @@ require_once "Header.php";
                         }
                     });
                 }
-                $('#EU_ta_comments,#EU_tb_bankaddrs').height(114);
+                $('#EU_ta_comments,#EU_tb_bankaddrs').height(116);
                 $('#EU_ta_comments,#EU_tb_bankaddrs').prop("rows",5);
             }
         // FUNCTION FOR ACTIVE UNIT
@@ -824,13 +842,14 @@ require_once "Header.php";
                     }
                 }
                 $("#EU_lb_unitnumber").html(EU_load_unitno);
+                $("html, body").animate({ scrollTop: $(document).height() }, "slow");
                 if(EU_unitnum_arr.length==0){
                     $("#EU_unitno").hide();
-                    $('#EU_lbl_errmsgunitno').text(EU_unitnum_errmsg);
+                    $('#EU_lbl_errmsgunitno').text(EU_unitnum_errmsg).show();
                 }
                 else{
                     $("#EU_unitno").show();
-                    $('#EU_lbl_errmsgunitno').text('');
+                    $('#EU_lbl_errmsgunitno').text('').hide();
                 }
             });
         });
@@ -855,7 +874,7 @@ require_once "Header.php";
                             <label><input type="radio" id="EU_radio_nonactiveunit" name="EU_radio_unit" value="EU_value_nonactiveunit" class="EU_class_unit">NON ACTIVE UNIT </label>
                         </div>
                     </div>
-                    <label style="padding-left: 15px;" class="col-lg-12 errormsg errpadding" id="EU_lbl_errmsgunitno"></label>
+                    <label style="padding-left: 15px;" class="col-lg-12 errormsg errpadding" id="EU_lbl_errmsgunitno" hidden></label>
                 </div>
                 <div class="form-group" id="EU_unitno" hidden>
                     <label class="col-sm-2">UNIT NO <em>*</em></label>
