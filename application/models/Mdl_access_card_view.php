@@ -113,13 +113,12 @@ class Mdl_access_card_view extends CI_Model{
         }
         elseif($option==40){
             $allunit_tablename='';$allunit_flag='';
-            set_time_limit(0);
             $this->db->query("CALL SP_ACCESS_CARD_SEARCH_BY_ALL_UNIT('".$USERSTAMP."',@BYALLUNITTMPTBLNAM,@FLAG)");
             $allunitoutparm_query = 'SELECT @BYALLUNITTMPTBLNAM AS ALLUNIT_TEMP_TABLE,@FLAG AS ALLUNITFLAG';
             $allunitoutparm_result = $this->db->query($allunitoutparm_query);
             $allunit_tablename=$allunitoutparm_result->row()->ALLUNIT_TEMP_TABLE;
             $allunit_flag=$allunitoutparm_result->row()->ALLUNITFLAG;
-            $allunittable_result = $this->db->get($allunit_tablename);
+            $allunittable_result = $this->db->query('SELECT * FROM '.$allunit_tablename.' ORDER BY UNITNO');
             $CV_carddetails=[];
             foreach ($allunittable_result->result_array() as $row){
                 $CV_access_unitno=$row["UNITNO"];
@@ -297,12 +296,11 @@ class Mdl_access_card_view extends CI_Model{
         }
         elseif($option==40){
             $allunit_tablename='';
-            set_time_limit(0);
             $this->db->query("CALL SP_ACCESS_CARD_SEARCH_BY_ALL_UNIT('".$USERSTAMP."',@BYALLUNITTMPTBLNAM,@FLAG)");
             $allunitoutparm_query = 'SELECT @BYALLUNITTMPTBLNAM AS ALLUNIT_TEMP_TABLE';
             $allunitoutparm_result = $this->db->query($allunitoutparm_query);
             $allunit_tablename=$allunitoutparm_result->row()->ALLUNIT_TEMP_TABLE;
-            $allunittable_result = $this->db->get($allunit_tablename);
+            $allunittable_result = $this->db->query('SELECT * FROM '.$allunit_tablename.' ORDER BY UNITNO');
             $table_header='';
             $table_header='<br><table width="1000px" id="CV_tbl_allunithtmltable" border="1" style="border-collapse: collapse;" cellspacing="0"><sethtmlpageheader name="header" page="all" value="on" show-this-page="1"/><thead><tr><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;">UNIT NO</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;">ACTIVE CARDS</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;">NON ACTIVE CARDS</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;">CUSTOMER LOST CARDS</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;">LOST CARDS</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;">ACCESS REASON</th></tr></thead><tbody>';
             foreach ($allunittable_result->result_array() as $row){
