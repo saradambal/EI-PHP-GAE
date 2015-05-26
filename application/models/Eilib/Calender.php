@@ -7,11 +7,22 @@
  */
 class Calender  extends CI_Model {
     //TIME CONVERSION
+//    public function CalenderTime_Convertion($startdate,$startdate_starttime,$startdate_endtime){
+//        $start = new Google_Service_Calendar_EventDateTime();
+//        $start->setDateTime($startdate.'T'.$startdate_starttime.'.000+08:00');
+//        $end = new Google_Service_Calendar_EventDateTime();
+//        $end->setDateTime($startdate.'T'.$startdate_endtime.'.000+08:00');
+//        return array($start,$end);
+//    }
     public function CalenderTime_Convertion($startdate,$startdate_starttime,$startdate_endtime){
+        $splitStart=explode(':',$startdate_starttime);
+        $startdate_starttime  =$splitStart[0].':'.$splitStart[1];
+        $splitEnd=explode(':',$startdate_endtime);
+        $startdate_endtime  =$splitEnd[0].':'.$splitEnd[1];
         $start = new Google_Service_Calendar_EventDateTime();
-        $start->setDateTime($startdate.'T'.$startdate_starttime.'.000+08:00');
+        $start->setDateTime($startdate.'T'.$startdate_starttime.':00.000+08:00');
         $end = new Google_Service_Calendar_EventDateTime();
-        $end->setDateTime($startdate.'T'.$startdate_endtime.'.000+08:00');
+        $end->setDateTime($startdate.'T'.$startdate_endtime.':00.000+08:00');
         return array($start,$end);
     }
 //COMMON FUNCTION TO CREATE CALENDAR ID
@@ -184,6 +195,7 @@ class Calender  extends CI_Model {
 //FUNCTION TO CREATE CALENDAR EVENT FOR CUSTOMER
     public function  CUST_customercalendercreation($calPrimary,$custid,$startdate,$startdate_starttime,$startdate_endtime,$enddate,$enddate_starttime,$enddate_endtime,$firstname,$lastname,$mobile,$intmobile,$office,$customermailid,$unit,$roomtype,$unitrmtype)
     {
+        try{
         $calId=$this->GetEICalendarId();
         $initialsdate=$startdate;
         $initialedate=$enddate;
@@ -237,33 +249,50 @@ class Calender  extends CI_Model {
             $event->setSummary($detailsend);
             $createdEvent = $calPrimary->events->insert($calId, $event); // to create a event
         }
+            return 1;
+        }
+        catch(Exception $e){
+
+            return $e->getMessage();
+        }
     }
-//FUNCTION TO DELETE CALENDER EVENTS
+///FUNCTION TO DELETE CALENDER EVENTS
     public function CUST_customercalenderdeletion($calPrimary,$custid,$startdate,$start_time_in,$start_time_out,$enddate,$end_time_in,$end_time_out,$formname)
     {
-        $calId=$this->GetEICalendarId();
-        if($formname=='UNCANCEL')
-        {
-            $eventsCheckOut = $calPrimary->events->listEvents($calId);
+        try{
+            $calId=$this->GetEICalendarId();
+            if($formname=='UNCANCEL')
+            {
+                $eventsCheckOut = $calPrimary->events->listEvents($calId);
 
-            foreach ($eventsCheckOut->getItems() as $event) {
-                if((intval(explode(' ',$event->getDescription())[0])==$custid && $startdate==(explode('T',$event->getstart())[0])) || (intval(explode(' ',$event->getDescription())[0])==$custid && $enddate==(explode('T',$event->getend())[0]))){
-                    $calPrimary->events->delete($calId, $event->getId());}
+                foreach ($eventsCheckOut->getItems() as $event) {
+                    $summaryStarUnit=$event->getDescription();
+
+//                echo preg_match("/$custid/",$summaryStarUnit);
+                    if(preg_match("/$custid/",$summaryStarUnit)==1){
+                        if((intval(explode(' ',$event->getDescription())[0])==$custid && $startdate==(explode('T',$event->getstart()->dateTime)[0])) || (intval(explode(' ',$event->getDescription())[0])==$custid && $enddate==(explode('T',$event->getend()->dateTime)[0]))){
+                            $calPrimary->events->delete($calId, $event->getId());}
+                    }}
             }
+            else{
+                $optDate= array('timeMax' => $startdate.'T'.$start_time_out.'+08:00','timeMin' => $startdate.'T'.$start_time_in.'+08:00');
+                $eventsCheckOut = $calPrimary->events->listEvents($calId,$optDate);
+                foreach ($eventsCheckOut->getItems() as $event) {
+                    if(intval(explode(' ',$event->getDescription())[0])==$custid ){
+                        $calPrimary->events->delete($calId, $event->getId());}
+                }
+                $optDate= array('timeMax' => $enddate.'T'.$end_time_out.'+08:00','timeMin' => $enddate.'T'.$end_time_in.'+08:00');
+                $eventsEnddate = $calPrimary->events->listEvents($calId,$optDate);
+                foreach ($eventsEnddate->getItems() as $event) {
+                    if(intval(explode(' ',$event->getDescription())[0])==$custid ){
+                        $calPrimary->events->delete($calId, $event->getId());}
+                }
+            }
+            return 1;
         }
-        else{
-            $optDate= array('timeMax' => $startdate.'T'.$start_time_out.':00+08:00','timeMin' => $startdate.'T'.$start_time_in.':00+08:00');
-            $eventsCheckOut = $calPrimary->events->listEvents($calId,$optDate);
-            foreach ($eventsCheckOut->getItems() as $event) {
-                if(intval(explode(' ',$event->getDescription())[0])==$custid ){
-                    $calPrimary->events->delete($calId, $event->getId());}
-            }
-            $optDate= array('timeMax' => $enddate.'T'.$end_time_out.':00+08:00','timeMin' => $enddate.'T'.$end_time_in.':00+08:00');
-            $eventsEnddate = $calPrimary->events->listEvents($calId,$optDate);
-            foreach ($eventsEnddate->getItems() as $event) {
-                if(intval(explode(' ',$event->getDescription())[0])==$custid ){
-                    $calPrimary->events->delete($calId, $event->getId());}
-            }
+        catch(Exception $e){
+            return $e->getMessage();
+
         }
     }
 //FUNCTION TO DELETE CC CALENDER EVENTS

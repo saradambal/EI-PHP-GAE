@@ -1,0 +1,587 @@
+<!--//*******************************************FILE DESCRIPTION*********************************************//
+//************************************CUSTOMER EXPIRY LIST***********************************************//
+//DONE BY:PUNI
+//VER 1.5-SD:22/12/2014 ED:22/12/2014;TRACKER NO:690;added droptemp table function from eilib
+//VER 1.4-SD:09/10/2014 ED:09/10/2014,TRACKER NO:690;changed preloader n msgbox position
+//VER 1.3-SD:26/08/2014 ED:26/08/2014,TRACKER NO:690;updated new links BY PUNI.
+//DONE BY:SAFIYULLAH.M
+//VER 1.2-SD:11/06/2014 ED:11/06/2014;TRACKER NO:690;updated failure msg
+//VER 1.1-SD:06/06/2014 ED:06/06/2014;TRACKER NO:690;CHANGED JQUERY LINK
+//VER 1.0-SD:15/05/2014 ED:15/04/2014:TRACKER NO:690:changed form for dyanamic temp table
+//VER 0.09-SD:28/04/2014 ED:28/04/2014:TRACKER NO:690:CHANGED SP NAME AND APLLY MAX DATE FOR DATE PICKER:
+VER 0.08 -SD:07/03/2014 ED:07/03/2014;TRACKER NO: 690;droped temp table 
+VER 0.07 -SD:05/03/2014 ED:05/03/2014;TRACKER NO: 690;implement error msg getting from eilib 
+VER 0.06 -SD:31/12/2013 ED:31/12/2013;TRACKER NO: 690;update the error msg,when no customer available 
+VER 0.05 -SD:28/12/2013 ED:28/12/2013;TRACKER NO: 363;Update eilib function
+VER 0.04 -SD:03/12/2013 ED:04/12/2013;TRACKER NO: 363;Update Email_id List from email profile
+VER 0.03 -SD:04/11/2013 ED:08/11/2013;TRACKER NO: 363;Applied Sp and Changes done in design
+VER 0.02 -SD:21/09/2013 ED:01/10/2013;TRACKER NO: 363;CHANGED CONNECTION STRING AND REMOVED SCRIPLET AND CHANGED DATE FORMAT
+VER 0.01 -INITIAL VERSION-SD:12/08/2013 ED:02/09/2013;TRACKER NO:363
+//*********************************************************************************************************//
+-->
+<?php
+require_once "Header.php";
+?>
+<!--HTML TAG START-->
+<html>
+<!--HEAD TAG START-->
+<head>
+
+<script>
+
+//<!----------READY FUNCTION------------->
+$(document).ready(function(){
+    var CEXP_max_date_array;
+    $(".preloader").show();
+    $('#CEXP_div_htmltable').hide();
+    $('#CWEXP_tble_buttontable').hide();
+    $.ajax({
+         type:'post',
+        'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CEXP_get_initial_values",
+         success:function(data){
+             $(".preloader").hide();
+             var initial_value=JSON.parse(data)
+             CEXP_load_initial_values(initial_value);
+         },
+        error:function(data){
+
+
+        }
+    });
+//    google.script.run.withFailureHandler(CWEXP_error).withSuccessHandler(CEXP_load_initial_values).CEXP_get_initial_values()
+    var CEXP_errorAarray=[];
+    var CEXP_email_array=[];
+    $(".numonly").doValidation({rule:'numbersonly',prop:{realpart:1}});
+    ////FUNCTION TO LOAD INITIAL VALUES
+    function CEXP_load_initial_values(CEXP_initial_values){
+        CEXP_errorAarray=CEXP_initial_values[0].CEXP_error_msg;
+        CEXP_email_array=CEXP_initial_values[0].CEXP_emailid;
+        var CEXP_custAarray=CEXP_initial_values[0].CEXP_custAarray;
+        CEXP_max_date_array=CEXP_initial_values[0].CEXP_max_date_array;
+
+        if(CEXP_custAarray.length==0){
+            $('#CEXP_form_expirylist_weeklyexpiryform').replaceWith('<p><label class="errormsg">'+ CEXP_errorAarray[10]+'</label></p>');
+
+        }
+        else{
+            var CEXP_email_options ='<option>SELECT</option>'
+            for (var i = 0; i < CEXP_email_array.length; i++) {
+                CEXP_email_options += '<option value="' + CEXP_email_array[i] + '">' + CEXP_email_array[i]+ '</option>';
+            }
+            $('#CWEXP_lb_selectemail').html(CEXP_email_options);
+            $('#CEXP_tble_main').show()
+
+        }
+    }
+//------------EXPIRY LIST BUTTON CHANGE---------------//
+    $('#CEXP_radio_Expirylist').change(function(){
+        $('#CEXP_tble_expiry_list').show();
+        $('#CEXP_tble_Weekly_expiry_list').hide();
+        $('#CWEXP_btn_submit').attr('disabled','disabled');
+        $('#CWEXP_lb_selectemail').prop('selectedIndex',0);
+        $('#CWEXP_TB_weekBefore').val("");
+        $('#CWEXP_tble_buttontable').hide();
+        $('#CEXP_lbl_msg').hide();
+        $('#CWEXP_lbl_msg').hide();
+    });
+////--------------------EQUAL RADIO BUTTON CHANGE------------//
+    $('#CEXP_radio_equal').change(function(){
+        $('#CEXP_lbl_msg').hide();
+        $('#CEXP_btn_submit').attr('disabled','disabled');
+        $('#CEXP_lbl_equalto').show();
+        $('#CEXP_tbl_htmltable tr').remove();
+        $('#CEXP_div_htmltable').hide();
+        $('#CEXP_db_selected_equal_date').show();
+        $('#CEXP_db_selected_from_date').hide().val("");
+        $('#CEXP_db_selected_to_date').hide().val("");
+        $('#CEXP_lbl_fromdate').hide();
+        $('#CEXP_lbl_todate').hide();
+        $('#CEXP_lbl_beforedate').hide();
+        $('#CEXP_db_selected_before_date').hide().val("");
+        $('#CEXP_db_selected_equal_date').datepicker({
+            dateFormat:"dd-mm-yy",
+            changeYear: true,
+            changeMonth: true
+        });
+        var date = new Date( Date.parse( CEXP_max_date_array ));
+        $('#CEXP_db_selected_equal_date').datepicker("option","maxDate",date);
+    });
+//-------------------EQUAL DATEPICKER CHANGE---------------//
+    $('#CEXP_db_selected_equal_date').change(function(){
+        if($('#CEXP_db_selected_equal_date').val()!=''){
+            $('#CEXP_btn_submit').removeAttr('disabled');
+        }
+        else{
+            $('#CEXP_btn_submit').attr('disabled','disabled');
+        }
+        $('#CEXP_lbl_msg').hide()
+        $('#CEXP_div_htmltable').hide();
+    });
+////--------------------BEFORE RADIO BUTTON CHANGE------------//
+    $('#CEXP_radio_before').change(function(){
+        $('#CEXP_btn_submit').attr('disabled','disabled');
+        $('#CEXP_lbl_msg').hide();
+        $('#CEXP_tbl_htmltable tr').remove();
+        $('#CEXP_div_htmltable').hide();
+        $('#CEXP_lbl_equalto').hide();
+        $('#CEXP_db_selected_equal_date').hide().val("");
+        $('#CEXP_db_selected_from_date').hide().val("");
+        $('#CEXP_db_selected_to_date').hide().val("");
+        $('#CEXP_lbl_fromdate').hide();
+        $('#CEXP_lbl_todate').hide();
+        $('#CEXP_lbl_beforedate').show();
+        $('#CEXP_db_selected_before_date').show();
+        $('#CEXP_db_selected_before_date').datepicker({
+            dateFormat:"dd-mm-yy",
+            changeYear: true,
+            changeMonth: true
+        });
+        var date = new Date( Date.parse( CEXP_max_date_array ));
+        $('#CEXP_db_selected_before_date').datepicker("option","maxDate",date);
+    });
+////-------------------BEFORE DATEPICKER CHANGE---------------//
+    $('#CEXP_db_selected_before_date').change(function(){
+        if($('#CEXP_db_selected_before_date').val()!=''){
+            $('#CEXP_btn_submit').removeAttr('disabled');
+        }
+        else{
+            $('#CEXP_btn_submit').attr('disabled','disabled');
+        }
+        $('#CEXP_lbl_msg').hide();
+        $('#CEXP_div_htmltable').hide();
+    });
+////--------------------BETWEEN RADIO BUTTON CHANGE------------//
+    $('#CEXP_radio_between').change(function(){
+        $('#CEXP_btn_submit').attr('disabled','disabled');
+        $('#CEXP_lbl_equalto').hide();
+        $('#CEXP_div_htmltable').hide();
+        $('#CEXP_lbl_msg').hide();
+        $('#CEXP_tbl_htmltable tr').remove();
+        $('#CEXP_db_selected_equal_date').hide().val("");
+        $('#CEXP_lbl_beforedate').hide();
+        $('#CEXP_db_selected_before_date').hide().val("");
+        $('#CEXP_db_selected_from_date').show();
+        $('#CEXP_db_selected_to_date').hide();
+        $('#CEXP_lbl_fromdate').show();
+        $('#CEXP_lbl_todate').hide();
+//SET FROM DATE DATEPICKER
+        $('#CEXP_db_selected_from_date').datepicker({
+            dateFormat:"dd-mm-yy",
+            changeYear: true,
+            changeMonth: true
+        });
+        $('#CEXP_db_selected_to_date').datepicker({
+            dateFormat:"dd-mm-yy",
+            changeYear: true,
+            changeMonth: true
+        });
+        var date = new Date( Date.parse( CEXP_max_date_array ));
+        $('#CEXP_db_selected_to_date').datepicker("option","maxDate",date);
+        $('#CEXP_db_selected_from_date').datepicker("option","maxDate",date);
+    });
+//-----------------WEEKLY-EXPIRY LIST BUTTON CHANGE--------------//
+    $('#CEXP_radio_WeeklyExpirylist').change(function(){
+        if(CEXP_email_array.length==0){
+            var msg=CEXP_errorAarray[11]
+            msg=msg.replace("[PROFILE]",'EXPIRY LIST')
+            $('#CEXP_tble_Weekly_expiry_list').hide();
+            $('#CWEXP_lbl_msg').text(msg).removeClass( "srctitle" ).addClass( "errormsg" ).show();
+        }
+        else{
+            $('#CEXP_tble_Weekly_expiry_list').show();
+            $('#CWEXP_lbl_msg').hide()
+            $('#CWEXP_tble_buttontable').show();
+        }
+        $('#CEXP_tble_expiry_list').hide();
+        $('#CEXP_btn_submit').attr('disabled','disabled');
+        $("input[name=CEXP_radiobotton]:checked").attr('checked',false);
+        $('#CEXP_db_selected_from_date').hide().val("");
+        $('#CEXP_db_selected_to_date').hide().val("");
+        $('#CEXP_db_selected_before_date').hide().val("");
+        $('#CEXP_db_selected_equal_date').hide().val("");
+        $('#CEXP_div_htmltable').hide();
+        $('#CEXP_lbl_msg').hide();
+        $('#CEXP_lbl_fromdate').hide();
+        $('#CEXP_lbl_todate').hide();
+        $('#CEXP_lbl_beforedate').hide();
+        $('#CEXP_lbl_equalto').hide();
+    });
+//-------------------TO DATEPICKER CHANGE---------------//
+    $('#CEXP_db_selected_to_date').change(function(){
+        if($("#CEXP_db_selected_from_date").val()!=''&& $("#CEXP_db_selected_to_date").val()!='')
+        {
+            $('#CEXP_btn_submit').removeAttr('disabled');
+        }
+        else
+        {
+            $('#CEXP_btn_submit').attr('disabled','disabled');
+        }
+        $('#CEXP_lbl_msg').hide();
+        $('#CEXP_div_htmltable').hide();
+    });
+//-------------------FROM DATEPICKER CHANGE---------------//
+    $('#CEXP_db_selected_from_date').change(function(){
+        var CEXP_startdate = $('#CEXP_db_selected_from_date').datepicker('getDate');
+        var date = new Date( Date.parse( CEXP_startdate ));
+        date.setDate( date.getDate()  );
+        var CEXP_todate = date.toDateString();
+        CEXP_todate = new Date( Date.parse( CEXP_todate ));
+        $('#CEXP_db_selected_to_date').datepicker("option","minDate",CEXP_todate);
+        if($("#CEXP_db_selected_from_date").val()=='')
+        {
+            $("#CEXP_db_selected_to_date").val('').hide();
+            $('#CEXP_lbl_todate').hide();
+        }
+        else{
+            $("#CEXP_db_selected_to_date").show();
+            $('#CEXP_lbl_todate').show();
+        }
+        if($("#CEXP_db_selected_from_date").val()!=''&&$("#CEXP_db_selected_to_date").val()!='')
+        {
+            $('#CEXP_btn_submit').removeAttr('disabled');
+        }
+        else
+        {
+            $('#CEXP_btn_submit').attr('disabled','disabled');
+        }
+        $('#CEXP_lbl_msg').hide();
+        $('#CEXP_div_htmltable').hide();
+    });
+//--------------FUNCTION TO GET VALUES FROM DATABASE----------------------//
+    $('#CEXP_btn_submit').click(function(){
+        var  newPos= adjustPosition($(this).position(),100,280);
+        resetPreloader(newPos);
+        $(".preloader").show();
+        var CEXP_radio_button_select_value=$("input[name=CEXP_radiobotton]:checked").val();
+        if(CEXP_radio_button_select_value=="EQUAL")
+        {
+            var CEXP_equaldate=$('#CEXP_db_selected_equal_date').val();
+            $.ajax({
+                type:'post',
+                'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CEXP_get_customer_details",
+                data:{'CEXP_fromdate':CEXP_equaldate,'CEXP_todate':CEXP_equaldate,'CEXP_radio_button_select_value':CEXP_radio_button_select_value},
+                success:function(data){
+                    var final_value=JSON.parse(data);
+                    CEXP_load_customer_details(final_value);
+
+                },
+                error:function(data){
+
+
+                }
+
+
+            });
+        }
+        else if(CEXP_radio_button_select_value=="BEFORE")
+        {
+            var CEXP_beforedate=$('#CEXP_db_selected_before_date').val();
+            $.ajax({
+                type:'post',
+                'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CEXP_get_customer_details",
+                data:{'CEXP_fromdate':CEXP_beforedate,'CEXP_todate':CEXP_beforedate,'CEXP_radio_button_select_value':CEXP_radio_button_select_value},
+                success:function(data){
+                    var final_value=JSON.parse(data);
+                    CEXP_load_customer_details(final_value);
+
+
+                },
+                error:function(data){
+
+
+                }
+
+
+            });
+        }
+        else if(CEXP_radio_button_select_value=="BETWEEN")
+        {
+            var CEXP_fromdate=$('#CEXP_db_selected_from_date').val();
+            var CEXP_enddate=$('#CEXP_db_selected_to_date').val();
+            $.ajax({
+                type:'post',
+                'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CEXP_get_customer_details",
+                data:{'CEXP_fromdate':CEXP_fromdate,'CEXP_todate':CEXP_enddate,'CEXP_radio_button_select_value':CEXP_radio_button_select_value},
+                success:function(data){
+                    var final_value=JSON.parse(data);
+                    CEXP_load_customer_details(final_value);
+
+                },
+                error:function(data){
+
+
+                }
+
+            });
+//            google.script.run.withFailureHandler(CWEXP_error).withSuccessHandler(CEXP_load_customer_details).CEXP_get_customer_details(CEXP_fromdate,CEXP_enddate,CEXP_radio_button_select_value);
+        }
+    });
+///----------SUBMIT BUTTON VALIDATION----------------------//
+    $('.submitvalidate').blur(function(){
+        var CWEXP_weekno=$('#CWEXP_TB_weekBefore').val();
+        var CWEXP_email=$('#CWEXP_lb_selectemail').val();
+        if((CWEXP_weekno!='') &&(CWEXP_email!="SELECT"))
+        {
+            $('#CWEXP_btn_submit').removeAttr('disabled');
+            $('#CWEXP_lbl_msg').hide();
+        }
+        else{
+            $('#CWEXP_btn_submit').attr('disabled','disabled');
+        }
+    });
+    $('#CWEXP_btn_submit').click(function(){
+        var  newPos= adjustPosition($("#CWEXP_tble_buttontable").position(),100,310);
+        resetPreloader(newPos);
+        $(".preloader").show();
+        google.script.run.withFailureHandler(CWEXP_error).withSuccessHandler(CWEXP_clear).CWEXP_get_customerdetails(document.getElementById('CEXP_form_expirylist_weeklyexpiryform'))
+    });
+    $('#CWEXP_btn_reset').click(function(){
+        $('#CWEXP_btn_submit').attr('disabled','disabled');
+        $('#CWEXP_lbl_msg').hide();
+        $('#CWEXP_TB_weekBefore').val('');
+        $('#CWEXP_lb_selectemail').prop('selectedIndex',0);
+    });
+////------------NUMBER'S ONLY VALIDATION--------------//
+//
+////-----------------Function to load HTML table--------------------//
+    function CEXP_load_customer_details(result)
+    {
+        $(".preloader").hide();
+        var CEXP_radio_button_select_value=$("input[name=CEXP_radiobotton]:checked").val();
+        if(CEXP_radio_button_select_value=="EQUAL")
+        {
+            var CEXP_equal_date=($('#CEXP_db_selected_equal_date').val());
+            $('#CEXP_lbl_msg').text((CEXP_errorAarray[1]).replace('[EQDATE]',CEXP_equal_date));
+            $('#CEXP_db_selected_equal_date').val("");
+        }
+        else if(CEXP_radio_button_select_value=="BEFORE")
+        {
+            var CEXP_before_date=($('#CEXP_db_selected_before_date').val());
+            $('#CEXP_lbl_msg').text((CEXP_errorAarray[3]).replace('[BDATE]',CEXP_before_date));
+            $('#CEXP_db_selected_before_date').val("")
+        }
+        else if(CEXP_radio_button_select_value=="BETWEEN")
+        {
+            var CEXP_startdate=($('#CEXP_db_selected_from_date').val());
+            var CEXP_enddate=($('#CEXP_db_selected_to_date').val());
+            var CEXP_between_error=CEXP_errorAarray[5].replace("[SDATE]",CEXP_startdate);
+            var CEXP_between_error1=CEXP_between_error.replace("[EDATE]",CEXP_enddate);
+            $('#CEXP_lbl_msg').text(CEXP_between_error1);
+            $('#CEXP_db_selected_from_date').val("")
+            $('#CEXP_db_selected_to_date').val("")
+        }
+        var CEXP_result_array=result
+        if(CEXP_result_array.length > 10){ var px = '600px'}
+        else
+        {
+            var x = CEXP_result_array.length*50;
+            if(x <=100){var px = '155px'}
+            else{
+                var px = x+"px" }
+        }
+        if(CEXP_result_array.length == 1) {var px ="95px"}
+        $('#CEXP_div_htmltable').css('height',px)
+        if(CEXP_result_array.length==0)
+        {
+            if(CEXP_radio_button_select_value=="EQUAL")
+            {
+                $('#CEXP_lbl_msg').text((CEXP_errorAarray[0]).replace('[EQDATE]',CEXP_equal_date)).show().removeClass( "srctitle" ).addClass( "errormsg" );
+                $('#CEXP_div_htmltable').hide();
+                $('#CEXP_btn_submit').attr('disabled','disabled');
+            }
+            if(CEXP_radio_button_select_value=="BEFORE")
+            {
+                $('#CEXP_lbl_msg').text((CEXP_errorAarray[2]).replace('[BDATE]',CEXP_before_date)).show().removeClass( "srctitle" ).addClass( "errormsg" );
+                $('#CEXP_div_htmltable').hide();
+                $('#CEXP_btn_submit').attr('disabled','disabled');
+            }
+            if(CEXP_radio_button_select_value=="BETWEEN")
+            {
+                var CEXP_between_error=CEXP_errorAarray[4].replace("[SDATE]",CEXP_startdate);
+                var CEXP_between_error1=CEXP_between_error.replace("[EDATE]",CEXP_enddate);
+                $('#CEXP_lbl_msg').text(CEXP_between_error1).show().removeClass( "srctitle" ).addClass( "errormsg" );
+                $('#CEXP_div_htmltable').hide();
+                $('#CEXP_btn_submit').attr('disabled','disabled');
+            }
+        }
+        else{
+            var CEXP_table_value='';
+            var CEXP_table_header='<tr><th>UNIT NO</th><th>FIRST   NAME</th><th>LAST   NAME</th><th style="width:80px" >START DATE</th><th style="width:80px">END DATE</th><th style="width:80px">PRETERMINATE DATE</th><th style="width:130px">ROOM TYPE</th><th>EXTENSION</th><th>RE CHECKIN</th><th>RENT</th><th>DEPOSIT</th><th style="width:500px">COMMENTS</th><th>USERSTAMP</th><th style="width:180px">TIMESTAMP</th></tr>'
+            $('#CEXP_tbl_htmltable').html(CEXP_table_header);
+            for(var i=0;i<CEXP_result_array.length;i++)
+            {
+                var CEXP_values=CEXP_result_array[i]
+                var CEXP_startdate=CEXP_values.startdate;
+                CEXP_startdate=FormTableDateFormat(CEXP_startdate);
+                var CEXP_enddate=CEXP_values.enddate;
+                CEXP_enddate=FormTableDateFormat(CEXP_enddate);
+                var CEXP_preterminatedate=CEXP_values.preterminatedate;
+                if(CEXP_preterminatedate!=""){
+                    CEXP_preterminatedate=FormTableDateFormat(CEXP_preterminatedate)
+                }
+                CEXP_table_value='<tbody><tr ><td>'+CEXP_values.unitno+'</td><td>'+CEXP_values.firstname+'</td><td>'
+                    +CEXP_values.lastname+'</td><td>'+CEXP_startdate+'</td><td>'+CEXP_enddate+'</td><td>'+CEXP_preterminatedate+'</td><td>'+CEXP_values.roomtype+
+                    '</td><td>'+CEXP_values.extension+'</td><td>'+CEXP_values.rechecking+'</td><td>'+CEXP_values.rental+'</td><td>'+CEXP_values.deposit+'</td><td>'
+                    +CEXP_values.comments+'</td><td>'+CEXP_values.userstamp+'</td><td>'+CEXP_values.timestamp+'</td></tr>'
+                $('#CEXP_tbl_htmltable').append(CEXP_table_value);
+            }
+            $('#CEXP_tbl_htmltable').show();
+            $('#CEXP_div_htmltable').show();
+            $('#CEXP_btn_submit').attr('disabled','disabled');
+            $('#CEXP_lbl_msg').show().addClass( "srctitle" );
+        }
+    }
+////----------FUNCTION TO CLEAR-------------
+    function CWEXP_clear(res)
+    {
+        $(".preloader").hide();
+        var CWEXP_result =res
+        var CWEXP_weekno=$('#CWEXP_TB_weekBefore').val();
+        if(CWEXP_result=='false')
+        {
+            var CWEXP_errormsg=(CEXP_errorAarray[6]).replace('[WEEKNO]',CWEXP_weekno);
+            var CWEXP_errormsg1=(CEXP_errorAarray[7]).replace('[WEEKNO]',CWEXP_weekno);
+            if(CWEXP_weekno==1)
+            {
+                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXPIRY LIST",msgcontent:CWEXP_errormsg,position:{top:150,left:500}}});
+            }
+            else{
+                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXPIRY LIST",msgcontent:CWEXP_errormsg1,position:{top:150,left:500}}});
+            }
+        }
+        else
+        {
+            var CWEXP_confirm_msg=(CEXP_errorAarray[8]).replace('[WEEKNO]',CWEXP_weekno);
+            var CWEXP_confirm_msg1=(CEXP_errorAarray[9]).replace('[WEEKNO]',CWEXP_weekno);
+            if(CWEXP_weekno==1)
+            {
+                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXPIRY LIST",msgcontent:CWEXP_confirm_msg,position:{top:150,left:500}}});
+
+            }
+            else{
+                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXPIRY LIST",msgcontent:CWEXP_confirm_msg1,position:{top:150,left:500}}});
+            }
+        }
+        $('#CWEXP_btn_submit').attr('disabled','disabled');
+        $('#CWEXP_lb_selectemail').prop('selectedIndex',0);
+        $('#CWEXP_TB_weekBefore').val("");
+    }
+//Function to show error msg
+    function CWEXP_error(err)
+    {
+        $(".preloader").hide();
+        if(err=="ScriptError: Failed to establish a database connection. Check connection string, username and password.")
+        {
+            err="DB USERNAME/PWD WRONG, PLZ CHK UR CONFIG FILE FOR THE CREDENTIALS."
+            $('#CEXP_form_expirylist_weeklyexpiryform').replaceWith('<center><label class="dberrormsg">'+err+'</label></center>');
+        }
+        else{
+            $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXPIRY LIST",msgcontent:err,position:{top:150,left:500}}});
+        }
+    }
+//FUNCTION TO CONVERT DATE FORMAT
+    function FormTableDateFormat(inputdate){
+        var string = inputdate.split("-");
+        return string[2]+'-'+ string[1]+'-'+string[0];
+    }
+});
+</script>
+<!--SCRIPT TAG END-->
+</head>
+<!--HEAD TAG END-->
+<!--BODY TAG START-->
+<body>
+<div class="container">
+
+    <div class="preloader"><span class="Centerer"></span><img class="preloaderimg"/> </div>
+    <div class="title text-center"><h4><b>CUSTOMER EXPIRY LIST</b></h4></div>
+    <form action="" id="CEXP_form_expirylist_weeklyexpiryform" name="CEXP_form_expirylist_weeklyexpiryform" class='content form-horizontal'>
+        <div class="panel-body">
+            <div style="padding-bottom: 15px" id="CEXP_tble_main" hidden>
+                <div class="radio">
+                    <label >
+                        <input  type="radio"  name="CEXP_mainradiobutton" id="CEXP_radio_Expirylist"  value="CUSTOMER EXPIRY LIST" >
+                        CUSTOMER EXPIRY LIST
+                    </label>
+                </div>
+                <div class="radio">
+                    <label >
+                        <input type="radio" name="CEXP_mainradiobutton" id="CEXP_radio_WeeklyExpirylist" value="WEEKLY CUSTOMER EXPIRY LIST" >
+                        WEEKLY CUSTOMER EXPIRY LIST
+                    </label>
+                </div>
+            </div>
+            <div id="CEXP_tble_expiry_list" hidden>
+               <div><label id="CCAN_lbl_title" class="srctitle" style="text-align:CENTER;width:400px">CUSTOMER EXPIRY LIST</label></div>
+               <div class="radio">
+                   <label >
+                       <input type="radio" name="CEXP_radiobotton" id="CEXP_radio_equal" value="EQUAL" >
+                       EQUAL DATES
+                   </label>
+               </div>
+               <div >
+                    <label name='CEXP_equalto' id='CEXP_lbl_equalto' class="col-sm-3"  hidden>ENTER EQUAL TO  DATE <em>*</em></label>
+                    <div class="col-sm-12" ><input type="text" name="selected_equal_date" id="CEXP_db_selected_equal_date" style="width:110px;display: none" class="datemandtry form-control" hidden  ></div>
+               </div>
+               <div class="radio">
+                   <label >
+                       <input type="radio" name="CEXP_radiobotton" id="CEXP_radio_before" value="BEFORE" >
+                       BEFORE DATES
+                   </label>
+               </div>
+               <div >
+                  <label name='CEXP_beforedate' id='CEXP_lbl_beforedate' class="col-sm-2"  hidden>ENTER A BEFORE  DATE <em>*</em></label>
+                  <div class="col-sm-12" ><input type="text" name="selected_before_date" id="CEXP_db_selected_before_date" style="width:110px;display: none" class="datemandtry form-control"  ></div>
+
+               </div>
+               <div class="radio">
+                   <label >
+                       <input type="radio" name="CEXP_radiobotton" id="CEXP_radio_between" value="BETWEEN" >
+                       BETWEEN DATES
+                   </label>
+               </div>
+               <div>
+                    <label name='CEXP_fromdate' id='CEXP_lbl_fromdate'   hidden >ENTER A FROM  DATE <em>*</em>
+                        <input type="text" name="selected_from_date" id="CEXP_db_selected_from_date" style="width:110px;display: none" class="datemandtry form-control" hidden >
+                    </label>
+               </div>
+               <div>
+                  <label name='CEXP_todate' id='CEXP_lbl_todate'  hidden>ENTER A  TO DATE <em>*</em>
+                      <input type="text" name="selected_to_date" id="CEXP_db_selected_to_date" style="width:110px;display: none" class="datemandtry form-control" hidden >
+                  </label>
+               </div>
+               <div><input class="maxbtn" type="button" name="submit" value="SHOW LIST" id="CEXP_btn_submit"   disabled/></div>
+            </div>
+            <div id="CEXP_tble_Weekly_expiry_list" hidden>
+                <div><caption class="srctitle" style="text-align:CENTER;width:400px">WEEKLY CUSTOMER EXPIRY LIST</caption></div>
+
+            <tr><td><lable >ENTER THE WEEK AHEAD GOING TO EXPIRE</lable><em>*</em></td><td><input type='text' name="CWEXP_TB_weekBefore" id="CWEXP_TB_weekBefore"  style="width:17px" class='numonly submitvalidate'  /></td>
+            </tr>
+            <tr>
+                <td ><lable>SELECT THE EMAIL ID</lable><em>*</em></td>
+                <td><select id='CWEXP_lb_selectemail' name="CWEXP_email" title="EMAIL ADDRESS" class='submitvalidate' >
+                        <option value='SELECT' selected="selected"> SELECT</option>
+                    </select></td></tr>
+        </div>
+        <div style="position:relative;left:130px;">
+            <table id='CWEXP_tble_buttontable' >
+                <tr><td><input class="btn" type="button" name="submit" value="SEND" id="CWEXP_btn_submit"  disabled/></td>
+                    <td><input class="btn" type="button" name="reset" value="RESET" id="CWEXP_btn_reset"  /></td></tr>
+            </table>
+        </div>
+        <table>
+            <tr><td><lable name="CEXP_msg" id="CEXP_lbl_msg" class="srctitle errormsg"   visible="false"/></td>
+            <tr><td><lable name="CWEXP_msg" id="CWEXP_lbl_msg" class="srctitle errormsg"   visible="false"/></td>
+            </tr>
+        </table>
+        <div    id ="CEXP_div_htmltable" style="width:2025px; height: 450px; overflow:auto;">
+            <table id="CEXP_tbl_htmltable" border="1"  cellspacing="0" class="srcresult" style="width:2000px" >
+            </table>
+        </div>
+                </div>
+    </form>
+</div>
+</body>
+<!--BODY TAG END-->
+</html>
+<!--HTML TAG END-->

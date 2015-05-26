@@ -34,7 +34,6 @@ $(document).ready(function(){
             }
         },
         error:function(data){
-
            show_msgbox("CUSTOMER CANCELLATION",JSON.stringify(data),"error",false);
         }
     });
@@ -97,12 +96,11 @@ $(document).ready(function(){
                 CCAN_loadUnitNo(response_unit)  ;
             },
             error:function(data){
-
-            show_msgbox("CUSTOMER CANCELLATION",JSON.stringify(data),"error",false);
-        }
+                show_msgbox("CUSTOMER CANCELLATION",JSON.stringify(data),"error",false);
+            }
         });
     });
-//-----UNIT NO CHANGE FUNCTION-----------------
+    //-----UNIT NO CHANGE FUNCTION-----------------
     $('#CCAN_lb_selectunit').change(function(){
         $("html, body").animate({ scrollTop: $(document).height() }, "slow");
         var CCAN_unit = $(this).val();
@@ -119,7 +117,6 @@ $(document).ready(function(){
             $('#CCAN_tble_id > div').remove();
         }
         else{
-//$(".preloader").show();
             $('#CCAN_lb_selectname').hide();
             $('#CCAN_div_buttons').hide();
             $('#CCAN_div_uncancelbuttons').hide();
@@ -130,10 +127,8 @@ $(document).ready(function(){
             $('#CCAN_tble_id > div').remove();
             $('#CCAN_tble_guest_cardno > div').remove();
             var CCAN_namearray=[];
-            for(var k=0;k<CCAN_all_result.length;k++)
-            {
-                if(CCAN_all_result[k].unit==CCAN_unit)
-                {
+            for(var k=0;k<CCAN_all_result.length;k++){
+                if(CCAN_all_result[k].unit==CCAN_unit){
                     CCAN_namearray.push(CCAN_all_result[k].name);
                 }
             }
@@ -149,14 +144,12 @@ $(document).ready(function(){
             $('#CCAN_custname').show();
         }
     });
-//------------CUSTOMER NAME CHANGE FUNCTION------------------
+   //------------CUSTOMER NAME CHANGE FUNCTION------------------
     var CCAN_name_recver;
     $('#CCAN_lb_selectname').change(function(){
-
         var CCAN_name=$(this).val();
         var CCAN_unit_no=$('#CCAN_lb_selectunit').val();
-        if(CCAN_name=='SELECT')
-        {
+        if(CCAN_name=='SELECT'){
             $('#CCAN_lbl_error').hide();
             $('#CCAN_div_cancelform').hide();
             $('#CCAN_div_buttons').hide();
@@ -218,9 +211,8 @@ $(document).ready(function(){
                         CCAN_load_customerdetails(response_unit)  ;
                     },
                     error:function(data){
-
                           show_msgbox("CUSTOMER CANCELLATION",JSON.stringify(data),"error",false);
-                }
+                    }
                 });
                 $('#CCAN_tble_id > div').remove();
             }
@@ -233,7 +225,7 @@ $(document).ready(function(){
     $('#CCAN_lbl_cname').hide();
     $('#CCAN_lbl_unitno').hide();
     $('#CCAN_lb_selectunit').hide();
-//FUNCTION TO CHECK CUSTOMER AVAILABLE
+    //FUNCTION TO CHECK CUSTOMER AVAILABLE
     function CCAN_checkcustomer(CCAN_initialvalues_result){
         CCAN_errorAarray=CCAN_initialvalues_result[0].CCAN_error_msg;
         var CCAN_check_customer=CCAN_initialvalues_result[0].CCAN_cust_values;
@@ -244,21 +236,17 @@ $(document).ready(function(){
             var CCAN_err_msg=CCAN_errorAarray[1]+'  &  '+CCAN_errorAarray[3]
             $('#CCAN_form_cancelform').replaceWith('<p><label class="errormsg"> '+CCAN_err_msg+'</label></p>');
         }
-//TO HIDE PRELOADER START
-        SubPage=0;
-        CheckPageStatus();
-//TO HIDE PRELOADER END
+
     }
-//FUNCTION TO LOAD INITIAL VALUES
+    //FUNCTION TO LOAD INITIAL VALUES
     var CCAN_all_result=[]
-    function CCAN_loadUnitNo(CCAN_unitno)
-    {
+    function CCAN_loadUnitNo(CCAN_unitno){
         $("html, body").animate({ scrollTop: $(document).height() }, "slow");
         $(".preloader").hide();
         CCAN_all_result=CCAN_unitno;
         var CCAN_select_type = $('input:radio[name=CCAN_mainradiobutton]:checked').val();
-        if(CCAN_all_result.length==0)
-        {
+        if(CCAN_all_result.length==0){
+            $('#CCAN_unitno').hide();
             if(CCAN_select_type=="CANCEL CUSTOMER"){
                 $('#CCAN_lbl_title').hide();
                 $('#CCAN_lbl_errmsg').text(CCAN_errorAarray[1].EMC_DATA).show();
@@ -268,11 +256,9 @@ $(document).ready(function(){
                 $('#CCAN_lbl_errmsg').text(CCAN_errorAarray[3].EMC_DATA).show();
             }
         }
-        else
-        {
+        else{
             var unit_array=[];
-            for(var k=0;k<CCAN_all_result.length;k++)
-            {
+            for(var k=0;k<CCAN_all_result.length;k++){
                 unit_array.push(CCAN_all_result[k].unit)
             }
             unit_array=unique(unit_array);
@@ -283,6 +269,7 @@ $(document).ready(function(){
             $('#CCAN_lb_selectunit').html(CCAN_unitno_options);
             $('#CCAN_tble_unitno').show();
             $('#CCAN_lbl_unitno').show();
+            $('#CCAN_unitno').show();
             $('#CCAN_lb_selectunit').show();
         }
     }
@@ -293,18 +280,14 @@ $(document).ready(function(){
         });
         return result;
     }
-//FUNCTION TO CALL RADIO BUTTON CLICK
+    //FUNCTION TO CALL RADIO BUTTON CLICK
     var cust_id;
-    $(document).on("change",'.CCAN_class_custid', function ()
-    {
+    $(document).on("change",'.CCAN_class_custid', function (){
         $(".preloader").show();
         var CCAN_customer_id=$("input[name=custid]:checked").val();
         cust_id=CCAN_customer_id;
-        var CCAN_name_recver;
-        for(var k=0;k<CCAN_all_result.length;k++)
-        {
-            if(CCAN_all_result[k].customerid==CCAN_customer_id)
-            {
+        for(var k=0;k<CCAN_all_result.length;k++){
+            if(CCAN_all_result[k].customerid==CCAN_customer_id){
                 CCAN_name_recver=(CCAN_all_result[k].recver);
             }
         }
@@ -316,30 +299,26 @@ $(document).ready(function(){
         $('#CCAN_tble_comment').hide();
         $('#CCAN_tble_guest_cardno > div').remove();
         $('input:radio[name=CCAN_selectcard]').attr('checked',false);
-//HANDLER TO GET CUSTOMER DETAIL'S
+        //HANDLER TO GET CUSTOMER DETAIL'S
         var CCAN_select_type = $('input:radio[name=CCAN_mainradiobutton]:checked').val();
         $.ajax({
             type:'POST',
             url:"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_get_customervalues",
             data:{'CCAN_select_type':CCAN_select_type,'CCAN_name_recver':CCAN_name_recver,'cust_id':CCAN_customer_id},
             success:function(data){
-
                 var response_unit=JSON.parse(data);
                 CCAN_load_customerdetails(response_unit)  ;
             },
             error:function(data){
-
-
                     show_msgbox("CUSTOMER CANCELLATION",JSON.stringify(data),"error",false);
-
             }
 
         })
     });
-///////////////************ FUNCTION TO LOAD CUSTOMER DETAILS***********////////////////////
-    function CCAN_load_customerdetails(data)
-    {
+    ///////////////************ FUNCTION TO LOAD CUSTOMER DETAILS***********////////////////////
+    function CCAN_load_customerdetails(data){
         $(".preloader").hide();
+        $("html, body").animate({ scrollTop: $(document).height() }, "fast");
         var CCAN_customer_details=[];
         CCAN_customer_details=data[0];
         var CCAN_guest_array=data[1];
@@ -439,15 +418,13 @@ $(document).ready(function(){
             $('#CCAN_div_buttons').show();
             $('#CCAN_div_uncancelbuttons').hide();
         }
-        if(CCAN_select_type=="UNCANCEL CUSTOMER")
-        {
+        if(CCAN_select_type=="UNCANCEL CUSTOMER"){
             $('#CCAN_div_uncancelbuttons').show();
             $('#CCAN_div_buttons').hide();
         }
     }
-//******************** FUNCTION TO SHOW EXCEPTION**********************
-    function CCAN_error(error)
-    {
+    //******************** FUNCTION TO SHOW EXCEPTION**********************
+    function CCAN_error(error){
         if(error=="ScriptError: Failed to establish a database connection. Check connection string, username and password.")
         {
             error="DB USERNAME/PWD WRONG, PLZ CHK UR CONFIG FILE FOR THE CREDENTIALS."
@@ -484,36 +461,39 @@ $(document).ready(function(){
         {
             $('#CCAN_lbl_unitno').hide();
             var CCAN_select_type = $('input:radio[name=CCAN_mainradiobutton]:checked').val();
-//            google.script.run.withFailureHandler(CCAN_error).withSuccessHandler(CCAN_loadUnitNo).CCAN_getcustomer_details(CCAN_select_type);
+            $.ajax({
+                type:'post',
+                'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_getcustomer_details",
+                data:{'CCAN_select_type':CCAN_select_type},
+                success:function(data){
+                    var response_unit=JSON.parse(data);
+                    CCAN_loadUnitNo(response_unit)  ;
+                },
+                error:function(data){
+                    show_msgbox("CUSTOMER CANCELLATION",JSON.stringify(data),"error",false);
+                }
+            });
             $('#CCAN_lb_selectunit').prop('selectedIndex',0).hide();
             if(CCAN_select_type=="CANCEL CUSTOMER"){
                 show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[0].EMC_DATA,"success",false);
-//                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[0],position:{top:150,left:500}}});
             }
             else{
                 show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[4].EMC_DATA,"success",false);
-
-//                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[4],position:{top:150,left:500}}});
             }
         }
-        else if(response[0]==1 && response[1]==0){
-
-
-
+        else if(response[0]==1 && response[1]!=1){
+            show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[6].EMC_DATA,"error",false);
         }
-        else if(response[0]==0)
-        {
-            if(CCAN_select_type=="CANCEL CUSTOMER")
+        else if(response[0]==0){
+            if(CCAN_select_type=="CANCEL CUSTOMER"){
                 show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[5].EMC_DATA,"success",false);
-//                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[5],position:{top:150,left:500}}});
-
+            }
             else{
-            show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[5].EMC_DATA,"success",false);
-//                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER CANCELLATION",msgcontent:CCAN_errorAarray[5],position:{top:150,left:500}}});
+              show_msgbox("CUSTOMER CANCELLATION",CCAN_errorAarray[5].EMC_DATA,"success",false);
             }
             $('#CCAN_lbl_unitno').show();
             $('#CCAN_lb_selectunit').prop('selectedIndex',0).show();
-         }
+        }
         else if(response=='RESET'){
             $('#CCAN_lbl_unitno').show();
             $('#CCAN_lb_selectunit').prop('selectedIndex',0).show();
@@ -541,9 +521,8 @@ $(document).ready(function(){
             url:"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_cancel",
             data:form_element+"&cust_id="+cust_id+"&CCAN_name_recver="+CCAN_name_recver,
             success:function(data){
-//                alert(data)
                 var final_value=JSON.parse(data);
-                CCAN_clear(data);
+                CCAN_clear(final_value);
 
 
             },
@@ -562,9 +541,8 @@ $(document).ready(function(){
             url:"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_uncancel",
             data:form_element+"&cust_id="+cust_id+"&CCAN_name_recver="+CCAN_name_recver,
             success:function(data){
-//                alert(data)
                 var final_value=JSON.parse(data);
-                CCAN_clear(data);
+                CCAN_clear(final_value);
 
             },
             error:function(data){
@@ -720,9 +698,9 @@ $(document).ready(function(){
 <!--</div>-->
 <body>
 <div class="container">
-        <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif"  /></div></div></div>
+<!--        <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif"  /></div></div></div>-->
 
-<!--    <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>-->
+    <div class="preloader"><span class="Centerer"></span><img class="preloaderimg"/> </div>
     <div class="title text-center"><h4><b>CUSTOMER CANCELLATION</b></h4></div>
     <form id="CCAN_form_cancelform" name="CCAN_cancel_form" class="form-horizontal content" role="form">
         <div class="panel-body">
@@ -762,110 +740,110 @@ $(document).ready(function(){
                     <div id='CCAN_tble_personaldetails'>
                         <div class="form-group">
                             <label class="col-sm-3">FIRST NAME</label>
-                            <div class="col-sm-3"> <input type="text" name="CCAN_tb_firstname" id="CCAN_tb_firstname"  class="form-control CCAN_formvalidation" maxlength="50" readonly placeholder="First Name"/></div>
+                            <div class="col-sm-3"> <input type="text" name="CCAN_tb_firstname" id="CCAN_tb_firstname"  class="form-control CCAN_formvalidation" maxlength="50" readonly /></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">LAST NAME</label>
-                            <div class="col-sm-3"> <input type="text" name="CCAN_tb_lastname" id="CCAN_tb_lastname"  maxlength="50" class="form-control CCAN_formvalidation" placeholder="Last Name" readonly/></div>
+                            <div class="col-sm-3"> <input type="text" name="CCAN_tb_lastname" id="CCAN_tb_lastname"  maxlength="50" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">COMPANY NAME</label>
-                            <div class="col-sm-3"> <input type="text" name="CCAN_tb_companyname" id="CCAN_tb_companyname"  class="form-control CCAN_formvalidation" placeholder="Company Name" readonly/></div>
+                            <div class="col-sm-3"> <input type="text" name="CCAN_tb_companyname" id="CCAN_tb_companyname"  class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">EMAIL ID</label>
-                            <div class="col-sm-3"> <input type="text" name="CCAN_tb_email" id="CCAN_tb_email"  maxlength="50" class="form-control CCAN_formvalidation" placeholder="Email Id" readonly/></div>
+                            <div class="col-sm-3"> <input type="text" name="CCAN_tb_email" id="CCAN_tb_email"  maxlength="50" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">MOBILE NO</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_mobileno" id="CCAN_tb_mobileno"  maxlength="6" class="form-control CCAN_formvalidation" placeholder="Mobile No" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_mobileno" id="CCAN_tb_mobileno"  maxlength="6" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">INT'L MOBILE NO</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_intmobileno" id="CCAN_tb_intmobileno"  maxlength="15" class="form-control CCAN_formvalidation" placeholder="Int'l Mobile No" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_intmobileno" id="CCAN_tb_intmobileno"  maxlength="15" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">OFFICE NO</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_officeno" id="CCAN_tb_officeno"  maxlength="8" class="form-control CCAN_formvalidation" placeholder="Office No" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_officeno" id="CCAN_tb_officeno"  maxlength="8" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">DATE OF BIRTH</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_dob" id="CCAN_tb_dob"  maxlength="50" class="form-control CCAN_formvalidation" placeholder="DOB" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_dob" id="CCAN_tb_dob"  maxlength="50" class="form-control CCAN_formvalidation" readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">NATIONALITY</label>
-                            <div class="col-sm-3"> <input type="text" name="CCAN_tb_nation" id="CCAN_tb_nation"  maxlength="50" class="form-control CCAN_formvalidation" placeholder="Nationality" readonly/></div>
+                            <div class="col-sm-3"> <input type="text" name="CCAN_tb_nation" id="CCAN_tb_nation"  maxlength="50" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">PASSPORT NUMBER</label>
-                            <div class="col-sm-3"> <input type="text" name="CCAN_tb_passno" id="CCAN_tb_passno"  maxlength="15" class="form-control CCAN_formvalidation" placeholder="Passport Number" readonly/></div>
+                            <div class="col-sm-3"> <input type="text" name="CCAN_tb_passno" id="CCAN_tb_passno"  maxlength="15" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">PASSPORT EXPIRY DATE</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_passdate" id="CCAN_tb_passdate"  maxlength="50" class="form-control CCAN_formvalidation" placeholder=" Passport Expiry Date" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_passdate" id="CCAN_tb_passdate"  maxlength="50" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">EP NUMBER</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_epno" id="CCAN_tb_epno"  maxlength="15" class="form-control CCAN_formvalidation" placeholder="EP Number" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_epno" id="CCAN_tb_epno"  maxlength="15" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">EP EXPIRY DATE</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_epdate" id="CCAN_tb_epdate" class="form-control CCAN_formvalidation" placeholder="EP Expiry Date" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_epdate" id="CCAN_tb_epdate" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">ROOM TYPE</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_roomtype" id="CCAN_tb_roomtype" class="form-control CCAN_formvalidation" placeholder="Room Type" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_roomtype" id="CCAN_tb_roomtype" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">CUSTOMER CARD </label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_cardno[]" id="CCAN_tb_cardno" class="form-control CCAN_formvalidation" placeholder="Customer Card" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_cardno[]" id="CCAN_tb_cardno" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                     </div>
                     <div  id="CCAN_tble_guest_cardno"></div>
                     <div id="CCAN_tble_feedetails">
                         <div class="form-group">
                             <label class="col-sm-3">CHECK IN DATE</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_startdate" id="CCAN_tb_startdate" class="form-control CCAN_formvalidation" placeholder="Check in Date" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_startdate" id="CCAN_tb_startdate" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">CHECK OUT DATE</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_enddate" id="CCAN_tb_enddate" class="form-control CCAN_formvalidation" placeholder="Check out Date" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_enddate" id="CCAN_tb_enddate" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">NOTICE PERIOD</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_noticeperiod" id="CCAN_tb_noticeperiod" class="form-control CCAN_formvalidation" placeholder="Notice Period" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_noticeperiod" id="CCAN_tb_noticeperiod" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">NOTICE DATE</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_noticedate" id="CCAN_tb_noticedate" class="form-control CCAN_formvalidation" placeholder="Notice Date" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_noticedate" id="CCAN_tb_noticedate" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">ELECTRICITY CAPPED</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_elect" id="CCAN_tb_elect" class="form-control CCAN_formvalidation" placeholder="Electricity Capped" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_elect" id="CCAN_tb_elect" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label id="CCAN_lbl_fixedfee" class="col-sm-3">AIRCON FIXED FEE</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_fixed" id="CCAN_tb_fixed" class="form-control CCAN_formvalidation" placeholder="Aircon Fixd Fee" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_fixed" id="CCAN_tb_fixed" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">CURTAIN DRY CLEANING FEE</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_drycleanfee" id="CCAN_tb_drycleanfee"  maxlength="50" class="form-control CCAN_formvalidation" placeholder="Curtain Dry Cleaning Fee" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_drycleanfee" id="CCAN_tb_drycleanfee"  maxlength="50" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">CHECKOUT CLEANING FEE</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_checkoutcleaningfee" id="CCAN_tb_checkoutcleaningfee"  maxlength="50" class="form-control CCAN_formvalidation" placeholder="Checkout cleaning Fee" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_checkoutcleaningfee" id="CCAN_tb_checkoutcleaningfee"  maxlength="50" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">DEPOSIT</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_deposit" id="CCAN_tb_deposit"  maxlength="50" class="form-control CCAN_formvalidation" placeholder="Deposit" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_deposit" id="CCAN_tb_deposit"  maxlength="50" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">RENT</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_rent" id="CCAN_tb_rent"  maxlength="50" class="form-control CCAN_formvalidation" placeholder="Rent" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_rent" id="CCAN_tb_rent"  maxlength="50" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                         <div class="form-group">
                             <label class="col-sm-3">PROCESSING COST</label>
-                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_processingfee" id="CCAN_tb_processingfee" maxlength="50" class="form-control CCAN_formvalidation" placeholder="Processing Cost" readonly/></div>
+                            <div class="col-sm-2"> <input type="text" name="CCAN_tb_processingfee" id="CCAN_tb_processingfee" maxlength="50" class="form-control CCAN_formvalidation"  readonly/></div>
                         </div>
                     </div>
                     <div id='CCAN_tble_comment'>
@@ -881,8 +859,8 @@ $(document).ready(function(){
                                <input class="btn clear" type="button"  id="CCAN_btn_resetbutton" name="reset" value="RESET"  />
                             </div>
                         </div>
-                        <div  id="CCAN_div_uncancelbuttons" style="position:relative;left:130px;" hidden>
-                            <div class="col-sm-offset-1 col-sm-3">
+                        <div  id="CCAN_div_uncancelbuttons"  hidden>
+                            <div class="col-sm-offset-1">
                                <input class="maxbtn" type="button"  id="CCAN_btn_uncancelbutton" name="submit" value="UNCANCEL"  />
                                <input class="maxbtn clear" type="button"  id="CCAN_btn_resetbutton1" name="reset" value="RESET"  />
 
