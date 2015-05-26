@@ -30,7 +30,6 @@ require_once "Header.php";
             url: "/index.php/Ctrl_Banktt_Search_Forms/Banktt_initialdatas",
             data:{'ErrorList':'1,2,4,6,45,247,385,401'},
             success: function(data){
-                $('.preloader').hide();
                 var value=JSON.parse(data);
                 var searchoption=value[0];
                 Allunits=value[2];
@@ -609,7 +608,7 @@ require_once "Header.php";
             {
                 $('#debittedondiv').show();
             }
-            $('#Banktt_SRC_Debitedon').datepicker("option","maxDate",BANKTT_db_chkindate1);
+            $('#Banktt_SRC_Debitedon').datepicker("option","minDate",BANKTT_db_chkindate1);
             $('#Banktt_SRC_Debitedon').datepicker("option","maxDate",new Date());
             $('#BankTT_Updation_Form').show();
         });
@@ -862,7 +861,7 @@ require_once "Header.php";
                                 <label>STATUS<span class="labelrequired"><em>*</em></span></label>
                             </div>
                             <div class="col-md-3">
-                                <SELECT class="form-control" name="Banktt_SRC_Status"  required id="Banktt_SRC_Status" style="max-width:150px;"/><OPTION>SELECT</OPTION></SELECT>
+                                <SELECT class="form-control" name="Banktt_SRC_Status"  required id="Banktt_SRC_Status" style="max-width:150px;"><OPTION>SELECT</OPTION></SELECT>
                             </div>
                         </div>
                         <div id="debittedondiv">
@@ -940,7 +939,7 @@ require_once "Header.php";
                                 <label>CREATED BY</label>
                             </div>
                             <div class="col-md-3">
-                                <SELECT class="form-control" name="Banktt_SRC_Createdby"  required id="Banktt_SRC_Createdby" style="max-width:200px;"/><OPTION>SELECT</OPTION></SELECT>
+                                <SELECT class="form-control" name="Banktt_SRC_Createdby"  required id="Banktt_SRC_Createdby" style="max-width:200px;"><OPTION>SELECT</OPTION></SELECT>
                             </div>
                         </div>
                         <div class="row form-group">

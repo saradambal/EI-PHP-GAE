@@ -2,7 +2,7 @@
 error_reporting(0);
 class Customercreation extends CI_Model
 {
-        public function Customer_Creation_Save($UserStamp,$Leaseperiod)
+        public function Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters)
         {
             $FirstName=$_POST['CCRE_FirstName'];
             $Lastname=$_POST['CCRE_LastName'];
@@ -102,7 +102,7 @@ class Customercreation extends CI_Model
                 $cardno='';
                 $accesscard='';
             }
-            $CCRE_quators="1";
+            $CCRE_quators=$Quoters;
             $StartDate=date('Y-m-d',strtotime($Startdate));
             $EndDate=date('Y-m-d',strtotime($Enddate));
             $CallQuery="CALL SP_CUSTOMER_CREATION_INSERT('$FirstName','$Lastname','$CompanyName','$CompanyAddress','$CompanyPostalCode','$Officeno',$Uint,'$RoomType','$S_starttime','$S_endtime','$E_starttime','$E_endtime','$Leaseperiod',$CCRE_quators,'$processwaived','$Prorated','$NoticePeriod','$NoticePeriodDate',$Rent,'$DepositFee','$ProcessingFee','$Fixedaircon_fee','$Quaterlyfee','$ElectricitycapFee','$CheckOutCleanFee','$Curtain_DrycleanFee','$cardno','$StartDate','$UserStamp','$StartDate','$EndDate','$accesscard','$Nationality','$Mobile','$IntlMobile','$Emailid','$PassportNo','$PassportDate','$DOB','$EpNo','$EPDate','$Comments',@CUSTOMER_CREATION_TEMPTBLNAME,@CUSTOMER_SUCCESSFLAG)";
@@ -117,15 +117,15 @@ class Customercreation extends CI_Model
             $Customerid_query = 'SELECT CUSTOMER_ID FROM CUSTOMER ORDER BY CUSTOMER_ID DESC LIMIT 1';
             $Customer_result = $this->db->query($Customerid_query);
             $Customerid=$Customer_result->row()->CUSTOMER_ID;
-//            if($Confirm_Meessage)
-//            {
-//               $return_data=array($Confirm_Meessage,$Customerid,$StartDate,$S_starttime,$S_endtime,$EndDate,$E_starttime,$E_endtime,$FirstName,$Lastname,$Mobile,$IntlMobile,$Officeno,$Emailid,$Uint,$RoomType);
-//               return $return_data;
-//            }
-//            else
-//            {
+            if($Confirm_Meessage)
+            {
+               $return_data=array($Confirm_Meessage,$Customerid,$StartDate,$S_starttime,$S_endtime,$EndDate,$E_starttime,$E_endtime,$FirstName,$Lastname,$Mobile,$IntlMobile,$Officeno,$Emailid,$Uint,$RoomType);
+               return $return_data;
+            }
+            else
+            {
                return $Confirm_Meessage;
-//            }
+            }
         }
         public function getRecheckinCustomer($unit)
         {
@@ -262,7 +262,15 @@ class Customercreation extends CI_Model
             $Confirm_query = 'SELECT @CUSTOMER_RECHECKIN_FLAG AS CONFIRM';
             $Confirm_result = $this->db->query($Confirm_query);
             $Confirm_Meessage=$Confirm_result->row()->CONFIRM;
-            $this->db->query('COMMIT');
-            return $Confirm_Meessage;
+            if($Confirm_Meessage)
+            {
+                $return_data=array($Confirm_Meessage,$Customerid,$StartDate,$S_starttime,$S_endtime,$EndDate,$E_starttime,$E_endtime,$FirstName,$Lastname,$Mobile,$IntlMobile,$Officeno,$Emailid,$Uint,$RoomType);
+                return $return_data;
+            }
+            else
+            {
+                return $Confirm_Meessage;
+            }
+//            $this->db->query('COMMIT');
         }
    }

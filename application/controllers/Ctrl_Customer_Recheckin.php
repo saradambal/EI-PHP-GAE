@@ -1,5 +1,6 @@
 <?php
 include 'GET_USERSTAMP.php';
+include 'GET_CONFIG.php';
 $$UserStamp=$UserStamp;
 Class Ctrl_Customer_Recheckin extends CI_Controller
 {
@@ -60,6 +61,7 @@ Class Ctrl_Customer_Recheckin extends CI_Controller
     public function CustomerRecheckinSave()
     {
         global $UserStamp;
+        global $ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token;
         $Startdate=$_POST['CCRE_Startdate'];
         $Enddate=$_POST['CCRE_Enddate'];
         $this->load->model('Eilib/Common_function');
@@ -67,7 +69,19 @@ Class Ctrl_Customer_Recheckin extends CI_Controller
         $Leaseperiod=$this->Common_function->getLeasePeriod($Startdate,$Enddate);
         $this->load->model('Customercreation');
         $Create_confirm=$this->Customercreation->Customer_Recheckin_Save($UserStamp,$Leaseperiod);
-        $Returnvalue=array($Create_confirm,$AllUnit);
+        if($Create_confirm[0]==1)
+        {
+            $this->load->library('Google');
+            $this->load->model('Eilib/Calender');
+            $cal= $this->Calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+            $this->Calender->CUST_customercalendercreation($cal,$Create_confirm[1],$Create_confirm[2],$Create_confirm[3],$Create_confirm[4],$Create_confirm[5],$Create_confirm[6],$Create_confirm[7],$Create_confirm[8],$Create_confirm[9],$Create_confirm[10],$Create_confirm[11],$Create_confirm[12],$Create_confirm[13],$Create_confirm[14],$Create_confirm[15],'');
+            $message=$Create_confirm[0];
+        }
+        else
+         {
+            $message=$Create_confirm;
+         }
+        $Returnvalue=array($message,$AllUnit);
         echo json_encode($Returnvalue);
     }
 }

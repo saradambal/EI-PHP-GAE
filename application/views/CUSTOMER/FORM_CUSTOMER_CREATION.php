@@ -24,10 +24,9 @@ $(document).ready(function() {
     var errormsg
     $.ajax({
         type: "POST",
-        url: '/index.php/Ctrl_Customer_Creation/Customer_Initaildatas',
+        url: "/index.php/Ctrl_Customer_Creation/Customer_Initaildatas",
         data:{"Formname":'CustomerCreation',"ErrorList":'1,2,6,33,34,35,36,37,321,324,339,342,343,344,345,346,347,348,400,443,444,458,459,460,461'},
         success: function(data){
-            $('.preloader').hide();
             var value_array=JSON.parse(data);
             timearray=value_array[5];
             errormsg=value_array[4];
@@ -51,7 +50,7 @@ $(document).ready(function() {
             $('#CCRE_lbl_mobileerrormsg').text(errormsg[10].EMC_DATA)
             $('#CCRE_lbl_intlmobileerrormsg').text(errormsg[10].EMC_DATA)
             $('#CCRE_lbl_officeerrormsg').text(errormsg[10].EMC_DATA)
-            $('#CCRE_lbl_passporterrormsg').text(errormsg[11].EMC_DATA)
+//            $('#CCRE_lbl_passporterrormsg').text(errormsg[11].EMC_DATA)
             $('#CCRE_lbl_epnoerrormsg').text(errormsg[12].EMC_DATA)
             $('#CCRE_lbl_postalerrormsg').text(errormsg[13].EMC_DATA)
             $('#CCRE_lbl_renterrormsg').text(errormsg[14].EMC_DATA)
@@ -60,10 +59,10 @@ $(document).ready(function() {
             $('#CCRE_lbl_electcaperrormsg').text(errormsg[17].EMC_DATA)
             $('#CCRE_lbl_prorated').text(prorated[0].CCN_DATA);
             $('#CCRE_lbl_waived').text(prorated[1].CCN_DATA);
-            $('#CCRE_lbl_passportdateerrormsg').text(errormsg[19].EMC_DATA);
+            $('#CCRE_lbl_passporterrormsg').text(errormsg[19].EMC_DATA);
             $('#CCRE_lbl_epnodateerrormsg').text(errormsg[20].EMC_DATA);
             $('#CCRE_lbl_passportdateerrormsg').text(errormsg[24].EMC_DATA);
-            $('#CCRE_lbl_ep_dateerrormsg').text(errormsg[23].EMC_DATA)
+            $('#CCRE_lbl_ep_dateerrormsg').text(errormsg[23].EMC_DATA);
             for(var i=0;i<value_array[0].length;i++)
             {
                 var data=value_array[0][i];
@@ -135,7 +134,7 @@ $(document).ready(function() {
         /******ELECTRICITY CAP************/
         var electricity=$('#CCRE_ElectricitycapFee').val();
         if(electricity!=""){var electamount=electricity.split('.');if(electamount[0].length>=2){var electflag=1;$('#CCRE_lbl_electcaperrormsg').hide();$('#CCRE_ElectricitycapFee').removeClass('invalid');}else{electflag=0;$('#CCRE_lbl_electcaperrormsg').show();$('#CCRE_ElectricitycapFee').addClass('invalid');}}else{$('#CCRE_lbl_electcaperrormsg').hide();$('#CCRE_ElectricitycapFee').removeClass('invalid');electflag=1}
-        if($('#CCRE_PassportDate').val()=="" && $('#CCRE_PassportNo').val()=="") { var passportflag=1;$('#CCRE_lbl_passportdateerrormsg').hide();$('#CCRE_PassportNo').removeClass('invalid'); } else { if($('#CCRE_PassportDate').val()!="" && $('#CCRE_PassportNo').val()==""){passportflag=0;$('#CCRE_lbl_passportdateerrormsg').show();$('#CCRE_PassportNo').addClass('invalid');} else {passportflag=1;$('#CCRE_lbl_passportdateerrormsg').hide();$('#CCRE_PassportNo').removeClass('invalid');} }
+        if($('#CCRE_PassportDate').val()=="" && $('#CCRE_PassportNo').val()=="") { var passportflag=1;$('#CCRE_lbl_passporterrormsg').hide();$('#CCRE_PassportNo').removeClass('invalid'); } else { if($('#CCRE_PassportDate').val()!="" && $('#CCRE_PassportNo').val()==""){passportflag=0;$('#CCRE_lbl_passporterrormsg').show();$('#CCRE_PassportNo').addClass('invalid');} else {passportflag=1;$('#CCRE_lbl_passporterrormsg').hide();$('#CCRE_PassportNo').removeClass('invalid');} }
         if($('#CCRE_EPDate').val()=="" && $('#CCRE_EpNo').val()=="") { var epflag=1;$('#CCRE_lbl_epnodateerrormsg').hide();$('#CCRE_EpNo').removeClass('invalid') } else { if($('#CCRE_EPDate').val()!="" && $('#CCRE_EpNo').val()==""){epflag=0;$('#CCRE_lbl_epnodateerrormsg').show();$('#CCRE_EpNo').addClass('invalid');} else {epflag=1;$('#CCRE_lbl_epnodateerrormsg').hide();$('#CCRE_EpNo').removeClass('invalid')} }
         var CCRE_emailid=$("#CCRE_Emailid").val();
         var CCRE_atpos=CCRE_emailid.indexOf("@");
@@ -271,9 +270,10 @@ $(document).ready(function() {
         $('#CCRE_Nullcard').prop('checked',false);
         if(Unit!='SELECT')
         {
+            $('.preloader').show();
             $.ajax({
                 type: "POST",
-                url: '/index.php/Ctrl_Customer_Creation/CustomerRoomTypeLoad',
+                url: "/index.php/Ctrl_Customer_Creation/CustomerRoomTypeLoad",
                 data:{"Unit":Unit},
                 success: function(data){
                     var value_array=JSON.parse(data);
@@ -320,9 +320,11 @@ $(document).ready(function() {
                             $('#CCRE_Enddate').datepicker("option","maxDate",unit_enddate);
                         }
                     }
+                    $('.preloader').hide();
                 },
                 error: function(data){
                     alert('error in getting'+JSON.stringify(data));
+                    $('.preloader').hide();
                 }
             });
         }
@@ -480,10 +482,11 @@ $(document).ready(function() {
         {
          if(CCRE_CardOptionname=='Cardnumber')
           {
+              $('.preloader').show();
               var Unit=$('#CCRE_UnitNo').val();
               $.ajax({
                   type: "POST",
-                  url: '/index.php/Ctrl_Customer_Creation/UnitCardNumbers',
+                  url: "/index.php/Ctrl_Customer_Creation/UnitCardNumbers",
                   data:{"Unit":Unit},
                   success: function(data){
                       var value_array=JSON.parse(data);
@@ -522,9 +525,11 @@ $(document).ready(function() {
                           $('#CardNumbersdiv').html(appenddata);
                           $('#CardNumbersdiv').show();
                       }
+                      $('.preloader').hide();
                   },
                   error: function(data){
                       alert('error in getting'+JSON.stringify(data));
+                      $('.preloader').hide();
                   }
               });
            $('#CardNumbersdiv').show();
@@ -534,6 +539,7 @@ $(document).ready(function() {
               var appenddata='';
               $('#CardNumbersdiv').append(appenddata);
               $('#CardNumbersdiv').hide();
+              $('#CCRE_lbl_error').text('');
           }
         }
         else
@@ -859,7 +865,6 @@ $(document).ready(function() {
         }
         return CCRE_timelist;
     }
-
     $('#CCRE_btn_savebutton').on('click',function(){
         $('.preloader').show();
        var FormElements=$('#CCRE_Form_CustomerCreation').serialize();
@@ -868,8 +873,8 @@ $(document).ready(function() {
                 url: "/index.php/Ctrl_Customer_Creation/CustomerCreationSave",
                 data:FormElements,
                 success: function(data){
-                    $('.preloader').hide();
-                    var returnvalue=JSON.parse(data);
+                     $('.preloader').hide();
+                var returnvalue=JSON.parse(data);
                     if(returnvalue==1)
                     {
                         show_msgbox("CUSTOMER CREATION",errormsg[7].EMC_DATA,"success",false);
@@ -883,6 +888,7 @@ $(document).ready(function() {
                 },
                 error: function(data){
                     alert('error in getting'+JSON.stringify(data));
+                    $('.preloader').hide();
                 }
         });
     });
@@ -936,6 +942,40 @@ $(document).ready(function() {
         $('#CCRE_ProcessingFee').removeClass('invalid');
         $('#CCRE_Rent').removeClass('invalid');
     }
+    $(document).on('change','.proratedcheck',function(){
+      var startdate=$('#CCRE_Startdate').val();
+      var enddate=$('#CCRE_Enddate').val();
+      var Rent=$('#CCRE_Rent').val();
+        if(startdate!='' && enddate!='' && Rent!='')
+        {
+            $.ajax({
+                type: "POST",
+                url: "/index.php/Ctrl_Customer_Creation/Prorated_check",
+                data:{SD:startdate,ED:enddate},
+                success: function(data){
+                    if(data!='true')
+                    {
+                        $('input:checkbox[name=CCRE_Rent_Prorated]').attr('checked',false);
+                        $('input:checkbox[name=CCRE_Rent_Prorated]').attr("disabled",'disabled');
+                    }
+                    else
+                    {
+                        $('input:checkbox[name=CCRE_Rent_Prorated]').attr('checked',true);
+                        $('input:checkbox[name=CCRE_Rent_Prorated]').removeAttr("disabled");
+                    }
+                    $('.preloader').hide();
+                },
+                error: function(data){
+                    alert('error in getting'+JSON.stringify(data));
+                }
+            });
+        }
+        else
+        {
+            $('input:checkbox[name=CCRE_Rent_Prorated]').attr('checked',false);
+            $('input:checkbox[name=CCRE_Rent_Prorated]').attr("disabled",'disabled');
+        }
+    });
  });
 </script>
 <body>
@@ -944,14 +984,14 @@ $(document).ready(function() {
 <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif" /></div></div></div>
 <div class="row title text-center"><h4><b>CUSTOMER CREATION</b></h4></div>
 <div class ='row content'>
-   <form id="CCRE_Form_CustomerCreation" class="form-horizontal" role="form">
+   <form id="CCRE_Form_CustomerCreation" class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
         <div class="panel-body">
                  <div class="row form-group">
                     <div class="col-md-3">
                         <label>FIRST NAME<span class="labelrequired"><em>*</em></span></label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control autosize Customernamechange" name="CCRE_FirstName" maxlength="30" required id="CCRE_FirstName"/>
+                        <input class="form-control autosize Customernamechange" name="CCRE_FirstName" maxlength="30"  id="CCRE_FirstName" placeholder="Customer First Name"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -959,7 +999,7 @@ $(document).ready(function() {
                         <label>LAST NAME<span class="labelrequired"><em>*</em></span></label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control autosize Customernamechange" name="CCRE_LastName" maxlength="30" required id="CCRE_LastName" />
+                        <input class="form-control autosize Customernamechange" name="CCRE_LastName" maxlength="30"  id="CCRE_LastName" placeholder="Customer Last Name"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -967,7 +1007,7 @@ $(document).ready(function() {
                         <label>COMPANY NAME</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control compautosize" name="CCRE_CompanyName" maxlength="50" required id="CCRE_CompanyName" />
+                        <input class="form-control compautosize" name="CCRE_CompanyName" maxlength="50"  id="CCRE_CompanyName" placeholder="Company Name"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -975,7 +1015,7 @@ $(document).ready(function() {
                         <label>COMPANY ADDRESS</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control compautosize" name="CCRE_CompanyAddress" maxlength="50" required id="CCRE_CompanyAddress" />
+                        <input class="form-control compautosize" name="CCRE_CompanyAddress" maxlength="50"  id="CCRE_CompanyAddress" placeholder="Company Address"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -983,7 +1023,7 @@ $(document).ready(function() {
                         <label>COMPANY POSTAL CODE</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control" name="CCRE_CompanyPostalCode" maxlength="6" style="max-width:100px;" id="CCRE_CompanyPostalCode" />
+                        <input class="form-control" name="CCRE_CompanyPostalCode" maxlength="6" style="max-width:100px;" id="CCRE_CompanyPostalCode" placeholder="Postal Code"/>
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_postalerrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -992,7 +1032,7 @@ $(document).ready(function() {
                         <label>E-MAIL ID<span class="labelrequired"><em>*</em></span></label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control" name="CCRE_Emailid" required id="CCRE_Emailid" />
+                        <input class="form-control" name="CCRE_Emailid" required id="CCRE_Emailid" placeholder="Customer Email Id"/>
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_emailiderrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -1001,7 +1041,7 @@ $(document).ready(function() {
                         <label>MOBILE</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control numonlynozero mobilevalidation" name="CCRE_Mobile" maxlength="8" style="max-width:100px;" id="CCRE_Mobile" />
+                        <input class="form-control numonlynozero mobilevalidation" name="CCRE_Mobile" maxlength="8" style="max-width:100px;" id="CCRE_Mobile" placeholder="Mobile"/>
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_mobileerrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -1010,7 +1050,7 @@ $(document).ready(function() {
                         <label>INT'L MOBILE</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control" name="CCRE_IntlMobile" maxlength="15" style="max-width:150px;" id="CCRE_IntlMobile" />
+                        <input class="form-control" name="CCRE_IntlMobile" maxlength="15" style="max-width:150px;" id="CCRE_IntlMobile" placeholder="Int'l Mobile"/>
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_intlmobileerrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -1019,7 +1059,7 @@ $(document).ready(function() {
                         <label>OFFICE NO</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control numonlynozero officevalidation" name="CCRE_Officeno" maxlength="8" style="max-width:110px;" id="CCRE_Officeno" />
+                        <input class="form-control numonlynozero officevalidation" name="CCRE_Officeno" maxlength="8" style="max-width:110px;" id="CCRE_Officeno" placeholder="Office No"/>
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_officeerrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -1028,7 +1068,7 @@ $(document).ready(function() {
                         <label>DATE OF BIRTH</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control" name="CCRE_DOB"  style="max-width:120px;" id="CCRE_DOB" />
+                        <input class="form-control" name="CCRE_DOB"  style="max-width:120px;" id="CCRE_DOB" placeholder="DateOfBirth"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -1036,7 +1076,7 @@ $(document).ready(function() {
                         <label>NATIONALITY<span class="labelrequired"><em>*</em></span></label>
                     </div>
                     <div class="col-md-3">
-                        <SELECT class="form-control" name="CCRE_Nationality" maxlength="8" required id="CCRE_Nationality" >
+                        <SELECT class="form-control" name="CCRE_Nationality" maxlength="8"  id="CCRE_Nationality" >
                             <OPTION>SELECT</OPTION>
                         </SELECT>
                     </div>
@@ -1045,37 +1085,37 @@ $(document).ready(function() {
                     <div class="col-md-3">
                         <label>PASSPORT NUMBER</label>
                     </div>
-                    <div class="col-md-3">
-                        <input class="form-control alnumonlyzero" name="CCRE_PassportNo" maxlength="15" style="max-width:170px;" id="CCRE_PassportNo" />
+                    <div class="col-md-2">
+                        <input class="form-control alnumonlyzero" name="CCRE_PassportNo" maxlength="15" style="max-width:170px;" id="CCRE_PassportNo" placeholder="Passport No"/>
                     </div>
-                    <div class="col-md-3"><label id="CCRE_lbl_passporterrormsg" class="errormsg" hidden></label></div>
+                    <div class="col-md-5"><label id="CCRE_lbl_passporterrormsg" class="errormsg" hidden></label></div>
                 </div>
                 <div class="row form-group">
                     <div class="col-md-3">
                         <label>PASSPORT DATE</label>
                     </div>
-                    <div class="col-md-3">
-                        <input class="form-control passportdatevalidation datenonmandtry" name="CCRE_PassportDate" maxlength="15" style="max-width:120px;" id="CCRE_PassportDate">
+                    <div class="col-md-2">
+                        <input class="form-control passportdatevalidation datenonmandtry" name="CCRE_PassportDate" maxlength="15" style="max-width:120px;" id="CCRE_PassportDate" placeholder="PassprotDate">
                     </div>
-                    <div class="col-md-3"><label id="CCRE_lbl_passportdateerrormsg" class="errormsg" hidden></label></div>
+                    <div class="col-md-5"><label id="CCRE_lbl_passportdateerrormsg" class="errormsg" hidden></label></div>
                 </div>
                 <div class="row form-group">
                     <div class="col-md-3">
                         <label>EP NUMBER</label>
                     </div>
-                    <div class="col-md-3">
-                        <input class="form-control alnumonlynozero" name="CCRE_EpNo" style="max-width:170px;" maxlength="15" id="CCRE_EpNo" />
+                    <div class="col-md-2">
+                        <input class="form-control alnumonlynozero" name="CCRE_EpNo" style="max-width:170px;" maxlength="15" id="CCRE_EpNo" placeholder="EP Number"/>
                     </div>
-                    <div class="col-md-3"><label id="CCRE_lbl_ep_dateerrormsg" class="errormsg" hidden></label></div>
+                    <div class="col-md-5"><label id="CCRE_lbl_epnodateerrormsg" class="errormsg" hidden></label></div>
                 </div>
                 <div class="row form-group">
                     <div class="col-md-3">
                         <label>EP EXPIRY DATE</label>
                     </div>
-                    <div class="col-md-3">
-                        <input class="form-control epdatevalidation" name="CCRE_EPDate" style="max-width:120px;" id="CCRE_EPDate" />
+                    <div class="col-md-2">
+                        <input class="form-control epdatevalidation" name="CCRE_EPDate" style="max-width:120px;" id="CCRE_EPDate" placeholder="EP Date"/>
                     </div>
-                    <div class="col-md-3"><label id="CCRE_lbl_ep_dateerrormsg" class="errormsg" hidden></label></div>
+                    <div class="col-md-5"><label id="CCRE_lbl_ep_dateerrormsg" class="errormsg" hidden></label></div>
                 </div>
                 <div class="row form-group">
                     <div class="col-md-3">
@@ -1126,7 +1166,7 @@ $(document).ready(function() {
                     <div class="col-md-8">
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <input class="form-control prorated startdatevalidate datemandtry noticedate" name="CCRE_Startdate"  style="max-width:120px;" id="CCRE_Startdate"/>
+                            <input class="form-control prorated startdatevalidate datemandtry noticedate proratedcheck" name="CCRE_Startdate"  style="max-width:120px;" id="CCRE_Startdate" placeholder="Check in Date"/>
                         </div>
                        <div id="startdatediv" hidden>
                         <div class="col-md-1">
@@ -1158,7 +1198,7 @@ $(document).ready(function() {
                     <div class="col-md-8">
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <input class="form-control noticedate datemandtry" name="CCRE_Enddate"  style="max-width:120px;" id="CCRE_Enddate"/>
+                            <input class="form-control noticedate datemandtry proratedcheck" name="CCRE_Enddate"  style="max-width:120px;" id="CCRE_Enddate" placeholder="Check Out Date"/>
                         </div>
                         <div class="col-md-1">
                             <label>FROM</label>
@@ -1186,7 +1226,7 @@ $(document).ready(function() {
                         <label>NOTICE PERIOD</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control" name="CCRE_NoticePeriod" maxlength="1" style="max-width:70px;" id="CCRE_NoticePeriod"/>
+                        <input class="form-control" name="CCRE_NoticePeriod" maxlength="1" style="max-width:70px;" id="CCRE_NoticePeriod" placeholder="No"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -1194,7 +1234,7 @@ $(document).ready(function() {
                         <label>NOTICE PERIOD DATE</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control" name="CCRE_NoticePeriodDate"  style="max-width:150px;" id="CCRE_NoticePeriodDate"/>
+                        <input class="form-control" name="CCRE_NoticePeriodDate"  style="max-width:150px;" id="CCRE_NoticePeriodDate" placeholder="Notice Date"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -1207,7 +1247,7 @@ $(document).ready(function() {
                                 <input type="radio" class="Airconfeechange" name="Aircon" id="CCRE_Quaterlyfee" value="QuarterlyFee">QUARTERLY SERVICE FEE
                             </div>
                             <div class="col-md-3">
-                                <input type="text" class="form-control CCRE_amtonlyvalidation" maxlength="6" style="max-width:120px;" name="CCRE_Quarterly_fee" id="CCRE_Quarterly_fee"/>
+                                <input type="text" class="form-control CCRE_amtonlyvalidation" maxlength="6" style="max-width:120px;" name="CCRE_Quarterly_fee" id="CCRE_Quarterly_fee" placeholder="0.00"/>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -1215,7 +1255,7 @@ $(document).ready(function() {
                                 <input type="radio" class="Airconfeechange" name="Aircon" id="CCRE_Quaterlyfee" value="FixedAircon">FIXED AIRCON FEE
                             </div>
                             <div class="col-md-3">
-                                <input type="text" class="form-control CCRE_amtonlyvalidation" maxlength="6" style="max-width:120px;" name="CCRE_Fixedaircon_fee" id="CCRE_Fixedaircon_fee"/>
+                                <input type="text" class="form-control CCRE_amtonlyvalidation" maxlength="6" style="max-width:120px;" name="CCRE_Fixedaircon_fee" id="CCRE_Fixedaircon_fee" placeholder="0.00"/>
                             </div>
                         </div>
                     </div>
@@ -1224,17 +1264,17 @@ $(document).ready(function() {
                     <div class="col-md-3">
                         <label>ELECTRICITY CAPPED</label>
                     </div>
-                    <div class="col-md-3">
-                        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_ElectricitycapFee"  style="max-width:100px;" id="CCRE_ElectricitycapFee"/>
+                    <div class="col-md-2">
+                        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_ElectricitycapFee"  style="max-width:100px;" id="CCRE_ElectricitycapFee" placeholder="0.00"/>
                     </div>
-                    <div class="col-md-3"><label id="CCRE_lbl_electcaperrormsg" class="errormsg" hidden></label></div>
+                    <div class="col-md-5"><label id="CCRE_lbl_electcaperrormsg" class="errormsg" hidden></label></div>
                 </div>
                 <div class="row form-group">
                     <div class="col-md-3">
                         <label>CURTAIN DRY CLEANING FEE</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_Curtain_DrycleanFee"  style="max-width:100px;" id="CCRE_Curtain_DrycleanFee"/>
+                        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_Curtain_DrycleanFee"  style="max-width:100px;" id="CCRE_Curtain_DrycleanFee" placeholder="0.00"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -1242,7 +1282,7 @@ $(document).ready(function() {
                         <label>CHECKOUT CLEANING FEE</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_CheckOutCleanFee"  style="max-width:100px;" id="CCRE_CheckOutCleanFee"/>
+                        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_CheckOutCleanFee"  style="max-width:100px;" id="CCRE_CheckOutCleanFee" placeholder="0.00"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -1250,7 +1290,7 @@ $(document).ready(function() {
                         <label>DEPOSIT</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control CCRE_amtonlyvalidationmaxdigit" maxlength="7" name="CCRE_DepositFee"  style="max-width:100px;" id="CCRE_DepositFee"/>
+                        <input class="form-control CCRE_amtonlyvalidationmaxdigit" maxlength="7" name="CCRE_DepositFee"  style="max-width:100px;" id="CCRE_DepositFee" placeholder="0.00"/>
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_depositerrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -1261,17 +1301,15 @@ $(document).ready(function() {
                     <div class="col-md-6">
                         <div class="row form-group">
                             <div class="col-md-3">
-                                <input class="form-control CCRE_amtonlyvalidationmaxdigit" name="CCRE_Rent" maxlength="7"  style="max-width:100px;" id="CCRE_Rent">
+                                <input class="form-control CCRE_amtonlyvalidationmaxdigit proratedcheck" name="CCRE_Rent" maxlength="7"  style="max-width:100px;" id="CCRE_Rent" placeholder="0.00">
                             </div>
                             <div class="col-md-1">
-                                <input id="CCRE_Rent_Prorated" type="checkbox" name="CCRE_Rent_Prorated">
+                                <input id="CCRE_Rent_Prorated" type="checkbox" name="CCRE_Rent_Prorated"><label id="CCRE_lbl_prorated"></label>
                             </div>
-                            <div class="col-md-1">
-                                <label id="CCRE_lbl_prorated"></label>
-                            </div>
+                            <div class="col-md-7"><label id="CCRE_lbl_renterrormsg" class="errormsg" hidden></label></div>
                         </div>
                     </div>
-                    <div class="col-md-3"><label id="CCRE_lbl_renterrormsg" class="errormsg" hidden></label></div>
+
                 </div>
                 <div class="row form-group">
                     <div class="col-md-3">
@@ -1280,17 +1318,15 @@ $(document).ready(function() {
                     <div class="col-md-6">
                         <div class="row form-group">
                             <div class="col-md-3">
-                                <input class="form-control CCRE_processamtonlyvalidationmaxdigit" name="CCRE_ProcessingFee"  style="max-width:100px;" id="CCRE_ProcessingFee">
+                                <input class="form-control CCRE_processamtonlyvalidationmaxdigit" name="CCRE_ProcessingFee"  style="max-width:100px;" id="CCRE_ProcessingFee" placeholder="0.00">
                             </div>
                             <div class="col-md-1">
-                                <input type="checkbox" name="CCRE_process_waived" id="CCRE_process_waived" disabled>
+                                <input type="checkbox" name="CCRE_process_waived" id="CCRE_process_waived" disabled> <label style="vertical-align: middle" id="CCRE_lbl_waived"></label>
                             </div>
-                            <div class="col-md-1">
-                                <label style="vertical-align: middle" id="CCRE_lbl_waived"></label>
-                            </div>
+                            <div class="col-md-7"><label id="CCRE_lbl_processerrormsg" class="errormsg" hidden></label></div>
                         </div>
                     </div>
-                    <div class="col-md-3"><label id="CCRE_lbl_processerrormsg" class="errormsg" hidden></label></div>
+
                 </div>
                 <div class="row form-group">
                     <div class="col-md-3">
@@ -1317,9 +1353,17 @@ $(document).ready(function() {
                         <label>COMMENTS</label>
                     </div>
                     <div class="col-md-3">
-                        <textarea class="form-control autogrowcomments" name="CCRE_Comments"  id="CCRE_Comments"></textarea>
+                        <textarea class="form-control autogrowcomments" name="CCRE_Comments"  id="CCRE_Comments" placeholder="Comments"></textarea>
                     </div>
                 </div>
+<!--                 <div class="row form-group">-->
+<!--                     <div class="col-md-3">-->
+<!--                         <label>FILE UPLOAD</label>-->
+<!--                     </div>-->
+<!--                     <div class="col-md-3">-->
+<!--                         <input type="file" id="CC_fileupload" name="CC_fileupload" class="form-control" />-->
+<!--                     </div>-->
+<!--                 </div>-->
                 <div class="row form-group">
                     <div class="col-lg-offset-2 col-lg-3">
                         <input type="button" id="CCRE_btn_savebutton" class="btn" value="CREATE" disabled>         <input type="button" id="CustomerCreation_Reset" class="btn" value="RESET">

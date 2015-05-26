@@ -5,7 +5,6 @@
 <script>
     $(document).ready(function() {
         $('#spacewidth').height('0%');
-        $('.preloader').hide();
         $('#Fin_OCBC_Forperiod').datepicker( {
             changeMonth: true,      //provide option to select Month
             changeYear: true,       //provide option to select year
@@ -489,7 +488,7 @@
                             <label>SELECT THE MONTH<span class="labelrequired"><em>*</em></span></label>
                         </div>
                         <div class="col-md-3">
-                            <input type="text" class="form-control" name="Fin_OCBC_Forperiod"  id="Fin_OCBC_Forperiod" style="max-width: 140px"/>
+                            <input type="text" class="form-control datemandtry" name="Fin_OCBC_Forperiod"  id="Fin_OCBC_Forperiod" style="max-width: 140px"/>
                         </div>
                     </div>
                     <div class="row form-group">

@@ -110,9 +110,10 @@ require_once "Header.php";
             {
                flag=0;
                 var Obsolete=$('#obsoleteflag').is(":checked");
-                if(Obsolete==true){var flag='X'}else{flag=''}
-                var data={Option:'Obsolete',Data:flag,Rowid:combineid};
+                if(Obsolete==true){var obsflag='X'}else{obsflag=''}
+                var data={Option:'Obsolete',Data:obsflag,Rowid:combineid};
             }
+
             if(flag==0)
             {
                 $.ajax({
@@ -121,26 +122,20 @@ require_once "Header.php";
                     data:data,
                     success: function(data){
                         var values_array=JSON.parse(data);
-                        $('.preloader').hide();
                         allmodelsarray=[];
-                        for(var k=0;k<values_array.length;k++)
+
+                        for(var k=0;k<values_array[0].length;k++)
                         {
-                            allmodelsarray.push(values_array[k].BTM_DATA)
+                            var data=values_array[0][k];
+                            allmodelsarray.push(data.BTM_DATA)
                         }
-                        if(ifcondition=='Modelname')
-                        {
-                            $('#'+previous_id).replaceWith("<td align='left' class='ModelEdit' id='"+previous_id+"' >"+modelname+"</td>");
-                        }
-                        if(ifcondition=='Obsoletechk')
-                        {
-                            $('#'+previous_id).replaceWith("<td style='text-align:left' class='ModelEdit' id='"+previous_id+"' >"+flag+"</td>");
-                        }
-                        var value_array=JSON.parse(data);
+                        InitialDataLoad(values_array[1]);
                         $('.preloader').hide();
+                        show_msgbox("MODEL ENTRY / SEARCH/UPDATE",Model_Errormsg[1].EMC_DATA,"success",false);
                     },
                     error: function(data){
                         alert('error in getting'+JSON.stringify(data));
-                        $('.preloader').hide();
+
                     }
                 });
               }

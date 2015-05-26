@@ -1,7 +1,7 @@
 <?php
 include 'GET_USERSTAMP.php';
-$$UserStamp=$UserStamp;
 include 'GET_CONFIG.php';
+$UserStamp=$UserStamp;
 Class Ctrl_Customer_Creation extends CI_Controller
 {
     public function Index()
@@ -20,8 +20,7 @@ Class Ctrl_Customer_Creation extends CI_Controller
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
         $Timelist=$this->Common_function->getTimeList();
         $proratedlabel=$this->Common_function->CUST_getProratedWaivedValue();
-        $AllUnit =$this->Common_function->getRecheckinCustomerUnit();
-        $Values=array($unit,$nationality,$EmailList,$Option,$ErrorMessage,$Timelist,$proratedlabel,$AllUnit);
+        $Values=array($unit,$nationality,$EmailList,$Option,$ErrorMessage,$Timelist,$proratedlabel);
         echo json_encode($Values);
     }
     public function CustomerRoomTypeLoad()
@@ -49,19 +48,29 @@ Class Ctrl_Customer_Creation extends CI_Controller
         $Enddate=$_POST['CCRE_Enddate'];
         $this->load->model('Eilib/Common_function');
         $Leaseperiod=$this->Common_function->getLeasePeriod($Startdate,$Enddate);
+        $Quoters=$this->Common_function->quarterCalc(new DateTime(date('Y-m-d',strtotime($Startdate))), new DateTime(date('Y-m-d',strtotime($Enddate))));
         $this->load->model('Customercreation');
-        $Create_confirm=$this->Customercreation->Customer_Creation_Save($UserStamp,$Leaseperiod);
-//        if($Create_confirm[0]==1)
-//        {
-//            $this->load->library('Google');
-//            $this->load->model('Eilib/Calender');
-//            $cal= $this->Calender-> createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
-//            $this->Calender->CUST_customercalendercreation($cal,$Create_confirm[1],$Create_confirm[2],$Create_confirm[3],$Create_confirm[4],$Create_confirm[5],$Create_confirm[6],$Create_confirm[7],$Create_confirm[8],$Create_confirm[9],$Create_confirm[10],$Create_confirm[11],$Create_confirm[12],$Create_confirm[13],$Create_confirm[14],$Create_confirm[15],'');
-//            echo json_encode($Create_confirm[0]);
-//        }
-//        else
-//        {
-         echo json_encode($Create_confirm);
-//        }
+        $Create_confirm=$this->Customercreation->Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters);
+        if($Create_confirm[0]==1)
+        {
+            $this->load->library('Google');
+            $this->load->model('Eilib/Calender');
+            $cal= $this->Calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+            $this->Calender->CUST_customercalendercreation($cal,$Create_confirm[1],$Create_confirm[2],$Create_confirm[3],$Create_confirm[4],$Create_confirm[5],$Create_confirm[6],$Create_confirm[7],$Create_confirm[8],$Create_confirm[9],$Create_confirm[10],$Create_confirm[11],$Create_confirm[12],$Create_confirm[13],$Create_confirm[14],$Create_confirm[15],'');
+             echo json_encode($Create_confirm[0]);
+        }
+        else
+        {
+            echo($Create_confirm[0]);
+        }
     }
+    public function Prorated_check()
+    {
+        $Startdate=$_POST['SD'];
+        $Enddate=$_POST['ED'];
+        $this->load->model('Eilib/Common_function');
+        $Prorated=$this->Common_function->CUST_chkProrated($Startdate,$Enddate);
+        echo $Prorated;
+    }
+
 }

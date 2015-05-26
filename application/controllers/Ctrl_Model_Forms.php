@@ -23,6 +23,7 @@ class Ctrl_Model_Forms extends CI_Controller
     public function ModelnameUpdate()
     {
         global $UserStamp;
+        global $timeZoneFormat;
         $modelname=$_POST['Data'];
         $Rowid=$_POST['Rowid'];
         $Option=$_POST['Option'];
@@ -30,7 +31,10 @@ class Ctrl_Model_Forms extends CI_Controller
         $Confirmmessage=$this->Banktt_model->ModelnameUpdation($UserStamp,$modelname,$Rowid,$Option);
         $this->load->model('Eilib/Common_function');
         $Allmodels=$this->Common_function->getBankTransferModels();
-        echo json_encode($Allmodels);
+        $this->load->model('Banktt_model');
+        $Allmodelsdetails=$this->Banktt_model->getAllModels_Details($timeZoneFormat);
+        $returnvalue=array($Allmodels,$Allmodelsdetails);
+        echo json_encode($returnvalue);
     }
     public function ModelnameDelete()
     {

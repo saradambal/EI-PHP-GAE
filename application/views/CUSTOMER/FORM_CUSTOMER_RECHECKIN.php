@@ -27,7 +27,6 @@ $(document).ready(function() {
         url: '/index.php/Ctrl_Customer_Recheckin/Customer_Initaildatas',
         data:{"Formname":'CustomerCreation',"ErrorList":'1,2,6,33,34,35,36,37,321,324,339,342,343,344,345,346,347,348,400,443,444,458,459,460,461'},
         success: function(data){
-            $('.preloader').hide();
             var value_array=JSON.parse(data);
             timearray=value_array[5];
             errormsg=value_array[4];
@@ -63,7 +62,8 @@ $(document).ready(function() {
             $('#CCRE_lbl_passportdateerrormsg').text(errormsg[19].EMC_DATA);
             $('#CCRE_lbl_epnodateerrormsg').text(errormsg[20].EMC_DATA);
             $('#CCRE_lbl_passportdateerrormsg').text(errormsg[24].EMC_DATA);
-            $('#CCRE_lbl_ep_dateerrormsg').text(errormsg[23].EMC_DATA)
+            $('#CCRE_lbl_ep_dateerrormsg').text(errormsg[23].EMC_DATA);
+
             var options ='<option value="">SELECT</option>';
             for (var i = 0; i < value_array[7].length; i++)
             {
@@ -111,6 +111,7 @@ var CustomernameDetails;
         var options ='<option value="">SELECT</option>';
         if(unitno!='SELECT')
         {
+            $('#CustomeremptyErrormsg').show();
             $.ajax({
                 type: "POST",
                 url: '/index.php/Ctrl_Customer_Recheckin/Recheckin_Customer',
@@ -138,6 +139,10 @@ var CustomernameDetails;
                     }
                     else
                     {
+                        var messg='NO CUSTOMER AVALIABLE FOR RECHECK-IN IN UNIT NO: [UNIT NO]';
+                        messg=messg.replace('[UNIT NO]',unitno);
+                        $('#CustomeremptyErrormsg').text(messg);
+                        $('#CustomeremptyErrormsg').show();
                         $('#CRC_AllCustomers').prop('disabled',true);
                     }
                     $('#CRC_AllCustomers').html(options);
@@ -1031,6 +1036,7 @@ var CustomernameDetails;
             url: "/index.php/Ctrl_Customer_Recheckin/CustomerRecheckinSave",
             data:FormElements,
             success: function(data){
+                $('.preloader').hide();
                 var returnvalue=JSON.parse(data);
                 var allunits=returnvalue[1];
                 var options ='<option value="">SELECT</option>';
@@ -1040,6 +1046,9 @@ var CustomernameDetails;
                     options += '<option value="' + data.UNIT_NO + '">' + data.UNIT_NO + '</option>';
                 }
                 $('#CRC_AllUnits').html(options);
+                $('#CRC_AllCustomers').prop('disabled',true);
+                var options ='<option value="">SELECT</option>';
+                $('#CRC_AllCustomers').html(options);
                 if(returnvalue[0]==1)
                 {
                     show_msgbox("CUSTOMER RECHECKIN",errormsg[7].EMC_DATA,"success",false);
@@ -1073,6 +1082,7 @@ var CustomernameDetails;
         $('#AccessCardDiv').hide();
         $('#CardNumbersdiv').append(appenddata);
         $('#CardNumbersdiv').hide();
+        $('#CustomeremptyErrormsg').show();
         $('#CCRE_Cardnumber').prop('checked', false);
         $('#CCRE_Nullcard').prop('checked', false);
         $("#CCRE_btn_savebutton").attr("disabled", "disabled");
@@ -1105,9 +1115,6 @@ var CustomernameDetails;
         $('#CCRE_ElectricitycapFee').removeClass('invalid');
         $('#CCRE_ProcessingFee').removeClass('invalid');
         $('#CCRE_Rent').removeClass('invalid');
-        $('#CRC_AllCustomers').prop('disabled',true);
-        var options ='<option value="">SELECT</option>';
-        $('#CRC_AllCustomers').html(options);
         $('#RecheckinForm').hide();
     }
 });
@@ -1136,6 +1143,9 @@ var CustomernameDetails;
                 <div class="col-md-3">
                     <SELECT class="form-control" name="CRC_AllCustomers" required id="CRC_AllCustomers" disabled><OPTION>SELECT</OPTION></SELECT>
                 </div>
+                <div class="col-md-4">
+                    <label class="errormsg" id="CustomeremptyErrormsg"></label>
+                </div>
             </div>
              <div id="multiplecustomerdiv" hidden>
 
@@ -1149,7 +1159,7 @@ var CustomernameDetails;
                         <label>FIRST NAME<span class="labelrequired"><em>*</em></span></label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control autosize Customernamechange" name="CCRE_FirstName" maxlength="30" required id="CCRE_FirstName"/>
+                        <input class="form-control autosize Customernamechange" name="CCRE_FirstName" maxlength="30" required id="CCRE_FirstName" placeholder="Customer FirstName"/>
                     </div>
                      <div class="col-md-3">
                          <input class="form-control" name="CCRE_CustomerId" maxlength="30" required id="CCRE_CustomerId" />
@@ -1160,7 +1170,7 @@ var CustomernameDetails;
                         <label>LAST NAME<span class="labelrequired"><em>*</em></span></label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control autosize Customernamechange" name="CCRE_LastName" maxlength="30" required id="CCRE_LastName" />
+                        <input class="form-control autosize Customernamechange" name="CCRE_LastName" maxlength="30" required id="CCRE_LastName" placeholder="Customer LastName" />
                     </div>
                 </div>
                 <div class="row form-group">
@@ -1168,7 +1178,7 @@ var CustomernameDetails;
                         <label>COMPANY NAME</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control compautosize" name="CCRE_CompanyName" maxlength="50" required id="CCRE_CompanyName" />
+                        <input class="form-control compautosize" name="CCRE_CompanyName" maxlength="50" required id="CCRE_CompanyName" placeholder="Company Name"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -1176,7 +1186,7 @@ var CustomernameDetails;
                         <label>COMPANY ADDRESS</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control compautosize" name="CCRE_CompanyAddress" maxlength="50" required id="CCRE_CompanyAddress" />
+                        <input class="form-control compautosize" name="CCRE_CompanyAddress" maxlength="50" required id="CCRE_CompanyAddress" placeholder="Company Address"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -1184,7 +1194,7 @@ var CustomernameDetails;
                         <label>COMPANY POSTAL CODE</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control" name="CCRE_CompanyPostalCode" maxlength="6" style="max-width:100px;" id="CCRE_CompanyPostalCode" />
+                        <input class="form-control" name="CCRE_CompanyPostalCode" maxlength="6" style="max-width:100px;" id="CCRE_CompanyPostalCode" placeholder="Postal Code" />
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_postalerrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -1202,7 +1212,7 @@ var CustomernameDetails;
                         <label>MOBILE</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control numonlynozero mobilevalidation" name="CCRE_Mobile" maxlength="8" style="max-width:100px;" id="CCRE_Mobile" />
+                        <input class="form-control numonlynozero mobilevalidation" name="CCRE_Mobile" maxlength="8" style="max-width:100px;" id="CCRE_Mobile" placeholder="Mobile"/>
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_mobileerrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -1211,7 +1221,7 @@ var CustomernameDetails;
                         <label>INT'L MOBILE</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control" name="CCRE_IntlMobile" maxlength="15" style="max-width:150px;" id="CCRE_IntlMobile" />
+                        <input class="form-control" name="CCRE_IntlMobile" maxlength="15" style="max-width:150px;" id="CCRE_IntlMobile" placeholder="Int'l Mobile"/>
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_intlmobileerrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -1220,7 +1230,7 @@ var CustomernameDetails;
                         <label>OFFICE NO</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control numonlynozero officevalidation" name="CCRE_Officeno" maxlength="8" style="max-width:110px;" id="CCRE_Officeno" />
+                        <input class="form-control numonlynozero officevalidation" name="CCRE_Officeno" maxlength="8" style="max-width:110px;" id="CCRE_Officeno" placeholder="Office No"/>
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_officeerrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -1229,7 +1239,7 @@ var CustomernameDetails;
                         <label>DATE OF BIRTH</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control" name="CCRE_DOB"  style="max-width:120px;" id="CCRE_DOB" />
+                        <input class="form-control" name="CCRE_DOB"  style="max-width:120px;" id="CCRE_DOB" placeholder="DateOf Birth"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -1247,7 +1257,7 @@ var CustomernameDetails;
                         <label>PASSPORT NUMBER</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control alnumonlyzero" name="CCRE_PassportNo" maxlength="15" style="max-width:170px;" id="CCRE_PassportNo" />
+                        <input class="form-control alnumonlyzero" name="CCRE_PassportNo" maxlength="15" style="max-width:170px;" id="CCRE_PassportNo" placeholder="Passport No"/>
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_passporterrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -1256,7 +1266,7 @@ var CustomernameDetails;
                         <label>PASSPORT DATE</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control passportdatevalidation datenonmandtry" name="CCRE_PassportDate" maxlength="15" style="max-width:120px;" id="CCRE_PassportDate">
+                        <input class="form-control passportdatevalidation datenonmandtry" name="CCRE_PassportDate" maxlength="15" style="max-width:120px;" id="CCRE_PassportDate" placeholder="PassportDate">
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_passportdateerrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -1265,7 +1275,7 @@ var CustomernameDetails;
                         <label>EP NUMBER</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control alnumonlynozero" name="CCRE_EpNo" style="max-width:170px;" maxlength="15" id="CCRE_EpNo" />
+                        <input class="form-control alnumonlynozero" name="CCRE_EpNo" style="max-width:170px;" maxlength="15" id="CCRE_EpNo" placeholder="EP No"/>
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_epnoerrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -1274,7 +1284,7 @@ var CustomernameDetails;
                         <label>EP EXPIRY DATE</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control epdatevalidation" name="CCRE_EPDate" style="max-width:120px;" id="CCRE_EPDate" />
+                        <input class="form-control epdatevalidation" name="CCRE_EPDate" style="max-width:120px;" id="CCRE_EPDate" placeholder="EP Date"/>
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_ep_dateerrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -1327,7 +1337,7 @@ var CustomernameDetails;
                     <div class="col-md-8">
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <input class="form-control prorated startdatevalidate datemandtry noticedate" name="CCRE_Startdate"  style="max-width:120px;" id="CCRE_Startdate"/>
+                            <input class="form-control prorated startdatevalidate datemandtry noticedate" name="CCRE_Startdate"  style="max-width:120px;" id="CCRE_Startdate" placeholder="Check In Date"/>
                         </div>
                        <div id="startdatediv" hidden>
                         <div class="col-md-1">
@@ -1359,7 +1369,7 @@ var CustomernameDetails;
                     <div class="col-md-8">
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <input class="form-control noticedate datemandtry" name="CCRE_Enddate"  style="max-width:120px;" id="CCRE_Enddate"/>
+                            <input class="form-control noticedate datemandtry" name="CCRE_Enddate"  style="max-width:120px;" id="CCRE_Enddate" placeholder="Check Out Date"/>
                         </div>
                         <div class="col-md-1">
                             <label>FROM</label>
@@ -1387,7 +1397,7 @@ var CustomernameDetails;
                         <label>NOTICE PERIOD</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control" name="CCRE_NoticePeriod" maxlength="1" style="max-width:70px;" id="CCRE_NoticePeriod"/>
+                        <input class="form-control" name="CCRE_NoticePeriod" maxlength="1" style="max-width:70px;" id="CCRE_NoticePeriod" placeholder="No"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -1395,7 +1405,7 @@ var CustomernameDetails;
                         <label>NOTICE PERIOD DATE</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control" name="CCRE_NoticePeriodDate"  style="max-width:150px;" id="CCRE_NoticePeriodDate"/>
+                        <input class="form-control" name="CCRE_NoticePeriodDate"  style="max-width:150px;" id="CCRE_NoticePeriodDate" placeholder="Notice Date"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -1408,7 +1418,7 @@ var CustomernameDetails;
                                 <input type="radio" class="Airconfeechange" name="Aircon" id="CCRE_Quaterlyfee" value="QuarterlyFee">QUARTERLY SERVICE FEE
                             </div>
                             <div class="col-md-3">
-                                <input type="text" class="form-control CCRE_amtonlyvalidation" maxlength="6" style="max-width:120px;" name="CCRE_Quarterly_fee" id="CCRE_Quarterly_fee"/>
+                                <input type="text" class="form-control CCRE_amtonlyvalidation" maxlength="6" style="max-width:120px;" name="CCRE_Quarterly_fee" id="CCRE_Quarterly_fee" placeholder="0.00"/>
                             </div>
                         </div>
                         <div class="row form-group">
@@ -1416,7 +1426,7 @@ var CustomernameDetails;
                                 <input type="radio" class="Airconfeechange" name="Aircon" id="CCRE_Quaterlyfee" value="FixedAircon">FIXED AIRCON FEE
                             </div>
                             <div class="col-md-3">
-                                <input type="text" class="form-control CCRE_amtonlyvalidation" maxlength="6" style="max-width:120px;" name="CCRE_Fixedaircon_fee" id="CCRE_Fixedaircon_fee"/>
+                                <input type="text" class="form-control CCRE_amtonlyvalidation" maxlength="6" style="max-width:120px;" name="CCRE_Fixedaircon_fee" id="CCRE_Fixedaircon_fee" placeholder="0.00"/>
                             </div>
                         </div>
                     </div>
@@ -1426,7 +1436,7 @@ var CustomernameDetails;
                         <label>ELECTRICITY CAPPED</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_ElectricitycapFee"  style="max-width:100px;" id="CCRE_ElectricitycapFee"/>
+                        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_ElectricitycapFee"  style="max-width:100px;" id="CCRE_ElectricitycapFee" placeholder="0.00"/>
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_electcaperrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -1435,7 +1445,7 @@ var CustomernameDetails;
                         <label>CURTAIN DRY CLEANING FEE</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_Curtain_DrycleanFee"  style="max-width:100px;" id="CCRE_Curtain_DrycleanFee"/>
+                        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_Curtain_DrycleanFee"  style="max-width:100px;" id="CCRE_Curtain_DrycleanFee" placeholder="0.00"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -1443,7 +1453,7 @@ var CustomernameDetails;
                         <label>CHECKOUT CLEANING FEE</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_CheckOutCleanFee"  style="max-width:100px;" id="CCRE_CheckOutCleanFee"/>
+                        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_CheckOutCleanFee"  style="max-width:100px;" id="CCRE_CheckOutCleanFee" placeholder="0.00"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -1451,7 +1461,7 @@ var CustomernameDetails;
                         <label>DEPOSIT</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control CCRE_amtonlyvalidationmaxdigit" maxlength="7" name="CCRE_DepositFee"  style="max-width:100px;" id="CCRE_DepositFee"/>
+                        <input class="form-control CCRE_amtonlyvalidationmaxdigit" maxlength="7" name="CCRE_DepositFee"  style="max-width:100px;" id="CCRE_DepositFee" placeholder="0.00"/>
                     </div>
                     <div class="col-md-3"><label id="CCRE_lbl_depositerrormsg" class="errormsg" hidden></label></div>
                 </div>
@@ -1462,7 +1472,7 @@ var CustomernameDetails;
                     <div class="col-md-6">
                         <div class="row form-group">
                             <div class="col-md-3">
-                                <input class="form-control CCRE_amtonlyvalidationmaxdigit" name="CCRE_Rent" maxlength="7"  style="max-width:100px;" id="CCRE_Rent">
+                                <input class="form-control CCRE_amtonlyvalidationmaxdigit" name="CCRE_Rent" maxlength="7"  style="max-width:100px;" id="CCRE_Rent" placeholder="0.00">
                             </div>
                             <div class="col-md-1">
                                 <input id="CCRE_Rent_Prorated" type="checkbox" name="CCRE_Rent_Prorated">
@@ -1481,7 +1491,7 @@ var CustomernameDetails;
                     <div class="col-md-6">
                         <div class="row form-group">
                             <div class="col-md-3">
-                                <input class="form-control CCRE_processamtonlyvalidationmaxdigit" name="CCRE_ProcessingFee"  style="max-width:100px;" id="CCRE_ProcessingFee">
+                                <input class="form-control CCRE_processamtonlyvalidationmaxdigit" name="CCRE_ProcessingFee"  style="max-width:100px;" id="CCRE_ProcessingFee" placeholder="0.00">
                             </div>
                             <div class="col-md-1">
                                 <input type="checkbox" name="CCRE_process_waived" id="CCRE_process_waived" disabled>
@@ -1518,7 +1528,7 @@ var CustomernameDetails;
                         <label>COMMENTS</label>
                     </div>
                     <div class="col-md-3">
-                        <textarea class="form-control autogrowcomments" name="CCRE_Comments"  id="CCRE_Comments"></textarea>
+                        <textarea class="form-control autogrowcomments" name="CCRE_Comments"  id="CCRE_Comments" placeholder="Comments"></textarea>
                     </div>
                 </div>
                 <div class="row form-group">
