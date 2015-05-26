@@ -368,7 +368,12 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
         $BTDTL_SEARCH_select_flag = $this->db->get();
         foreach($BTDTL_SEARCH_select_flag->result_array() as $row){
             $BTDTL_SEARCH_flag_starhub=true;}
-        return ["BTDTL_SEARCH_expense"=>$BTDTL_SEARCH_expense_type_array,"BTDTL_SEARCH_errormsg"=>$BTDTL_SEARCH_errormsg_array,"BTDTL_SEARCH_aircon_errmsg"=>$BTDTL_SEARCH_aircon_configmon,"BTDTL_SEARCH_notable_obj"=>$BTDTL_SEARCH_notable_flag,"BTDTL_SEARCH_obj_invoiceto"=>$BTDTL_SEARCH_arr_invoiceto,"BTDTL_SEARCH_obj_starhubid"=>$BTDTL_SEARCH_arr_starhubid,"BTDTL_SEARCH_aircondetail_obj"=>$BTDTL_SEARCH_flag_aircon,"BTDTL_SEARCH_cardetail_obj"=>$BTDTL_SEARCH_flag_carpark,"BTDTL_SEARCH_elecdetail_obj"=>$BTDTL_SEARCH_flag_electricity,"BTDTL_SEARCH_digitaldetail_obj"=>$BTDTL_SEARCH_flag_digital,"BTDTL_SEARCH_stardetail_obj"=>$BTDTL_SEARCH_flag_starhub];
+        $airconservicby=$this->db->query("SELECT EASB_ID,EASB_DATA FROM EXPENSE_AIRCON_SERVICE_BY  WHERE  EASB_DATA!='' ORDER BY EASB_DATA ASC");
+        foreach($airconservicby->result_array() as $row){
+            $servicbyid[]=$row['EASB_ID'];
+            $servicebydata[]=$row['EASB_DATA'];}
+          $airconservicebyarray=(object)['BTDTL_SEARCH_obj_id'=>$servicbyid,'BTDTL_SEARCH_obj_data'=>$servicebydata];
+        return ["BTDTL_SEARCH_expense"=>$BTDTL_SEARCH_expense_type_array,"BTDTL_SEARCH_errormsg"=>$BTDTL_SEARCH_errormsg_array,"BTDTL_SEARCH_aircon_errmsg"=>$BTDTL_SEARCH_aircon_configmon,"BTDTL_SEARCH_notable_obj"=>$BTDTL_SEARCH_notable_flag,"BTDTL_SEARCH_obj_invoiceto"=>$BTDTL_SEARCH_arr_invoiceto,"BTDTL_SEARCH_obj_starhubid"=>$BTDTL_SEARCH_arr_starhubid,"BTDTL_SEARCH_aircondetail_obj"=>$BTDTL_SEARCH_flag_aircon,"BTDTL_SEARCH_cardetail_obj"=>$BTDTL_SEARCH_flag_carpark,"BTDTL_SEARCH_elecdetail_obj"=>$BTDTL_SEARCH_flag_electricity,"BTDTL_SEARCH_digitaldetail_obj"=>$BTDTL_SEARCH_flag_digital,"BTDTL_SEARCH_stardetail_obj"=>$BTDTL_SEARCH_flag_starhub,'airconservicebyarray'=>$airconservicebyarray];
   }
     /*---------------------------------FUNCTION FOR SEARCH BY AIRCON,CARPARK,ELECTRICITY,STARHUB,DIGITALVOICE-----------------*/
     public function BTDTL_SEARCH_expense_searchby($BTDTL_SEARCH_search_option,$BTDTL_SEARCH_expense_types,$BTDTL_SEARCH_flag_searchby,$timezoneformat)
@@ -690,8 +695,6 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
   {
     if($BTDTL_SEARCH_date==null)
         $BTDTL_SEARCH_date='';
-      else
-          $BTDTL_SEARCH_date=date('Y-m-d',strtotime($BTDTL_SEARCH_date));
     $BTDTL_SEARCH_array=[];
     $BTDTL_SEARCH_id=[];
     if($BTDTL_SEARCH_searchby==123)//SEARCH BY STARTHUB ACCOUNT NO
@@ -784,4 +787,48 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
     $BTDTL_SEARCH_result=["BTDTL_SEARCH_expenseflex"=>$BTDTL_SEARCH_array,"BTDTL_SEARCH_id"=>$BTDTL_SEARCH_id];
     return $BTDTL_SEARCH_result;
   }
+    /*-------------------------------------------------FUNCTION FOR TOWDIMENSION ARRAY TO GET DETAILS--------------------------------------*/
+  public  function BTDTL_SEARCH_func_twodimen($BTDTL_SEARCH_profile_names)
+  {
+      $BTDTL_SEARCH_twodimen=[100=>['EDAS_ID','EXPENSE_AIRCON_SERVICE_BY',45,'EDAS_REC_VER'],16=>['EDAS_ID','EXPENSE_DETAIL_AIRCON_SERVICE',49,'EDAS_REC_VER','EDAS_REC_VER'],17=>['EDCP_ID','EXPENSE_DETAIL_CARPARK',50,'EDCP_REC_VER','EDCP_REC_VER'],15=>['EDDV_ID','EXPENSE_DETAIL_DIGITAL_VOICE',48,'EDDV_REC_VER','EDDV_REC_VER'],
+                               13=>['EDE_ID','EXPENSE_DETAIL_ELECTRICITY',47,'EDE_REC_VER','EDE_REC_VER'],14=>['EDSH_ID','EXPENSE_DETAIL_STARHUB',46,'EDSH_REC_VER','EDSH_REC_VER,EDSH_CABLE_START_DATE,EDSH_CABLE_END_DATE,EDSH_INTERNET_START_DATE,EDSH_INTERNET_END_DATE,EDSH_ACCOUNT_NO']];
+    return [$BTDTL_SEARCH_twodimen[$BTDTL_SEARCH_profile_names][0],$BTDTL_SEARCH_twodimen[$BTDTL_SEARCH_profile_names][1],$BTDTL_SEARCH_twodimen[$BTDTL_SEARCH_profile_names][2],$BTDTL_SEARCH_twodimen[$BTDTL_SEARCH_profile_names][3],$BTDTL_SEARCH_twodimen[$BTDTL_SEARCH_profile_names][4]];
+  }
+    public function airconserviceupdate($primaryid,$unitid,$airconserviceby,$aircomments,$serviceby,$USERSTAMP,$timeZoneFormat,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type){
+        $BTDTL_SEARCH_unitid =$unitid;
+        $BTDTL_SEARCH_selectrecrv='null';
+        $easb_data=$this->db->query("SELECT EASB_ID FROM EXPENSE_AIRCON_SERVICE_BY  WHERE  EASB_DATA='$airconserviceby'");
+        $easb_id=$easb_data->row()->EASB_ID;
+
+        $BTDTL_SEARCH_detailData=$this->BTDTL_SEARCH_func_twodimen($BTDTL_SEARCH_lb_expense_type);
+        $BTDTL_SEARCH_checkrvquery = "SELECT $BTDTL_SEARCH_detailData[3] FROM $BTDTL_SEARCH_detailData[1] WHERE $BTDTL_SEARCH_detailData[0]='$primaryid'";
+        $BTDTL_SEARCH_recordversion_rs = $this->db->query($BTDTL_SEARCH_checkrvquery);
+        foreach($BTDTL_SEARCH_recordversion_rs->result_array() as $row)
+        {
+            $BTDTL_SEARCH_selectrecrv=$row['EDAS_REC_VER'];
+        }
+        $BTDTL_SEARCH_insertflag=0;
+        $BTDTL_SEARCH_recordversion='null';
+        $BTDTL_SEARCH_select_recordversion = "SELECT * FROM $BTDTL_SEARCH_detailData[1] WHERE UNIT_ID='$unitid' AND $BTDTL_SEARCH_detailData[3]=(SELECT MAX($BTDTL_SEARCH_detailData[3]) FROM $BTDTL_SEARCH_detailData[1] WHERE UNIT_ID=$unitid)";
+        $BTDTL_SEARCH_recordversion_rs = $this->db->query($BTDTL_SEARCH_select_recordversion);
+        foreach($BTDTL_SEARCH_recordversion_rs->result_array() as $row){
+          $BTDTL_SEARCH_recordversion = $row[$BTDTL_SEARCH_detailData[3]];
+          $BTDTL_SEARCH_oldrecordversion=$BTDTL_SEARCH_recordversion;
+                 $BTDTL_SEARCH_oldairconservby = $row["EASB_ID"];
+            echo $easb_id.''.$BTDTL_SEARCH_oldairconservby.''.$BTDTL_SEARCH_selectrecrv.''.$BTDTL_SEARCH_recordversion;
+            exit;
+              if($easb_id!=$BTDTL_SEARCH_oldairconservby&&$BTDTL_SEARCH_selectrecrv==$BTDTL_SEARCH_recordversion){
+                  $BTDTL_SEARCH_insertflag=1;
+              }
+              else{
+                  $BTDTL_SEARCH_oldrecordversion=$BTDTL_SEARCH_selectrecrv;
+              }
+          }
+        if($BTDTL_SEARCH_lb_searchoptions==100){//AIRCON SERVICED BY
+            $BTDTL_SEARCH_insert=$this->db->query("UPDATE EXPENSE_AIRCON_SERVICE_BY SET EASB_DATA='$serviceby',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE EASB_ID='$primaryid'");
+        }
+        else{
+
+        }
+    }
 }

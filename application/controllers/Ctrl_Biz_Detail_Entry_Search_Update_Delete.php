@@ -89,6 +89,15 @@ class Ctrl_Biz_Detail_Entry_Search_Update_Delete extends CI_Controller{
         $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_flex_aircon($BTDTL_SEARCH_lb_ariconunitno,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
         echo JSON_encode($result);
     }
+    public function BTDTL_SEARCH_flex_aircon2(){
+        global $timeZoneFormat;
+        $BTDTL_SEARCH_ta_airconcomments=$this->input->post('BTDTL_SEARCH_ta_airconcomments');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_flex_aircon($BTDTL_SEARCH_ta_airconcomments,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
+        echo JSON_encode($result);
+    }
     public function BTDTL_SEARCH_show_carpark(){
         global $timeZoneFormat;
         $BTDTL_SEARCH_lb_carno=$this->input->post('BTDTL_SEARCH_lb_carno');
@@ -105,6 +114,15 @@ class Ctrl_Biz_Detail_Entry_Search_Update_Delete extends CI_Controller{
         $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
         $this->load->model('Mdl_biz_detail_entry_search_update_delete');
         $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_carpark($BTDTL_SEARCH_lb_carparkunitno,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
+        echo JSON_encode($result);
+    }
+    public function BTDTL_SEARCH_show_carpark2(){
+        global $timeZoneFormat;
+        $BTDTL_SEARCH_ta_carparkcomments=$this->input->post('BTDTL_SEARCH_ta_carparkcomments');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_carpark($BTDTL_SEARCH_ta_carparkcomments,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
         echo JSON_encode($result);
     }
     public function BTDTL_SEARCH_show_digital(){
@@ -143,6 +161,15 @@ class Ctrl_Biz_Detail_Entry_Search_Update_Delete extends CI_Controller{
         $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_digital($BTDTL_SEARCH_lb_digitalunitno,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
         echo JSON_encode($result);
     }
+    public function BTDTL_SEARCH_show_digital4(){
+        global $timeZoneFormat;
+        $BTDTL_SEARCH_ta_digitalcomments=$this->input->post('BTDTL_SEARCH_ta_digitalcomments');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_digital($BTDTL_SEARCH_ta_digitalcomments,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
+        echo JSON_encode($result);
+    }
     public function BTDTL_SEARCH_show_electricity(){
         global $timeZoneFormat;
         $BTDTL_SEARCH_lb_electricityinvoiceto=$this->input->post('BTDTL_SEARCH_lb_electricityinvoiceto');
@@ -159,6 +186,15 @@ class Ctrl_Biz_Detail_Entry_Search_Update_Delete extends CI_Controller{
         $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
         $this->load->model('Mdl_biz_detail_entry_search_update_delete');
         $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_electricity($BTDTL_SEARCH_lb_electricityunitno,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
+        echo JSON_encode($result);
+    }
+    public function BTDTL_SEARCH_show_electricity2(){
+        global $timeZoneFormat;
+        $BTDTL_SEARCH_ta_electricitycomments=$this->input->post('BTDTL_SEARCH_ta_electricitycomments');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_electricity($BTDTL_SEARCH_ta_electricitycomments,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
         echo JSON_encode($result);
     }
     public function BTDTL_SEARCH_show_starhub(){
@@ -180,4 +216,129 @@ class Ctrl_Biz_Detail_Entry_Search_Update_Delete extends CI_Controller{
         $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_starhub($BTDTL_SEARCH_flag,$BTDTL_SEARCH_lb_starhubacctno,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
         echo JSON_encode($result);
     }
+    public function BTDTL_SEARCH_show_starhub2(){
+        global $timeZoneFormat;
+        $BTDTL_SEARCH_emptyflag=$this->input->post('BTDTL_SEARCH_emptyflag');
+        $BTDTL_SEARCH_lb_starhubinvoiceto=$this->input->post('BTDTL_SEARCH_lb_starhubinvoiceto');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_starhub($BTDTL_SEARCH_emptyflag,$BTDTL_SEARCH_lb_starhubinvoiceto,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
+        echo JSON_encode($result);
+    }
+    public function BTDTL_SEARCH_show_starhub3(){
+        global $timeZoneFormat;
+        $BTDTL_SEARCH_emptyflag=$this->input->post('BTDTL_SEARCH_emptyflag');
+        $BTDTL_SEARCH_lb_starhubssid=$this->input->post('BTDTL_SEARCH_lb_starhubssid');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_starhub($BTDTL_SEARCH_emptyflag,$BTDTL_SEARCH_lb_starhubssid,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
+        echo JSON_encode($result);
+    }
+    public function BTDTL_SEARCH_show_starhub4(){
+        global $timeZoneFormat;
+        $BTDTL_SEARCH_emptyflag=$this->input->post('BTDTL_SEARCH_emptyflag');
+        $BTDTL_SEARCH_lb_starhubpwd=$this->input->post('BTDTL_SEARCH_lb_starhubpwd');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_starhub($BTDTL_SEARCH_emptyflag,$BTDTL_SEARCH_lb_starhubpwd,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
+        echo JSON_encode($result);
+    }
+    public function BTDTL_SEARCH_show_starhub5(){
+        global $timeZoneFormat;
+        $BTDTL_SEARCH_emptyflag=$this->input->post('BTDTL_SEARCH_emptyflag');
+        $BTDTL_SEARCH_lb_starhubmodem=$this->input->post('BTDTL_SEARCH_lb_starhubmodem');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_starhub($BTDTL_SEARCH_emptyflag,$BTDTL_SEARCH_lb_starhubmodem,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
+        echo JSON_encode($result);
+    }
+    public function BTDTL_SEARCH_show_starhub6(){
+        global $timeZoneFormat;
+        $BTDTL_SEARCH_emptyflag=$this->input->post('BTDTL_SEARCH_emptyflag');
+        $BTDTL_SEARCH_lb_starhub_cableserialno=$this->input->post('BTDTL_SEARCH_lb_starhub_cableserialno');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_starhub($BTDTL_SEARCH_emptyflag,$BTDTL_SEARCH_lb_starhub_cableserialno,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
+        echo JSON_encode($result);
+    }
+    public function BTDTL_SEARCH_show_starhub7(){
+        global $timeZoneFormat;
+        $BTDTL_SEARCH_emptyflag=$this->input->post('BTDTL_SEARCH_emptyflag');
+        $BTDTL_SEARCH_ta_starhubaddtnlch=$this->input->post('BTDTL_SEARCH_ta_starhubaddtnlch');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_starhub($BTDTL_SEARCH_emptyflag,$BTDTL_SEARCH_ta_starhubaddtnlch,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
+        echo JSON_encode($result);
+    }
+    public function BTDTL_SEARCH_show_starhub8(){
+        global $timeZoneFormat;
+        $BTDTL_SEARCH_emptyflag=$this->input->post('BTDTL_SEARCH_emptyflag');
+        $BTDTL_SEARCH_ta_starhubbasic=$this->input->post('BTDTL_SEARCH_ta_starhubbasic');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_starhub($BTDTL_SEARCH_emptyflag,$BTDTL_SEARCH_ta_starhubbasic,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
+        echo JSON_encode($result);
+    }
+    public function BTDTL_SEARCH_show_starhub9(){
+        global $timeZoneFormat;
+        $BTDTL_SEARCH_emptyflag=$this->input->post('BTDTL_SEARCH_emptyflag');
+        $BTDTL_SEARCH_ta_starhubcomments=$this->input->post('BTDTL_SEARCH_ta_starhubcomments');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_starhub($BTDTL_SEARCH_emptyflag,$BTDTL_SEARCH_ta_starhubcomments,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
+        echo JSON_encode($result);
+    }
+    public function BTDTL_SEARCH_show_starhub10(){
+        global $timeZoneFormat;
+        $BTDTL_SEARCH_starhubappl_startdate=$this->input->post('BTDTL_SEARCH_starhubappl_startdate');
+        $BTDTL_SEARCH_starhubappl_enddate=$this->input->post('BTDTL_SEARCH_starhubappl_enddate');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_starhub($BTDTL_SEARCH_starhubappl_startdate,$BTDTL_SEARCH_starhubappl_enddate,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
+        echo JSON_encode($result);
+    }
+    public function BTDTL_SEARCH_show_starhub11(){
+        global $timeZoneFormat;
+        $BTDTL_SEARCH_cable_startdate=$this->input->post('BTDTL_SEARCH_cable_startdate');
+        $BTDTL_SEARCH_cable_enddate=$this->input->post('BTDTL_SEARCH_cable_enddate');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_starhub($BTDTL_SEARCH_cable_startdate,$BTDTL_SEARCH_cable_enddate,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
+        echo JSON_encode($result);
+    }
+    public function BTDTL_SEARCH_show_starhub12(){
+        global $timeZoneFormat;
+        $BTDTL_SEARCH_internet_startdate=$this->input->post('BTDTL_SEARCH_internet_startdate');
+        $BTDTL_SEARCH_internet_enddatee=$this->input->post('BTDTL_SEARCH_internet_enddate');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->post('BTDTL_SEARCH_parentfunc_flex');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->BTDTL_SEARCH_show_starhub($BTDTL_SEARCH_internet_startdate,$BTDTL_SEARCH_internet_enddatee,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat) ;
+        echo JSON_encode($result);
+    }
+    public function airconserviceupdate(){
+        global $timeZoneFormat;
+        global $USERSTAMP;
+        $primaryid=$this->input->post('primaryid');
+        $unitid=$this->input->post('unitid');
+        $airconserviceby=$this->input->post('airconserviceby');
+        $aircomments=$this->input->post('aircomments');
+        $serviceby=$this->input->post('serviceby');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_lb_expense_type=$this->input->post('BTDTL_SEARCH_lb_expense_type');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->airconserviceupdate($primaryid,$unitid,$airconserviceby,$aircomments,$serviceby,$USERSTAMP,$timeZoneFormat,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type) ;
+        echo JSON_encode($result);
+    }
+
 }
