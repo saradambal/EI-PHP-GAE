@@ -123,12 +123,7 @@ class Mdl_staff_daily_entry_search_update_delete extends CI_Model{
             else{
                 $STDLY_INPUT_edssid=$STDLY_INPUT_radio_employee;
             }
-//            echo 'kj';
-//            echo $STDLY_INPUT_edssid;
-//            exit;
-           // var insert_salary_detailswithcomment = "CALL SP_STAFFDLY_STAFF_SALARY_INSERT("+STDLY_INPUT_edssid+",'"+STDLY_INPUT_paid_date+"','"+STDLY_INPUT_from_period+"','"+STDLY_INPUT_to_period+"',"+STDLY_INPUT_cpfamount+","+STDLY_INPUT_levyamount+","+STDLY_INPUT_salaryamount+","+STDLY_INPUT_comments+",'"+UserStamp+"',@SUCCESS_MSG)";
-//       echo "CALL SP_STAFFDLY_STAFF_SALARY_INSERT('$STDLY_INPUT_edssid','$STDLY_INPUT_paid_date','$STDLY_INPUT_from_period','$STDLY_INPUT_to_period','$STDLY_INPUT_cpfamount',$STDLY_INPUT_levyamount,$STDLY_INPUT_salaryamount,$STDLY_INPUT_comments,'$USERSTAMP',@SUCCESS_MSG)";
-            $insertquery = "CALL SP_STAFFDLY_STAFF_SALARY_INSERT('$STDLY_INPUT_edssid','$STDLY_INPUT_paid_date','$STDLY_INPUT_from_period','$STDLY_INPUT_to_period','$STDLY_INPUT_cpfamount',$STDLY_INPUT_levyamount,$STDLY_INPUT_salaryamount,$STDLY_INPUT_comments,'$USERSTAMP',@SUCCESS_MSG)";
+      $insertquery = "CALL SP_STAFFDLY_STAFF_SALARY_INSERT('$STDLY_INPUT_edssid','$STDLY_INPUT_paid_date','$STDLY_INPUT_from_period','$STDLY_INPUT_to_period','$STDLY_INPUT_cpfamount',$STDLY_INPUT_levyamount,$STDLY_INPUT_salaryamount,$STDLY_INPUT_comments,'$USERSTAMP',@SUCCESS_MSG)";
            $query = $this->db->query($insertquery);
            $this->db->select('@SUCCESS_MSG as SUCCESSMSG', FALSE);
            $result = $this->db->get()->result_array();
@@ -236,10 +231,6 @@ class Mdl_staff_daily_entry_search_update_delete extends CI_Model{
         $query = $this->db->get();
         $result2 = $query->result();
 
-//        $this->db->select('EMP_ID');
-//        $this->db->from('EMPLOYEE_DETAILS');
-//        $query = $this->db->get();
-//        $result3 = $query->result();
 
         $this->db->select('EDSS_CPF_NUMBER');
         $this->db->from('EXPENSE_DETAIL_STAFF_SALARY EDSS,EXPENSE_STAFF_SALARY ESS');
@@ -672,18 +663,85 @@ class Mdl_staff_daily_entry_search_update_delete extends CI_Model{
 //            $STDLY_INPUT_arr_comments;
 //        return $result[]=array($deleteflag);
     }
-//    //FUNCTION FOR SAVE staff PART
-//    public function update_staffentrydata($USERSTAMP){
-//        global  $USERSTAMP;
-////        echo 'inside';
-////        exit;
-//        $STDLY_INPUT_expenselist=$_POST['STDLY_SEARCH_id'];
-//
-//        $STDLY_SEARCH_paiddate=$_POST['STDLY_SEARCH_paiddate'];
-//        $STDLY_INPUT_in_items=$_POST['STDLY_INPUT_ta_invitem'];
-//        $STDLY_INPUT_invoiceAmount=$_POST['STDLY_INPUT_lb_incamtrp'];
-//        $PDLY_INPUT_inv_from=$_POST['STDLY_INPUT_tb_invfrom'];
-//        $STDLY_INPUT_comments=$_POST['STDLY_INPUT_tb_comments'];
-//        $STDLY_INPUT_lbtypeofexpense = $_POST['staffdly_lb_type'];
-//    }
+    //FUNCTION FOR SAVE staff PART
+    public function update_staffentrydata($USERSTAMP){
+        global  $USERSTAMP;
+        $STDLY_SEARCH_id=$_POST['id'];
+        $STDLY_SEARCH_comments=$_POST['STDLY_SEARCH_comments'];
+        $STDLY_SEARCH_paiddate=$_POST['STDLY_SEARCH_paiddate'];
+        $STDLY_SEARCH_paiddate = date('Y-m-d',strtotime($STDLY_SEARCH_paiddate));
+        $STDLY_SEARCH_cpfradio=$_POST['STDLY_SEARCH_cpfradio'];
+        $STDLY_SEARCH_levyradio=$_POST['STDLY_SEARCH_levyradio'];
+        $STDLY_SEARCH_fromperiod = $_POST['STDLY_SEARCH_fromperiod'];
+        $STDLY_SEARCH_fromperiod = date('Y-m-d',strtotime($STDLY_SEARCH_fromperiod));
+        $STDLY_SEARCH_toperiod= $_POST['STDLY_SEARCH_toperiod'];
+        $STDLY_SEARCH_toperiod = date('Y-m-d',strtotime($STDLY_SEARCH_toperiod));
+        $STDLY_SEARCH_hidenlevyamount= $_POST['STDLY_SEARCH_hidenlevyamount'];
+        $STDLY_SEARCH_hidensalaryamount= $_POST['STDLY_SEARCH_hidensalaryamount'];
+        $STDLY_SEARCH_hidencpfamount= $_POST['STDLY_SEARCH_hidencpfamount'];
+        $STDLY_SEARCH_cpfamount= $_POST['STDLY_SEARCH_cpfamount'];
+
+        if($STDLY_SEARCH_comments=="")//COMMENTS
+        {  $STDLY_SEARCH_comments='null';}else{
+            $STDLY_SEARCH_comments="'$STDLY_SEARCH_comments'";
+        }
+//        $STDLY_SEARCH_cpfamount =(isset($_POST["STDLY_SEARCH_cpfamount"]));
+        echo $STDLY_SEARCH_cpfamount.'pop';
+        if($STDLY_SEARCH_cpfamount=='undefined' || $STDLY_SEARCH_cpfamount=="")
+        {
+            $STDLY_SEARCH_cpfamount=='null';
+        }
+
+        if($STDLY_SEARCH_cpfradio=='current')
+        {
+            if(($STDLY_SEARCH_cpfamount=='undefined')||($STDLY_SEARCH_cpfamount==""))
+            {
+                $STDLY_SEARCH_cpfamount=$STDLY_SEARCH_hidencpfamount;
+            }
+        }
+
+        if($STDLY_SEARCH_cpfradio=='undefined')
+        {
+            $STDLY_SEARCH_cpfamount='null';
+        }
+
+        $STDLY_SEARCH_levyamount =$_POST['STDLY_SEARCH_tb_hidelevy1'];
+        if($STDLY_SEARCH_levyamount=='undefined')
+        {
+            $STDLY_SEARCH_levyamount=='null';
+        }
+        if($STDLY_SEARCH_levyradio=='current')
+        {
+            if(($STDLY_SEARCH_levyamount=='undefined')||($STDLY_SEARCH_levyamount==""))
+            {
+                $STDLY_SEARCH_levyamount=$STDLY_SEARCH_hidenlevyamount;
+            }
+        }
+
+        if($STDLY_SEARCH_levyradio=='undefined')
+        {
+            $STDLY_SEARCH_levyamount='null';
+        }
+
+         $STDLY_SEARCH_salaryamount = $_POST['STDLY_SEARCH_tb_hidesal1'];
+        if($STDLY_SEARCH_salaryamount=='undefined')
+        {
+            $STDLY_SEARCH_salaryamount=='null';
+        }
+
+        if(($STDLY_SEARCH_salaryamount=='undefined')||($STDLY_SEARCH_salaryamount==""))
+        {
+            $STDLY_SEARCH_salaryamount=$STDLY_SEARCH_hidensalaryamount;
+        }
+
+//        echo $STDLY_SEARCH_id;
+//        exit;
+//echo "CALL SP_STAFFDLY_STAFF_SALARY_UPDATE($STDLY_SEARCH_id,'$STDLY_SEARCH_paiddate','$STDLY_SEARCH_fromperiod','$STDLY_SEARCH_toperiod','$STDLY_SEARCH_cpfamount',$STDLY_SEARCH_levyamount,$STDLY_SEARCH_salaryamount,$STDLY_SEARCH_comments,'$USERSTAMP',@SUCCESS_MSG)";
+//       exit;
+        $insertquery = "CALL SP_STAFFDLY_STAFF_SALARY_UPDATE('$STDLY_SEARCH_id,'$STDLY_SEARCH_paiddate','$STDLY_SEARCH_fromperiod','$STDLY_SEARCH_toperiod','$STDLY_SEARCH_cpfamount',$STDLY_SEARCH_levyamount,$STDLY_SEARCH_salaryamount,$STDLY_SEARCH_comments,'$USERSTAMP',@SUCCESS_MSG)";
+        $query = $this->db->query($insertquery);
+        $FLAG= $this->db->query('SELECT @SUCCESS_MSG as SUCCESSMSG');
+        $finalFLAG = $FLAG->row()->SUCCESSMSG;
+        return  $finalFLAG;
+    }
 }

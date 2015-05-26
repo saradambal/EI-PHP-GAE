@@ -69,8 +69,8 @@ class Ctrl_Staff_Daily_Entry_Search_Update_Delete extends CI_Controller{
     {
         global $USERSTAMP;
         $this->load->model('Mdl_staff_daily_entry_search_update_delete');
-        $result = $this->Mdl_staff_daily_entry_search_update_delete->update_staffentrydata($USERSTAMP,$this->input->post('id')) ;
-        echo JSON_encode($result);
+        $result = $this->Mdl_staff_daily_entry_search_update_delete->update_staffentrydata($USERSTAMP) ;
+        echo json_encode($result);
     }
     // fetch data
     public function STDLY_SEARCH_sendallstaffdata()

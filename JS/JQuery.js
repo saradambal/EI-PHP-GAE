@@ -558,15 +558,15 @@ function adjustPosition(oldPosition,top,left){
     var newLeft=oldPosition.left+left;
     return {top:newTop,left:newLeft};
 }
-$(function() {
-    $('.preloaderimg').attr('src','CSS/images/preloader.gif');
-    $(document).on('click','.messageclose',function(){
-        $('#focustext').focus();
-    });
-
-    if(!$('#focustext').length)
-        $('#fhead').append('<input type="button" id="focustext" style="border:none;  position:relative; top:-200px;  z-index:-50;" />');
-});
+//$(function() {
+//    $('.preloaderimg').attr('src','CSS/images/preloader.gif');
+//    $(document).on('click','.messageclose',function(){
+//        $('#focustext').focus();
+//    });
+//
+//    if(!$('#focustext').length)
+//        $('#fhead').append('<input type="button" id="focustext" style="border:none;  position:relative; top:-200px;  z-index:-50;" />');
+//});
 $(function() {
     $('.preloaderimg').attr('src','https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif');
     $(document).on('click','.messageclose',function(){
