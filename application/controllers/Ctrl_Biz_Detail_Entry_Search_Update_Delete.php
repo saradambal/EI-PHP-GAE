@@ -336,8 +336,53 @@ class Ctrl_Biz_Detail_Entry_Search_Update_Delete extends CI_Controller{
         $serviceby=$this->input->post('serviceby');
         $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
         $BTDTL_SEARCH_lb_expense_type=$this->input->post('BTDTL_SEARCH_lb_expense_type');
+        $searchvalue=$this->input->post('searchvalue');
+         $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->airconserviceupdate($primaryid,$unitid,$airconserviceby,$aircomments,$serviceby,$USERSTAMP,$timeZoneFormat,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type,$searchvalue) ;
+        echo JSON_encode($result);
+    }
+    public function carparkupdate(){
+        global $timeZoneFormat;
+        global $USERSTAMP;
+        $primaryid=$this->input->post('primaryid');
+        $unitid=$this->input->post('unitid');
+        $carno=$this->input->post('carno');
+        $carparkcomments=$this->input->post('carparkcomments');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_lb_expense_type=$this->input->post('BTDTL_SEARCH_lb_expense_type');
+        $searchvalue=$this->input->post('searchvalue');
         $this->load->model('Mdl_biz_detail_entry_search_update_delete');
-        $result = $this->Mdl_biz_detail_entry_search_update_delete->airconserviceupdate($primaryid,$unitid,$airconserviceby,$aircomments,$serviceby,$USERSTAMP,$timeZoneFormat,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type) ;
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->carparkupdate($primaryid,$unitid,$carno,$carparkcomments,$USERSTAMP,$timeZoneFormat,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type,$searchvalue) ;
+        echo JSON_encode($result);
+    }
+    public function digitalvoiceupdate(){
+        global $timeZoneFormat;
+        global $USERSTAMP;
+        $primaryid=$this->input->post('primaryid');
+        $unitid=$this->input->post('unitid');
+        $invoiceto=$this->input->post('invoiceto');
+        $invoiceno=$this->input->post('invoiceno');
+        $acctno=$this->input->post('acctno');
+        $comments=$this->input->post('comments');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_lb_expense_type=$this->input->post('BTDTL_SEARCH_lb_expense_type');
+        $searchvalue=$this->input->post('searchvalue');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->digitalvoiceupdate($primaryid,$unitid,$invoiceto,$invoiceno,$acctno,$comments,$USERSTAMP,$timeZoneFormat,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type,$searchvalue) ;
+        echo JSON_encode($result);
+    }
+    public function electricityupdate(){
+        global $timeZoneFormat;
+        global $USERSTAMP;
+        $primaryid=$this->input->post('primaryid');
+        $unitid=$this->input->post('unitid');
+        $invoiceto=$this->input->post('invoiceto');
+        $electcomments=$this->input->post('electcomments');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_lb_expense_type=$this->input->post('BTDTL_SEARCH_lb_expense_type');
+        $searchvalue=$this->input->post('searchvalue');
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->electricityupdate($primaryid,$unitid,$invoiceto,$electcomments,$USERSTAMP,$timeZoneFormat,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type,$searchvalue) ;
         echo JSON_encode($result);
     }
 

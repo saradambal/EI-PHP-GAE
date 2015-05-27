@@ -1395,6 +1395,7 @@ include "Header.php";
         /*--------------------------------------------SUCCESS FUNCTION FOR FLEX TABLE-----------------------------------------------------*/
         var BTDTL_SEARCH_searchvalue=[];
         function BTDTL_SEARCH_success_showflex(BTDTL_SEARCH_responseflex){
+            alert('in')
                 $('#BTDTL_SEARCH_btn_datesearch').attr("disabled", "disabled")
                 $('#BTDTL_SEARCH_tble_searchdel').hide();
                 $('#BTDTL_SEARCH_div_errmsg').text('');
@@ -1416,6 +1417,7 @@ include "Header.php";
                         BTDTL_SEARCH_success_searchby(BTDTL_SEARCH_responseflex)
                 }
                 $('#BTDTL_SEARCH_tble_flex').empty();
+               var BTDTL_SEARCH_tr  ='';
                 if((BTDTL_SEARCH_response!='')&&(BTDTL_SEARCH_response!=undefined))
                 {
                     if(BTDTL_SEARCH_response.length!=1)
@@ -1564,23 +1566,36 @@ include "Header.php";
                             var BTDTL_SEARCH_error_replace=BTDTL_SEARCH_error_replace.replace('[EDATE]',$('#BTDTL_SEARCH_db_starhubappl_enddate').val());
                             $('#BTDTL_SEARCH_div_msg').text(BTDTL_SEARCH_error_replace);
                         }
-
-                        if(BTDTL_SEARCH_expensetypes==17)
+                        if(BTDTL_SEARCH_expensetypes==16){
+                            if($('#BTDTL_SEARCH_lb_searchoptions').val()==100)
+                            {
+                                BTDTL_SEARCH_tr ='<table class="srcresult" id="BTDTL_SEARCH_tble_flex"><thead><tr><th style="width:300px">AIRCON SERVICED BY</th><th style="width:250px">USERSTAMP</th><th style="width:180px" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>'
+                            }
+                            else
+                            {
+                                BTDTL_SEARCH_tr ='<table class="srcresult" id="BTDTL_SEARCH_tble_flex"><thead><tr><th style="width:75px">UNIT NUMBER</th><th style="width:300px">AIRCON SERVICED BY</th><th style="width:300px">COMMENTS</th><th style="width:250px">USERSTAMP</th><th style="width:130px" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>'
+                            }
+                        }
+                        else if(BTDTL_SEARCH_expensetypes==17)
                         {
-                            BTDTL_SEARCH_tr +='<table class="srcresult" id="BTDTL_SEARCH_tble_flex" style="width: 900px;"><thead><tr><th style="width:75px">UNIT NUMBER</th><th style="width:80px">CAR NO</th><th style="width:250px">COMMENTS</th><th style="width:250px">USERSTAMP</th><th style="width:130px">TIMESTAMP</th></tr></thead><tbody>'
+                            BTDTL_SEARCH_tr +='<table class="srcresult" id="BTDTL_SEARCH_tble_flex"><thead><tr><th style="width:75px">UNIT NUMBER</th><th style="width:80px">CAR NO</th><th style="width:250px">COMMENTS</th><th style="width:250px">USERSTAMP</th><th style="width:130px" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>';
+
                         }
                         else if(BTDTL_SEARCH_expensetypes==15)
                         {
-                            BTDTL_SEARCH_tr +='<table class="srcresult" id="BTDTL_SEARCH_tble_flex" style="width: 1300px;"><thead><tr><th style="width:75px">UNIT NUMBER</th><th style="width:150px">INVOICE TO</th><th style="width:80px">DIGITAL VOICE NO</th><th style="width:110px">DIGITAL ACCOUNT NO</th><th style="width:300px">COMMENTS</th><th style="width:250px">USERSTAMP</th><th style="width:130px">TIMESTAMP</th></tr></thead><tbody>'
+                            BTDTL_SEARCH_tr +='<table class="srcresult" id="BTDTL_SEARCH_tble_flex"><thead><tr><th style="width:75px">UNIT NUMBER</th><th style="width:150px">INVOICE TO</th><th style="width:80px">DIGITAL VOICE NO</th><th style="width:110px">DIGITAL ACCOUNT NO</th><th style="width:300px">COMMENTS</th><th style="width:250px">USERSTAMP</th><th style="width:130px" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>';
+
                         }
                         else if(BTDTL_SEARCH_expensetypes==13)
                         {
-                            BTDTL_SEARCH_tr +='<table class="srcresult" id="BTDTL_SEARCH_tble_flex" style="width: 1075px;"><thead><tr><th style="width:75px">UNIT NUMBER</th><th style="width:140px">INVOICE TO</th><th style="width:300px">COMMENTS</th><th style="width:250px">USERSTAMP</th><th style="width:130px">TIMESTAMP</th></tr></thead><tbody>'
+                            BTDTL_SEARCH_tr +='<table class="srcresult" id="BTDTL_SEARCH_tble_flex"><thead><tr><th style="width:75px">UNIT NUMBER</th><th style="width:140px">INVOICE TO</th><th style="width:300px">COMMENTS</th><th style="width:250px">USERSTAMP</th><th style="width:130px" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>'
+
                         }
-                        else if(BTDTL_SEARCH_expensetypes==14)
-                        {
-                            BTDTL_SEARCH_tr += '<table class="srcresult" id="BTDTL_SEARCH_tble_flex" style="width: 2750px;"><thead><tr><th style="width:20px"></th><th style="width:75px">UNIT NUMBER</th><th style="width:140px">INVOICE TO</th><th style="width:100px">STARHUB ACCOUNT NO</th><th style="width:75px">APPL DATE</th><th style="width:75px">CABLE START DATE</th><th style="width:75px">CABLE END DATE</th><th style="width:75px">INTERNET START DATE</th><th style="width:75px">INTERNET END DATE</th><th style="width:200px">SSID</th><th style="width:200px">PWD</th><th style="width:200px">CABLE BOX SERIAL NO</th><th style="width:250px">MODEM SERIAL NO</th><th style="width:200px">BASIC GROUP</th><th style="width:200px">ADDTNL CH</th><th style="width:300px">COMMENTS</th><th style="width:200px">USERSTAMP</th><th style="width:130px">TIMESTAMP</th></tr></thead><tbody>';
+                        else if(BTDTL_SEARCH_expensetypes==14){
+                            BTDTL_SEARCH_tr += '<table class="srcresult" id="BTDTL_SEARCH_tble_flex" style="width: 2750px;"><thead><tr><th style="width:20px">EDIT</th><th style="width:75px">UNIT NUMBER</th><th style="width:140px">INVOICE TO</th><th style="width:100px">STARHUB ACCOUNT NO</th><th style="width:75px" class="uk-date-column">APPL DATE</th><th style="width:75px" class="uk-date-column">CABLE START DATE</th><th style="width:75px" class="uk-date-column">CABLE END DATE</th><th style="width:75px" class="uk-date-column">INTERNET START DATE</th><th style="width:75px" class="uk-date-column">INTERNET END DATE</th><th style="width:200px">SSID</th><th style="width:200px">PWD</th><th style="width:200px">CABLE BOX SERIAL NO</th><th style="width:250px">MODEM SERIAL NO</th><th style="width:200px">BASIC GROUP</th><th style="width:200px">ADDTNL CH</th><th style="width:300px">COMMENTS</th><th style="width:200px">USERSTAMP</th><th style="width:130px" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>';
+
                         }
+
                     }
                     else if(BTDTL_SEARCH_response.length==1)
                     {
@@ -1723,30 +1738,22 @@ include "Header.php";
                             $('#BTDTL_SEARCH_div_errmsg').text(BTDTL_SEARCH_error_replace);
                         }
                     }
+                    //AIRCON SERIVICE
                     if(BTDTL_SEARCH_expensetypes==16)
                     {
-                        var BTDTL_SEARCH_tr  ='';
-                        if($('#BTDTL_SEARCH_lb_searchoptions').val()==100)
-                        {
-                            BTDTL_SEARCH_tr ='<table class="srcresult" id="BTDTL_SEARCH_tble_flex" style="width: 750px;"><thead><tr><th style="width:300px">AIRCON SERVICED BY</th><th style="width:250px">USERSTAMP</th><th style="width:180px">TIMESTAMP</th></tr></thead><tbody>'
-                        }
-                        else
-                        {
-                            BTDTL_SEARCH_tr ='<table class="srcresult" id="BTDTL_SEARCH_tble_flex" style="width: 1200px;"><thead><tr><th style="width: 15px"></th><th style="width:75px">UNIT NUMBER</th><th style="width:300px">AIRCON SERVICED BY</th><th style="width:300px">COMMENTS</th><th style="width:250px">USERSTAMP</th><th style="width:130px">TIMESTAMP</th></tr></thead><tbody>'
-                        }
                     for(var j=0;j<BTDTL_SEARCH_response.length;j++)
                     {
                         if(j!=BTDTL_SEARCH_response.length-1)
                         {
                                 if($('#BTDTL_SEARCH_lb_searchoptions').val()==100)
                                 {
-                                BTDTL_SEARCH_tr +='<tr><td id="'+BTDTL_SEARCH_id[j]+'" class="airconserviceedit">'+BTDTL_SEARCH_response[j][0]+'</td><td>'+BTDTL_SEARCH_response[j][1]+'</td><td>'+BTDTL_SEARCH_response[j][2]+'</td></tr>';
+                                BTDTL_SEARCH_tr +='<tr><td id=servicby_'+BTDTL_SEARCH_id[j]+' class="airconserviceedit">'+BTDTL_SEARCH_response[j][0]+'</td><td>'+BTDTL_SEARCH_response[j][1]+'</td><td>'+BTDTL_SEARCH_response[j][2]+'</td></tr>';
                                 }
                                 else
                                 {
 
                                     if(BTDTL_SEARCH_response[j][2]==null){BTDTL_SEARCH_response[j][2]='';}
-                                    BTDTL_SEARCH_tr +='<tr><td><span id ='+BTDTL_SEARCH_id[j]+' class="glyphicon glyphicon-trash PDLY_SEARCH_btn_deletebutton"></span><td>'+BTDTL_SEARCH_response[j][0]+'</td><td id=airconserviceby_'+BTDTL_SEARCH_id[j]+' class="airconserviceedit">'+BTDTL_SEARCH_response[j][1]+'</td><td id=airconcomments_'+BTDTL_SEARCH_id[j]+' class="airconserviceedit">'+BTDTL_SEARCH_response[j][2]+'</td><td>'+BTDTL_SEARCH_response[j][3]+'</td><td>'+BTDTL_SEARCH_response[j][4]+'</td></tr>';
+                                    BTDTL_SEARCH_tr +='<tr><td>'+BTDTL_SEARCH_response[j][0]+'</td><td id=airconserviceby_'+BTDTL_SEARCH_id[j]+' class="airconserviceedit">'+BTDTL_SEARCH_response[j][1]+'</td><td id=airconcomments_'+BTDTL_SEARCH_id[j]+' class="airconserviceedit">'+BTDTL_SEARCH_response[j][2]+'</td><td>'+BTDTL_SEARCH_response[j][3]+'</td><td>'+BTDTL_SEARCH_response[j][4]+'</td></tr>';
                                 }
                         }
                         else
@@ -1776,7 +1783,165 @@ include "Header.php";
                     }
                         BTDTL_SEARCH_tr +='</tbody></table>';
                     }
-
+                    // EXPENSE CARPARK
+                    if(BTDTL_SEARCH_expensetypes==17)
+                    {
+                        for(var j=0;j<BTDTL_SEARCH_response.length;j++)
+                        {
+                            if(j!=BTDTL_SEARCH_response.length-1)
+                            {
+                                   if(BTDTL_SEARCH_response[j][2]==null){BTDTL_SEARCH_response[j][2]='';}
+                                    BTDTL_SEARCH_tr +='<tr><td>'+BTDTL_SEARCH_response[j][0]+'</td><td id=carno_'+BTDTL_SEARCH_id[j]+' class="carparkedit">'+BTDTL_SEARCH_response[j][1]+'</td><td id=carparkcomments_'+BTDTL_SEARCH_id[j]+' class="carparkedit">'+BTDTL_SEARCH_response[j][2]+'</td><td>'+BTDTL_SEARCH_response[j][3]+'</td><td>'+BTDTL_SEARCH_response[j][4]+'</td></tr>';
+                            }
+                            else
+                            {
+                                var BTDTL_SEARCH_parentfunction=BTDTL_SEARCH_response[j];
+                                if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_delete')
+                                {
+                                    var BTDTL_SEARCH_errordelete_replace=BTDTL_SEARCH_errorarr[5].EMC_DATA.replace('[TYPE]',$('#BTDTL_SEARCH_lb_expense_type').find('option:selected').text());
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errordelete_replace,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction==0){
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorarr[5].EMC_DATA,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_notupdate'){
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorarr[62].EMC_DATA,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_update')
+                                {
+                                    var BTDTL_SEARCH_errorupdate_replace=BTDTL_SEARCH_errorarr[4].EMC_DATA.replace('[TYPE]',$('#BTDTL_SEARCH_lb_expense_type').find('option:selected').text());
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorupdate_replace,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_aircon_update')
+                                {
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorarr[60].EMC_DATA,"success",false);
+                                }
+                            }
+                        }
+                        BTDTL_SEARCH_tr +='</tbody></table>';
+                    }
+                    // EXPENSE DIGITAL VOICE
+                    if(BTDTL_SEARCH_expensetypes==15)
+                    {
+                       for(var j=0;j<BTDTL_SEARCH_response.length;j++)
+                        {
+                            if(j!=BTDTL_SEARCH_response.length-1)
+                            {
+                                if(BTDTL_SEARCH_response[j][4]==null){BTDTL_SEARCH_response[j][4]='';}
+                                BTDTL_SEARCH_tr +='<tr><td>'+BTDTL_SEARCH_response[j][0]+'</td><td id=invoiceto_'+BTDTL_SEARCH_id[j]+' class="digitalvoiceedit">'+BTDTL_SEARCH_response[j][1]+'</td><td id=digitalvoiceno_'+BTDTL_SEARCH_id[j]+' class="digitalvoiceedit">'+BTDTL_SEARCH_response[j][2]+'</td><td id=digitalacctno_'+BTDTL_SEARCH_id[j]+' class="digitalvoiceedit">'+BTDTL_SEARCH_response[j][3]+'</td><td id=digitalcomments_'+BTDTL_SEARCH_id[j]+' class="digitalvoiceedit">'+BTDTL_SEARCH_response[j][4]+'</td><td>'+BTDTL_SEARCH_response[j][5]+'</td><td>'+BTDTL_SEARCH_response[j][6]+'</td></tr>';
+                            }
+                            else
+                            {
+                                var BTDTL_SEARCH_parentfunction=BTDTL_SEARCH_response[j];
+                                if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_delete')
+                                {
+                                    var BTDTL_SEARCH_errordelete_replace=BTDTL_SEARCH_errorarr[5].EMC_DATA.replace('[TYPE]',$('#BTDTL_SEARCH_lb_expense_type').find('option:selected').text());
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errordelete_replace,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction==0){
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorarr[5].EMC_DATA,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_notupdate'){
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorarr[62].EMC_DATA,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_update')
+                                {
+                                    var BTDTL_SEARCH_errorupdate_replace=BTDTL_SEARCH_errorarr[4].EMC_DATA.replace('[TYPE]',$('#BTDTL_SEARCH_lb_expense_type').find('option:selected').text());
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorupdate_replace,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_aircon_update')
+                                {
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorarr[60].EMC_DATA,"success",false);
+                                }
+                            }
+                        }
+                        BTDTL_SEARCH_tr +='</tbody></table>';
+                    }
+                    // EXPENSE DIGITAL VOICE
+                    if(BTDTL_SEARCH_expensetypes==13)
+                    {
+                        for(var j=0;j<BTDTL_SEARCH_response.length;j++)
+                        {
+                            if(j!=BTDTL_SEARCH_response.length-1)
+                            {
+                                if(BTDTL_SEARCH_response[j][2]==null){BTDTL_SEARCH_response[j][2]='';}
+                                BTDTL_SEARCH_tr +='<tr><td>'+BTDTL_SEARCH_response[j][0]+'</td><td id=electinvoiceto_'+BTDTL_SEARCH_id[j]+' class="eletricityedit">'+BTDTL_SEARCH_response[j][1]+'</td><td id=eleccomments_'+BTDTL_SEARCH_id[j]+' class="eletricityedit">'+BTDTL_SEARCH_response[j][2]+'</td><td>'+BTDTL_SEARCH_response[j][3]+'</td><td>'+BTDTL_SEARCH_response[j][4]+'</td></tr>';
+                            }
+                            else
+                            {
+                                var BTDTL_SEARCH_parentfunction=BTDTL_SEARCH_response[j];
+                                if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_delete')
+                                {
+                                    var BTDTL_SEARCH_errordelete_replace=BTDTL_SEARCH_errorarr[5].EMC_DATA.replace('[TYPE]',$('#BTDTL_SEARCH_lb_expense_type').find('option:selected').text());
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errordelete_replace,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction==0){
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorarr[5].EMC_DATA,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_notupdate'){
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorarr[62].EMC_DATA,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_update')
+                                {
+                                    var BTDTL_SEARCH_errorupdate_replace=BTDTL_SEARCH_errorarr[4].EMC_DATA.replace('[TYPE]',$('#BTDTL_SEARCH_lb_expense_type').find('option:selected').text());
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorupdate_replace,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_aircon_update')
+                                {
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorarr[60].EMC_DATA,"success",false);
+                                }
+                            }
+                        }
+                        BTDTL_SEARCH_tr +='</tbody></table>';
+                    }
+                    // EXPENSE DIGITAL VOICE
+                    if(BTDTL_SEARCH_expensetypes==14)
+                    {
+                        for(var j=0;j<BTDTL_SEARCH_response.length;j++)
+                        {
+                            if(j!=BTDTL_SEARCH_response.length-1)
+                            {
+                                if(BTDTL_SEARCH_response[j][3]==null){BTDTL_SEARCH_response[j][3]='';}
+                                if(BTDTL_SEARCH_response[j][4]==null){BTDTL_SEARCH_response[j][4]='';}
+                                if(BTDTL_SEARCH_response[j][5]==null){BTDTL_SEARCH_response[j][5]='';}
+                                if(BTDTL_SEARCH_response[j][6]==null){BTDTL_SEARCH_response[j][6]='';}
+                                if(BTDTL_SEARCH_response[j][7]==null){BTDTL_SEARCH_response[j][7]='';}
+                                if(BTDTL_SEARCH_response[j][8]==null){BTDTL_SEARCH_response[j][8]='';}
+                                if(BTDTL_SEARCH_response[j][9]==null){BTDTL_SEARCH_response[j][9]='';}
+                                if(BTDTL_SEARCH_response[j][10]==null){BTDTL_SEARCH_response[j][10]='';}
+                                if(BTDTL_SEARCH_response[j][11]==null){BTDTL_SEARCH_response[j][11]='';}
+                                if(BTDTL_SEARCH_response[j][12]==null){BTDTL_SEARCH_response[j][12]='';}
+                                if(BTDTL_SEARCH_response[j][13]==null){BTDTL_SEARCH_response[j][13]='';}
+                                if(BTDTL_SEARCH_response[j][14]==null){BTDTL_SEARCH_response[j][14]='';}
+                                BTDTL_SEARCH_tr +='<tr><td><span id ='+BTDTL_SEARCH_id[j]+' class="glyphicon glyphicon-edit BDTL_editbtn"></span></td><td>'+BTDTL_SEARCH_response[j][0]+'</td><td>'+BTDTL_SEARCH_response[j][1]+'</td><td>'+BTDTL_SEARCH_response[j][2]+'</td><td>'+BTDTL_SEARCH_response[j][3]+'</td><td>'+BTDTL_SEARCH_response[j][4]+'</td><td>'+BTDTL_SEARCH_response[j][5]+'</td><td>'+BTDTL_SEARCH_response[j][6]+'</td><td>'+BTDTL_SEARCH_response[j][7]+'</td><td>'+BTDTL_SEARCH_response[j][8]+'</td><td>'+BTDTL_SEARCH_response[j][9]+'</td><td>'+BTDTL_SEARCH_response[j][10]+'</td><td>'+BTDTL_SEARCH_response[j][11]+'</td><td>'+BTDTL_SEARCH_response[j][12]+'</td><td>'+BTDTL_SEARCH_response[j][13]+'</td><td>'+BTDTL_SEARCH_response[j][14]+'</td><td>'+BTDTL_SEARCH_response[j][15]+'</td><td>'+BTDTL_SEARCH_response[j][16]+'</td></tr>';
+                            }
+                            else
+                            {
+                                var BTDTL_SEARCH_parentfunction=BTDTL_SEARCH_response[j];
+                                if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_delete')
+                                {
+                                    var BTDTL_SEARCH_errordelete_replace=BTDTL_SEARCH_errorarr[5].EMC_DATA.replace('[TYPE]',$('#BTDTL_SEARCH_lb_expense_type').find('option:selected').text());
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errordelete_replace,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction==0){
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorarr[5].EMC_DATA,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_notupdate'){
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorarr[62].EMC_DATA,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_update')
+                                {
+                                    var BTDTL_SEARCH_errorupdate_replace=BTDTL_SEARCH_errorarr[4].EMC_DATA.replace('[TYPE]',$('#BTDTL_SEARCH_lb_expense_type').find('option:selected').text());
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorupdate_replace,"success",false);
+                                }
+                                else if(BTDTL_SEARCH_parentfunction=='BTDTL_SEARCH_flag_aircon_update')
+                                {
+                                    show_msgbox("BIZ EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",BTDTL_SEARCH_errorarr[60].EMC_DATA,"success",false);
+                                }
+                            }
+                        }
+                        BTDTL_SEARCH_tr +='</tbody></table>';
+                    }
                     $('#BTDTL_SEARCH_div_flex_searchbtn').show();
                     $('section').html(BTDTL_SEARCH_tr);
                     $('#BTDTL_SEARCH_tble_flex').DataTable( {
@@ -1788,6 +1953,30 @@ include "Header.php";
 
                     });
                 }
+            sorting();
+        }
+        //FUNCTION FOR SORTING
+        function sorting(){
+            jQuery.fn.dataTableExt.oSort['uk_date-asc']  = function(a,b) {
+                var x = new Date( Date.parse(BDTL_FormTableDateFormat(a)));
+                var y = new Date( Date.parse(BDTL_FormTableDateFormat(b)) );
+                return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+            };
+            jQuery.fn.dataTableExt.oSort['uk_date-desc'] = function(a,b) {
+                var x = new Date( Date.parse(BDTL_FormTableDateFormat(a)));
+                var y = new Date( Date.parse(BDTL_FormTableDateFormat(b)) );
+                return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
+            };
+            jQuery.fn.dataTableExt.oSort['uk_timestp-asc']  = function(a,b) {
+                var x = new Date( Date.parse(BDTL_FormTableDateFormat(a.split(' ')[0]))).setHours(a.split(' ')[1].split(':')[0],a.split(' ')[1].split(':')[1],a.split(' ')[1].split(':')[2]);
+                var y = new Date( Date.parse(BDTL_FormTableDateFormat(b.split(' ')[0]))).setHours(b.split(' ')[1].split(':')[0],b.split(' ')[1].split(':')[1],b.split(' ')[1].split(':')[2]);
+                return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+            };
+            jQuery.fn.dataTableExt.oSort['uk_timestp-desc'] = function(a,b) {
+                var x = new Date( Date.parse(BDTL_FormTableDateFormat(a.split(' ')[0]))).setHours(a.split(' ')[1].split(':')[0],a.split(' ')[1].split(':')[1],a.split(' ')[1].split(':')[2]);
+                var y = new Date( Date.parse(BDTL_FormTableDateFormat(b.split(' ')[0]))).setHours(b.split(' ')[1].split(':')[0],b.split(' ')[1].split(':')[1],b.split(' ')[1].split(':')[2]);
+                return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
+            };
         }
         /*--------------------------------------------------CHANGE FUNCTION VALIDATION FOR SEARCH BUTTON--------------------------------------------------------------*/
         $(document).on('change blur','.BTDTL_SEARCH_class_datesearchbtn',function(){
@@ -1824,7 +2013,6 @@ include "Header.php";
                 $('#'+airconprevious_id).replaceWith("<td align='left' class='airconserviceedit' id='"+airconprevious_id+"' >"+airconcval+"</td>");
             }
             var cid = $(this).attr('id');
-                alert(cid)
             var id=cid.split('_');
             airconifcondition=id[0];
             airconcombineid=id[1];
@@ -1833,7 +2021,7 @@ include "Header.php";
             airconcval = $(this).text();
             if($('#BTDTL_SEARCH_lb_searchoptions').val()==100)
             {
-                $('#'+cid).replaceWith("<td  class='new' id='"+airconprevious_id+"'><input type='text' id='ASB_serviceby' name='ASB_serviceby'  class='airconserviceupdate form-control' style='width: 240px' value='"+airconcval+"'></td>");
+                $('#'+cid).replaceWith("<td  class='new' id='"+airconprevious_id+"'><input type='text' id='ASB_serviceby' name='ASB_serviceby'  class='airconserviceupdate uppercase form-control' maxlength=50 style='width: 240px' value='"+airconcval+"'></td>");
             }
             if(airconifcondition=='airconserviceby')
             {
@@ -1855,7 +2043,6 @@ include "Header.php";
             }
         });
 //AIRCON SERVICE UPDATE PART
-        // EXPENSE BABY UPDATE FUNCTION
         $(document).on('change','.airconserviceupdate', function (){
             $('.preloader').show();
             if($('#airconserviceby_'+airconcombineid+'_'+airconunitid).hasClass("airconserviceedit")==true){
@@ -1874,19 +2061,289 @@ include "Header.php";
             }
             if($('#BTDTL_SEARCH_lb_searchoptions').val()==100)
             {
-                var serviceby=$('#ASB_serviceby').val();
+                var serviceby=($('#ASB_serviceby').val()).toUpperCase();
+                $('#ASB_serviceby').val(serviceby);
+            }
+           // SEARCH BY OPTIONS VALUE
+            if($('#BTDTL_SEARCH_lb_searchoptions').val()==195)
+            {
+                var searchvalue=$('#BTDTL_SEARCH_lb_ariconservicedbyunitno').val();
+            }
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==101)
+            {
+                var searchvalue=$('#BTDTL_SEARCH_ta_airconcomments').val();
+            }
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==191)
+            {
+                var searchvalue=$('#BTDTL_SEARCH_lb_ariconunitno').val();
             }
             $.ajax({
                 type: "POST",
                 url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/airconserviceupdate",
-                data:{'primaryid':airconcombineid,'unitid':airconunitid,'airconserviceby':airconserviceby,'aircomments':aircomments,'serviceby':serviceby,'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_lb_expense_type':$('#BTDTL_SEARCH_lb_expense_type').val()},
+                data:{'primaryid':airconcombineid,'unitid':airconunitid,'airconserviceby':airconserviceby,'aircomments':aircomments,'serviceby':serviceby,'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_lb_expense_type':$('#BTDTL_SEARCH_lb_expense_type').val(),'searchvalue':searchvalue},
                 success: function(data) {
-                    alert(data)
                     $('.preloader').hide();
-
+                    var result=JSON.parse(data)
+                    BTDTL_SEARCH_success_showflex(result);
+                    airconprevious_id=undefined;
                 }
             });
         }) ;
+        //EXPENSE CARPARK INLINE EDIT FUNCTION
+        var carparkcombineid;
+        var carparkprevious_id;
+        var carparkcval;
+        var carparkifcondition;
+        var carparkunitid;
+        $(document).on('click','.carparkedit', function (){
+            if(carparkprevious_id!=undefined){
+                $('#'+carparkprevious_id).replaceWith("<td align='left' class='carparkedit' id='"+carparkprevious_id+"' >"+carparkcval+"</td>");
+            }
+            var cid = $(this).attr('id');
+            var id=cid.split('_');
+            carparkifcondition=id[0];
+            carparkcombineid=id[1];
+            carparkunitid=id[2];
+            carparkprevious_id=cid;
+            carparkcval = $(this).text();
+            if(carparkifcondition=='carno')
+            {
+                $('#'+cid).replaceWith("<td  class='new' id='"+carparkprevious_id+"'><input type='text' class='form-control carparkupdate' id='CP_carno' value='"+carparkcval+"'></td>");
+            }
+            else if(carparkifcondition=='carparkcomments')
+            {
+                $('#'+cid).replaceWith("<td  class='new' id='"+carparkprevious_id+"'><textarea rows='3' id='CP_comments' name='CP_comments'  class='carparkupdate form-control' style='width: 330px'>"+carparkcval+"</textarea></td>");
+            }
+        });
+//CARPARK UPDATE PART
+        $(document).on('change','.carparkupdate', function (){
+            $('.preloader').show();
+            if($('#carno_'+carparkcombineid+'_'+carparkunitid).hasClass("carparkedit")==true){
+
+                var carno=$('#carno_'+carparkcombineid+'_'+carparkunitid).text();
+            }
+            else{
+                var carno=($('#CP_carno').val()).toUpperCase();
+                $('#CP_carno').val(carno);
+            }
+            if($('#carparkcomments_'+carparkcombineid+'_'+carparkunitid).hasClass("carparkedit")==true){
+
+                var carparkcomments=$('#carparkcomments_'+carparkcombineid+'_'+carparkunitid).text();
+            }
+            else{
+                var carparkcomments=$('#CP_comments').val();
+            }
+
+            // SEARCH BY OPTIONS VALUE
+            if($('#BTDTL_SEARCH_lb_searchoptions').val()==102)
+            {
+                var searchvalue=$('#BTDTL_SEARCH_lb_carno').val();
+            }
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==103)
+            {
+                var searchvalue=$('#BTDTL_SEARCH_ta_carparkcomments').val();
+            }
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==191)
+            {
+                var searchvalue=$('#BTDTL_SEARCH_lb_carparkunitno').val();
+            }
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/carparkupdate",
+                data:{'primaryid':carparkcombineid,'unitid':carparkunitid,'carno':carno,'carparkcomments':carparkcomments,'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_lb_expense_type':$('#BTDTL_SEARCH_lb_expense_type').val(),'searchvalue':searchvalue},
+                success: function(data) {
+                    $('.preloader').hide();
+                    var result=JSON.parse(data)
+                    BTDTL_SEARCH_success_showflex(result);
+                    carparkprevious_id=undefined;
+                }
+            });
+        }) ;
+        //EXPENSE DIGITAL INLINE EDIT FUNCTION
+        var digitalcombineid;
+        var digitalprevious_id;
+        var digitalcval;
+        var digitalifcondition;
+        var digitalunitid;
+        $(document).on('click','.digitalvoiceedit', function (){
+            if(digitalprevious_id!=undefined){
+                $('#'+digitalprevious_id).replaceWith("<td align='left' class='digitalvoiceedit' id='"+digitalprevious_id+"' >"+digitalcval+"</td>");
+            }
+            var cid = $(this).attr('id');
+            var id=cid.split('_');
+            digitalifcondition=id[0];
+            digitalcombineid=id[1];
+            digitalunitid=id[2];
+            digitalprevious_id=cid;
+            digitalcval = $(this).text();
+            if(digitalifcondition=='invoiceto')
+            {
+                $('#'+cid).replaceWith("<td  class='new' id='"+digitalprevious_id+"'><select class='form-control digitalupdate' id='DV_invoiceto' style='width: 150px;'></select></td>");
+                var BTDTL_SEARCH_options_invoiceto_upd='<option value="">SELECT</option>';
+                for (var i = 0; i <BTDTL_SEARCH_arr_invoicto.length; i++) {
+                    if(BTDTL_SEARCH_arr_invoicto[i].BTDTL_SEARCH_expensetypes_data==digitalcval){
+                        BTDTL_SEARCH_options_invoiceto_upd +='<option value="'+BTDTL_SEARCH_arr_invoicto[i].BTDTL_SEARCH_expensetypes_id +'" selected>' + BTDTL_SEARCH_arr_invoicto[i].BTDTL_SEARCH_expensetypes_data + '</option>';
+                    }else
+                        BTDTL_SEARCH_options_invoiceto_upd +='<option value="'+BTDTL_SEARCH_arr_invoicto[i].BTDTL_SEARCH_expensetypes_id +'">' + BTDTL_SEARCH_arr_invoicto[i].BTDTL_SEARCH_expensetypes_data + '</option>';
+                }
+                $('#DV_invoiceto').html(BTDTL_SEARCH_options_invoiceto_upd)
+            }
+            else if(digitalifcondition=='digitalvoiceno')
+            {
+                $('#'+cid).replaceWith("<td  class='new' id='"+digitalprevious_id+"'><input type='text' class='form-control digitalupdate' id='DV_invoiceno' value='"+digitalcval+"'></td>");
+            }
+            else if(digitalifcondition=='digitalacctno')
+            {
+                $('#'+cid).replaceWith("<td  class='new' id='"+digitalprevious_id+"'><input type='text' class='form-control digitalupdate' id='DV_acctno' value='"+digitalcval+"'></td>");
+            }
+            else if(digitalifcondition=='digitalcomments')
+            {
+                $('#'+cid).replaceWith("<td  class='new' id='"+digitalprevious_id+"'><textarea rows='3' id='DV_comments' name='DV_comments'  class='digitalupdate form-control' style='width: 330px'>"+digitalcval+"</textarea></td>");
+            }
+        });
+//DIGITAL VOICE UPDATE PART
+        $(document).on('change','.digitalupdate', function (){
+            $('.preloader').show();
+            if($('#invoiceto_'+digitalcombineid+'_'+digitalunitid).hasClass("digitalvoiceedit")==true){
+
+                var invoiceto=$('#invoiceto_'+digitalcombineid+'_'+digitalunitid).text();
+            }
+            else{
+                var invoiceto=$('#DV_invoiceto').find('option:selected').text();
+            }
+            if($('#digitalvoiceno_'+digitalcombineid+'_'+digitalunitid).hasClass("digitalvoiceedit")==true){
+
+                var invoiceno=$('#digitalvoiceno_'+digitalcombineid+'_'+digitalunitid).text();
+            }
+            else{
+                var invoiceno=$('#DV_invoiceno').val();
+            }
+            if($('#digitalacctno_'+digitalcombineid+'_'+digitalunitid).hasClass("digitalvoiceedit")==true){
+
+                var acctno=$('#digitalacctno_'+digitalcombineid+'_'+digitalunitid).text();
+            }
+            else{
+                var acctno=$('#DV_acctno').val();
+            }
+            if($('#digitalcomments_'+digitalcombineid+'_'+digitalunitid).hasClass("digitalvoiceedit")==true){
+
+                var comments=$('#digitalcomments_'+digitalcombineid+'_'+digitalunitid).text();
+            }
+            else{
+                var comments=$('#DV_comments').val();
+            }
+
+            // SEARCH BY OPTIONS VALUE
+            if($('#BTDTL_SEARCH_lb_searchoptions').val()==109)
+            {
+                var searchvalue=$('#BTDTL_SEARCH_lb_digitalacctno').val();
+            }
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==108)
+            {
+                var searchvalue=$('#BTDTL_SEARCH_ta_digitalcomments').val();
+            }
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==106)
+            {
+                var searchvalue=$('#BTDTL_SEARCH_lb_digitalvoiceno').val();
+            }
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==107)
+            {
+                var searchvalue=$('#BTDTL_SEARCH_lb_digitalinvoiceto').val();
+            }
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==191)
+            {
+                var searchvalue=$('#BTDTL_SEARCH_lb_digitalunitno').val();
+            }
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/digitalvoiceupdate",
+                data:{'primaryid':digitalcombineid,'unitid':digitalunitid,'invoiceto':invoiceto,'invoiceno':invoiceno,'acctno':acctno,'comments':comments,'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_lb_expense_type':$('#BTDTL_SEARCH_lb_expense_type').val(),'searchvalue':searchvalue},
+                success: function(data) {
+                    $('.preloader').hide();
+                    var result=JSON.parse(data)
+                    BTDTL_SEARCH_success_showflex(result);
+                    digitalprevious_id=undefined;
+                }
+            });
+        }) ;
+        //EXPENSE CARPARK INLINE EDIT FUNCTION
+        var electriccombineid;
+        var electricprevious_id;
+        var electriccval;
+        var electricifcondition;
+        var electricunitid;
+        $(document).on('click','.eletricityedit', function (){
+            if(electricprevious_id!=undefined){
+                $('#'+electricprevious_id).replaceWith("<td align='left' class='eletricityedit' id='"+electricprevious_id+"' >"+electriccval+"</td>");
+            }
+            var cid = $(this).attr('id');
+            var id=cid.split('_');
+            electricifcondition=id[0];
+            electriccombineid=id[1];
+            electricunitid=id[2];
+            electricprevious_id=cid;
+            electriccval = $(this).text();
+            if(electricifcondition=='electinvoiceto')
+            {
+                $('#'+cid).replaceWith("<td  class='new' id='"+electricprevious_id+"'><select class='form-control electricityupdate' id='ELEC_invoiceto' style='width: 150px;'></select></td>");
+                var BTDTL_SEARCH_options_invoiceto_upd='<option value="">SELECT</option>';
+                for (var i = 0; i <BTDTL_SEARCH_arr_invoicto.length; i++) {
+                    if(BTDTL_SEARCH_arr_invoicto[i].BTDTL_SEARCH_expensetypes_data==electriccval){
+                        BTDTL_SEARCH_options_invoiceto_upd +='<option value="'+BTDTL_SEARCH_arr_invoicto[i].BTDTL_SEARCH_expensetypes_id +'" selected>' + BTDTL_SEARCH_arr_invoicto[i].BTDTL_SEARCH_expensetypes_data + '</option>';
+                    }else
+                        BTDTL_SEARCH_options_invoiceto_upd +='<option value="'+BTDTL_SEARCH_arr_invoicto[i].BTDTL_SEARCH_expensetypes_id +'">' + BTDTL_SEARCH_arr_invoicto[i].BTDTL_SEARCH_expensetypes_data + '</option>';
+                }
+                $('#ELEC_invoiceto').html(BTDTL_SEARCH_options_invoiceto_upd)
+            }
+            else if(electricifcondition=='eleccomments')
+            {
+                $('#'+cid).replaceWith("<td  class='new' id='"+electricprevious_id+"'><textarea rows='3' id='ELEC_comments' name='ELEC_comments'  class='electricityupdate form-control' style='width: 330px'>"+electriccval+"</textarea></td>");
+            }
+        });
+//ELECTRICITY UPDATE PART
+        $(document).on('change','.electricityupdate', function (){
+            $('.preloader').show();
+            if($('#electinvoiceto_'+electriccombineid+'_'+electricunitid).hasClass("eletricityedit")==true){
+
+                var invoiceto=$('#electinvoiceto_'+electriccombineid+'_'+electricunitid).text();
+            }
+            else{
+                var invoiceto=$('#ELEC_invoiceto').find('option:selected').text();
+            }
+            if($('#eleccomments_'+electriccombineid+'_'+electricunitid).hasClass("eletricityedit")==true){
+
+                var electcomments=$('#eleccomments_'+electriccombineid+'_'+electricunitid).text();
+            }
+            else{
+                var electcomments=$('#ELEC_comments').val();
+            }
+
+            // SEARCH BY OPTIONS VALUE
+            if($('#BTDTL_SEARCH_lb_searchoptions').val()==104)
+            {
+                var searchvalue=$('#BTDTL_SEARCH_ta_electricitycomments').val();
+            }
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==105)
+            {
+                var searchvalue=$('#BTDTL_SEARCH_lb_electricityinvoiceto').val();
+            }
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==191)
+            {
+                var searchvalue=$('#BTDTL_SEARCH_lb_electricityunitno').val();
+            }
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/electricityupdate",
+                data:{'primaryid':electriccombineid,'unitid':electricunitid,'invoiceto':invoiceto,'electcomments':electcomments,'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_lb_expense_type':$('#BTDTL_SEARCH_lb_expense_type').val(),'searchvalue':searchvalue},
+                success: function(data) {
+                    $('.preloader').hide();
+                    var result=JSON.parse(data)
+                    BTDTL_SEARCH_success_showflex(result);
+                    electricprevious_id=undefined;
+                }
+            });
+        }) ;
+
     });
 </script>
 </head>

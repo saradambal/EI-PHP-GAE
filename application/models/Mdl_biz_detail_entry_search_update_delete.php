@@ -794,7 +794,11 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
                                13=>['EDE_ID','EXPENSE_DETAIL_ELECTRICITY',47,'EDE_REC_VER','EDE_REC_VER'],14=>['EDSH_ID','EXPENSE_DETAIL_STARHUB',46,'EDSH_REC_VER','EDSH_REC_VER,EDSH_CABLE_START_DATE,EDSH_CABLE_END_DATE,EDSH_INTERNET_START_DATE,EDSH_INTERNET_END_DATE,EDSH_ACCOUNT_NO']];
     return [$BTDTL_SEARCH_twodimen[$BTDTL_SEARCH_profile_names][0],$BTDTL_SEARCH_twodimen[$BTDTL_SEARCH_profile_names][1],$BTDTL_SEARCH_twodimen[$BTDTL_SEARCH_profile_names][2],$BTDTL_SEARCH_twodimen[$BTDTL_SEARCH_profile_names][3],$BTDTL_SEARCH_twodimen[$BTDTL_SEARCH_profile_names][4]];
   }
-    public function airconserviceupdate($primaryid,$unitid,$airconserviceby,$aircomments,$serviceby,$USERSTAMP,$timeZoneFormat,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type){
+    public function airconserviceupdate($primaryid,$unitid,$airconserviceby,$aircomments,$serviceby,$USERSTAMP,$timeZoneFormat,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type,$searchvalue){
+        if($BTDTL_SEARCH_lb_searchoptions==100){//AIRCON SERVICED BY
+            $BTDTL_SEARCH_insert=$this->db->query("UPDATE EXPENSE_AIRCON_SERVICE_BY SET EASB_DATA='$serviceby',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE EASB_ID='$primaryid'");
+        }
+        else{
         $BTDTL_SEARCH_unitid =$unitid;
         $BTDTL_SEARCH_selectrecrv='null';
         $easb_data=$this->db->query("SELECT EASB_ID FROM EXPENSE_AIRCON_SERVICE_BY  WHERE  EASB_DATA='$airconserviceby'");
@@ -815,20 +819,187 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
           $BTDTL_SEARCH_recordversion = $row[$BTDTL_SEARCH_detailData[3]];
           $BTDTL_SEARCH_oldrecordversion=$BTDTL_SEARCH_recordversion;
                  $BTDTL_SEARCH_oldairconservby = $row["EASB_ID"];
-            echo $easb_id.''.$BTDTL_SEARCH_oldairconservby.''.$BTDTL_SEARCH_selectrecrv.''.$BTDTL_SEARCH_recordversion;
-            exit;
               if($easb_id!=$BTDTL_SEARCH_oldairconservby&&$BTDTL_SEARCH_selectrecrv==$BTDTL_SEARCH_recordversion){
                   $BTDTL_SEARCH_insertflag=1;
               }
               else{
                   $BTDTL_SEARCH_oldrecordversion=$BTDTL_SEARCH_selectrecrv;
               }
+        }
+
+        if($BTDTL_SEARCH_recordversion==null)
+          $BTDTL_SEARCH_recordversion=1;
+        else
+          $BTDTL_SEARCH_recordversion = intval($BTDTL_SEARCH_recordversion)+1;
+            if($aircomments=="")//COMMENTS
+            {  $aircomments='null';}else{
+                $aircomments=$this->db->escape_like_str($aircomments);
+                $aircomments="'$aircomments'";}
+            if($BTDTL_SEARCH_insertflag==1||$BTDTL_SEARCH_recordversion==1)
+            {
+                $BTDTL_SEARCH_insert = "INSERT INTO EXPENSE_DETAIL_AIRCON_SERVICE(UNIT_ID,EASB_ID,EDAS_REC_VER,EDAS_COMMENTS,ULD_ID)VALUES('$unitid','$easb_id','$BTDTL_SEARCH_recordversion',$aircomments,(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP'))";
           }
-        if($BTDTL_SEARCH_lb_searchoptions==100){//AIRCON SERVICED BY
-            $BTDTL_SEARCH_insert=$this->db->query("UPDATE EXPENSE_AIRCON_SERVICE_BY SET EASB_DATA='$serviceby',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE EASB_ID='$primaryid'");
+            else{
+                $BTDTL_SEARCH_insert="UPDATE EXPENSE_DETAIL_AIRCON_SERVICE SET EDAS_COMMENTS=$aircomments,EASB_ID='$easb_id',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE UNIT_ID='$unitid' AND EDAS_REC_VER='$BTDTL_SEARCH_oldrecordversion'";
+          }
+        $this->db->query($BTDTL_SEARCH_insert);
+        }
+         $BTDTL_SEARCH_flag_update='BTDTL_SEARCH_flag_update';
+        $BTDTL_SEARCH_refresh=[];
+        if($BTDTL_SEARCH_lb_searchoptions==100)
+          $BTDTL_SEARCH_refresh= $this->BTDTL_SEARCH_expense_searchby($BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type,'BTDTL_SEARCH_flag_aircon_update',$timeZoneFormat);
+        else
+          $BTDTL_SEARCH_refresh= $this->BTDTL_SEARCH_flex_aircon($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_flag_update,$timeZoneFormat);
+        return $BTDTL_SEARCH_refresh;
+    }
+    public function carparkupdate($primaryid,$unitid,$carno,$carparkcomments,$USERSTAMP,$timeZoneFormat,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type,$searchvalue)
+    {
+        $BTDTL_SEARCH_selectrecrv='null';
+
+        $BTDTL_SEARCH_detailData=$this->BTDTL_SEARCH_func_twodimen($BTDTL_SEARCH_lb_expense_type);
+        $BTDTL_SEARCH_checkrvquery = "SELECT $BTDTL_SEARCH_detailData[3] FROM $BTDTL_SEARCH_detailData[1] WHERE $BTDTL_SEARCH_detailData[0]='$primaryid'";
+        $BTDTL_SEARCH_recordversion_rs = $this->db->query($BTDTL_SEARCH_checkrvquery);
+        foreach($BTDTL_SEARCH_recordversion_rs->result_array() as $row)
+        {
+            $BTDTL_SEARCH_selectrecrv=$row['EDCP_REC_VER'];
+        }
+        $BTDTL_SEARCH_insertflag=0;
+        $BTDTL_SEARCH_recordversion='null';
+        $BTDTL_SEARCH_select_recordversion = "SELECT * FROM $BTDTL_SEARCH_detailData[1] WHERE UNIT_ID='$unitid' AND $BTDTL_SEARCH_detailData[3]=(SELECT MAX($BTDTL_SEARCH_detailData[3]) FROM $BTDTL_SEARCH_detailData[1] WHERE UNIT_ID=$unitid)";
+        $BTDTL_SEARCH_recordversion_rs = $this->db->query($BTDTL_SEARCH_select_recordversion);
+        foreach($BTDTL_SEARCH_recordversion_rs->result_array() as $row){
+            $BTDTL_SEARCH_recordversion = $row[$BTDTL_SEARCH_detailData[3]];
+            $BTDTL_SEARCH_oldrecordversion=$BTDTL_SEARCH_recordversion;
+            $BTDTL_SEARCH_oldcarno= $row["EDCP_CAR_NO"];
+            if($BTDTL_SEARCH_oldcarno!=$carno&&$BTDTL_SEARCH_selectrecrv==$BTDTL_SEARCH_recordversion){
+                $BTDTL_SEARCH_insertflag=1;
+            }
+            else{
+                $BTDTL_SEARCH_oldrecordversion=$BTDTL_SEARCH_selectrecrv;
+            }
+        }
+
+        if($BTDTL_SEARCH_recordversion==null)
+            $BTDTL_SEARCH_recordversion=1;
+        else
+            $BTDTL_SEARCH_recordversion = intval($BTDTL_SEARCH_recordversion)+1;
+        if($carparkcomments=="")//COMMENTS
+        {  $carparkcomments='null';}else{
+            $carparkcomments=$this->db->escape_like_str($carparkcomments);
+            $carparkcomments="'$carparkcomments'";}
+        if($BTDTL_SEARCH_insertflag==1||$BTDTL_SEARCH_recordversion==1)
+        {
+            $BTDTL_SEARCH_insert = "INSERT INTO EXPENSE_DETAIL_CARPARK (UNIT_ID,EDCP_REC_VER,EDCP_CAR_NO,EDCP_COMMENTS,ULD_ID) VALUES('$unitid','$BTDTL_SEARCH_recordversion','$carno',$carparkcomments,(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP'))";
         }
         else{
-
+            $BTDTL_SEARCH_insert="UPDATE EXPENSE_DETAIL_CARPARK SET EDCP_COMMENTS=$carparkcomments,EDCP_CAR_NO='$carno',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE UNIT_ID='$unitid' AND EDCP_REC_VER='$BTDTL_SEARCH_oldrecordversion'";
         }
+        $this->db->query($BTDTL_SEARCH_insert);
+        $BTDTL_SEARCH_flag_update='BTDTL_SEARCH_flag_update';
+        $BTDTL_SEARCH_refresh=[];
+        $BTDTL_SEARCH_refresh= $this->BTDTL_SEARCH_show_carpark($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_flag_update,$timeZoneFormat);
+        return $BTDTL_SEARCH_refresh;
+    }
+    public function digitalvoiceupdate($primaryid,$unitid,$invoiceto,$invoiceno,$acctno,$comments,$USERSTAMP,$timeZoneFormat,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type,$searchvalue)
+    {
+        $BTDTL_SEARCH_selectrecrv='null';
+        $ecn_data=$this->db->query("SELECT ECN_ID FROM EXPENSE_CONFIGURATION  WHERE  ECN_DATA='$invoiceto' AND CGN_ID=27");
+        $ecn_id=$ecn_data->row()->ECN_ID;
+        $BTDTL_SEARCH_detailData=$this->BTDTL_SEARCH_func_twodimen($BTDTL_SEARCH_lb_expense_type);
+        $BTDTL_SEARCH_checkrvquery = "SELECT $BTDTL_SEARCH_detailData[3] FROM $BTDTL_SEARCH_detailData[1] WHERE $BTDTL_SEARCH_detailData[0]='$primaryid'";
+        $BTDTL_SEARCH_recordversion_rs = $this->db->query($BTDTL_SEARCH_checkrvquery);
+        foreach($BTDTL_SEARCH_recordversion_rs->result_array() as $row)
+        {
+            $BTDTL_SEARCH_selectrecrv=$row['EDDV_REC_VER'];
+        }
+        $BTDTL_SEARCH_insertflag=0;
+        $BTDTL_SEARCH_recordversion='null';
+        $BTDTL_SEARCH_select_recordversion = "SELECT * FROM $BTDTL_SEARCH_detailData[1] WHERE UNIT_ID='$unitid' AND $BTDTL_SEARCH_detailData[3]=(SELECT MAX($BTDTL_SEARCH_detailData[3]) FROM $BTDTL_SEARCH_detailData[1] WHERE UNIT_ID=$unitid)";
+        $BTDTL_SEARCH_recordversion_rs = $this->db->query($BTDTL_SEARCH_select_recordversion);
+        foreach($BTDTL_SEARCH_recordversion_rs->result_array() as $row){
+            $BTDTL_SEARCH_recordversion = $row[$BTDTL_SEARCH_detailData[3]];
+            $BTDTL_SEARCH_oldrecordversion=$BTDTL_SEARCH_recordversion;
+            $BTDTL_SEARCH_oldinvoiceto= $row["ECN_ID"];
+            if(($BTDTL_SEARCH_oldinvoiceto=='SELECT')||($BTDTL_SEARCH_oldinvoiceto==''))
+                $BTDTL_SEARCH_oldinvoiceto='null';
+            $BTDTL_SEARCH_olddigvoiceno= $row["EDDV_DIGITAL_VOICE_NO"];
+            $BTDTL_SEARCH_olddigacntno= $row["EDDV_DIGITAL_ACCOUNT_NO"];
+            if($BTDTL_SEARCH_oldinvoiceto!=$ecn_id&&$BTDTL_SEARCH_olddigvoiceno!=$invoiceno&&$BTDTL_SEARCH_olddigacntno!=$acctno&&$BTDTL_SEARCH_selectrecrv==$BTDTL_SEARCH_recordversion){
+                $BTDTL_SEARCH_insertflag=1;
+            }
+            else{
+                $BTDTL_SEARCH_oldrecordversion=$BTDTL_SEARCH_selectrecrv;
+            }
+        }
+
+        if($BTDTL_SEARCH_recordversion==null)
+            $BTDTL_SEARCH_recordversion=1;
+        else
+            $BTDTL_SEARCH_recordversion = intval($BTDTL_SEARCH_recordversion)+1;
+        if($comments=="")//COMMENTS
+        {  $comments='null';}else{
+            $comments=$this->db->escape_like_str($comments);
+            $comments="'$comments'";}
+        if($BTDTL_SEARCH_insertflag==1||$BTDTL_SEARCH_recordversion==1)
+        {
+            $BTDTL_SEARCH_insert = "INSERT INTO EXPENSE_DETAIL_DIGITAL_VOICE(UNIT_ID,ECN_ID,EDDV_REC_VER,EDDV_DIGITAL_VOICE_NO,EDDV_DIGITAL_ACCOUNT_NO,EDDV_COMMENTS,ULD_ID)VALUES('$unitid','$ecn_id','$BTDTL_SEARCH_recordversion','$invoiceno','$acctno',$$comments,(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP'))";
+        }
+        else{
+            $BTDTL_SEARCH_insert="UPDATE EXPENSE_DETAIL_DIGITAL_VOICE SET EDDV_COMMENTS=$comments,EDDV_DIGITAL_ACCOUNT_NO='$acctno',EDDV_DIGITAL_VOICE_NO='$invoiceno',ECN_ID='$ecn_id',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE UNIT_ID='$unitid' AND EDDV_REC_VER='$BTDTL_SEARCH_oldrecordversion'";
+        }
+        $this->db->query($BTDTL_SEARCH_insert);
+        $BTDTL_SEARCH_flag_update='BTDTL_SEARCH_flag_update';
+        $BTDTL_SEARCH_refresh=[];
+        $BTDTL_SEARCH_refresh= $this->BTDTL_SEARCH_show_digital($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_flag_update,$timeZoneFormat);
+        return $BTDTL_SEARCH_refresh;
+    }
+    public function electricityupdate($primaryid,$unitid,$invoiceto,$electcomments,$USERSTAMP,$timeZoneFormat,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type,$searchvalue)
+    {
+        $ecn_data=$this->db->query("SELECT ECN_ID FROM EXPENSE_CONFIGURATION  WHERE  ECN_DATA='$invoiceto' AND CGN_ID=27");
+        $ecn_id=$ecn_data->row()->ECN_ID;
+        $BTDTL_SEARCH_selectrecrv='null';
+        $BTDTL_SEARCH_detailData=$this->BTDTL_SEARCH_func_twodimen($BTDTL_SEARCH_lb_expense_type);
+        $BTDTL_SEARCH_checkrvquery = "SELECT $BTDTL_SEARCH_detailData[3] FROM $BTDTL_SEARCH_detailData[1] WHERE $BTDTL_SEARCH_detailData[0]='$primaryid'";
+        $BTDTL_SEARCH_recordversion_rs = $this->db->query($BTDTL_SEARCH_checkrvquery);
+        foreach($BTDTL_SEARCH_recordversion_rs->result_array() as $row)
+        {
+            $BTDTL_SEARCH_selectrecrv=$row['EDE_REC_VER'];
+        }
+        $BTDTL_SEARCH_insertflag=0;
+        $BTDTL_SEARCH_recordversion='null';
+        $BTDTL_SEARCH_select_recordversion = "SELECT * FROM $BTDTL_SEARCH_detailData[1] WHERE UNIT_ID='$unitid' AND $BTDTL_SEARCH_detailData[3]=(SELECT MAX($BTDTL_SEARCH_detailData[3]) FROM $BTDTL_SEARCH_detailData[1] WHERE UNIT_ID=$unitid)";
+         $BTDTL_SEARCH_recordversion_rs = $this->db->query($BTDTL_SEARCH_select_recordversion);
+        foreach($BTDTL_SEARCH_recordversion_rs->result_array() as $row){
+            $BTDTL_SEARCH_recordversion = $row[$BTDTL_SEARCH_detailData[3]];
+            $BTDTL_SEARCH_oldrecordversion=$BTDTL_SEARCH_recordversion;
+            $BTDTL_SEARCH_oldinvoiceto= $row["ECN_ID"];
+            if($BTDTL_SEARCH_oldinvoiceto!=$ecn_id&&$BTDTL_SEARCH_selectrecrv==$BTDTL_SEARCH_recordversion){
+                $BTDTL_SEARCH_insertflag=1;
+            }
+            else{
+                $BTDTL_SEARCH_oldrecordversion=$BTDTL_SEARCH_selectrecrv;
+            }
+        }
+
+        if($BTDTL_SEARCH_recordversion==null)
+            $BTDTL_SEARCH_recordversion=1;
+        else
+            $BTDTL_SEARCH_recordversion = intval($BTDTL_SEARCH_recordversion)+1;
+        if($electcomments=="")//COMMENTS
+        {  $electcomments='null';}else{
+            $electcomments=$this->db->escape_like_str($electcomments);
+            $electcomments="'$electcomments'";}
+        if($BTDTL_SEARCH_insertflag==1||$BTDTL_SEARCH_recordversion==1)
+        {
+            $BTDTL_SEARCH_insert = "INSERT INTO EXPENSE_DETAIL_ELECTRICITY(UNIT_ID,ECN_ID,EDE_REC_VER,EDE_COMMENTS,ULD_ID)VALUES('$unitid','$ecn_id','$BTDTL_SEARCH_recordversion',$electcomments,(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP'))";
+        }
+        else{
+            $BTDTL_SEARCH_insert="UPDATE EXPENSE_DETAIL_ELECTRICITY SET EDE_COMMENTS=$electcomments,ECN_ID='$ecn_id',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE UNIT_ID='$unitid' AND EDE_REC_VER='$BTDTL_SEARCH_oldrecordversion'";
+        }
+        $this->db->query($BTDTL_SEARCH_insert);
+        $BTDTL_SEARCH_flag_update='BTDTL_SEARCH_flag_update';
+        $BTDTL_SEARCH_refresh=[];
+        $BTDTL_SEARCH_refresh= $this->BTDTL_SEARCH_show_electricity($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_flag_update,$timeZoneFormat);
+        return $BTDTL_SEARCH_refresh;
     }
 }
