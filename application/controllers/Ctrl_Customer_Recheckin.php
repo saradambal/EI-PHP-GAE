@@ -1,7 +1,7 @@
 <?php
 include 'GET_USERSTAMP.php';
 include 'GET_CONFIG.php';
-$$UserStamp=$UserStamp;
+$UserStamp=$UserStamp;
 Class Ctrl_Customer_Recheckin extends CI_Controller
 {
     public function Index()
