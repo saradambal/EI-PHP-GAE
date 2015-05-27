@@ -37,7 +37,7 @@ class Mdl_customer_expiry_list extends CI_Model{
     }
     //FUNCTION TO GET CUSTOMER DATA'S FROM DATABASE---------------------
     public function CEXP_get_customer_details($fromdate,$todate,$radiovalue,$UserStamp,$timeZoneFormat){
-        set_time_limit(0);
+//        set_time_limit(0);
         $CEXP_fromdate=date('Y-m-d',strtotime($fromdate));
         $CEXP_todate=date('Y-m-d',strtotime($todate));//eilib.SqlDateFormat(todate);
         $CEXP_check_radio_value=$radiovalue;

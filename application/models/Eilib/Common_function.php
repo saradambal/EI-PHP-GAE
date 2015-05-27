@@ -172,6 +172,20 @@ $this->db->distinct();
 $query = $this->db->get();
 return $query->result();
 }
+//FUNCTION TO CHECK UNIT NO EXISTS OR NOT
+public function CheckUnitnoExists($BDLY_INPUT_unitval)
+{
+    $CheckUnitnoExists ="SELECT * FROM UNIT WHERE UNIT_NO=".$BDLY_INPUT_unitval;
+    $this->db->query($CheckUnitnoExists);
+    if ($this->db->affected_rows() > 0) {
+        $Unitnoflag= true;
+    }
+    else
+    {
+        $Unitnoflag= false;
+    }
+    return $Unitnoflag;
+}
 //FUNCTION TO CHECK TRANSACTION OF A RECORD
 public  function ChkTransactionBeforeDelete($tableid,$rowid)
 {

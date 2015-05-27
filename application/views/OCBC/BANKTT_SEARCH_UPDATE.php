@@ -30,6 +30,7 @@ require_once "Header.php";
             url: "/index.php/Ctrl_Banktt_Search_Forms/Banktt_initialdatas",
             data:{'ErrorList':'1,2,4,6,45,247,385,401'},
             success: function(data){
+                $('.preloader').hide();
                 var value=JSON.parse(data);
                 var searchoption=value[0];
                 Allunits=value[2];
@@ -764,7 +765,6 @@ require_once "Header.php";
         <div class="row title text-center"><h4><b>BANK TT SEARCH / UPDATE</b></h4></div>
         <div class ='row content'>
             <div class="panel-body">
-                <fieldset>
                     <div class="row form-group" style="padding-left:20px;">
                         <div class="col-md-3">
                             <label>BANKTT SEARCH BY<span class="labelrequired"><em>*</em></span></label>
@@ -956,7 +956,6 @@ require_once "Header.php";
                             </div>
                         </div>
                     </form>
-                </fieldset>
             </div>
         </div>
     </div>

@@ -5,6 +5,7 @@
 <script>
     $(document).ready(function() {
         $('#spacewidth').height('0%');
+        $('.preloader').hide();
         $('#Fin_OCBC_Forperiod').datepicker( {
             changeMonth: true,      //provide option to select Month
             changeYear: true,       //provide option to select year
