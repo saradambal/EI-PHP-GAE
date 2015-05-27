@@ -652,8 +652,17 @@ class Mdl_staff_daily_entry_search_update_delete extends CI_Model{
         $STDLY_SEARCH_srchoption=$_POST['STDLY_SEARCH_srchoption'];
         global  $USERSTAMP;
         $this->load->model('Eilib/Common_function');
+
         if($STDLY_SEARCH_typelist==39){
         $deleteflag=$this->Common_function->DeleteRecord(44,$rowid,$USERSTAMP);
+        }
+        if($STDLY_SEARCH_typelist==41)//EXPENSE_STAFF
+        {
+            $deleteflag=$this->Common_function->DeleteRecord(43,$rowid,$USERSTAMP);
+        }
+        if($STDLY_SEARCH_typelist==40)//EXPENSE_STAFF_SALARY
+        {
+            $deleteflag=$this->Common_function->DeleteRecord(42,$rowid,$USERSTAMP);
         }
 //        if(($STDLY_SEARCH_srchoption==77)||($STDLY_SEARCH_srchoption==85)||($STDLY_SEARCH_srchoption==79)||($STDLY_SEARCH_srchoption==82)||($STDLY_SEARCH_srchoption==83))
 //        {            $STDLY_INPUT_arr_comments = $this->Mdl_staff_daily_entry_search_update_delete->STDLY_SEARCH_comments($STDLY_SEARCH_srchoption) ;
@@ -686,10 +695,10 @@ class Mdl_staff_daily_entry_search_update_delete extends CI_Model{
             $STDLY_SEARCH_comments="'$STDLY_SEARCH_comments'";
         }
 //        $STDLY_SEARCH_cpfamount =(isset($_POST["STDLY_SEARCH_cpfamount"]));
-        echo $STDLY_SEARCH_cpfamount.'pop';
+//        echo $STDLY_SEARCH_cpfamount.'pop';
         if($STDLY_SEARCH_cpfamount=='undefined' || $STDLY_SEARCH_cpfamount=="")
         {
-            $STDLY_SEARCH_cpfamount=='null';
+            $STDLY_SEARCH_cpfamount='null';
         }
 
         if($STDLY_SEARCH_cpfradio=='current')
@@ -708,7 +717,7 @@ class Mdl_staff_daily_entry_search_update_delete extends CI_Model{
         $STDLY_SEARCH_levyamount =$_POST['STDLY_SEARCH_tb_hidelevy1'];
         if($STDLY_SEARCH_levyamount=='undefined')
         {
-            $STDLY_SEARCH_levyamount=='null';
+            $STDLY_SEARCH_levyamount='null';
         }
         if($STDLY_SEARCH_levyradio=='current')
         {
@@ -726,7 +735,7 @@ class Mdl_staff_daily_entry_search_update_delete extends CI_Model{
          $STDLY_SEARCH_salaryamount = $_POST['STDLY_SEARCH_tb_hidesal1'];
         if($STDLY_SEARCH_salaryamount=='undefined')
         {
-            $STDLY_SEARCH_salaryamount=='null';
+            $STDLY_SEARCH_salaryamount='null';
         }
 
         if(($STDLY_SEARCH_salaryamount=='undefined')||($STDLY_SEARCH_salaryamount==""))
@@ -735,10 +744,10 @@ class Mdl_staff_daily_entry_search_update_delete extends CI_Model{
         }
 
 //        echo $STDLY_SEARCH_id;
-//        exit;
+////        exit;
 //echo "CALL SP_STAFFDLY_STAFF_SALARY_UPDATE($STDLY_SEARCH_id,'$STDLY_SEARCH_paiddate','$STDLY_SEARCH_fromperiod','$STDLY_SEARCH_toperiod','$STDLY_SEARCH_cpfamount',$STDLY_SEARCH_levyamount,$STDLY_SEARCH_salaryamount,$STDLY_SEARCH_comments,'$USERSTAMP',@SUCCESS_MSG)";
 //       exit;
-        $insertquery = "CALL SP_STAFFDLY_STAFF_SALARY_UPDATE('$STDLY_SEARCH_id,'$STDLY_SEARCH_paiddate','$STDLY_SEARCH_fromperiod','$STDLY_SEARCH_toperiod','$STDLY_SEARCH_cpfamount',$STDLY_SEARCH_levyamount,$STDLY_SEARCH_salaryamount,$STDLY_SEARCH_comments,'$USERSTAMP',@SUCCESS_MSG)";
+        $insertquery = "CALL SP_STAFFDLY_STAFF_SALARY_UPDATE('$STDLY_SEARCH_id','$STDLY_SEARCH_paiddate','$STDLY_SEARCH_fromperiod','$STDLY_SEARCH_toperiod','$STDLY_SEARCH_cpfamount','$STDLY_SEARCH_levyamount','$STDLY_SEARCH_salaryamount',$STDLY_SEARCH_comments,'$USERSTAMP',@SUCCESS_MSG)";
         $query = $this->db->query($insertquery);
         $FLAG= $this->db->query('SELECT @SUCCESS_MSG as SUCCESSMSG');
         $finalFLAG = $FLAG->row()->SUCCESSMSG;

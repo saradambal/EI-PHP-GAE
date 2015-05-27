@@ -2097,7 +2097,18 @@ $(document).ready(function(){
                 values_array=JSON.parse(data);
                 if(values_array.length!=0)
                 {
-                    var STDLY_SEARCH_table_value='<table id="STDLY_SEARCH_tbl_htmltable" border="1"  cellspacing="0" class="srcresult"  ><thead  bgcolor="#6495ed" style="color:white"><tr><th></th><th class="uk-date-column" style="width:75px">AGENT DATE</th><th style="width:60px">COMMISSION AMOUNT</th><th style="width:300px;">COMMENTS</th><th style="width:200px;">USERSTAMP</th><th style="width:100px;" >TIMESTAMP</th></tr></thead><tbody>'
+                    if(STDLY_SEARCH_searchoptio==76)
+                    {
+                        $('#STDLY_SEARCH_lbl_nodataerrormsg').show();
+                        var STDLY_SEARCH_edate=$('#STDLY_SEARCH_db_enddate').val();
+                        var STDLY_SEARCH_sdate=$('#STDLY_SEARCH_db_startdate').val();
+                        var STDLY_SEARCH_conformsg=STDLY_SEARCH_errorArray[5];
+                        var STDLY_SEARCH_CONFSAVEMSGs = STDLY_SEARCH_conformsg.replace('[SDATE]',":"+ STDLY_SEARCH_sdate);
+                        var STDLY_SEARCH_CONFSAVEMSG = STDLY_SEARCH_CONFSAVEMSGs.replace('[EDATE]', STDLY_SEARCH_edate);
+                    }
+                    $('#STDLY_SEARCH_lbl_headermesg').text(STDLY_SEARCH_CONFSAVEMSG);
+                    $('#STDLY_SEARCH_lbl_headermesg').show();
+                    var STDLY_SEARCH_table_value='<table id="STDLY_SEARCH_tbl_htmltable" border="1"  cellspacing="0" class="srcresult"  ><thead  bgcolor="#6495ed" style="color:white"><tr><th>DELETE</th><th class="uk-date-column" style="width:75px">AGENT DATE</th><th style="width:60px">COMMISSION AMOUNT</th><th style="width:300px;">COMMENTS</th><th style="width:200px;">USERSTAMP</th><th style="width:100px;" >TIMESTAMP</th></tr></thead><tbody>'
 //                    var ET_SRC_UPD_DEL_errmsg =value_err_array[4].EMC_DATA.replace('[SCRIPT]',ET_SRC_UPD_DEL_name);
 //                    $('#ET_SRC_UPD_DEL_div_header').text(ET_SRC_UPD_DEL_errmsg).show();
                     for(var j=0;j<values_array.length;j++){
@@ -2111,7 +2122,7 @@ $(document).ready(function(){
                         STDLY_SEARCH_agentuserstamp=values_array[j].userstamp;
                         STDLY_SEARCH_agenttimestamp=values_array[j].timestamp;
                         id=values_array[j].EA_ID;
-                        STDLY_SEARCH_table_value+='<tr><td><span  id ='+id+' class="glyphicon glyphicon-trash deletebutton"></span></td><td id=agentdate_'+id+' class="staffedit">'+STDLY_SEARCH_date+'</td><td id=agentcommissionamt_'+id+' class="staffedit">'+STDLY_SEARCH_agentcommamount+'</td><td id=comments_'+id+' class="staffedit">'+STDLY_SEARCH_agentcomments+'</td><td>'+STDLY_SEARCH_agentuserstamp+'</td><td>'+STDLY_SEARCH_agenttimestamp+'</td></tr>';
+                        STDLY_SEARCH_table_value+='<tr><td><div class="col-lg-1"><span style="display: block;color:red" id ='+id+' class="glyphicon glyphicon-trash deletebutton" title="Delete"></span></div></td><td id=agentdate_'+id+' class="staffedit">'+STDLY_SEARCH_date+'</td><td id=agentcommissionamt_'+id+' class="staffedit">'+STDLY_SEARCH_agentcommamount+'</td><td id=comments_'+id+' class="staffedit">'+STDLY_SEARCH_agentcomments+'</td><td>'+STDLY_SEARCH_agentuserstamp+'</td><td>'+STDLY_SEARCH_agenttimestamp+'</td></tr>';
                     }
                     STDLY_SEARCH_table_value+='</tbody></table>';
                     $('section').html(STDLY_SEARCH_table_value);
@@ -2221,7 +2232,7 @@ $(document).ready(function(){
                 {
                     var replacetype=$('#STDLY_SEARCH_lb_typelist').find('option:selected').text();
                     var STDLY_INPUT_CONFSAVEMSG = errormsg[2].EMC_DATA.replace('[TYPE]', replacetype);
-                    show_msgbox("STAFF EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE",STDLY_INPUT_CONFSAVEMSG,"error",false)
+                    show_msgbox("STAFF EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE",STDLY_INPUT_CONFSAVEMSG,"success",false)
                     previous_id=undefined;
                     STDLY_SEARCH_searchdetails()
                 }
@@ -2253,7 +2264,22 @@ $(document).ready(function(){
                 $('.preloader').hide();
                 var successresult=JSON.parse(data);
                 var STDLY_SEARCH_res=successresult;
-                if(STDLY_SEARCH_res=="1"){
+                if(STDLY_SEARCH_res==1){
+                     STDLY_SEARCH_agentsearching();
+                    STDLY_SEARCH_salarysearchdetails()
+                    STDLY_SEARCH_staffsearchdetails()
+                    if($('#STDLY_SEARCH_lb_typelist').val()==39)
+                        var STDLY_SEARCH_sec_searchoption=$('#STDLY_SEARCH_lb_searchoption').val();
+                    if($('#STDLY_SEARCH_lb_typelist').val()==40)
+                        var STDLY_SEARCH_sec_searchoption=$('#STDLY_SEARCH_lb_salarysearchoption').val();
+                    if($('#STDLY_SEARCH_lb_typelist').val()==41)
+                        var STDLY_SEARCH_sec_searchoption=$('#STDLY_SEARCH_lb_staffsearchoption').val();
+                    STDLY_SEARCH_success_comments(STDLY_SEARCH_sec_searchoption)
+                    $('#STDLY_SEARCH_btn_agentsbutton').attr("disabled", "disabled");
+
+                    var replacetype=errormsg[3].EMC_DATA.replace('[TYPE]', $('#STDLY_SEARCH_lb_typelist').find('option:selected').text());
+                    show_msgbox("STAFF EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE",replacetype,"error",false)
+
 //                    STDLY_SEARCH_arr_esinvoicefrom=STDLY_SEARCH_res[1][0];
 //                    STDLY_SEARCH_arr_esinvoiceitems=STDLY_SEARCH_res[1][0];
 //                    $('#STDLY_SEARCH_tble_agentupdateform').hide();
@@ -2318,7 +2344,7 @@ $(document).ready(function(){
                 }
                 else
                 {
-                    show_msgbox("STAFF EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",errormsg[31].EMC_DATA,"error","delete");
+                    show_msgbox("STAFF EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE",errormsg[31].EMC_DATA,"error",false);
                 }
             }
 
@@ -3108,7 +3134,7 @@ $(document).ready(function(){
                 values_array=JSON.parse(data);
                 if(values_array.length!=0)
                 {
-                    var STDLY_SEARCH_table_value='<table id="STDLY_SEARCH_tbl_salaryhtmltable" border="1"  cellspacing="0" class="srcresult"  ><thead  bgcolor="#6495ed" style="color:white"><tr><th></th><th style="width:90px">FIRST NAME</th><th style="width:90px;">LAST NAME</th><th class="uk-date-column" style="width:100px;">INVOICE DATE</th><th class="uk-date-column" style="width:160px;">FROM PERIOD</th><th class="uk-date-column" style="width:160px;">TO PERIOD</th><th style="width:80px;">CPF NUMBER</th><th style="width:80px;">CPF AMOUNT</th><th style="width:70px;">LEVY AMOUNT</th><th style="width:70px;">SALARY AMOUNT</th><th style="width:320px;">COMMENTS</th><th style="width:150px;">USERSTAMP</th><th style="width:230px;" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>'
+                    var STDLY_SEARCH_table_value='<table id="STDLY_SEARCH_tbl_salaryhtmltable" border="1"  cellspacing="0" class="srcresult" width="1500" ><thead  bgcolor="#6495ed" style="color:white"><tr><th style="width:80px">EDIT/DELETE</th><th style="width:90px">FIRST NAME</th><th style="width:90px;">LAST NAME</th><th class="uk-date-column" style="width:100px;">INVOICE DATE</th><th class="uk-date-column" style="width:160px;">FROM PERIOD</th><th class="uk-date-column" style="width:160px;">TO PERIOD</th><th style="width:80px;">CPF NUMBER</th><th style="width:80px;">CPF AMOUNT</th><th style="width:70px;">LEVY AMOUNT</th><th style="width:70px;">SALARY AMOUNT</th><th style="width:320px;">COMMENTS</th><th style="width:150px;">USERSTAMP</th><th style="width:230px;" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>'
 //                    var ET_SRC_UPD_DEL_errmsg =value_err_array[4].EMC_DATA.replace('[SCRIPT]',ET_SRC_UPD_DEL_name);
 //                    $('#ET_SRC_UPD_DEL_div_header').text(ET_SRC_UPD_DEL_errmsg).show();
                     for(var j=0;j<values_array.length;j++){
@@ -3152,7 +3178,7 @@ $(document).ready(function(){
                         STDLY_SEARCH_salary=values_array[j].SALARYESS;
                         STDLY_SEARCH_cpf=values_array[j].CPFESS;
                         STDLY_SEARCH_levy=values_array[j].LEVYESS;
-                        STDLY_SEARCH_table_value+='<tr><td><span style="display: block;color:green" title="Edit" class="glyphicon glyphicon-edit staffsalary_editbutton"  id='+id+'></span></td><td>'+FIRST+'</td><td>'+LAST+'</td><td>'+INVOICE+'</td><td>'+from_pereoid+'</td><td>'+to_pereoid+'</td><td>'+CPFNO+'</td><td>'+STDLY_SEARCH_cpfamount+'</td><td>'+STDLY_SEARCH_levyamount+'</td><td>'+STDLY_SEARCH_salaryamount+'</td><td>'+comments+'</td><td>'+userstamp+'</td><td>'+timestamp+'</td></tr>';
+                        STDLY_SEARCH_table_value+='<tr><td><div class="col-lg-1"><span style="display: block;color:green" class="glyphicon glyphicon-edit staffsalary_editbutton" id='+id+' title="Edit"></div><div class="col-lg-1"><span style="display: block;color:red" class="glyphicon glyphicon-trash deletebutton" id='+id+' title="Delete"></div></td><td>'+FIRST+'</td><td>'+LAST+'</td><td>'+INVOICE+'</td><td>'+from_pereoid+'</td><td>'+to_pereoid+'</td><td>'+CPFNO+'</td><td>'+STDLY_SEARCH_cpfamount+'</td><td>'+STDLY_SEARCH_levyamount+'</td><td>'+STDLY_SEARCH_salaryamount+'</td><td>'+comments+'</td><td>'+userstamp+'</td><td>'+timestamp+'</td></tr>';
                     }
                     STDLY_SEARCH_table_value+='</tbody></table>';
                     $('#STDLY_SEARCH_div_salaryhtmltable').show();
@@ -3540,7 +3566,6 @@ $(document).ready(function(){
         var STDLY_SEARCH_searchoption=$('#STDLY_SEARCH_lb_salarysearchoption').val();
         var STDLY_SEARCH_tb_hidelevy1=$('#STDLY_SEARCH_tb_hidelevy1').val();
         var STDLY_SEARCH_tb_hidesal1=$('#STDLY_SEARCH_tb_hidesal1').val();
-
         $.ajax({
             type: "POST",
             'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/updatefunction_staffentry",
@@ -3548,18 +3573,18 @@ $(document).ready(function(){
             success: function(data) {
                 $(".preloader").hide();
                 STDLY_INPUT_response=JSON.parse(data)
-                salary_entry_response=STDLY_INPUT_response[0].SUCCESSMSG
-                if(salary_entry_response=='true')
+                salary_entry_response=STDLY_INPUT_response.SUCCESSMSG
+                if(salary_entry_response==1)
                 {
-//                    var replacetype=$('#STDLY_SEARCH_lb_typelist').find('option:selected').text();
-//                    var STDLY_INPUT_CONFSAVEMSG = errormsg[2].EMC_DATA.replace('[TYPE]', replacetype);
-//                    show_msgbox("STAFF EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE",STDLY_INPUT_CONFSAVEMSG,"error",false)
-//                    STDLY_SEARCH_staffsearchdetails()
+                    var replacetype=$('#STDLY_SEARCH_lb_typelist').find('option:selected').text();
+                    var STDLY_INPUT_CONFSAVEMSG = errormsg[2].EMC_DATA.replace('[TYPE]', replacetype);
+                    show_msgbox("STAFF EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE",STDLY_INPUT_CONFSAVEMSG,"success",false)
+                    STDLY_SEARCH_salaryfunction()
                 }
-//                else
-//                {
-//                    show_msgbox("STAFF EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE",errormsg[38].EMC_DATA,"error",false)
-//                }
+                else
+                {
+                    show_msgbox("STAFF EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE",STDLY_INPUT_response,"error",false)
+                }
             }
         });
     }
@@ -4370,7 +4395,7 @@ $(document).ready(function(){
                 values_array=JSON.parse(data);
                 if(values_array.length!=0)
                 {
-                    var STDLY_SEARCH_table_value='<table id="STDLY_SEARCH_tbl_salaryhtmltable" border="1"  cellspacing="0" class="srcresult"  ><thead  bgcolor="#6495ed" style="color:white"><tr><th style="width:170px;">STAFF EXPENSE</th><th class="uk-date-column" style="width:105px;">INVOICE DATE</th><th style="width:65px;">INVOICE AMOUNT</th><th style="width:150px;">INVOICE ITEMS</th><th style="width:150px;">INVOICE FROM</th><th style="width:150px;">COMMENTS</th><th style="width:150px;">USERSTAMP</th><th style="width:160px;" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>'
+                    var STDLY_SEARCH_table_value='<table id="STDLY_SEARCH_tbl_salaryhtmltable" border="1"  cellspacing="0" class="srcresult" width="1500" ><thead  bgcolor="#6495ed" style="color:white"><tr><th>DELETE</th><th style="width:170px;">STAFF EXPENSE</th><th class="uk-date-column" style="width:105px;">INVOICE DATE</th><th style="width:65px;">INVOICE AMOUNT</th><th style="width:150px;">INVOICE ITEMS</th><th style="width:150px;">INVOICE FROM</th><th style="width:200px;">COMMENTS</th><th style="width:150px;">USERSTAMP</th><th style="width:160px;" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>'
 //                    var ET_SRC_UPD_DEL_errmsg =value_err_array[4].EMC_DATA.replace('[SCRIPT]',ET_SRC_UPD_DEL_name);
 //                    $('#ET_SRC_UPD_DEL_div_header').text(ET_SRC_UPD_DEL_errmsg).show();
                     for(var j=0;j<values_array.length;j++){
@@ -4384,7 +4409,7 @@ $(document).ready(function(){
                         }
                         STDLY_SEARCH_userstamp=values_array[j].USERSTAMP;
                         STDLY_SEARC_timestamp=values_array[j].timestamp;
-                        STDLY_SEARCH_table_value+='<tr><td id=staffcategory_'+id+' class="staffedit">'+STDLY_SEARCH_values.STDLY_SEARCH_type+'</td><td id=staffdate_'+id+' class="staffedit">'+STDLY_SEARCH_values.STDLY_SEARCH_date+'</td><td id=staffamountlist_'+id+' class="staffedit" >'+STDLY_SEARCH_amount+'</td><td id=staffinvoiceitem_'+id+' class="staffedit">'+STDLY_SEARCH_values.STDLY_SEARCH_items+'</td><td id=staffinvoicefrom_'+id+' class="staffedit">'+STDLY_SEARCH_values.STDLY_SEARCH_from+'</td><td id=comments_'+id+' class="staffedit">'+STDLY_SEARCH_comments+'</td><td>'+STDLY_SEARCH_userstamp+'</td><td>'+STDLY_SEARC_timestamp+'</td></tr>';
+                        STDLY_SEARCH_table_value+='<tr><td><div class="col-lg-1"><span style="display: block;color:red" id ='+id+' class="glyphicon glyphicon-trash deletebutton" title="Delete"></span></td><td id=staffcategory_'+id+' class="staffedit">'+STDLY_SEARCH_values.STDLY_SEARCH_type+'</td><td id=staffdate_'+id+' class="staffedit">'+STDLY_SEARCH_values.STDLY_SEARCH_date+'</td><td id=staffamountlist_'+id+' class="staffedit" >'+STDLY_SEARCH_amount+'</td><td id=staffinvoiceitem_'+id+' class="staffedit">'+STDLY_SEARCH_values.STDLY_SEARCH_items+'</td><td id=staffinvoicefrom_'+id+' class="staffedit">'+STDLY_SEARCH_values.STDLY_SEARCH_from+'</td><td id=comments_'+id+' class="staffedit">'+STDLY_SEARCH_comments+'</td><td>'+STDLY_SEARCH_userstamp+'</td><td>'+STDLY_SEARC_timestamp+'</td></tr>';
                     }
                     STDLY_SEARCH_table_value+='</tbody></table>';
                     $('#STDLY_SEARCH_sec_salryentry').html(STDLY_SEARCH_table_value);
