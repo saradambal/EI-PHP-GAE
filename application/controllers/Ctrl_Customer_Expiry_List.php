@@ -1,4 +1,5 @@
 <?php
+include "GET_USERSTAMP.php";
 /**
  * Created by PhpStorm.
  * User: SSOMENS-022
@@ -18,10 +19,10 @@ class Ctrl_Customer_Expiry_List extends CI_Controller {
         echo json_encode($final_value);
     }
     public function CEXP_get_customer_details(){
-
-
-
-
+        global $UserStamp,$timeZoneFormat;
+        $this->load->model('Mdl_customer_expiry_list');
+        $final_value=$this->Mdl_customer_expiry_list->CEXP_get_customer_details($this->input->post('CEXP_fromdate'),$this->input->post('CEXP_todate'),$this->input->post('CEXP_radio_button_select_value'),$UserStamp,$timeZoneFormat);
+        echo json_encode($final_value);
     }
 
 
