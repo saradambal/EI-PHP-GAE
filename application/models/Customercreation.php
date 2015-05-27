@@ -2,7 +2,7 @@
 error_reporting(0);
 class Customercreation extends CI_Model
 {
-        public function Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters)
+        public function Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters,$service)
         {
             $FirstName=$_POST['CCRE_FirstName'];
             $Lastname=$_POST['CCRE_LastName'];
@@ -117,6 +117,11 @@ class Customercreation extends CI_Model
             $Customerid_query = 'SELECT CUSTOMER_ID FROM CUSTOMER ORDER BY CUSTOMER_ID DESC LIMIT 1';
             $Customer_result = $this->db->query($Customerid_query);
             $Customerid=$Customer_result->row()->CUSTOMER_ID;
+            $filetempname=$_FILES['CC_fileupload']['tmp_name'];
+            $filename=$_FILES['CC_fileupload']['name'];
+            $filename=$Uint.'-'.$Customerid.'-'.$FirstName.' '.$Lastname;
+            $mimetype='application/pdf';
+            $file_id_value =$this->insertFile($service,$filename,'PersonalDetails','0B1AhtyM5U79zREp5QkpiYmphODg',$mimetype,$filetempname);
             if($Confirm_Meessage)
             {
                $return_data=array($Confirm_Meessage,$Customerid,$StartDate,$S_starttime,$S_endtime,$EndDate,$E_starttime,$E_endtime,$FirstName,$Lastname,$Mobile,$IntlMobile,$Officeno,$Emailid,$Uint,$RoomType);
@@ -127,7 +132,37 @@ class Customercreation extends CI_Model
                return $Confirm_Meessage;
             }
         }
-        public function getRecheckinCustomer($unit)
+   public function insertFile($service, $title, $description, $parentId,$mimeType,$uploadfilename)
+    {
+        $file = new Google_Service_Drive_DriveFile();
+        $file->setTitle($title);
+        $file->setDescription($description);
+        $file->setMimeType($mimeType);
+        if ($parentId != null) {
+            $parent = new Google_Service_Drive_ParentReference();
+            $parent->setId($parentId);
+            $file->setParents(array($parent));
+        }
+        try
+        {
+            $data =file_get_contents($uploadfilename);
+            $createdFile = $service->files->insert($file, array(
+                'data' => $data,
+                'mimeType' => 'application/pdf',
+                'uploadType' => 'media',
+            ));
+            $fileid = $createdFile->getId();
+       }
+        catch (Exception $e)
+        {
+            $file_flag=0;
+
+        }
+        return $fileid;
+
+    }
+
+    public function getRecheckinCustomer($unit)
         {
             $this->db->select("CUSTOMER_ID,CUSTOMERNAME,CED_REC_VER");
             $this->db->order_by("CUSTOMERNAME", "ASC");
