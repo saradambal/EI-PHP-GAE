@@ -562,7 +562,7 @@ require_once "Header.php";
                     </section>
                 </div>
                 <div class="form-group" id="CV_errmsg" hidden>
-                    <lable id="CV_lbl_errmsg" class="col-sm-4 errormsg"></lable>
+                    <lable id="CV_lbl_errmsg" class="col-sm-12 errormsg"></lable>
                 </div>
             </fieldset>
         </div>

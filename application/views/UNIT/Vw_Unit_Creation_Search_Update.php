@@ -67,7 +67,7 @@ require_once "Header.php";
             });
             $("#UC_db_enddate").datepicker({dateFormat: "dd-mm-yy",changeYear: true,changeMonth: true,maxDate: '+2Y'});
         
-        //RADIO BUTTON CLICK FUNCTION
+        // RADIO BUTTON CLICK FUNCTION
             $('.UNIT_selectform').click(function(){
                 var radiooption=$(this).val();
                 if(radiooption=='unitcreate')
@@ -610,9 +610,7 @@ require_once "Header.php";
                 });
             });
 
-
     /*-------------------------------------------------UNIT SEARCH AND UPDATE FUNCTIONALITY------------------------------------------------*/
-
 
         // FUNCTION FOR CHANGE DATE FORMAT
             function USU_FormTableDateFormat(USU_inputdate){
@@ -2086,7 +2084,7 @@ require_once "Header.php";
                     </div>
                     <div class="form-group" id="UC_comments">
                         <label class="col-sm-2">COMMENTS</label>
-                        <div class="col-sm-4"><textarea name="UC_ta_comments" id="UC_ta_comments" placeholder="Comments" maxlength="300" rows="5" class="form-control"></textarea></div>
+                        <div class="col-sm-4"><textarea name="UC_ta_comments" id="UC_ta_comments" placeholder="Comments" rows="5" class="form-control"></textarea></div>
                     </div>
                     <div class="form-group" id="UC_nonEI">
                         <label class="col-sm-2">EI/NON_EI</label>
