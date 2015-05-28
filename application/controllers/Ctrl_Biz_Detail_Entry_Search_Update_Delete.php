@@ -385,5 +385,34 @@ class Ctrl_Biz_Detail_Entry_Search_Update_Delete extends CI_Controller{
         $result = $this->Mdl_biz_detail_entry_search_update_delete->electricityupdate($primaryid,$unitid,$invoiceto,$electcomments,$USERSTAMP,$timeZoneFormat,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type,$searchvalue) ;
         echo JSON_encode($result);
     }
-
+    public function starhubupdate(){
+        global $timeZoneFormat;
+        global $USERSTAMP;
+        $primaryid=$this->input->post('primaryid');
+        $unitid=$this->input->post('unitid');
+        $unitno=$this->input->post('unitno');
+        $appldate=$this->input->post('appldate');
+        $acctno=$this->input->post('acctno');
+        $invoiceto=$this->input->post('invoiceto');
+        $cablestartdte=$this->input->post('cablestartdte');
+        $cableenddate=$this->input->post('cableenddate');
+        $internetstartdte=$this->input->post('internetstartdte');
+        $internetenddate=$this->input->post('internetenddate');
+        $ssid=$this->input->post('ssid');
+        $pwd=$this->input->post('pwd');
+        $cablebox=$this->input->post('cablebox');
+        $modemno=$this->input->post('modemno');
+        $basicgroup=$this->input->post('basicgroup');
+        $addchnnl=$this->input->post('addchnnl');
+        $comments=$this->input->post('comments');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->post('BTDTL_SEARCH_lb_searchoptions');
+        $BTDTL_SEARCH_lb_expense_type=$this->input->post('BTDTL_SEARCH_lb_expense_type');
+        $searchvalue=$this->input->post('searchvalue');
+        $startdate=$this->input->post('startdate');
+        $BTDTL_SEARCH_starhubid=$this->input->post('BTDTL_SEARCH_starhubid');
+        $calid=$this->Cal_service();
+        $this->load->model('Mdl_biz_detail_entry_search_update_delete');
+        $result = $this->Mdl_biz_detail_entry_search_update_delete->starhubupdate($primaryid,$unitid,$unitno,$appldate,$acctno,$invoiceto,$cablestartdte,$cableenddate,$internetstartdte,$internetenddate,$ssid,$pwd,$cablebox,$modemno,$basicgroup,$addchnnl,$comments,$USERSTAMP,$timeZoneFormat,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type,$searchvalue,$startdate,$BTDTL_SEARCH_starhubid,$calid) ;
+        echo JSON_encode($result);
+    }
 }

@@ -71,6 +71,7 @@ include "Header.php";
         var edate='';
     //RADIO  BUTTON CLICK FUNCTION
         $('.BDE_rd_selectform').click(function(){
+            $('#BTDTL_SEARCH_lb_searchoptions').html('');
             var radiooption=$(this).val();
             if(radiooption=='bizdetailentryform')
             {
@@ -86,6 +87,17 @@ include "Header.php";
 
                     }
                 });
+                $('#divbizdetailentryform').show();
+                $('#divbizdetailupdateform').hide();
+                $('#BDTL_INPUT_lb_expense_type').prop('selectedIndex',0);
+                $('#BDTL_INPUT_div_aircon').hide();
+                $('#BDTL_INPUT_div_carpark').hide();
+                $('#BDTL_INPUT_div_digitalvoice').hide();
+                $('#BDTL_INPUT_div_electricity').hide();
+                $('#BDTL_INPUT_div_starhub').hide();
+                $('#BDTL_INPUT_lbl_unitno_list').hide();
+                $('#BDTL_INPUT_lb_unitno_list').hide();
+                $('#BDTL_INPUT_tble_btn').hide();
             }
             else if(radiooption=='bizdetailsearchform')
             {
@@ -101,6 +113,15 @@ include "Header.php";
 
                     }
                 });
+                $('#divbizdetailupdateform').show();
+                $('#divbizdetailentryform').hide();
+                $('#BTDTL_SEARCH_lbl_searchoptions').hide();
+                $('#BTDTL_SEARCH_lb_searchoptions').html('').hide();
+                $('#BTDTL_SEARCH_tble_searchby').html('');
+                $('#BTDTL_SEARCH_div_msg').text('');
+                $('#BTDTL_SEARCH_div_flex_searchbtn').hide();
+                $('#BTDTL_SEARCH_lb_expense_type').prop('selectedIndex',0)
+
             }
         });
         /*----------------------------------------------SUCCESS FUNCTION FOR EXPENSE TYPES,INVOICE & ERROR MSG--------------------------------------------------------*/
@@ -921,7 +942,7 @@ include "Header.php";
                     }
                     else if((BTDTL_SEARCH_search_option==117)||(BTDTL_SEARCH_search_option==116))
                     {
-                        BTDTL_SEARCH_table_searchby +='<div class="form-group"><label class="col-sm-2">FROM DATE<em>*</em></label></td><td><input type="text"  id="BTDTL_SEARCH_db_starhubinternet_startdate" style="width:100px" class="BTDTL_SEARCH_class_datesearchbtn datemandtry form-control"></div></div><div class="form-group"><label class="col-sm-2">TO DATE<em>*</em></label><div class="col-sm-2"><input type="text" id="BTDTL_SEARCH_db_starhubinternet_enddate" style="width:100px" class="BTDTL_SEARCH_class_datesearchbtn datemandtry form-control"></div></div>';
+                        BTDTL_SEARCH_table_searchby +='<div class="form-group"><label class="col-sm-2">FROM DATE<em>*</em></label><div class="col-sm-2"><input type="text"  id="BTDTL_SEARCH_db_starhubinternet_startdate" style="width:100px" class="BTDTL_SEARCH_class_datesearchbtn datemandtry form-control"></div></div><div class="form-group"><label class="col-sm-2">TO DATE<em>*</em></label><div class="col-sm-2"><input type="text" id="BTDTL_SEARCH_db_starhubinternet_enddate" style="width:100px" class="BTDTL_SEARCH_class_datesearchbtn datemandtry form-control"></div></div>';
                     }
                     BTDTL_SEARCH_table_searchby +=' <div class="col-lg-offset-2" id="BDTL_INPUT_tble_btn"><input type="button" id="BTDTL_SEARCH_btn_datesearch" value="SEARCH" class="btn" disabled=""></div>';
                     $(BTDTL_SEARCH_table_searchby).appendTo($("#BTDTL_SEARCH_tble_searchby"));
@@ -1395,7 +1416,6 @@ include "Header.php";
         /*--------------------------------------------SUCCESS FUNCTION FOR FLEX TABLE-----------------------------------------------------*/
         var BTDTL_SEARCH_searchvalue=[];
         function BTDTL_SEARCH_success_showflex(BTDTL_SEARCH_responseflex){
-            alert('in')
                 $('#BTDTL_SEARCH_btn_datesearch').attr("disabled", "disabled")
                 $('#BTDTL_SEARCH_tble_searchdel').hide();
                 $('#BTDTL_SEARCH_div_errmsg').text('');
@@ -1592,7 +1612,7 @@ include "Header.php";
 
                         }
                         else if(BTDTL_SEARCH_expensetypes==14){
-                            BTDTL_SEARCH_tr += '<table class="srcresult" id="BTDTL_SEARCH_tble_flex" style="width: 2750px;"><thead><tr><th style="width:20px">EDIT</th><th style="width:75px">UNIT NUMBER</th><th style="width:140px">INVOICE TO</th><th style="width:100px">STARHUB ACCOUNT NO</th><th style="width:75px" class="uk-date-column">APPL DATE</th><th style="width:75px" class="uk-date-column">CABLE START DATE</th><th style="width:75px" class="uk-date-column">CABLE END DATE</th><th style="width:75px" class="uk-date-column">INTERNET START DATE</th><th style="width:75px" class="uk-date-column">INTERNET END DATE</th><th style="width:200px">SSID</th><th style="width:200px">PWD</th><th style="width:200px">CABLE BOX SERIAL NO</th><th style="width:250px">MODEM SERIAL NO</th><th style="width:200px">BASIC GROUP</th><th style="width:200px">ADDTNL CH</th><th style="width:300px">COMMENTS</th><th style="width:200px">USERSTAMP</th><th style="width:130px" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>';
+                            BTDTL_SEARCH_tr += '<table class="srcresult" id="BTDTL_SEARCH_tble_flex" style="width: 2750px;"><thead><tr><th style="width:20px">EDIT</th><th style="width:75px">UNIT NUMBER</th><th style="width:140px">INVOICE TO</th><th style="width:100px">STARHUB ACCOUNT NO<em>*</em></th><th style="width:75px" class="uk-date-column">APPL DATE</th><th style="width:75px" class="uk-date-column">CABLE START DATE</th><th style="width:75px" class="uk-date-column">CABLE END DATE</th><th style="width:75px" class="uk-date-column">INTERNET START DATE</th><th style="width:75px" class="uk-date-column">INTERNET END DATE</th><th style="width:200px">SSID</th><th style="width:200px">PWD</th><th style="width:200px">CABLE BOX SERIAL NO</th><th style="width:250px">MODEM SERIAL NO</th><th style="width:200px">BASIC GROUP</th><th style="width:200px">ADDTNL CH</th><th style="width:300px">COMMENTS</th><th style="width:200px">USERSTAMP</th><th style="width:130px" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>';
 
                         }
 
@@ -1913,7 +1933,7 @@ include "Header.php";
                                 if(BTDTL_SEARCH_response[j][12]==null){BTDTL_SEARCH_response[j][12]='';}
                                 if(BTDTL_SEARCH_response[j][13]==null){BTDTL_SEARCH_response[j][13]='';}
                                 if(BTDTL_SEARCH_response[j][14]==null){BTDTL_SEARCH_response[j][14]='';}
-                                BTDTL_SEARCH_tr +='<tr><td><span id ='+BTDTL_SEARCH_id[j]+' class="glyphicon glyphicon-edit BDTL_editbtn"></span></td><td>'+BTDTL_SEARCH_response[j][0]+'</td><td>'+BTDTL_SEARCH_response[j][1]+'</td><td>'+BTDTL_SEARCH_response[j][2]+'</td><td>'+BTDTL_SEARCH_response[j][3]+'</td><td>'+BTDTL_SEARCH_response[j][4]+'</td><td>'+BTDTL_SEARCH_response[j][5]+'</td><td>'+BTDTL_SEARCH_response[j][6]+'</td><td>'+BTDTL_SEARCH_response[j][7]+'</td><td>'+BTDTL_SEARCH_response[j][8]+'</td><td>'+BTDTL_SEARCH_response[j][9]+'</td><td>'+BTDTL_SEARCH_response[j][10]+'</td><td>'+BTDTL_SEARCH_response[j][11]+'</td><td>'+BTDTL_SEARCH_response[j][12]+'</td><td>'+BTDTL_SEARCH_response[j][13]+'</td><td>'+BTDTL_SEARCH_response[j][14]+'</td><td>'+BTDTL_SEARCH_response[j][15]+'</td><td>'+BTDTL_SEARCH_response[j][16]+'</td></tr>';
+                                BTDTL_SEARCH_tr +='<tr id='+BTDTL_SEARCH_id[j]+'><td><div class="col-lg-1"><span id =edit^'+BTDTL_SEARCH_id[j]+' class="glyphicon glyphicon-edit BDTL_starhubeditbtn"></span></div></td><td>'+BTDTL_SEARCH_response[j][0]+'</td><td>'+BTDTL_SEARCH_response[j][1]+'</td><td>'+BTDTL_SEARCH_response[j][2]+'</td><td>'+BTDTL_SEARCH_response[j][3]+'</td><td>'+BTDTL_SEARCH_response[j][4]+'</td><td>'+BTDTL_SEARCH_response[j][5]+'</td><td>'+BTDTL_SEARCH_response[j][6]+'</td><td>'+BTDTL_SEARCH_response[j][7]+'</td><td>'+BTDTL_SEARCH_response[j][8]+'</td><td>'+BTDTL_SEARCH_response[j][9]+'</td><td>'+BTDTL_SEARCH_response[j][10]+'</td><td>'+BTDTL_SEARCH_response[j][11]+'</td><td>'+BTDTL_SEARCH_response[j][12]+'</td><td>'+BTDTL_SEARCH_response[j][13]+'</td><td>'+BTDTL_SEARCH_response[j][14]+'</td><td>'+BTDTL_SEARCH_response[j][15]+'</td><td>'+BTDTL_SEARCH_response[j][16]+'</td></tr>';
                             }
                             else
                             {
@@ -2021,7 +2041,7 @@ include "Header.php";
             airconcval = $(this).text();
             if($('#BTDTL_SEARCH_lb_searchoptions').val()==100)
             {
-                $('#'+cid).replaceWith("<td  class='new' id='"+airconprevious_id+"'><input type='text' id='ASB_serviceby' name='ASB_serviceby'  class='airconserviceupdate uppercase form-control' maxlength=50 style='width: 240px' value='"+airconcval+"'></td>");
+                $('#'+cid).replaceWith("<td  class='new' id='"+airconprevious_id+"'><input type='text' id='ASB_serviceby' name='ASB_serviceby'  class='airconserviceupdate uppercase form-control' maxlength=50 style='width: 300px' value='"+airconcval+"'></td>");
             }
             if(airconifcondition=='airconserviceby')
             {
@@ -2343,7 +2363,236 @@ include "Header.php";
                 }
             });
         }) ;
+        //STARHUB INLINE EDIT
+        var pre_tds;
+        var selectedrowid;
+        var unitid;
+        var primaryid;
+        $(document).on('click','.BDTL_starhubeditbtn', function (){
+            var cid = $(this).attr('id');
+            var SplittedData=cid.split('^');
+            var Rowid=SplittedData[1];
+            var tds = $('#'+Rowid).children('td');
+            selectedrowid=Rowid;
+            pre_tds = tds;
+            var tdstr = '';
+            var edit="Editid^"+Rowid;
+            var cancel="Cancelid^"+Rowid;
+            tdstr += "<td><div class='col-lg-1'><span style='display: block;color:green' title='Update' class='glyphicon glyphicon-print BDTL_starhubupdatebutton' disabled id="+edit+"></div><div class='col-lg-1'><span style='display: block;color:red' title='Cancel' class='glyphicon glyphicon-remove BDTL_starhubcancel' disabled id="+cancel+"></div></td>";
+            tdstr += "<td>"+$(tds[1]).html()+"</td>";
+            tdstr += "<td><SELECT id='SH_invoiceto' name='SH_invoiceto'  class='BDTL_INPUT_class_save_valid form-control'  style='width: 150px;' value='"+$(tds[2]).html()+"'><OPTION>SELECT</OPTION></SELECT></td>";
+            tdstr += "<td><input type='text' id='SH_acctno' name='SH_acctno'  maxlength='11' style='width: 100px;' class='alphanumericdot BDTL_INPUT_class_save_valid form-control'  value='"+$(tds[3]).html()+"'></td>";
+            tdstr += "<td><input type='text' id='SH_appldate' name='SH_appldate' style='width: 110px;' class='BDTL_INPUT_class_datebox BDTL_INPUT_class_save_valid datenonmandtry form-control' value='"+$(tds[4]).html()+"'></td>";
+            tdstr += "<td><input type='text' id='SH_cablestartdate' name='SH_cablestartdate' style='width: 110px;' class='BDTL_INPUT_class_datebox BDTL_INPUT_class_save_valid datenonmandtry form-control' value='"+$(tds[5]).html()+"'></td>";
+            tdstr += "<td><input type='text' id='SH_cableenddate' name='SH_cableenddate' style='width: 110px;' class='BDTL_INPUT_class_datebox BDTL_INPUT_class_save_valid BDTL_INPUT_dateInput datenonmandtry form-control' value='"+$(tds[6]).html()+"'></td>";
+            tdstr += "<td><input type='text' id='SH_internetstartdate' name='SH_internetstartdate' style='width: 110px;' class='BDTL_INPUT_class_internet_datebox BDTL_INPUT_class_save_valid datenonmandtry form-control' value='"+$(tds[7]).html()+"'></td>";
+            tdstr += "<td><input type='text' id='SH_internetenddate' name='SH_internetenddate' style='width: 110px;' class='BDTL_INPUT_class_internet_datebox BDTL_INPUT_class_save_valid BDTL_INPUT_dateInput datenonmandtry form-control' value='"+$(tds[8]).html()+"'></td>";
+            tdstr += "<td><input type='text' id='SH_ssid' name='SH_ssid'  class='general BDTL_INPUT_class_save_valid form-control' value='"+$(tds[9]).html()+"'></td>";
+            tdstr += "<td><input type='text' id='SH_pwd' name='SH_pwd'  class='general BDTL_INPUT_class_save_valid form-control' value='"+$(tds[10]).html()+"'></td>";
+            tdstr += "<td><input type='text' id='SH_cablebox' name='SH_cablebox'  class='autosize BDTL_INPUT_class_save_valid form-control' value='"+$(tds[11]).html()+"'></td>";
+            tdstr += "<td><input type='text' id='SH_modem' name='SH_modem'  class='autosize BDTL_INPUT_class_save_valid form-control' value='"+$(tds[12]).html()+"'></td>";
+            tdstr += "<td><textarea id='SH_basicgroup' name='SH_basicgroup'  class='BDTL_INPUT_class_save_valid BDTL_INPUT_comments form-control'>"+$(tds[13]).html()+"</textarea></td>";
+            tdstr += "<td><textarea id='SH_addchnl' name='SH_addchnl'  class='BDTL_INPUT_class_save_valid BDTL_INPUT_comments form-control'>"+$(tds[14]).html()+"</textarea></td>";
+            tdstr += "<td><textarea id='SH_comments' name='SH_comments'  class='BDTL_INPUT_class_save_valid BDTL_INPUT_comments form-control'>"+$(tds[15]).html()+"</textarea></td>";
+            tdstr += "<td>"+$(tds[16]).html()+"</td>";
+            tdstr += "<td>"+$(tds[17]).html()+"</td>";
+            $('#'+Rowid).html(tdstr);
+            var BTDTL_SEARCH_options_invoiceto_upd='<option value="">SELECT</option>';
+            for (var i = 0; i <BTDTL_SEARCH_arr_invoicto.length; i++) {
+                if(BTDTL_SEARCH_arr_invoicto[i].BTDTL_SEARCH_expensetypes_data==$(tds[2]).html()){
+                    BTDTL_SEARCH_options_invoiceto_upd +='<option value="'+BTDTL_SEARCH_arr_invoicto[i].BTDTL_SEARCH_expensetypes_id +'" selected>' + BTDTL_SEARCH_arr_invoicto[i].BTDTL_SEARCH_expensetypes_data + '</option>';
+                }else
+                    BTDTL_SEARCH_options_invoiceto_upd +='<option value="'+BTDTL_SEARCH_arr_invoicto[i].BTDTL_SEARCH_expensetypes_id +'">' + BTDTL_SEARCH_arr_invoicto[i].BTDTL_SEARCH_expensetypes_data + '</option>';
+            }
+            $('#SH_invoiceto').html(BTDTL_SEARCH_options_invoiceto_upd);
+            /*-----------------------------------------VALIDATION FOR CHARACTER,NUMBERS AND ALPHA NUMERIC--------------------------------------------------------*/
+            $('textarea').autogrow({onInitialize: true});
+            $(".charonly").doValidation({rule:'alphabets',prop:{whitespace:true,autosize:true}});
+            $(".alphanumeric").doValidation({rule:'alphanumeric'});
+            $(".alphanumericdot").doValidation({rule:'alphanumeric',prop:{allowdot:true}});
+            $(".numbersonly").doValidation({rule:'numbersonly',prop:{realpart:8},leadzero:true});
+            $('.autosize').doValidation({rule:'general',prop:{autosize:true}});
+            $(".general").doValidation({rule:'general',prop:{uppercase:false,autosize:true}});
+            $("#SH_appldate").datepicker({dateFormat: "dd-mm-yy",changeYear: true,changeMonth: true});
+            $(".BDTL_INPUT_comments").doValidation({rule:'general',prop:{uppercase:false}});
+            /*--------------------------------------DATE VALIDATION FOR CABLE,INTERNET START DATE & END DATE------------------------*/
+            $("#SH_cableenddate").datepicker({dateFormat: "dd-mm-yy",changeYear: true,changeMonth: true});
+            $("#SH_internetenddate").datepicker({dateFormat: "dd-mm-yy",changeYear: true,changeMonth: true});
+            $("#SH_cablestartdate").datepicker({dateFormat: "dd-mm-yy",changeYear: true,changeMonth: true,
+                onSelect: function(date){
+                    if((parseInt($('#SH_acctno').val())==0)||($('#SH_acctno').val()=='')||(($('#SH_cablestartdate').val()=='')&&($('#SH_cableenddate').val()!=''))||(($('#SH_cablestartdate').val()!='')&&($('#SH_cableenddate').val()==''))||(($('#SH_internetstartdate').val()=='')&&($('#SH_internetenddate').val()!=''))||(($('#SH_internetstartdate').val()!='')&&($('#SH_internetenddate').val()=='')))
+                        $('.BDTL_starhubupdatebutton').attr("disabled", "disabled");
+                    else
+                        $('.BDTL_starhubupdatebutton').removeAttr("disabled");
+                    var BDTL_startdate = new Date( Date.parse( BDTL_FormTableDateFormat( $('#SH_cablestartdate').val())) );
+                    BDTL_startdate.setDate( BDTL_startdate.getDate());
+                    var BDTL_newsDate = BDTL_startdate.toDateString();
+                    BDTL_newsDate = new Date( Date.parse( BDTL_newsDate ) );
+                    $('#SH_cableenddate').datepicker("option","minDate",BDTL_newsDate);
+                }});
+            $("#SH_internetstartdate").datepicker({dateFormat: "dd-mm-yy",changeYear: true,changeMonth: true,
+                onSelect: function(date){
+                    if((parseInt($('#SH_acctno').val())==0)||($('#SH_acctno').val()=='')||(($('#SH_cablestartdate').val()=='')&&($('#SH_cableenddate').val()!=''))||(($('#SH_cablestartdate').val()!='')&&($('#SH_cableenddate').val()==''))||(($('#SH_internetstartdate').val()=='')&&($('#SH_internetenddate').val()!=''))||(($('#SH_internetstartdate').val()!='')&&($('#SH_internetenddate').val()=='')))
+                        $('.BDTL_starhubupdatebutton').attr("disabled", "disabled");
+                    else
+                        $('.BDTL_starhubupdatebutton').removeAttr("disabled");
+                    var BDTL_startdate = new Date( Date.parse( BDTL_FormTableDateFormat( $('#SH_internetstartdate').val())) );
+                    BDTL_startdate.setDate( BDTL_startdate.getDate());
+                    var BDTL_newsDate = BDTL_startdate.toDateString();
+                    BDTL_newsDate = new Date( Date.parse( BDTL_newsDate ) );
+                    $('#SH_internetenddate').datepicker("option","minDate",BDTL_newsDate);
+                }});
+            var BTDTL_SEARCH_cable_sdate=$(tds[5]).html();
+            if(BTDTL_SEARCH_cable_sdate!='')
+            {
+                var BTDTL_SEARCH_appl_startdate = DatePickerFormat(BTDTL_SEARCH_cable_sdate);
+                var BTDTL_SEARCH_appl_date = new Date( Date.parse( BTDTL_SEARCH_appl_startdate) );
+                BTDTL_SEARCH_appl_date.setDate( BTDTL_SEARCH_appl_date.getDate());
+                var newDate = BTDTL_SEARCH_appl_date.toDateString();
+                newDate = new Date( Date.parse( newDate ) );
+                $('#SH_cableenddate').datepicker("option","minDate",newDate);
+            }
+            var BTDTL_SEARCH_internet_sdate=$(tds[7]).html();
+            if(BTDTL_SEARCH_internet_sdate!='')
+            {
+                var BTDTL_SEARCH_internet_startdate = DatePickerFormat(BTDTL_SEARCH_internet_sdate);
+                var BTDTL_SEARCH_internet_start = new Date( Date.parse( BTDTL_SEARCH_internet_startdate) );
+                BTDTL_SEARCH_internet_start.setDate( BTDTL_SEARCH_internet_start.getDate());
+                var newDate = BTDTL_SEARCH_internet_start.toDateString();
+                newDate = new Date( Date.parse( newDate ) );
+                $('#SH_internetenddate').datepicker("option","minDate",newDate);
+            }
+            var splitunitidsded=cid.split('_');
+            primaryid=splitunitidsded[0].split('^')[1];
+            unitid=splitunitidsded[1];
+            sdate=splitunitidsded[2];
+            edate=splitunitidsded[3];
+            var sdate_unit = new Date( Date.parse( sdate) );
+            sdate_unit.setDate( sdate_unit.getDate() );
+            var sdate_unit_new = sdate_unit.toDateString();
+            sdate_unit_new = new Date( Date.parse( sdate_unit_new ) );
+            $('#SH_appldate,#SH_cablestartdate,#SH_internetstartdate').datepicker("option","minDate",sdate_unit_new);
+            var BTDTL_SEARCH_cable_edate=$(tds[6]).html();
+            if(BTDTL_SEARCH_cable_edate=='')
+                $('#SH_cableenddate').datepicker("option","minDate",sdate_unit_new);
+            var BTDTL_SEARCH_internet_edate=$(tds[8]).html();
+            if(BTDTL_SEARCH_internet_edate=='')
+                $('#SH_internetenddate').datepicker("option","minDate",sdate_unit_new);
+            BDLY_INPUT_func_enddate();
+             $('.BDTL_starhubeditbtn').removeClass('BDTL_starhubeditbtn').addClass('Editremove');
+        });
+        /*------------------------------------FUNCTION FOR DATE PICKER VALIDATION--------------------------*/
+        function BDLY_INPUT_func_enddate(){
+            var BDLY_INPUT_enddate=new Date(Date.parse( edate));
+            var BIZDLY_SRC_chkoutdate=BDLY_INPUT_enddate.getDate();
+            var BIZDLY_SRC_chkoutmonth=BDLY_INPUT_enddate.getMonth()+parseInt(BTDTL_SEARCH_configmon_aircon[0]);
+            var BIZDLY_SRC_chkoutyear=BDLY_INPUT_enddate.getFullYear();
+            var BDLY_INPUT_enddate_unit = new Date(BIZDLY_SRC_chkoutyear,BIZDLY_SRC_chkoutmonth,BIZDLY_SRC_chkoutdate);
+            if(BDLY_INPUT_enddate_unit.setHours(0,0,0,0)<=new Date().setHours(0,0,0,0))
+            {
+                var BDLY_INPUT_unit_end_date=BDLY_INPUT_enddate_unit;
+            }
+            else{
+                var BDLY_INPUT_unit_end_date=new Date();
+            }
+            $('#SH_appldate,#SH_cablestartdate,#SH_internetstartdate').datepicker("option","maxDate",BDLY_INPUT_unit_end_date);
+            $('#SH_cableenddate,#SH_internetenddate').datepicker("option","maxDate",BDLY_INPUT_enddate_unit);
+        }
+        $('section').on('click','.BDTL_starhubcancel',function(){
+            var cid = $(this).attr('id');
+            var SplittedData=cid.split('^');
+            var Rowid=SplittedData[1];
+            $('#'+Rowid).html(pre_tds);
+            $("#Editid_"+Rowid).removeClass("BDTL_starhubcancel");
+            $('.Editremove').addClass('BDTL_starhubeditbtn');
+        });
+        $(document).on('click','.updateValidation', function (){
+            var acctno=$('#SH_acctno').val();
+            if(acctno!='')
+                $('.updateValidation').removeClass('updateValidation').addClass('BDTL_starhubupdatebutton');
+        });
+        //STARHUB UPDATE PART
+        $(document).on('click','.BDTL_starhubupdatebutton', function (){
+            var acctno=$('#SH_acctno').val();
+            if(acctno=='')
+            {
+               $('.BDTL_starhubupdatebutton').removeClass('BDTL_starhubupdatebutton').addClass('updateValidation');
+            }
+            else{
+            $('.preloader').show();
+            var unitno=$(pre_tds[1]).html();
+            var invoiceto=$('#SH_invoiceto').val();
+            var appldate=$('#SH_appldate').val();
+            var cablestartdte=$('#SH_cablestartdate').val();
+            var cableenddate=$('#SH_cableenddate').val();
+            var internetstartdte=$('#SH_internetstartdate').val();
+            var internetenddate=$('#SH_internetenddate').val();
+            var ssid=$('#SH_ssid').val();
+            var pwd=$('#SH_pwd').val();
+            var cablebox=$('#SH_cablebox').val();
+            var modemno=$('#SH_modem').val();
+            var basicgroup=$('#SH_basicgroup').val();
+            var addchnnl=$('#SH_addchnl').val();
+            var comments=$('#SH_comments').val();
 
+            // SEARCH BY OPTIONS VALUE
+            if($('#BTDTL_SEARCH_lb_searchoptions').val()==123)
+                var searchvalue=$('#BTDTL_SEARCH_lb_starhubacctno').val();
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==110)
+                var searchvalue=$('#BTDTL_SEARCH_ta_starhubaddtnlch').val();
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==111)
+            {
+                var startdate=DatePickerFormat($('#BTDTL_SEARCH_db_starhubappl_startdate').val());
+                var searchvalue=DatePickerFormat($('#BTDTL_SEARCH_db_starhubappl_enddate').val());
+            }
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==112)
+                var searchvalue=$('#BTDTL_SEARCH_ta_starhubbasic').val();
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==113)
+                var searchvalue=$('#BTDTL_SEARCH_lb_starhub_cableserialno').val();
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==114)
+            {
+                var startdate=DatePickerFormat($('#BTDTL_SEARCH_db_starhubcable_startdate').val());
+                var searchvalue=DatePickerFormat($('#BTDTL_SEARCH_db_starhubcable_enddate').val());
+            }
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==115)
+            {
+                var startdate=DatePickerFormat($('#BTDTL_SEARCH_db_starhubcable_startdate').val());
+                var searchvalue=DatePickerFormat($('#BTDTL_SEARCH_db_starhubcable_enddate').val());
+            }
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==116)
+            {
+                var startdate=DatePickerFormat($('#BTDTL_SEARCH_db_starhubinternet_startdate').val());
+                var searchvalue=DatePickerFormat($('#BTDTL_SEARCH_db_starhubinternet_enddate').val());
+            }
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==117)
+            {
+                var startdate=DatePickerFormat($('#BTDTL_SEARCH_db_starhubinternet_startdate').val());
+                var searchvalue=DatePickerFormat($('#BTDTL_SEARCH_db_starhubinternet_enddate').val());
+            }
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==118)
+                var searchvalue=$('#BTDTL_SEARCH_lb_starhubinvoiceto').val();
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==119)
+                var searchvalue=$('#BTDTL_SEARCH_lb_starhubmodem').val();
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==120)
+                var searchvalue=$('#BTDTL_SEARCH_lb_starhubssid').val();
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==121)
+                var searchvalue=$('#BTDTL_SEARCH_lb_starhubpwd').val();
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==122)
+                var searchvalue=$('#BTDTL_SEARCH_ta_starhubcomments').val();
+            else if($('#BTDTL_SEARCH_lb_searchoptions').val()==191)
+                var searchvalue=$('#BTDTL_SEARCH_lb_starhubunitno').val();
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/starhubupdate",
+                data:{'primaryid':primaryid,'unitid':unitid,'unitno':unitno,'invoiceto':invoiceto,'acctno':acctno,'appldate':appldate,'cablestartdte':cablestartdte,'cableenddate':cableenddate,'internetstartdte':internetstartdte,'internetenddate':internetenddate,'ssid':ssid,'pwd':pwd,'cablebox':cablebox,'modemno':modemno,'basicgroup':basicgroup,'addchnnl':addchnnl,'comments':comments,'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_lb_expense_type':$('#BTDTL_SEARCH_lb_expense_type').val(),'searchvalue':searchvalue,'startdate':startdate,'BTDTL_SEARCH_starhubid':BTDTL_SEARCH_starhubid},
+                success: function(data) {
+                    $('.preloader').hide();
+                    var result=JSON.parse(data)
+                    BTDTL_SEARCH_success_showflex(result);
+                }
+            });
+            }
+        }) ;
     });
 </script>
 </head>
@@ -2361,7 +2610,7 @@ include "Header.php";
                     <label><input type="radio" name="optradio" value="bizdetailsearchform" class="BDE_rd_selectform">SEARCH/UDATE/DELETE</label>
                 </div>
             </div>
-            <div id="bizdetailentryform">
+            <div id="divbizdetailentryform">
                 <div class="form-group">
                     <label class="col-sm-2" id="BDTL_INPUT_lbl_expensetype" hidden>TYPE OF EXPENSE<em>*</em></label>
                     <div class="col-sm-3"><select id='BDTL_INPUT_lb_expense_type' name='BDTL_INPUT_lb_expense_type' class="BDTL_INPUT_class_save_valid form-control" style="display: none;">
@@ -2510,7 +2759,7 @@ include "Header.php";
                         <input type="button" style="cursor:pointer" name="BDTL_INPUT_btn_reset" id="BDTL_INPUT_btn_reset" class="btn" value="RESET" />
                     </div>
             </div>
-            <div id="bizdetailupdateform">
+            <div id="divbizdetailupdateform">
                     <div class="form-group">
                          <label class="col-sm-2" id="srchexpensetype"hidden>TYPE OF EXPENSE<em>*</em></label>
                          <div class="col-sm-3"><select  id='BTDTL_SEARCH_lb_expense_type' name='BTDTL_SEARCH_lb_expense_type' class="form-control" style="display: none;">

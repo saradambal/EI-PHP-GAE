@@ -94,6 +94,7 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
     /*-----------------------------CODING TO SAVE THE AIRCON DETAIL,CARPARK,ELECTRICITY,DIGITAL VOICE,STARHUB IN DATABASE----------------------------------------------------------*/
     public function BDTL_INPUT_save($USERSTAMP,$BDTL_INPUT_tb_newaircon,$calid)
      {
+         try{
           $BDTL_INPUT_aircon_list_ref=[];
           $BDTL_INPUT_expensetypes =$_POST['BDTL_INPUT_lb_expense_type'];
           $BDTL_INPUT_unitno =$_POST['BDTL_INPUT_lb_unitno_list'];
@@ -306,6 +307,14 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
       }
 
       return [$BDTL_INPUT_aircon_list_ref,1];
+     }
+         catch(Exception $e)
+         {
+             $this->Calender->StarHubUnit_DeleteCalEvent($BDTL_INPUT_unitnoaircon,$calid,$BDTL_INPUT_starhub_cablestartdate_shtime,$BDTL_INPUT_sh_starttime,$BDTL_INPUT_sh_endtime,$BDTL_INPUT_starhub_cableenddate_shtime,$BDTL_INPUT_sh_starttime,$BDTL_INPUT_sh_endtime,'CABLE');
+             $this->Calender->StarHubUnit_DeleteCalEvent($BDTL_INPUT_unitnoaircon,$calid,$BDTL_INPUT_starhub_internetstartdate_shtime,$BDTL_INPUT_sh_starttime,$BDTL_INPUT_sh_endtime,$BDTL_INPUT_starhub_internetenddate_shtime,$BDTL_INPUT_sh_starttime,$BDTL_INPUT_sh_endtime,'INTERNET');
+             return $e->getMessage();
+         }
+
     }
  // SEARCH AND UPDATE FORM STARTS
     public function BTDTL_SEARCH_expensetypes()
@@ -757,7 +766,7 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
     else if($BTDTL_SEARCH_searchby==110)//SEARCH BY STARTHUB ADDTNL CH
     {
         $BTDTL_SEARCH_select_starhub = "SELECT UD.UD_START_DATE,UD.UD_END_DATE,EDSH.EDSH_ID,U.UNIT_ID,U.UNIT_NO,EC.ECN_DATA,EDSH.EDSH_ACCOUNT_NO,DATE_FORMAT(EDSH.EDSH_APPL_DATE,'%d-%m-%Y') AS EDSH_APPL_DATE,DATE_FORMAT(EDSH.EDSH_CABLE_START_DATE,'%d-%m-%Y') AS EDSH_CABLE_START_DATE,DATE_FORMAT(EDSH.EDSH_CABLE_END_DATE,'%d-%m-%Y') AS EDSH_CABLE_END_DATE,DATE_FORMAT(EDSH.EDSH_INTERNET_START_DATE,'%d-%m-%Y') AS EDSH_INTERNET_START_DATE,DATE_FORMAT(EDSH.EDSH_INTERNET_END_DATE,'%d-%m-%Y') AS EDSH_INTERNET_END_DATE,EDSH.EDSH_SSID,EDSH.EDSH_PWD,EDSH.EDSH_CABLE_BOX_SERIAL_NO,EDSH.EDSH_MODEM_SERIAL_NO,EDSH.EDSH_BASIC_GROUP,EDSH.EDSH_ADDTNL_CH,EDSH.EDSH_COMMENTS,ULD.ULD_LOGINID,DATE_FORMAT(CONVERT_TZ(EDSH.EDSH_TIMESTAMP,$timeZoneFormat),'%d-%m-%Y %T') AS EDSH_TIMESTAMP FROM EXPENSE_DETAIL_STARHUB EDSH LEFT JOIN EXPENSE_CONFIGURATION EC ON EC.ECN_ID=EDSH.ECN_ID, UNIT U,VW_ACTIVE_UNIT VAU ,USER_LOGIN_DETAILS ULD,UNIT_DETAILS UD WHERE ULD.ULD_ID=EDSH.ULD_ID AND U.UNIT_ID=EDSH.UNIT_ID AND EDSH.EDSH_ADDTNL_CH='$BTDTL_SEARCH_searchval' AND EDSH.UNIT_ID=VAU.UNIT_ID AND U.UNIT_ID=UD.UNIT_ID ORDER BY U.UNIT_NO,EDSH.EDSH_ADDTNL_CH";
-    } 
+    }
     $BTDTL_SEARCH_starhub_rs = $this->db->query($BTDTL_SEARCH_select_starhub);
     foreach($BTDTL_SEARCH_starhub_rs->result_array() as $row)
     {
@@ -784,7 +793,7 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
         $BTDTL_SEARCH_id[]=$BTDTL_SEARCH_starhub_autoid;
     }
     $BTDTL_SEARCH_array[]=$BTDTL_SEARCH_parentfunc;
-    $BTDTL_SEARCH_result=["BTDTL_SEARCH_expenseflex"=>$BTDTL_SEARCH_array,"BTDTL_SEARCH_id"=>$BTDTL_SEARCH_id];
+    $BTDTL_SEARCH_result=(object)["BTDTL_SEARCH_expenseflex"=>$BTDTL_SEARCH_array,"BTDTL_SEARCH_id"=>$BTDTL_SEARCH_id];
     return $BTDTL_SEARCH_result;
   }
     /*-------------------------------------------------FUNCTION FOR TOWDIMENSION ARRAY TO GET DETAILS--------------------------------------*/
@@ -1000,6 +1009,201 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
         $BTDTL_SEARCH_flag_update='BTDTL_SEARCH_flag_update';
         $BTDTL_SEARCH_refresh=[];
         $BTDTL_SEARCH_refresh= $this->BTDTL_SEARCH_show_electricity($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_flag_update,$timeZoneFormat);
+        return $BTDTL_SEARCH_refresh;
+    }
+    public function starhubupdate($primaryid,$unitid,$unitno,$appldate,$acctno,$invoiceto,$cablestartdte,$cableenddate,$internetstartdte,$internetenddate,$ssid,$pwd,$cablebox,$modemno,$basicgroup,$addchnnl,$comments,$USERSTAMP,$timeZoneFormat,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type,$searchvalue,$startdate,$BTDTL_SEARCH_starhubid,$calid)
+    {
+        if(($appldate=="")||($appldate=='undefined'))
+        {
+            $appldate='null';
+            $BTDTL_SEARCH_starhub_tbleappldate=$appldate;
+        }
+        else
+        {
+            $appldate=date('Y-m-d',strtotime($appldate));
+          $BTDTL_SEARCH_starhub_tbleappldate=$appldate;
+          $appldate="'$appldate'";
+        }
+        if(($cablestartdte=="")||($cablestartdte=='undefined'))
+        {
+            $cablestartdte='null';
+            $BTDTL_SEARCH_starhub_tblecablestartdate=$cablestartdte;}
+
+        else
+        {
+            $BTDTL_SEARCH_starhub_cablestartdate_shtime=date('Y-m-d',strtotime($cablestartdte));
+            $cablestartdte = date('Y-m-d',strtotime($cablestartdte));
+            $BTDTL_SEARCH_starhub_tblecablestartdate=$cablestartdte;
+            $cablestartdte="'$cablestartdte'";
+        }
+        if(($cableenddate=="")||($cableenddate=='undefined')){
+            $cableenddate='null';
+            $BTDTL_SEARCH_starhub_tblecableenddate=$cableenddate;}
+
+        else
+        {
+            $BTDTL_SEARCH_starhub_cableenddate_shtime=date('Y-m-d',strtotime($cableenddate));
+            $cableenddate = date('Y-m-d',strtotime($cableenddate));
+          $BTDTL_SEARCH_starhub_tblecableenddate=$cableenddate;
+
+            $cableenddate="'$cableenddate'";
+        }
+        if(($internetstartdte=="")||($internetstartdte=='undefined')){
+            $internetstartdte='null';
+            $BTDTL_SEARCH_starhub_tbleinternetstartdate=$internetstartdte;}
+        else
+        {
+            $BTDTL_SEARCH_starhub_internetstartdate_shtime=date('Y-m-d',strtotime($internetstartdte));
+            $internetstartdte = date('Y-m-d',strtotime($internetstartdte));
+            $BTDTL_SEARCH_starhub_tbleinternetstartdate=$internetstartdte;
+            $internetstartdte="'$internetstartdte'";
+        }
+        if(($internetenddate=="")||($internetenddate=='undefined')){
+            $internetenddate='null';
+            $BTDTL_SEARCH_starhub_tbleinternetenddate=$internetenddate;}
+        else
+        {
+            $BTDTL_SEARCH_starhub_internetenddate_shtime=date('Y-m-d',strtotime($internetenddate));
+            $internetenddate = date('Y-m-d',strtotime($internetenddate));
+            $BTDTL_SEARCH_starhub_tbleinternetenddate=$internetenddate;
+            $internetenddate="'$internetenddate'";
+        }
+        if(($invoiceto=='SELECT')||($invoiceto==''))
+            $invoiceto='null';
+        else
+            $invoiceto="'$invoiceto'";
+        if($ssid=="")//SSID
+        {  $ssid='null';
+            $BTDTL_SEARCH_tblestarhub_ssid=$ssid;
+        }else{
+            $BTDTL_SEARCH_tblestarhub_ssid=$ssid;
+               $ssid=$this->db->escape_like_str($ssid);
+            $ssid="'$ssid'";
+        }
+        if($pwd=="")//PSWD
+        {  $pwd='null';
+            $BTDTL_SEARCH_tblestarhub_pwd=$pwd;
+             }
+        else{
+            $BTDTL_SEARCH_tblestarhub_pwd=$pwd;
+            $pwd=$this->db->escape_like_str($pwd);
+            $pwd="'$pwd'";
+        }
+        if($cablebox=="")//CABLE SLNO
+        {  $cablebox='null';
+            $BTDTL_SEARCH_tblestarhub_cableboxno=$cablebox;
+        }else{
+            $BTDTL_SEARCH_tblestarhub_cableboxno=$cablebox;
+               $cablebox=$this->db->escape_like_str($cablebox);
+              $cablebox="'$cablebox'";
+        }
+        if($modemno=="")//MODEM SLNO
+        {  $modemno='null';
+            $BTDTL_SEARCH_tblestarhub_modemno=$modemno;
+        }else{
+            $BTDTL_SEARCH_tblestarhub_modemno=$modemno;
+            $modemno=$this->db->escape_like_str($modemno);
+            $modemno="'$modemno'";
+        }
+        if($basicgroup=="")//BASIC GROUP
+        {  $basicgroup='null';
+            $BTDTL_SEARCH_tblestarhub_basicgroup=$basicgroup;
+        }else{
+            $BTDTL_SEARCH_tblestarhub_basicgroup=$basicgroup;
+               $basicgroup=$this->db->escape_like_str($basicgroup);
+             $basicgroup="'$basicgroup'";
+        }
+        if($addchnnl=="")//ADDLN
+        {  $addchnnl='null';
+            $BTDTL_SEARCH_tblestarhub_addtnl=$addchnnl;
+        }else{
+            $BTDTL_SEARCH_tblestarhub_addtnl=$addchnnl;
+            $addchnnl=$this->db->escape_like_str($addchnnl);
+            $addchnnl="'$addchnnl'";
+        }
+        $BTDTL_SEARCH_selectrecrv='null';
+        $BTDTL_SEARCH_detailData=$this->BTDTL_SEARCH_func_twodimen($BTDTL_SEARCH_lb_expense_type);
+        $BTDTL_SEARCH_checkrvquery = "SELECT $BTDTL_SEARCH_detailData[3] FROM $BTDTL_SEARCH_detailData[1] WHERE $BTDTL_SEARCH_detailData[0]='$primaryid'";
+        $BTDTL_SEARCH_recordversion_rs = $this->db->query($BTDTL_SEARCH_checkrvquery);
+        foreach($BTDTL_SEARCH_recordversion_rs->result_array() as $row)
+        {
+            $BTDTL_SEARCH_selectrecrv=$row['EDSH_REC_VER'];
+        }
+        $BTDTL_SEARCH_insertflag=0;
+        $BTDTL_SEARCH_recordversion='null';
+        $BTDTL_SEARCH_select_recordversion = "SELECT * FROM $BTDTL_SEARCH_detailData[1] WHERE UNIT_ID='$unitid' AND $BTDTL_SEARCH_detailData[3]=(SELECT MAX($BTDTL_SEARCH_detailData[3]) FROM $BTDTL_SEARCH_detailData[1] WHERE UNIT_ID=$unitid)";
+        $BTDTL_SEARCH_recordversion_rs = $this->db->query($BTDTL_SEARCH_select_recordversion);
+        foreach($BTDTL_SEARCH_recordversion_rs->result_array() as $row){
+            $BTDTL_SEARCH_recordversion = $row[$BTDTL_SEARCH_detailData[3]];
+            $BTDTL_SEARCH_oldrecordversion=$BTDTL_SEARCH_recordversion;
+            $BTDTL_SEARCH_oldinvoiceto= $row["ECN_ID"];
+            $BTDTL_SEARCH_oldappldate =$row["EDSH_APPL_DATE"];
+            $BTDTL_SEARCH_cablesdate =$row["EDSH_CABLE_START_DATE"];
+            $BTDTL_SEARCH_cableedate =$row["EDSH_CABLE_END_DATE"];
+            $BTDTL_SEARCH_internetsdate = $row["EDSH_INTERNET_START_DATE"];
+            $BTDTL_SEARCH_internetedate = $row["EDSH_INTERNET_END_DATE"];
+            $BTDTL_SEARCH_accountno = $row["EDSH_ACCOUNT_NO"];
+            $BTDTL_SEARCH_oldedshid = $row["EDSH_SSID"];
+            $BTDTL_SEARCH_oldpwd = $row["EDSH_PWD"];
+            $BTDTL_SEARCH_oldcableserno = $row["EDSH_CABLE_BOX_SERIAL_NO"];
+            $BTDTL_SEARCH_oldmodemserno = $row["EDSH_MODEM_SERIAL_NO"];
+            $BTDTL_SEARCH_oldbasicgroup= $row["EDSH_BASIC_GROUP"];
+            $BTDTL_SEARCH_oldadtnlchanel = $row["EDSH_ADDTNL_CH"];
+
+            if(($acctno!=$BTDTL_SEARCH_accountno||$BTDTL_SEARCH_oldinvoiceto!=$invoiceto||$BTDTL_SEARCH_oldappldate!=$appldate||$BTDTL_SEARCH_cablesdate!=$BTDTL_SEARCH_starhub_tblecablestartdate
+                    ||$BTDTL_SEARCH_cableedate!=$BTDTL_SEARCH_starhub_tblecableenddate
+                    ||$BTDTL_SEARCH_internetsdate!=$BTDTL_SEARCH_starhub_tbleinternetstartdate||$BTDTL_SEARCH_internetedate!=$BTDTL_SEARCH_starhub_tbleinternetenddate
+                    ||$BTDTL_SEARCH_oldedshid!=$BTDTL_SEARCH_tblestarhub_ssid||$BTDTL_SEARCH_oldpwd!=$BTDTL_SEARCH_tblestarhub_pwd
+                    ||$BTDTL_SEARCH_tblestarhub_cableboxno!=$BTDTL_SEARCH_oldcableserno||$BTDTL_SEARCH_oldmodemserno!=$BTDTL_SEARCH_tblestarhub_modemno||
+                    $BTDTL_SEARCH_tblestarhub_basicgroup!=$BTDTL_SEARCH_oldbasicgroup||$BTDTL_SEARCH_tblestarhub_addtnl!=$BTDTL_SEARCH_oldadtnlchanel)
+                &&$BTDTL_SEARCH_selectrecrv==$BTDTL_SEARCH_recordversion)
+            {
+                $BTDTL_SEARCH_insertflag=1;
+            }
+            else{
+                $BTDTL_SEARCH_oldrecordversion=$BTDTL_SEARCH_selectrecrv;
+                }
+        }
+        if($comments=="")//COMMENTS
+        {  $comments='null';}else{
+            $comments=$this->db->escape_like_str($comments);
+            $comments="'$comments'";}
+        if($BTDTL_SEARCH_insertflag==1||$BTDTL_SEARCH_recordversion==1)
+        {
+            $BTDTL_SEARCH_insert="INSERT INTO EXPENSE_DETAIL_STARHUB(UNIT_ID,ECN_ID,EDSH_REC_VER,EDSH_ACCOUNT_NO,EDSH_APPL_DATE,EDSH_CABLE_START_DATE,EDSH_CABLE_END_DATE,EDSH_INTERNET_START_DATE,EDSH_INTERNET_END_DATE,EDSH_SSID,EDSH_PWD,EDSH_CABLE_BOX_SERIAL_NO,EDSH_MODEM_SERIAL_NO,EDSH_BASIC_GROUP,EDSH_ADDTNL_CH,EDSH_COMMENTS,ULD_ID)VALUES('$unitid',$invoiceto,'$BTDTL_SEARCH_recordversion','$acctno',$appldate,$cablestartdte,$cableenddate,$internetstartdte,$internetenddate,$ssid,$pwd, $cablebox,$modemno,$basicgroup,$addchnnl,$comments,(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP'))";
+          }
+        else
+        {
+            $BTDTL_SEARCH_insert="UPDATE EXPENSE_DETAIL_STARHUB SET EDSH_COMMENTS=$comments,EDSH_ACCOUNT_NO='$acctno',EDSH_APPL_DATE=$appldate,EDSH_CABLE_START_DATE=$cablestartdte,EDSH_CABLE_END_DATE=$cableenddate,EDSH_INTERNET_START_DATE=$internetstartdte,EDSH_INTERNET_END_DATE=$internetenddate,EDSH_SSID=$ssid,EDSH_PWD=$pwd,EDSH_CABLE_BOX_SERIAL_NO=$cablebox,EDSH_MODEM_SERIAL_NO=$modemno,EDSH_BASIC_GROUP=$basicgroup,EDSH_ADDTNL_CH=$addchnnl,ECN_ID=$invoiceto,ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE UNIT_ID='$unitid' AND EDSH_REC_VER='$BTDTL_SEARCH_oldrecordversion'";
+        }
+        $this->db->query($BTDTL_SEARCH_insert);
+//        if($BTDTL_SEARCH_insertflag==1||$BTDTL_SEARCH_recordversion==1)
+//        {
+//            $BTDTL_SEARCH_sh_starttime=$BTDTL_SEARCH_starhubid[0];
+//            $BTDTL_SEARCH_sh_endtime=$BTDTL_SEARCH_starhubid[1];
+//            $this->load->model('Eilib/Common_function');
+//            $this->load->model('Eilib/Calender');
+//            if(($BTDTL_SEARCH_cablesdate!='')&&($BTDTL_SEARCH_cableedate!='')&&($BTDTL_SEARCH_cablesdate!=null)&&($BTDTL_SEARCH_cableedate!=null)){
+//                $this->Calender->StarHubUnit_DeleteCalEvent($calid,$BTDTL_SEARCH_cablesdate,$BTDTL_SEARCH_sh_starttime,$BTDTL_SEARCH_sh_endtime,$BTDTL_SEARCH_cableedate,$BTDTL_SEARCH_sh_starttime,$BTDTL_SEARCH_sh_endtime,'STARHUB',$unitno,$acctno,'CABLE START DATE','CABLE END DATE','','');
+//            }
+//            if(($BTDTL_SEARCH_starhub_cablestartdate_shtime!='')&&($BTDTL_SEARCH_starhub_cableenddate_shtime!='')&&($BTDTL_SEARCH_starhub_cablestartdate_shtime!='undefined')&&($BTDTL_SEARCH_starhub_cableenddate_shtime!='undefined'))
+//            {
+//                $this->Calender->StarHubUnit_CreateCalEvent($calid,$BTDTL_SEARCH_starhub_cablestartdate_shtime,$BTDTL_SEARCH_sh_starttime,$BTDTL_SEARCH_sh_endtime,$BTDTL_SEARCH_starhub_cableenddate_shtime,$BTDTL_SEARCH_sh_starttime,$BTDTL_SEARCH_sh_endtime,'STARHUB',$unitno,$acctno,'CABLE START DATE','CABLE END DATE','','');
+//            }
+//            if(($BTDTL_SEARCH_internetsdate!='')&&($BTDTL_SEARCH_internetedate!='')&&($BTDTL_SEARCH_internetsdate!=null)&&($BTDTL_SEARCH_internetedate!=null)){
+//                $this->Calender->StarHubUnit_DeleteCalEvent($calid,$BTDTL_SEARCH_internetsdate,$BTDTL_SEARCH_sh_starttime,$BTDTL_SEARCH_sh_endtime,$BTDTL_SEARCH_internetedate,$BTDTL_SEARCH_sh_starttime,$BTDTL_SEARCH_sh_endtime,'STARHUB',$unitno,$acctno,'INTERNET START DATE','INTERNET END DATE','','');
+//            }
+//            if(($BTDTL_SEARCH_starhub_internetstartdate_shtime!='')&&($BTDTL_SEARCH_starhub_internetenddate_shtime!='')&&($BTDTL_SEARCH_starhub_internetstartdate_shtime!='undefined')&&($BTDTL_SEARCH_starhub_internetenddate_shtime!='undefined'))
+//            {
+//                $this->Calender->StarHubUnit_CreateCalEvent($calid,$BTDTL_SEARCH_starhub_internetstartdate_shtime,$BTDTL_SEARCH_sh_starttime,$BTDTL_SEARCH_sh_endtime,$BTDTL_SEARCH_starhub_internetenddate_shtime,$BTDTL_SEARCH_sh_starttime,$BTDTL_SEARCH_sh_endtime,'STARHUB',$unitno,$acctno,'INTERNET START DATE','INTERNET END DATE','','');
+//            }
+//        }
+
+        $BTDTL_SEARCH_flag_update='BTDTL_SEARCH_flag_update';
+        $BTDTL_SEARCH_refresh = $this->BTDTL_SEARCH_show_starhub($startdate,$searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_flag_update,$timeZoneFormat);
+
+        if((count($BTDTL_SEARCH_refresh->BTDTL_SEARCH_id)==0) &&($BTDTL_SEARCH_lb_searchoptions!=101)&&($BTDTL_SEARCH_lb_searchoptions!=103)&&($BTDTL_SEARCH_lb_searchoptions!=108)&&($BTDTL_SEARCH_lb_searchoptions!=104)&&($BTDTL_SEARCH_lb_searchoptions!=110)&&($BTDTL_SEARCH_lb_searchoptions!=112)&&($BTDTL_SEARCH_lb_searchoptions!=122))
+        $BTDTL_SEARCH_refresh=$this->BTDTL_SEARCH_expense_searchby($BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_lb_expense_type,'BTDTL_SEARCH_update_listbox',$timeZoneFormat);
         return $BTDTL_SEARCH_refresh;
     }
 }
