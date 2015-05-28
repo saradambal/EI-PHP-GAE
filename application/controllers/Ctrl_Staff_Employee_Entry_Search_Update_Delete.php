@@ -21,7 +21,27 @@ class Ctrl_Staff_Employee_Entry_Search_Update_Delete extends CI_Controller{
     {
         global $USERSTAMP;
         $this->load->model('Mdl_staff_employee_entry_search_update_delete');
-        $result = $this->Mdl_staff_employee_entry_search_update_delete->EMP_ENTRY_insert($USERSTAMP) ;
+        $result = $this->Mdl_staff_employee_entry_search_update_delete->EMP_ENTRY_insert($USERSTAMP,$this->input->post('EMP_ENTRY_email'),$this->input->post('EMP_ENTRY_comments'),$this->input->post('EMP_ENTRY_radio_null'),$this->input->post('submenu')) ;
         echo JSON_encode($result);
+    }
+    //FUNCTION FOR INITIAL DATA FOR SEARCH FORM
+    public function EMPSRC_UPD_DEL_searchoptionresult(){
+        $this->load->model('Mdl_staff_employee_entry_search_update_delete');
+        $query=$this->Mdl_staff_employee_entry_search_update_delete->EMPSRC_UPD_DEL_searchoptionresult();
+        echo json_encode($query);
+    }
+    //FUNCTION FOR FETCH DATA
+    public function fetchdata()
+    {
+        $this->load->model('Mdl_staff_employee_entry_search_update_delete');
+        $result = $this->Mdl_staff_employee_entry_search_update_delete->fetch_data($this->input->post('EMPSRC_UPD_DEL_lb_designation_listbox'),$this->input->post('emp_first_name'),$this->input->post('emp_last_name'),$this->input->post('EMPSRC_UPD_DEL_ta_mobile'),$this->input->post('EMPSRC_UPD_DEL_lb_employeename_listbox'),$this->input->post('EMPSRC_UPD_DEL_lb_searchoption')) ;
+        echo JSON_encode($result);
+    }
+    //PDLY_SEARCH_lb_comments
+    public function EMPSRC_UPD_DEL_comments()
+    {
+        $this->load->model('Mdl_staff_employee_entry_search_update_delete');
+        $data=$this->Mdl_staff_employee_entry_search_update_delete->EMPSRC_UPD_DEL_comments($this->input->post('EMPSRC_UPD_DEL_lb_searchoption'));
+        echo json_encode($data);
     }
 }

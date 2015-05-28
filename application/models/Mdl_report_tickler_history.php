@@ -12,9 +12,12 @@ class Mdl_report_tickler_history extends CI_Model{
         {
             $STDTL_SEARCH_autocomplete[]=$row['CUSTOMERNAME'];
         }
+        if($TH_temptblname!=null){
+            $drop_query = "DROP TABLE ".$TH_temptblname;
+            $this->db->query($drop_query);
+        }
         if ($STDTL_SEARCH_autocomplete!='null')
         {
-//        return $STDTL_SEARCH_autocomplete;
             return $result[]=array($STDTL_SEARCH_autocomplete,$ErrorMessage);
         }
     }
@@ -40,6 +43,10 @@ class Mdl_report_tickler_history extends CI_Model{
             $this->db->where("CUSTOMER_FIRST_NAME='$TH_fname' AND CUSTOMER_LAST_NAME='$TH_lname'");
             $this->db->order_by("TH_TIMESTAMP", "ASC");
             $query = $this->db->get();
+        if($TH_temptblname!=null){
+            $drop_query = "DROP TABLE ".$TH_temptblname;
+            $this->db->query($drop_query);
+        }
             return $query->result();
     }
 }
