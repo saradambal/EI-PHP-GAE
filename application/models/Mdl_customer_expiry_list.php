@@ -37,7 +37,7 @@ class Mdl_customer_expiry_list extends CI_Model{
     }
     //FUNCTION TO GET CUSTOMER DATA'S FROM DATABASE---------------------
     public function CEXP_get_customer_details($fromdate,$todate,$radiovalue,$UserStamp,$timeZoneFormat){
-//        set_time_limit(0);
+        set_time_limit(0);
         $CEXP_fromdate=date('Y-m-d',strtotime($fromdate));
         $CEXP_todate=date('Y-m-d',strtotime($todate));//eilib.SqlDateFormat(todate);
         $CEXP_check_radio_value=$radiovalue;
@@ -53,7 +53,6 @@ class Mdl_customer_expiry_list extends CI_Model{
             $this->db->select("UNITNO,CUSTOMERFIRSTNAME,CUSTOMERLASTNAME,STARTDATE,ENDDATE,DEPOSIT,PAYMENT,PROCESSINGFEE,ROOMTYPE,EXTENSIONFLAG,RECHECKINGFLAG,COMMENTS,PRETERMINATEDATE,USERSTAMP,DATE_FORMAT(CONVERT_TZ(EXPIRY_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS EXPIRY_TIMESTAMP");
             $this->db->from("$CEXP_equaltemptblname");
             $CEXP_expirylist_rs=$this->db->get();
-            //            $CEXP_select_expirylist_equaldate="SELECT UNITNO,CUSTOMERFIRSTNAME,CUSTOMERLASTNAME,STARTDATE,ENDDATE,DEPOSIT,PAYMENT,PROCESSINGFEE,ROOMTYPE,EXTENSIONFLAG,RECHECKINGFLAG,COMMENTS,PRETERMINATEDATE,USERSTAMP,DATE_FORMAT(CONVERT_TZ(EXPIRY_TIMESTAMP,"+timeZoneFormat+"),'%d-%m-%Y %T') AS EXPIRY_TIMESTAMP from  "+CEXP_equaltemptblname+""
             $tablename=$CEXP_equaltemptblname;
 
         }
@@ -68,7 +67,6 @@ class Mdl_customer_expiry_list extends CI_Model{
             $this->db->select("UNITNO,CUSTOMERFIRSTNAME,CUSTOMERLASTNAME,STARTDATE,ENDDATE,DEPOSIT,PAYMENT,PROCESSINGFEE,ROOMTYPE,EXTENSIONFLAG,RECHECKINGFLAG,COMMENTS,PRETERMINATEDATE,USERSTAMP,DATE_FORMAT(CONVERT_TZ(EXPIRY_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS EXPIRY_TIMESTAMP");
             $this->db->from("$CEXP_beforetemptblname");
             $CEXP_expirylist_rs=$this->db->get();
-             //            $CEXP_select_expirylist_beforedate="SELECT UNITNO,CUSTOMERFIRSTNAME,CUSTOMERLASTNAME,STARTDATE,ENDDATE,DEPOSIT,PAYMENT,PROCESSINGFEE,ROOMTYPE,EXTENSIONFLAG,RECHECKINGFLAG,COMMENTS,PRETERMINATEDATE,USERSTAMP,DATE_FORMAT(CONVERT_TZ(EXPIRY_TIMESTAMP,"+timeZoneFormat+"),'%d-%m-%Y %T') AS EXPIRY_TIMESTAMP from  "+CEXP_beforetemptblname+""
             $tablename=$CEXP_beforetemptblname;
         }
         //TO CHECK BETWEEN DATE
@@ -80,9 +78,8 @@ class Mdl_customer_expiry_list extends CI_Model{
             $CEXP_betweenfeetemptblres=$this->db->query($CEXP_betweenfeetemptbl_query);
             $CEXP_betweentemptblname=$CEXP_betweenfeetemptblres->row()->TEMP_TABLE;
             $this->db->select("UNITNO,CUSTOMERFIRSTNAME,CUSTOMERLASTNAME,STARTDATE,ENDDATE,DEPOSIT,PAYMENT,PROCESSINGFEE,ROOMTYPE,EXTENSIONFLAG,RECHECKINGFLAG,COMMENTS,PRETERMINATEDATE,USERSTAMP,DATE_FORMAT(CONVERT_TZ(EXPIRY_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS EXPIRY_TIMESTAMP");
-            $this->db->from("CEXP_betweentemptblname");
+            $this->db->from("$CEXP_betweentemptblname");
             $CEXP_expirylist_rs=$this->db->get();
-            //            $CEXP_expiryquery="SELECT UNITNO,CUSTOMERFIRSTNAME,CUSTOMERLASTNAME,STARTDATE,ENDDATE,DEPOSIT,PAYMENT,PROCESSINGFEE,ROOMTYPE,EXTENSIONFLAG,RECHECKINGFLAG,COMMENTS,PRETERMINATEDATE,USERSTAMP,DATE_FORMAT(CONVERT_TZ(EXPIRY_TIMESTAMP,"+timeZoneFormat+"),'%d-%m-%Y %T') AS EXPIRY_TIMESTAMP from  "+CEXP_betweentemptblname+""
              $tablename=$CEXP_betweentemptblname;
         }
 
@@ -117,9 +114,10 @@ class Mdl_customer_expiry_list extends CI_Model{
         return $CEXP_final_expiry_result;
     }
     //FUNCTION TO SEND WEEKLY CUSTOMER EXPIRY LIST-----------//
-    public  function CWEXP_get_customerdetails($CWEXP_weeklyexpirylist_form){
-        $CWEXP_weekBefore=$_POST["CWEXP_TB_weekBefore"];
-        $CWEXP_email_id=$_POST["CWEXP_email"];
+    public  function CWEXP_get_customerdetails($CWEXP_weekBefore,$CWEXP_email_id,$UserStamp,$timeZoneFormat){
+        $CWEXP_weekBefore=$CWEXP_weekBefore;
+
+        $CWEXP_email_id=$CWEXP_email_id;
         $CWEXP_mail_username=explode('@',$CWEXP_email_id);//CWEXP_email_id.split('@');
         $CWEXP_select_emaildata="SELECT * from EMAIL_TEMPLATE_DETAILS WHERE ET_ID=3";
         $CWEXP_emaildata_rs=$this->db->query($CWEXP_select_emaildata);//CWEXP_emaildata_stmt.executeQuery(CWEXP_select_emaildata);
@@ -127,8 +125,9 @@ class Mdl_customer_expiry_list extends CI_Model{
             $CWEXP_subject_db=$row["ETD_EMAIL_SUBJECT"];
             $CWEXP_message_db=$row["ETD_EMAIL_BODY"];
         }
-        $CWEXP_subject=str_replace("[WEEKS_AHEAD]", $CWEXP_weekBefore,$CWEXP_subject_db);//CWEXP_subject_db.replace("[WEEKS_AHEAD]", CWEXP_weekBefore);
-        $CWEXP_message=str_replace("[WEEKS_AHEAD]", $CWEXP_weekBefore,$CWEXP_message_db);//CWEXP_message_db.replace("'[WEEK_AHEAD]'",CWEXP_weekBefore);
+        $CWEXP_subject=str_replace('[WEEKS_AHEAD]', $CWEXP_weekBefore,$CWEXP_subject_db);//CWEXP_subject_db.replace("[WEEKS_AHEAD]", CWEXP_weekBefore);
+        $CWEXP_message=str_replace('[WEEK_AHEAD]', $CWEXP_weekBefore,$CWEXP_message_db);//CWEXP_message_db.replace("'[WEEK_AHEAD]'",CWEXP_weekBefore);
+
         if($CWEXP_weekBefore==1){
             $CWEXP_subject=str_replace("WEEKS", 'WEEK',$CWEXP_subject);//CWEXP_subject.replace("WEEKS", 'WEEK');
             $CWEXP_message=str_replace("WEEKS", 'WEEK',$CWEXP_message);//CWEXP_message.replace("WEEKS", 'WEEK');
@@ -159,22 +158,45 @@ class Mdl_customer_expiry_list extends CI_Model{
                 $CWEXP_newdate=date('Y-m-d',strtotime($CWEXP_ptddate));
             }
             $CWEXP_check_week_flag=1;
-            $CWEXP_emailmessage .= '<body>'.'<table border="1" width="700" >'.'<tr align="center">'.'<td width=25%>'.$CWEXP_unitno.'</td>'.'<td width=25%>'.$CWEXP_cust_name.'</td>'+'<td width=25%>'.$CWEXP_newdate.'</td>'.'<td width=25%>'.$CWEXP_rental.'</td>'.'</tr>'.'</table>'.'</body>';
+            $CWEXP_emailmessage .= '<body><table border="1" width="700" ><tr align="center"><td width=25%>'.$CWEXP_unitno.'</td>'.'<td width=25%>'.$CWEXP_cust_name.'</td><td width=25%>'.$CWEXP_newdate.'</td><td width=25%>'.$CWEXP_rental.'</td>'.'</tr>'.'</table>'.'</body>';
         }
         $this->CEXP_droptemptable($CEXP_weeklytemptblname);
-        if($CWEXP_check_week_flag==0){
-            $CWEXP_check_weekly_expiry_list='false';
-            return $CWEXP_check_weekly_expiry_list;
-        }
-        else{
-            //           $displayname=eilib.Get_MailDisplayName('CUSTOMER_EXPIRY')
-            //           MailApp.sendEmail(CWEXP_email_id,CWEXP_subject,CWEXP_emailmessage,{name:displayname,htmlBody:CWEXP_emailmessage});
-             $CWEXP_check_weekly_expiry_list='true';
-             return $CWEXP_check_weekly_expiry_list;
-        }
+        $final_array=[$CWEXP_check_week_flag,$CWEXP_emailmessage,$CWEXP_subject];
+        return $final_array;
+//        if($CWEXP_check_week_flag==0){
+//            $CWEXP_check_weekly_expiry_list='false';
+//            return $CWEXP_check_weekly_expiry_list;
+//        }
+//        else{
+//            //           $displayname=eilib.Get_MailDisplayName('CUSTOMER_EXPIRY')
+//            //           MailApp.sendEmail(CWEXP_email_id,CWEXP_subject,CWEXP_emailmessage,{name:displayname,htmlBody:CWEXP_emailmessage});
+//             $CWEXP_check_weekly_expiry_list='true';
+//             return $CWEXP_check_weekly_expiry_list;
+//        }
     }
     function CEXP_droptemptable($tablename){
         $drop_query = "DROP TABLE ".$tablename;
         $this->db->query($drop_query);
+    }
+    function Customer_Expiry_List_pdf($fromdate,$todate,$radiovalue,$UserStamp,$timeZoneFormat){
+
+        $values=$this->CEXP_get_customer_details($fromdate,$todate,$radiovalue,$UserStamp,$timeZoneFormat);
+        $values_array=$values;
+        $CEXP_table_value='<table id="CEXP_tbl_htmltable" border="1"  cellspacing="0" class="srcresult" style="width:3000px" style="border-collapse: collapse;"><sethtmlpageheader name="header" page="all" value="on" show-this-page="1"/><thead style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;"><tr><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;">UNIT NO</th><th nowrap style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;">FIRST NAME</th><th style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;">LAST NAME</th><th  style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:80px" >START DATE</th><th  style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:80px">END DATE</th><th  style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:80px">PRETERMINATE DATE</th><th  style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold; width:130px">ROOM TYPE</th><th style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;">EXTENSION</th><th style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;">RE CHECKIN</th><th style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;">RENT</th><th style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;">DEPOSIT</th><th  style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;width:500px">COMMENTS</th><th style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;">USERSTAMP</th><th style="width:180px" style="color:#fff !important; background-color:#498af3;text-align:center;font-weight: bold;">TIMESTAMP</th></tr></thead><tbody>';
+        for($j=0;$j<count($values);$j++){
+            $CEXP_values=$values[$j];
+            $unitno=$CEXP_values->unitno;
+            $CEXP_startdate=$CEXP_values->startdate;
+            $CEXP_startdate=date('Y-m-d',strtotime($CEXP_startdate));
+            $CEXP_enddate=$CEXP_values->enddate;
+            $CEXP_enddate=date('Y-m-d',strtotime($CEXP_enddate));
+            $CEXP_preterminatedate=$CEXP_values->preterminatedate;
+            if($CEXP_preterminatedate!=""){
+                $CEXP_preterminatedate=date('Y-m-d',strtotime($CEXP_preterminatedate));
+            }
+            $CEXP_table_value.='<tr ><td nowarp>'.$unitno.'</td><td nowrap>'.$CEXP_values->firstname.'</td><td nowrap>'.$CEXP_values->lastname.'</td><td nowrap align="center" >'.$CEXP_startdate.'</td><td nowrap align="center">'.$CEXP_enddate.'</td><td nowrap align="center">'.$CEXP_preterminatedate.'</td><td nowrap align="center">'.$CEXP_values->roomtype.'</td><td nowrap align="center">'.$CEXP_values->extension.'</td><td>'.$CEXP_values->rechecking.'</td><td nowrap align="center">'.$CEXP_values->rental.'</td><td nowrap align="center">'.$CEXP_values->deposit.'</td><td>'.$CEXP_values->comments.'</td><td nowrap align="center">'.$CEXP_values->userstamp.'</td><td nowrap align="center">'.$CEXP_values->timestamp.'</td></tr>';
+        }
+        $CEXP_table_value.='</tbody></table>';
+        return $CEXP_table_value;
     }
 } 

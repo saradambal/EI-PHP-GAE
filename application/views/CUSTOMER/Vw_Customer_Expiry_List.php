@@ -32,6 +32,9 @@ require_once "Header.php";
 //<!----------READY FUNCTION------------->
 $(document).ready(function(){
     var CEXP_max_date_array;
+    var from_date;
+    var to_date;
+    var radio_value;
     $(".preloader").show();
     $('#CEXP_div_htmltable').hide();
     $('#CWEXP_tble_buttontable').hide();
@@ -40,6 +43,7 @@ $(document).ready(function(){
         'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CEXP_get_initial_values",
          success:function(data){
              $(".preloader").hide();
+
              var initial_value=JSON.parse(data)
              CEXP_load_initial_values(initial_value);
          },
@@ -201,6 +205,7 @@ $(document).ready(function(){
         $('#CEXP_lbl_todate').hide();
         $('#CEXP_lbl_beforedate').hide();
         $('#CEXP_lbl_equalto').hide();
+        $('#CWEXP_pdf').hide();
     });
     //-------------------TO DATEPICKER CHANGE---------------//
     $('#CEXP_db_selected_to_date').change(function(){
@@ -242,14 +247,18 @@ $(document).ready(function(){
         $('#CEXP_div_htmltable').hide();
     });
     //--------------FUNCTION TO GET VALUES FROM DATABASE----------------------//
+
     $('#CEXP_btn_submit').click(function(){
         var  newPos= adjustPosition($(this).position(),100,280);
         resetPreloader(newPos);
         $(".preloader").show();
         var CEXP_radio_button_select_value=$("input[name=CEXP_radiobotton]:checked").val();
+        radio_value=CEXP_radio_button_select_value;
         if(CEXP_radio_button_select_value=="EQUAL")
         {
             var CEXP_equaldate=$('#CEXP_db_selected_equal_date').val();
+            from_date=CEXP_equaldate;
+            to_date=CEXP_equaldate;
             $.ajax({
                 type:'post',
                 'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CEXP_get_customer_details",
@@ -268,6 +277,8 @@ alert(JSON.stringify(data))
         else if(CEXP_radio_button_select_value=="BEFORE")
         {
             var CEXP_beforedate=$('#CEXP_db_selected_before_date').val();
+            from_date=CEXP_beforedate;
+            to_date=CEXP_beforedate;
             $.ajax({
                 type:'post',
                 'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CEXP_get_customer_details",
@@ -288,6 +299,8 @@ alert(JSON.stringify(data))
         {
             var CEXP_fromdate=$('#CEXP_db_selected_from_date').val();
             var CEXP_enddate=$('#CEXP_db_selected_to_date').val();
+            from_date=CEXP_fromdate;
+            to_date=CEXP_enddate;
             $.ajax({
                 type:'post',
                 'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CEXP_get_customer_details",
@@ -298,10 +311,18 @@ alert(JSON.stringify(data))
 
                 },
                 error:function(data){
+                    alert(JSON.stringify(data))
 
                 }
             });
         }
+    });
+    $(document).on('click','#CEXP_btn_pdf',function(){
+
+
+
+        var pdfurl=document.location.href='<?php echo site_url('Ctrl_Customer_Expiry_List/Customer_Expiry_List_pdf')?>?CEXP_fromdate='+from_date+'&CEXP_todate='+to_date+'&CEXP_radio_button_select_value='+radio_value+'&header='+header;
+
     });
     ///----------SUBMIT BUTTON VALIDATION----------------------//
     $('.submitvalidate').blur(function(){
@@ -320,7 +341,23 @@ alert(JSON.stringify(data))
         var  newPos= adjustPosition($("#CWEXP_tble_buttontable").position(),100,310);
         resetPreloader(newPos);
         $(".preloader").show();
-        google.script.run.withFailureHandler(CWEXP_error).withSuccessHandler(CWEXP_clear).CWEXP_get_customerdetails(document.getElementById('CEXP_form_expirylist_weeklyexpiryform'))
+        var formelement=$('#CEXP_form_expirylist_weeklyexpiryform').serialize();
+        $.ajax({
+             type:'post',
+            'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CWEXP_get_customerdetails",
+             data:formelement,
+            success:function(data){
+                var final_value=JSON.parse(data);
+                CWEXP_clear(final_value);
+
+            },
+            error:function(data){
+                alert(JSON.stringify(data))
+
+            }
+
+        });
+//        google.script.run.withFailureHandler(CWEXP_error).withSuccessHandler(CWEXP_clear).CWEXP_get_customerdetails(document.getElementById('CEXP_form_expirylist_weeklyexpiryform'))
     });
     $('#CWEXP_btn_reset').click(function(){
         $('#CWEXP_btn_submit').attr('disabled','disabled');
@@ -331,6 +368,7 @@ alert(JSON.stringify(data))
 ////------------NUMBER'S ONLY VALIDATION--------------//
 //
     //-----------------Function to load HTML table--------------------//
+    var header;
     function CEXP_load_customer_details(result){
         $(".preloader").hide();
         var CEXP_radio_button_select_value=$("input[name=CEXP_radiobotton]:checked").val();
@@ -339,12 +377,14 @@ alert(JSON.stringify(data))
             var CEXP_equal_date=($('#CEXP_db_selected_equal_date').val());
             $('#CEXP_lbl_msg').text((CEXP_errorAarray[1].EMC_DATA).replace('[EQDATE]',CEXP_equal_date));
             $('#CEXP_db_selected_equal_date').val("");
+            header=(CEXP_errorAarray[1].EMC_DATA).replace('[EQDATE]',CEXP_equal_date);
         }
         else if(CEXP_radio_button_select_value=="BEFORE")
         {
             var CEXP_before_date=($('#CEXP_db_selected_before_date').val());
             $('#CEXP_lbl_msg').text((CEXP_errorAarray[3].EMC_DATA).replace('[BDATE]',CEXP_before_date));
-            $('#CEXP_db_selected_before_date').val("")
+            $('#CEXP_db_selected_before_date').val("");
+            header=(CEXP_errorAarray[3].EMC_DATA).replace('[BDATE]',CEXP_before_date);
         }
         else if(CEXP_radio_button_select_value=="BETWEEN")
         {
@@ -354,7 +394,8 @@ alert(JSON.stringify(data))
             var CEXP_between_error1=CEXP_between_error.replace("[EDATE]",CEXP_enddate);
             $('#CEXP_lbl_msg').text(CEXP_between_error1);
             $('#CEXP_db_selected_from_date').val("")
-            $('#CEXP_db_selected_to_date').val("")
+            $('#CEXP_db_selected_to_date').val("");
+            header=CEXP_between_error1;
         }
         var CEXP_result_array=result
          if(CEXP_result_array.length==0)
@@ -381,9 +422,7 @@ alert(JSON.stringify(data))
             }
         }
         else{
-//            var CEXP_table_value='';
-            var CEXP_table_value='<table id="CEXP_tbl_htmltable" border="1"  cellspacing="0" class="srcresult" style="width:2000px" ><thead><tr><th>UNIT NO</th><th>FIRST   NAME</th><th>LAST   NAME</th><th style="width:80px" >START DATE</th><th style="width:80px">END DATE</th><th style="width:80px">PRETERMINATE DATE</th><th style="width:130px">ROOM TYPE</th><th>EXTENSION</th><th>RE CHECKIN</th><th>RENT</th><th>DEPOSIT</th><th style="width:500px">COMMENTS</th><th>USERSTAMP</th><th style="width:180px">TIMESTAMP</th></tr></thead><tbody>';
-//            $('#CEXP_tbl_htmltable').html(CEXP_table_header);
+            var CEXP_table_value='<table id="CEXP_tbl_htmltable" border="1"  cellspacing="0" class="srcresult" style="width:2000px" ><thead><tr><th nowrap>UNIT NO</th><th nowrap>FIRST NAME</th><th>LAST NAME</th><th style="width:80px" >START DATE</th><th style="width:80px">END DATE</th><th style="width:80px">PRETERMINATE DATE</th><th style="width:130px">ROOM TYPE</th><th>EXTENSION</th><th>RE CHECKIN</th><th>RENT</th><th>DEPOSIT</th><th style="width:500px">COMMENTS</th><th>USERSTAMP</th><th style="width:180px">TIMESTAMP</th></tr></thead><tbody>';
             for(var i=0;i<CEXP_result_array.length;i++)
             {
                 var CEXP_values=CEXP_result_array[i]
@@ -395,7 +434,7 @@ alert(JSON.stringify(data))
                 if(CEXP_preterminatedate!=""){
                     CEXP_preterminatedate=FormTableDateFormat(CEXP_preterminatedate)
                 }
-                CEXP_table_value+='<tr ><td>'+CEXP_values.unitno+'</td><td>'+CEXP_values.firstname+'</td><td>'+CEXP_values.lastname+'</td><td>'+CEXP_startdate+'</td><td>'+CEXP_enddate+'</td><td>'+CEXP_preterminatedate+'</td><td>'+CEXP_values.roomtype+'</td><td>'+CEXP_values.extension+'</td><td>'+CEXP_values.rechecking+'</td><td>'+CEXP_values.rental+'</td><td>'+CEXP_values.deposit+'</td><td>'+CEXP_values.comments+'</td><td>'+CEXP_values.userstamp+'</td><td>'+CEXP_values.timestamp+'</td></tr>';
+                CEXP_table_value+='<tr ><td nowarp>'+CEXP_values.unitno+'</td><td nowrap>'+CEXP_values.firstname+'</td><td nowrap>'+CEXP_values.lastname+'</td><td >'+CEXP_startdate+'</td><td>'+CEXP_enddate+'</td><td>'+CEXP_preterminatedate+'</td><td>'+CEXP_values.roomtype+'</td><td>'+CEXP_values.extension+'</td><td>'+CEXP_values.rechecking+'</td><td>'+CEXP_values.rental+'</td><td>'+CEXP_values.deposit+'</td><td>'+CEXP_values.comments+'</td><td>'+CEXP_values.userstamp+'</td><td>'+CEXP_values.timestamp+'</td></tr>';
 //                $('#CEXP_tbl_htmltable').append(CEXP_table_value);
             }
              CEXP_table_value+='</tbody></table>';
@@ -410,6 +449,7 @@ alert(JSON.stringify(data))
 //            sorting();
 //            $('#CEXP_tbl_htmltable').show();
             $('#CEXP_div_htmltable').show();
+             $('#CWEXP_pdf').show();
             $('#CEXP_btn_submit').attr('disabled','disabled');
             $('#CEXP_lbl_msg').show().addClass( "srctitle" );
         }
@@ -420,29 +460,36 @@ alert(JSON.stringify(data))
         $(".preloader").hide();
         var CWEXP_result =res
         var CWEXP_weekno=$('#CWEXP_TB_weekBefore').val();
-        if(CWEXP_result=='false')
+        if(CWEXP_result==false)
         {
-            var CWEXP_errormsg=(CEXP_errorAarray[6]).replace('[WEEKNO]',CWEXP_weekno);
-            var CWEXP_errormsg1=(CEXP_errorAarray[7]).replace('[WEEKNO]',CWEXP_weekno);
+            var CWEXP_errormsg=(CEXP_errorAarray[6].EMC_DATA).replace('[WEEKNO]',CWEXP_weekno);
+            var CWEXP_errormsg1=(CEXP_errorAarray[7].EMC_DATA).replace('[WEEKNO]',CWEXP_weekno);
             if(CWEXP_weekno==1)
             {
-                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXPIRY LIST",msgcontent:CWEXP_errormsg,position:{top:150,left:500}}});
+                show_msgbox("CUSTOMER EXPIRY LIST",CWEXP_errormsg,"success",false);
+//                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXPIRY LIST",msgcontent:CWEXP_errormsg,position:{top:150,left:500}}});
             }
             else{
-                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXPIRY LIST",msgcontent:CWEXP_errormsg1,position:{top:150,left:500}}});
+                show_msgbox("CUSTOMER EXPIRY LIST",CWEXP_errormsg1,"success",false);
+
+//                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXPIRY LIST",msgcontent:CWEXP_errormsg1,position:{top:150,left:500}}});
             }
         }
         else
         {
-            var CWEXP_confirm_msg=(CEXP_errorAarray[8]).replace('[WEEKNO]',CWEXP_weekno);
-            var CWEXP_confirm_msg1=(CEXP_errorAarray[9]).replace('[WEEKNO]',CWEXP_weekno);
+            var CWEXP_confirm_msg=(CEXP_errorAarray[8].EMC_DATA).replace('[WEEKNO]',CWEXP_weekno);
+            var CWEXP_confirm_msg1=(CEXP_errorAarray[9].EMC_DATA).replace('[WEEKNO]',CWEXP_weekno);
             if(CWEXP_weekno==1)
             {
-                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXPIRY LIST",msgcontent:CWEXP_confirm_msg,position:{top:150,left:500}}});
+                show_msgbox("CUSTOMER EXPIRY LIST",CWEXP_confirm_msg,"success",false);
+
+//                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXPIRY LIST",msgcontent:CWEXP_confirm_msg,position:{top:150,left:500}}});
 
             }
             else{
-                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXPIRY LIST",msgcontent:CWEXP_confirm_msg1,position:{top:150,left:500}}});
+                show_msgbox("CUSTOMER EXPIRY LIST",CWEXP_confirm_msg1,"success",false);
+
+//                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXPIRY LIST",msgcontent:CWEXP_confirm_msg1,position:{top:150,left:500}}});
             }
         }
         $('#CWEXP_btn_submit').attr('disabled','disabled');
@@ -529,7 +576,7 @@ alert(JSON.stringify(data))
                    </label>
                </div>
                <div>
-                    <label name='CEXP_fromdate' id='CEXP_lbl_fromdate' class="col-sm-2"  hidden >ENTER A FROM  DATE <em>*</em></label>
+                    <label name='CEXP_fromdate' id='CEXP_lbl_fromdate' class="col-sm-3"  hidden >ENTER A FROM  DATE <em>*</em></label>
                         <div class="col-sm-2" ><input type="text" name="selected_from_date" id="CEXP_db_selected_from_date" style="width:110px;display: none" class="datemandtry form-control" hidden ></div>
 
                </div>
@@ -550,8 +597,8 @@ alert(JSON.stringify(data))
             </div>
 
                 <div class="form-group">
-                    <label class="col-sm-3">SELECT THE EMAIL ID<em>*</em></label>
-                    <div class="col-sm-2"> <select name="CWEXP_email" id="CWEXP_lb_selectemail" title="EMAIL ADDRESS" class="form-control submitvalidate ">
+                    <label class="col-sm-4">SELECT THE EMAIL ID<em>*</em></label>
+                    <div class="col-sm-4"> <select name="CWEXP_email" id="CWEXP_lb_selectemail" title="EMAIL ADDRESS" class="form-control submitvalidate ">
                             <option value='SELECT' selected="selected"> SELECT</option>
                     </select></div>
                 </div>
@@ -568,6 +615,9 @@ alert(JSON.stringify(data))
             <label name="CWEXP_msg" id="CWEXP_lbl_msg" class="srctitle errormsg"   visible="false"/>
 
         </div>
+            <div id='CWEXP_pdf' hidden>
+            <div><input type="button" id='CEXP_btn_pdf' class="btnpdf" value="PDF"></div>
+                </div><br>
         <div    class="table-responsive" id ="CEXP_div_htmltable" >
             <section>
             </section>
