@@ -4,7 +4,7 @@
 </head>
 <script>
     $(document).ready(function() {
-        $('.preloader').show();
+        $('.preloader').hide();
         $('#FIN_Payment_id').hide();
         $(".amtonly").doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
         $("#FIN_TER_Payment_Paiddate").datepicker({
@@ -42,13 +42,13 @@
         var allunitdetails;
         $.ajax({
             type: "POST",
-            url: '/index.php/Ctrl_Payment_Terminated_Customer_Forms/PaymentInitialDatas',
+            url: '/Ctrl_Payment_Terminated_Customer_Forms/PaymentInitialDatas',
             data:{"ErrorList":'2,3,92,248,309'},
             success: function(data){
+                $('.preloader').hide();
                 var value_array=JSON.parse(data);
                 allunitdetails=value_array[0];
                 Message=value_array[2];
-                $('.preloader').hide();
                 if(allunitdetails.length!=0)
                 {
                     var paymenttype=value_array[1];
@@ -89,7 +89,6 @@
         var allcustomer=[];
         var allcustomerdetails=[];
         $(document).on('change','#FIN_TER_Payment_Unit',function() {
-            $('.preloader').show();
            var unit=$('#FIN_TER_Payment_Unit').val();
             if(unit!='SELECT')
             {
@@ -117,10 +116,8 @@
                 $('#FIN_TER_Payment_Customer').prop('disabled',true);
                 $('#FIN_TER_Payment_Leaseperiod').prop('disabled',true);
             }
-            $('.preloader').hide();
         });
         $(document).on('change','#FIN_TER_Payment_Customer',function() {
-            $('.preloader').show();
             var Customer=$('#FIN_TER_Payment_Customer').val();
             $('#FIN_TER_Payment_Leaseperiod').prop('disabled',true);
             $('#multiplecustomerdiv').html('');
@@ -161,7 +158,6 @@
                     $('#multiplecustomerdiv').show();
                 }
             }
-            $('.preloader').hide();
         });
         $(document).on('click','.Multiplecustomer',function(){
             var radiovalue=($('input[name="Customer"]:checked').val());
@@ -170,7 +166,6 @@
         var recver=[]
         function GetcustomerOldDetails(customerid)
         {
-            $('.preloader').show();
             $('#FIN_Payment_id').val(customerid);
             var unitno=$('#FIN_TER_Payment_Unit').val();
             var customer=$('#FIN_TER_Payment_Customer').val();
@@ -186,7 +181,6 @@
             }
            $('#FIN_TER_Payment_Leaseperiod').html(options);
             $('#FIN_TER_Payment_Leaseperiod').removeAttr("disabled");
-            $('.preloader').hide();
         }
         $(document).on('click','.LPchange',function(){
          var LP=$('#FIN_TER_Payment_Leaseperiod').val();
@@ -283,7 +277,7 @@
             var FormElements=$('#FIN_TER_PaymentEntry_form').serialize();
             $.ajax({
                 type: "POST",
-                url: "/index.php/Ctrl_Payment_Terminated_Customer_Forms/Term_PaymentEntry_Save",
+                url: "/Ctrl_Payment_Terminated_Customer_Forms/Term_PaymentEntry_Save",
                 data:FormElements,
                 success: function(data){
                     var returnvalue=JSON.parse(data);
@@ -308,7 +302,7 @@
 <body>
 <div class="container">
     <div class="wrapper">
-        <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif" /></div></div></div>
+        <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
         <div class="row title text-center"><h4><b>PAYMENTS ENTRY-TERMINATED CUSTOMER</b></h4></div>
         <div class ='row content'>
             <div id="Form_ErrorMessage">

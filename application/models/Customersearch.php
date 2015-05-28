@@ -253,7 +253,7 @@ class Customersearch extends CI_Model
         $this->db->query('DROP TABLE IF EXISTS '.$csrc_tablename);
         return $resultset->result();;
     }
-    public function Customer_Search_Update()
+    public function Customer_Search_Update($UserStamp,$Leaseperiod,$Quoters)
     {
 
         $FirstName=$_POST['CCRE_SRC_FirstName'];
@@ -266,22 +266,26 @@ class Customersearch extends CI_Model
         $IntlMobile=$_POST['CCRE_SRC_IntlMobile'];
         $Officeno=$_POST['CCRE_SRC_Officeno'];
         $DOB=$_POST['CCRE_SRC_DOB'];
+        if($DOB!=''){$DOB=date('Y-m-d',strtotime($DOB));}
         $Nationality=$_POST['CCRE_SRC_Nationality'];
         $PassportNo=$_POST['CCRE_SRC_PassportNo'];
         $PassportDate=$_POST['CCRE_SRC_PassportDate'];
+        if($PassportDate!=''){$PassportDate=date('Y-m-d',strtotime($PassportDate));}
         $EpNo=$_POST['CCRE_SRC_EpNo'];
         $EPDate=$_POST['CCRE_SRC_EPDate'];
+        if($EPDate!=''){$EPDate=date('Y-m-d',strtotime($EPDate));}
         $Uint=$_POST['CCRE_SRC_UnitNo'];
         $RoomType=$_POST['CCRE_SRC_RoomType'];
-        $Startdate=$_POST['CCRE_SRC_Startdate'];
+        $Startdate=date('Y-m-d',strtotime($_POST['CCRE_SRC_Startdate']));
         $S_starttime=$_POST['CCRE_SRC_SDStarttime'];
         $S_endtime=$_POST['CCRE_SRC_SDEndtime'];
-        $Enddate=$_POST['CCRE_SRC_Enddate'];
+        $Enddate=date('Y-m-d',strtotime($_POST['CCRE_SRC_Enddate']));
         $E_starttime=$_POST['CCRE_SRC_EDStarttime'];
         $E_endtime=$_POST['CCRE_SRC_EDEndtime'];
         $NoticePeriod=$_POST['CCRE_SRC_NoticePeriod'];
         $NoticePeriodDate=$_POST['CCRE_SRC_NoticePeriodDate'];
-        $Quaterlyfee=$_POST['CCRE_SRC_Quaterlyfee'];
+        if($NoticePeriodDate!=''){$NoticePeriodDate=date('Y-m-d',strtotime($NoticePeriodDate));}
+        $Quaterlyfee=$_POST['CCRE_SRC_Quarterly_fee'];
         $Fixedaircon_fee=$_POST['CCRE_SRC_Fixedaircon_fee'];
         $ElectricitycapFee=$_POST['CCRE_SRC_ElectricitycapFee'];
         $Curtain_DrycleanFee=$_POST['CCRE_SRC_Curtain_DrycleanFee'];
@@ -296,6 +300,33 @@ class Customersearch extends CI_Model
         if($prorated=='on'){$Prorated='X';}else{$Prorated='';}
         $CustomerSDdates=$_POST['CSRC_StartDate'];
         $CustomerEDdates=$_POST['CSRC_EndDate'];
-        return $CustomerEDdates;
+        $Card=$_POST['CSRC_card'];
+        $acesscard='';
+        $Accesscarddates='';
+        for($i=0;$i<count($Card);$i++)
+        {
+            if($i==0)
+            {
+                $acesscard =$Card[$i] . ',' . date('Y-m-d',strtotime($CustomerSDdates[$i]));
+                $Accesscarddates =$Card[$i] . ',' . date('Y-m-d',strtotime($CustomerSDdates[$i])) . ',' . date('Y-m-d',strtotime($CustomerEDdates[$i]));
+            }
+            else
+            {
+                $acesscard = $acesscard . ',' . $Card[$i] . ',' . date('Y-m-d',strtotime($CustomerSDdates[$i]));
+                $Accesscarddates = $Accesscarddates . ',' . $Card[$i] . ',' . date('Y-m-d',strtotime($CustomerSDdates[$i])) . ',' . date('Y-m-d',strtotime($CustomerEDdates[$i]));
+            }
+        }
+        $customerid=$_POST['CCRE_SRC_customerid'];
+        $Update_query="CALL SP_CUSTOMER_SEARCH_UPDATE('$customerid','$FirstName','$Lastname','$CompanyName','$CompanyAddress',
+        '$CompanyPostalCode','$Officeno',$Uint,2,'$RoomType','$S_starttime','$S_endtime','$E_starttime','$E_endtime',
+        '$Leaseperiod','$Quoters','$processwaived','$Prorated','$NoticePeriod','$NoticePeriodDate','$Rent','$DepositFee','$ProcessingFee','$Fixedaircon_fee','$Quaterlyfee','$ElectricitycapFee','$CheckOutCleanFee','$Curtain_DrycleanFee',
+        '$UserStamp','$Startdate','$Enddate','$Nationality','$Mobile','$IntlMobile','$Emailid','$PassportNo',
+        '$PassportDate','$DOB','$EpNo','$EPDate','$Comments','$acesscard','$Accesscarddates',@SUCCESS_FLAG)";
+        $this->db->query($Update_query);
+        $Confirm_query = 'SELECT @SUCCESS_FLAG AS CONFIRM';
+        $Confirm_result = $this->db->query($Confirm_query);
+        $Confirm_Meessage=$Confirm_result->row()->CONFIRM;
+        $this->db->query('COMMIT');
+        return $Confirm_Meessage;
     }
 }

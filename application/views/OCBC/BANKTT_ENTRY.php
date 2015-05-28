@@ -8,7 +8,7 @@ require_once "Header.php";
 </style>
 <script>
 $(document).ready(function(){
-    $('.preloader').show();
+    $('.preloader').hide();
     $(".date-picker").datepicker({
         dateFormat:"dd-mm-yy",
         changeYear: true,
@@ -418,7 +418,7 @@ $(document).ready(function(){
 <body>
  <div class="container">
     <div class="wrapper">
-    <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif" /></div></div></div>
+        <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
     <div class="row title text-center"><h4><b>BANK TT ENTRY</b></h4></div>
         <div class ='row content'>
             <div class="panel-body">

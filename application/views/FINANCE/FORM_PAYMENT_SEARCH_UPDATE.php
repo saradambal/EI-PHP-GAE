@@ -5,6 +5,7 @@
 <script>
     $(document).ready(function() {
         $('#spacewidth').height('0%');
+        $('.preloader').hide();
         $('.amtonly').doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
         $('.autogrowcomments').autogrow({onInitialize: true});
         var Allunits;
@@ -90,7 +91,7 @@
             {
                 $('.preloader').show();
                 var appenddata='<h4 style="color:#498af3;">UNIT NUMBER SEARCH</h4><br>';
-                appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                appenddata+='<div class="row form-group" style="padding-left:20px;">';
                 appenddata+='<div class="col-md-2"><label>UNIT NUMBER<span class="labelrequired"><em>*</em></span></label></div>';
                 appenddata+='<div class="col-md-3"><SELECT class="form-control" name="Payment_SRC_Uintsearch"  id="Payment_SRC_Uintsearch" style="max-width: 120px"></SELECT></div>';
                 appenddata+='</div>';
@@ -111,11 +112,11 @@
             {
                 $('.preloader').show();
                 var appenddata='<h4 style="color:#498af3;">CUSTOMER NAME SEARCH</h4><br>';
-                appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                appenddata+='<div class="row form-group" style="padding-left:20px;">';
                 appenddata+='<div class="col-md-2"><label>UNIT NO<span class="labelrequired"><em>*</em></span></label></div>';
                 appenddata+='<div class="col-md-3"><SELECT class="form-control customer_btn_validation" name="Payment_SRC_unit"  id="Payment_SRC_unit" style="max-width: 120px"></SELECT></div>';
                 appenddata+='</div>';
-                appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                appenddata+='<div class="row form-group" style="padding-left:20px;">';
                 appenddata+='<div class="col-md-2"><label>CUSTOMER NAME<span class="labelrequired"><em>*</em></span></label></div>';
                 appenddata+='<div class="col-md-3"><SELECT class="form-control customer_btn_validation" name="Payment_SRC_Customer"  id="Payment_SRC_Customer" disabled><option>SELECT</option></SELECT></div>';
                 appenddata+='</div>';
@@ -135,12 +136,12 @@
             if(searchoption==4)
             {
                 $('.preloader').show();
-                var appenddata='<h4 style="color:#498af3;">CUSTOMER NAME SEARCH</h4><br>';
-                appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                var appenddata='<h4 style="color:#498af3;">FOR PERIOD SEARCH</h4><br>';
+                appenddata+='<div class="row form-group" style="padding-left:20px;">';
                 appenddata+='<div class="col-md-2"><label>FROM PERIOD<span class="labelrequired"><em>*</em></span></label></div>';
                 appenddata+='<div class="col-md-3"><input class="form-control customer_btn_validation datemandtry" name="Payment_SRC_FP_fromdate"  id="Payment_SRC_FP_fromdate" style="max-width: 150px"></div>';
                 appenddata+='</div>';
-                appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                appenddata+='<div class="row form-group" style="padding-left:20px;">';
                 appenddata+='<div class="col-md-2"><label>TO PERIOD<span class="labelrequired"><em>*</em></span></label></div>';
                 appenddata+='<div class="col-md-3"><input class="form-control customer_btn_validation datemandtry" name="Payment_SRC_FP_todate"  id="Payment_SRC_FP_todate" style="max-width: 150px"></div>';
                 appenddata+='</div>';
@@ -180,11 +181,11 @@
             {
                 $('.preloader').show();
                 var appenddata='<h4 style="color:#498af3;">PAIDDATE SEARCH</h4><br>';
-                appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                appenddata+='<div class="row form-group" style="padding-left:20px;">';
                 appenddata+='<div class="col-md-2"><label>FROM DATE<span class="labelrequired"><em>*</em></span></label></div>';
                 appenddata+='<div class="col-md-3"><input class="form-control Paiddate_btn_validation datemandtry" name="Payment_SRC_PD_fromdate"  id="Payment_SRC_PD_fromdate" style="max-width: 120px"></div>';
                 appenddata+='</div>';
-                appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                appenddata+='<div class="row form-group" style="padding-left:20px;">';
                 appenddata+='<div class="col-md-2"><label>TO DATE<span class="labelrequired"><em>*</em></span></label></div>';
                 appenddata+='<div class="col-md-3"><input class="form-control Paiddate_btn_validation datemandtry" name="Payment_SRC_PD_todate"  id="Payment_SRC_PD_todate" style="max-width: 120px"></div>';
                 appenddata+='</div>';
@@ -206,23 +207,23 @@
             {
                 $('.preloader').show();
                 var appenddata='<h4 style="color:#498af3;">AMOUNT RANGE SEARCH</h4><br>';
-                appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                appenddata+='<div class="row form-group" style="padding-left:20px;">';
                 appenddata+='<div class="col-md-2"><label>UNIT NUMBER<span class="labelrequired"><em>*</em></span></label></div>';
                 appenddata+='<div class="col-md-3"><SELECT class="form-control AR_btn_validation" name="Payment_SRC_AR_Uint"  id="Payment_SRC_AR_Uint" style="max-width: 150px"></SELECT></div>';
                 appenddata+='</div>';
-                appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                appenddata+='<div class="row form-group" style="padding-left:20px;">';
                 appenddata+='<div class="col-md-2"><label>FROM PERIOD<span class="labelrequired"><em>*</em></span></label></div>';
                 appenddata+='<div class="col-md-3"><input class="form-control AR_btn_validation datemandtry" name="Payment_SRC_AR_fromdate"  id="Payment_SRC_AR_fromdate" style="max-width: 150px"></div>';
                 appenddata+='</div>';
-                appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                appenddata+='<div class="row form-group" style="padding-left:20px;">';
                 appenddata+='<div class="col-md-2"><label>TO PERIOD<span class="labelrequired"><em>*</em></span></label></div>';
                 appenddata+='<div class="col-md-3"><input class="form-control AR_btn_validation datemandtry" name="Payment_SRC_AR_todate"  id="Payment_SRC_AR_todate" style="max-width: 150px"></div>';
                 appenddata+='</div>';
-                appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                appenddata+='<div class="row form-group" style="padding-left:20px;">';
                 appenddata+='<div class="col-md-2"><label>FROM AMOUNT<span class="labelrequired"><em>*</em></span></label></div>';
                 appenddata+='<div class="col-md-3"><input class="form-control AR_btn_validation amtonly" name="Payment_SRC_AR_fromamount"  id="Payment_SRC_AR_fromamount" style="max-width: 150px"></div>';
                 appenddata+='</div>';
-                appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                appenddata+='<div class="row form-group" style="padding-left:20px;">';
                 appenddata+='<div class="col-md-2"><label>TO AMOUNT<span class="labelrequired"><em>*</em></span></label></div>';
                 appenddata+='<div class="col-md-3"><input class="form-control AR_btn_validation amtonly" name="Payment_SRC_AR_toamount"  id="Payment_SRC_AR_toamount" style="max-width: 150px"></div>';
                 appenddata+='<div class="col-md-5"><label id="FIN_SRC_amounterrormsg" class="errormsg" hidden></label></div></div>';
@@ -529,7 +530,7 @@
                 data:data,
                 success: function(data){
                     var valuearray=JSON.parse(data);
-                    var Payment_Tabledata="<table id='Payment_Datatable' border=1 cellspacing='0' data-class='table'  class=' srcresult table' style='width:2500px'>";
+                    var Payment_Tabledata="<table id='Payment_Datatable' border=1 cellspacing='0' data-class='table'  class=' srcresult table' style='width:2000px'>";
                     Payment_Tabledata+="<thead class='headercolor'><tr class='head' style='text-align:center'>";
                     Payment_Tabledata+="<th style='text-align:center;vertical-align: top'>UPDATE / DELETE</th>";
                     Payment_Tabledata+="<th style='text-align:center;vertical-align: top'>UNIT</th>";
@@ -601,10 +602,10 @@
                     $('section').html(Payment_Tabledata);
                     $('#Payment_Search_DataTable').show();
                     $('#Payment_Datatable').DataTable( {
-                        "aaSorting": [],
                         "pageLength": 10,
                         "sPaginationType":"full_numbers"
                     });
+                    $("html, body").animate({ scrollTop: $(document).height() }, "slow");
                     $('.preloader').hide();
                 },
                 error: function(data){
@@ -689,12 +690,14 @@
                     $('#UD_Payment_Forperiod').val(updationrow[0].PD_FOR_PERIOD);
                     $('#Payment_Updation_form').show();
                     $('.preloader').hide();
+                    $("html, body").animate({ scrollTop: $(document).height() }, "slow");
                 },
                 error: function(data){
                     alert('error in getting'+JSON.stringify(data));
                     $('.preloader').hide();
                 }
             });
+
         });
         function DBfrom_dateConversion(inputdate)
         {
@@ -837,7 +840,7 @@
  <body>
     <div class="container">
         <div class="wrapper">
-            <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif" /></div></div></div>
+            <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
             <div class="row title text-center"><h4><b>PAYMENT SEARCH AND UPDATE</b></h4></div>
             <div class ='row content'>
                 <div class="panel-body">

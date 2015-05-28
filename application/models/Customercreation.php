@@ -121,7 +121,7 @@ class Customercreation extends CI_Model
             $filename=$_FILES['CC_fileupload']['name'];
             $filename=$Uint.'-'.$Customerid.'-'.$FirstName.' '.$Lastname;
             $mimetype='application/pdf';
-            $file_id_value =$this->insertFile($service,$filename,'PersonalDetails','0B1AhtyM5U79zREp5QkpiYmphODg',$mimetype,$filetempname);
+            $this->insertFile($service,$filename,'PersonalDetails','0B1AhtyM5U79zREp5QkpiYmphODg',$mimetype,$filetempname);
             if($Confirm_Meessage)
             {
                $return_data=array($Confirm_Meessage,$Customerid,$StartDate,$S_starttime,$S_endtime,$EndDate,$E_starttime,$E_endtime,$FirstName,$Lastname,$Mobile,$IntlMobile,$Officeno,$Emailid,$Uint,$RoomType);
@@ -131,6 +131,7 @@ class Customercreation extends CI_Model
             {
                return $Confirm_Meessage;
             }
+
         }
    public function insertFile($service, $title, $description, $parentId,$mimeType,$uploadfilename)
     {

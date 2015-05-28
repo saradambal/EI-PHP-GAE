@@ -30,6 +30,7 @@ require_once "Header.php";
             url: "/index.php/Ctrl_Banktt_Search_Forms/Banktt_initialdatas",
             data:{'ErrorList':'1,2,4,6,45,247,385,401'},
             success: function(data){
+                $('#BankTT_Updation_Form').hide();
                 $('.preloader').hide();
                 var value=JSON.parse(data);
                 var searchoption=value[0];
@@ -448,7 +449,7 @@ require_once "Header.php";
                 data:inputdata,
                 success: function(data){
                     var valuearray=JSON.parse(data);
-                    var tabledata="<table id='Banktt_Datatable' border=1 cellspacing='0' data-class='table'  class='srcresult table' style='width:3000px;' >";
+                    var tabledata="<table id='Banktt_Datatable' border=1 cellspacing='0' data-class='table'  class='srcresult table' style='width:2500px'>";
                     tabledata+="<thead class='headercolor'><tr class='head' style='text-align:center'>";
                     tabledata+="<th style='width:80px !important;text-align:center;vertical-align: top'>EDIT/UPDATE</th>";
                     tabledata+="<th style='width:130px !important;text-align:center;vertical-align: top'>TRANSACTION TYPE<span class='labelrequired'><em>*</em></span></th>";
@@ -761,7 +762,7 @@ require_once "Header.php";
 <body>
 <div class="container">
     <div class="wrapper">
-        <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif" /></div></div></div>
+        <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
         <div class="row title text-center"><h4><b>BANK TT SEARCH / UPDATE</b></h4></div>
         <div class ='row content'>
             <div class="panel-body">

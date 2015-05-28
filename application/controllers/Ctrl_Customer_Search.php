@@ -1,4 +1,7 @@
 <?php
+include 'GET_USERSTAMP.php';
+include 'GET_CONFIG.php';
+$UserStamp=$UserStamp;
 Class Ctrl_Customer_Search extends CI_Controller
 {
     public function Index()
@@ -115,7 +118,8 @@ Class Ctrl_Customer_Search extends CI_Controller
         $RoomType=$this->Common_function->getUnitRoomType($unit);
         $UnitDates=$this->Common_function->getUnit_Start_EndDate($unit);
         $unit = $this->Common_function->getAllActiveUnits();
-        $ReturnValues=array($Resultset,$RoomType,$RecverDetails,$UnitDates,$unit);
+        $CustomerStartDate=$this->Common_function->getCustomerStartDate();
+        $ReturnValues=array($Resultset,$RoomType,$RecverDetails,$UnitDates,$unit,$CustomerStartDate);
         echo json_encode($ReturnValues);
     }
     public function CustomerRoomTypeLoad()
@@ -130,8 +134,14 @@ Class Ctrl_Customer_Search extends CI_Controller
     }
     public function CustomerDetailsUpdate()
     {
+        global $UserStamp;
+        $this->load->model('Eilib/Common_function');
+        $Startdate=$_POST['CCRE_SRC_Startdate'];
+        $Enddate=$_POST['CCRE_SRC_Enddate'];
+        $Leaseperiod=$this->Common_function->getLeasePeriod($Startdate,$Enddate);
+        $Quoters=$this->Common_function->quarterCalc(new DateTime(date('Y-m-d',strtotime($Startdate))), new DateTime(date('Y-m-d',strtotime($Enddate))));
         $this->load->model('Customersearch');
-        $Create_confirm=$this->Customersearch->Customer_Search_Update();
+        $Create_confirm=$this->Customersearch->Customer_Search_Update($UserStamp,$Leaseperiod,$Quoters);
         print_r($Create_confirm);
     }
 }

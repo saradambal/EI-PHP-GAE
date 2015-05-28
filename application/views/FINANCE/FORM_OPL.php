@@ -6,6 +6,7 @@
     $(document).ready(function() {
         $('#spacewidth').height('0%');
         var Message;
+        $('.preloader').hide();
         $.ajax({
             type: "POST",
             url: '/index.php/Ctrl_Outstanding_Payee_list/ProfileEmailId',
@@ -84,7 +85,6 @@
         }
  //************************FORM RESET FUNCTION START******************************//
         $(document).on('click','#FIN_OPL_btn_save',function(){
-            $('.preloader').show();
             var FormElements=$('#FIN_OPL_outstanding_form').serialize();
             $.ajax({
                 type: "POST",
@@ -101,11 +101,9 @@
                     {
                         show_msgbox("OUTSTANDING PAYEES LIST",'EMAIL NOT SENT WITH THE CURRENT OUTSTANDING PAYEES LIST',"success",false);
                     }
-                    $('.preloader').hide();
                 },
                 error: function(data){
                     alert('error in getting'+JSON.stringify(data));
-                    $('.preloader').hide();
                 }
             });
         });
@@ -119,7 +117,7 @@
 <body>
 <div class="container">
     <div class="wrapper">
-        <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif" /></div></div></div>
+        <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
         <div class="row title text-center"><h4><b>OUTSTANDING PAYEES LIST</b></h4></div>
         <div class ='row content'>
                 <div id="Form_ErrorMessage">

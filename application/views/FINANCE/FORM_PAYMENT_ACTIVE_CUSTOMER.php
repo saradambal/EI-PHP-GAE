@@ -17,7 +17,7 @@
             url: '/index.php/Ctrl_Payment_Active_Customer/PaymentInitialDatas',
             data:{ErrorList:'2,3,248,309'},
             success: function(data){
-            	$('.preloader').hide();
+                $('.preloader').hide();
                 var valuearray=JSON.parse(data);
                 ActiveUnits=valuearray[0];
                 Paymenttype=valuearray[1];
@@ -106,7 +106,6 @@
             var options ='<option value="empty">SELECT</option>';
             if(unit!='SELECT')
             {
-            	$('.preloader').show();
                 $.ajax({
                     type: "POST",
                     url: '/index.php/Ctrl_Payment_Active_Customer/ActiveCustomer',
@@ -223,7 +222,6 @@
             var options ='<option value="">SELECT</option>';
             if(customer!='SELECT')
             {
-            	$('.preloader').show();
                 $('#TempCustomerid_'+rowid).val(Customerid);
                 $.ajax({
                     type: "POST",
@@ -281,7 +279,6 @@
             var DBenddate;
             if(Leaseperiod!='SELECT' && Leaseperiod!='')
             {
-            	$('.preloader').show();
             $.ajax({
                 type: "POST",
                 url: '/index.php/Ctrl_Payment_Active_Customer/ActiveCustomerLeasePeriodDates',
@@ -314,7 +311,7 @@
                         $('#Forperiodid_'+splittedid[1]).datepicker("option","minDate",depositmindate);
                         $('#Forperiodid_'+splittedid[1]).datepicker("option","maxDate",depositmaxdate);
                     }
-			      $('.preloader').hide();
+
                 },
                 error: function(data){
                     alert('error in getting'+JSON.stringify(data));
@@ -422,7 +419,6 @@
         }
     }
      $(document).on('click', '#Payment_btn_submitbutton', function () {
-      $('.preloader').show();
       var unitarray=[];
       var Customerarray=[];
       var Leasperiodarray=[];
@@ -480,25 +476,25 @@
 <body>
     <div class="container">
         <div class="wrapper">
-            <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif" /></div></div></div>
+            <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
             <div class="row title text-center"><h4><b>PAYMENT ENTRY-ACTIVE CUSTOMER</b></h4></div>
             <div class ='row content'>
                 <div class="panel-body">
                     <div id="Finance_Entry_Container" class="table-responsive">
-                        <div><input type="button" value="Add" id="AddNewPayment" disabled></div>
+                        <div><input type="button" class="maxbtn" value="ADD ROW" id="AddNewPayment" disabled></div>
                          <section>
-                            <table id="Finance_Entry_Table" border=1 cellspacing='0' data-class='table'  class=' srcresult table' style="width: 2000px">
+                            <table id="Finance_Entry_Table" border=1 cellspacing='0' data-class='table'  class=' srcresult table' style="width: 1500px">
                                 <thead>
                                      <tr>
                                         <th style='width:70px !important;vertical-align: middle'>ACTION</th>
-                                        <th style='width:130px !important;vertical-align: middle'>UNIT</th>
-                                        <th style='width:250px !important;vertical-align: middle'>CUSTOMER</th>
-                                        <th style='width:130px !important;vertical-align: middle'>LEASE PERIOD</th>
-                                        <th style='width:200px !important;vertical-align: middle'>PAYMENT</th>
-                                        <th style='width:80px !important;vertical-align: middle'>AMOUNT</th>
+                                        <th style='width:130px !important;vertical-align: middle'>UNIT<span class="labelrequired"><em>*</em></span></th>
+                                        <th style='width:250px !important;vertical-align: middle'>CUSTOMER<span class="labelrequired"><em>*</em></span></th>
+                                        <th style='width:130px !important;vertical-align: middle'>LEASE PERIOD<span class="labelrequired"><em>*</em></span></th>
+                                        <th style='width:200px !important;vertical-align: middle'>PAYMENT<span class="labelrequired"><em>*</em></span></th>
+                                        <th style='width:80px !important;vertical-align: middle'>AMOUNT<span class="labelrequired"><em>*</em></span></th>
                                          <th style='width:70px !important;vertical-align: middle'>PAYMENT FLAG</th>
-                                        <th style='width:120px !important;vertical-align: middle'>FOR PERIOD</th>
-                                        <th style='width:100px !important;vertical-align: middle'>PAID DATE</th>
+                                        <th style='width:120px !important;vertical-align: middle'>FOR PERIOD<span class="labelrequired"><em>*</em></span></th>
+                                        <th style='width:100px !important;vertical-align: middle'>PAID DATE<span class="labelrequired"><em>*</em></span></th>
                                         <th style='width:200px !important;vertical-align: middle'>COMMENTS</th>
                                      </tr>
                                 </thead>

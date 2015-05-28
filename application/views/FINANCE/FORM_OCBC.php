@@ -480,7 +480,7 @@
 <body>
     <div class="container">
         <div class="wrapper">
-            <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif" /></div></div></div>
+            <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
             <div class="row title text-center"><h4><b>OCBC</b></h4></div>
             <div class ='row content'>
                 <div class="panel-body">
@@ -501,7 +501,6 @@
                     <div id="FIN_OCBC_DataTable" class="table-responsive" hidden>
                         <div id="headerdata"></div><h3 style="color:#498af3" id="headerdata"><u></u></h3>
                         <section id="ocbc_records">
-
                         </section>
                     </div>
                 </div>

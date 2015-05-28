@@ -349,8 +349,8 @@ $(document).ready(function() {
     }
     function DB_dateCalculation(inputdate)
     {
-        var inputdate=inputdate.split('-');
-        var newunitstartdate=new Date(inputdate[0],inputdate[1]-1,inputdate[2]);
+      var inputdate=inputdate.split('-');
+      var newunitstartdate=new Date(inputdate[0],inputdate[1]-1,inputdate[2]);
         return newunitstartdate;
     }
     function DB_beforedateCalculation(startdateperiod)
@@ -360,16 +360,16 @@ $(document).ready(function() {
         return newunitstartdate;
     }
     $(document).on('change','#CCRE_Startdate',function(){
-        if($('#CCRE_Startdate').val()!="")
-        {
-            $('#startdatediv').show();
-            $('#CusromerEnddate').show();
-        }
+     if($('#CCRE_Startdate').val()!="")
+     {
+        $('#startdatediv').show();
+        $('#CusromerEnddate').show();
+     }
         else
-        {
-            $('#startdatediv').hide();
-            $('#CusromerEnddate').hide();
-        }
+     {
+       $('#startdatediv').hide();
+       $('#CusromerEnddate').hide();
+     }
     });
     $(function ()
     {
@@ -465,84 +465,84 @@ $(document).ready(function() {
             {
                 $('#CCRE_NoticePeriodDate').datepicker("option","maxDate",newnoticemaxdate);
                 $('#CCRE_NoticePeriodDate').datepicker("option","minDate",newnoticemindate);
-            }
+             }
             else
-            {
-                $('#CCRE_NoticePeriodDate').datepicker("option","maxDate",newnoticemaxdate);
-                var newnoticestartdate=new Date();
-                var day=newnoticestartdate.getDate()+1;
-                var newnoticemindate=new Date(newnoticestartdate.getFullYear(),newnoticestartdate.getMonth(),day);
-                $('#CCRE_NoticePeriodDate').datepicker("option","minDate",newnoticemindate);
-            }
+             {
+                 $('#CCRE_NoticePeriodDate').datepicker("option","maxDate",newnoticemaxdate);
+                 var newnoticestartdate=new Date();
+                 var day=newnoticestartdate.getDate()+1;
+                 var newnoticemindate=new Date(newnoticestartdate.getFullYear(),newnoticestartdate.getMonth(),day);
+                 $('#CCRE_NoticePeriodDate').datepicker("option","minDate",newnoticemindate);
+             }
         }
     });
     $(document).on('change','.CardNumbers',function(){
-        var CCRE_CardOptionname = $("input[name='AccessCard']:checked").val();
+    var CCRE_CardOptionname = $("input[name='AccessCard']:checked").val();
         var firstname=$('#CCRE_FirstName').val();
         var lastname=$('#CCRE_LastName').val();
         if(firstname!="" && lastname!="")
         {
-            if(CCRE_CardOptionname=='Cardnumber')
-            {
-                $('.preloader').show();
-                var Unit=$('#CCRE_UnitNo').val();
-                $.ajax({
-                    type: "POST",
-                    url: "/index.php/Ctrl_Customer_Creation/UnitCardNumbers",
-                    data:{"Unit":Unit},
-                    success: function(data){
-                        var value_array=JSON.parse(data);
-                        var cardnolblval=[];
-                        var cardnoresult=[];
-                        if(value_array.length!=0)
-                        {
-                            for(var i=0;i<value_array.length;i++)
-                            {
-                                cardnoresult.push(value_array[i].UASD_ACCESS_CARD);
-                                if(i<=3)
-                                {
-                                    if(i==0)
-                                    {
-                                        cardnolblval.push(firstname+" "+lastname);
-                                    }
-                                    else
-                                    {
-                                        cardnolblval.push("GUEST "+i);
-                                    }
-                                }
-                            }
-                            cardnoresult=[cardnoresult,cardnolblval];
-                            CCRE_cardhandleMessageResponse(cardnoresult);
-                        }
-                        else
-                        {
-                            $('#CCRE_Cardnumber').prop('checked', false);
-                            $('#CCRE_Nullcard').prop('checked', false);
-                            var errormessage=errormsg[4].EMC_DATA;
-                            var appenddata='';
-                            appenddata+='<div class="row form-group">';
-                            appenddata+='<div class="col-md-3">';
-                            appenddata+='</div>';
-                            appenddata+='<div class="col-md-6" style="padding-left: 50px;"><label style="color:red;" class="errormsg">'+errormessage+'</label></div>';
-                            $('#CardNumbersdiv').html(appenddata);
-                            $('#CardNumbersdiv').show();
-                        }
-                        $('.preloader').hide();
-                    },
-                    error: function(data){
-                        alert('error in getting'+JSON.stringify(data));
-                        $('.preloader').hide();
-                    }
-                });
-                $('#CardNumbersdiv').show();
-            }
-            else
-            {
-                var appenddata='';
-                $('#CardNumbersdiv').append(appenddata);
-                $('#CardNumbersdiv').hide();
-                $('#CCRE_lbl_error').text('');
-            }
+         if(CCRE_CardOptionname=='Cardnumber')
+          {
+              $('.preloader').show();
+              var Unit=$('#CCRE_UnitNo').val();
+              $.ajax({
+                  type: "POST",
+                  url: "/index.php/Ctrl_Customer_Creation/UnitCardNumbers",
+                  data:{"Unit":Unit},
+                  success: function(data){
+                      var value_array=JSON.parse(data);
+                      var cardnolblval=[];
+                      var cardnoresult=[];
+                      if(value_array.length!=0)
+                      {
+                          for(var i=0;i<value_array.length;i++)
+                          {
+                              cardnoresult.push(value_array[i].UASD_ACCESS_CARD);
+                              if(i<=3)
+                              {
+                                  if(i==0)
+                                  {
+                                      cardnolblval.push(firstname+" "+lastname);
+                                  }
+                                  else
+                                  {
+                                      cardnolblval.push("GUEST "+i);
+                                  }
+                              }
+                          }
+                          cardnoresult=[cardnoresult,cardnolblval];
+                          CCRE_cardhandleMessageResponse(cardnoresult);
+                      }
+                      else
+                      {
+                          $('#CCRE_Cardnumber').prop('checked', false);
+                          $('#CCRE_Nullcard').prop('checked', false);
+                          var errormessage=errormsg[4].EMC_DATA;
+                          var appenddata='';
+                          appenddata+='<div class="row form-group">';
+                          appenddata+='<div class="col-md-3">';
+                          appenddata+='</div>';
+                          appenddata+='<div class="col-md-6" style="padding-left: 50px;"><label style="color:red;" class="errormsg">'+errormessage+'</label></div>';
+                          $('#CardNumbersdiv').html(appenddata);
+                          $('#CardNumbersdiv').show();
+                      }
+                      $('.preloader').hide();
+                  },
+                  error: function(data){
+                      alert('error in getting'+JSON.stringify(data));
+                      $('.preloader').hide();
+                  }
+              });
+           $('#CardNumbersdiv').show();
+          }
+         else
+          {
+              var appenddata='';
+              $('#CardNumbersdiv').append(appenddata);
+              $('#CardNumbersdiv').hide();
+              $('#CCRE_lbl_error').text('');
+          }
         }
         else
         {
@@ -570,26 +570,26 @@ $(document).ready(function() {
         {
             for (var i=0;i<CCRE_cardArray.length;i++)
             {
-                var listid='CCRE_cb_cardlistselect'+i;
-                appenddata+='<div class="row form-group">';
-                appenddata+='<div class="col-md-3">';
-                appenddata+='</div>';
-                appenddata+='<div class="col-md-2" style="padding-left: 50px;">';
-                appenddata+='<input type="checkbox"  value='+CCRE_cardArray[i]+' id="CCRE_cb_cardnumberarray'+i+'" name="checkbox" class="CCRE_showlist" />'+CCRE_cardArray[i];
-                appenddata+='</div>';
-                appenddata+='<div class="col-md-3">';
-                appenddata+='<SELECT class="form-control CCRE_showlist"  name="CCRE_cb_cardlistselect"  value="Cardnumber" id='+listid+'><OPTION>SELECT</OPTION></SELECT>';
-                appenddata+='</div>';
-                appenddata+='<div class="col-md-3">';
-                appenddata+='<input type="text" id="CCRE_lb_cardlisttext'+i+'" name="temptex[]" >';
-                appenddata+='</div>';
-                appenddata+='</div>';
+            var listid='CCRE_cb_cardlistselect'+i;
+            appenddata+='<div class="row form-group">';
+            appenddata+='<div class="col-md-3">';
+            appenddata+='</div>';
+            appenddata+='<div class="col-md-2" style="padding-left: 50px;">';
+            appenddata+='<input type="checkbox"  value='+CCRE_cardArray[i]+' id="CCRE_cb_cardnumberarray'+i+'" name="checkbox" class="CCRE_showlist" />'+CCRE_cardArray[i];
+            appenddata+='</div>';
+            appenddata+='<div class="col-md-3">';
+            appenddata+='<SELECT class="form-control CCRE_showlist"  name="CCRE_cb_cardlistselect"  value="Cardnumber" id='+listid+'><OPTION>SELECT</OPTION></SELECT>';
+            appenddata+='</div>';
+            appenddata+='<div class="col-md-3">';
+            appenddata+='<input type="text" id="CCRE_lb_cardlisttext'+i+'" name="temptex[]" >';
+            appenddata+='</div>';
+            appenddata+='</div>';
             }
             $('#CardNumbersdiv').html(appenddata);
             for (var k=0;k<CCRE_cardArray.length;k++)
             {
-                $('#CCRE_cb_cardlistselect'+k).hide();
-                $('#CCRE_lb_cardlisttext'+k).hide();
+            $('#CCRE_cb_cardlistselect'+k).hide();
+            $('#CCRE_lb_cardlisttext'+k).hide();
             }
             $('#CardNumbersdiv').show();
             for(var i=0;i<CCRE_cardArray.length;i++){
@@ -804,23 +804,23 @@ $(document).ready(function() {
         return diff;
     }
     $(document).on('change','#CCRE_ProcessingFee',function(){
-        if($('#CCRE_ProcessingFee').val()=="")
-        {
-            $('input:checkbox[name=CCRE_process_waived]').attr("checked",false);
-            $('input:checkbox[name=CCRE_process_waived]').attr("disabled",'disabled');
-        }
+      if($('#CCRE_ProcessingFee').val()=="")
+      {
+          $('input:checkbox[name=CCRE_process_waived]').attr("checked",false);
+          $('input:checkbox[name=CCRE_process_waived]').attr("disabled",'disabled');
+      }
         else
-        {
-            $('input:checkbox[name=CCRE_process_waived]').removeAttr("disabled");
-        }
+      {
+          $('input:checkbox[name=CCRE_process_waived]').removeAttr("disabled");
+      }
     });
     $(document).on('change','#CCRE_SDStarttime',function(){
-        var fromtime=$('#CCRE_SDStarttime').val();
+     var fromtime=$('#CCRE_SDStarttime').val();
         if(fromtime!='Select')
         {
-            var CCRE_timelist=totimecalculation(fromtime);
-            $('#CCRE_SDEndtime').html(CCRE_timelist);
-            $('#startdatetotime').show();
+         var CCRE_timelist=totimecalculation(fromtime);
+         $('#CCRE_SDEndtime').html(CCRE_timelist);
+         $('#startdatetotime').show();
         }
         else
         {
@@ -875,7 +875,6 @@ $(document).ready(function() {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 var msg_alert = JSON.parse(xmlhttp.responseText);
                 $('.preloader').hide();
-
                 if(msg_alert==1)
                 {
                     $('.preloader').hide();
@@ -944,14 +943,14 @@ $(document).ready(function() {
         $('#CCRE_Rent').removeClass('invalid');
     }
     $(document).on('change','.proratedcheck',function(){
-        var startdate=$('#CCRE_Startdate').val();
-        var enddate=$('#CCRE_Enddate').val();
-        var Rent=$('#CCRE_Rent').val();
+      var startdate=$('#CCRE_Startdate').val();
+      var enddate=$('#CCRE_Enddate').val();
+      var Rent=$('#CCRE_Rent').val();
         if(startdate!='' && enddate!='' && Rent!='')
         {
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Customer_Creation/Prorated_check",
+                url: "/index.php/Ctrl_Customer_Creation/Prorated_check",
                 data:{SD:startdate,ED:enddate},
                 success: function(data){
                     if(data!='true')
@@ -977,401 +976,414 @@ $(document).ready(function() {
             $('input:checkbox[name=CCRE_Rent_Prorated]').attr("disabled",'disabled');
         }
     });
-});
+    $(document).on('change','.fileextensionchk',function(){
+        var filename = $('#CC_fileupload').val();
+        var valid_extensions = /(\.pdf)$/i;
+        if(valid_extensions.test(filename))
+        {
+        }
+        else
+        {
+            show_msgbox("CUSTOMER CREATION",'UPLOAD ONLY PDF FILES',"success",false);
+            $('#CC_fileupload').val('');
+        }
+    });
+    
+ });
 </script>
 <body>
 <div class="container">
 <div class="wrapper">
-<div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif" /></div></div></div>
+<div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
 <div class="row title text-center"><h4><b>CUSTOMER CREATION</b></h4></div>
 <div class ='row content'>
-<form id="CCRE_Form_CustomerCreation" class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
-<div class="panel-body">
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>FIRST NAME<span class="labelrequired"><em>*</em></span></label>
-    </div>
-    <div class="col-md-3">
-        <input class="form-control autosize Customernamechange" name="CCRE_FirstName" maxlength="30"  id="CCRE_FirstName" placeholder="Customer First Name"/>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>LAST NAME<span class="labelrequired"><em>*</em></span></label>
-    </div>
-    <div class="col-md-3">
-        <input class="form-control autosize Customernamechange" name="CCRE_LastName" maxlength="30"  id="CCRE_LastName" placeholder="Customer Last Name"/>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>COMPANY NAME</label>
-    </div>
-    <div class="col-md-3">
-        <input class="form-control compautosize" name="CCRE_CompanyName" maxlength="50"  id="CCRE_CompanyName" placeholder="Company Name"/>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>COMPANY ADDRESS</label>
-    </div>
-    <div class="col-md-3">
-        <input class="form-control compautosize" name="CCRE_CompanyAddress" maxlength="50"  id="CCRE_CompanyAddress" placeholder="Company Address"/>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>COMPANY POSTAL CODE</label>
-    </div>
-    <div class="col-md-3">
-        <input class="form-control" name="CCRE_CompanyPostalCode" maxlength="6" style="max-width:100px;" id="CCRE_CompanyPostalCode" placeholder="Postal Code"/>
-    </div>
-    <div class="col-md-3"><label id="CCRE_lbl_postalerrormsg" class="errormsg" hidden></label></div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>E-MAIL ID<span class="labelrequired"><em>*</em></span></label>
-    </div>
-    <div class="col-md-3">
-        <input class="form-control" name="CCRE_Emailid" required id="CCRE_Emailid" placeholder="Customer Email Id"/>
-    </div>
-    <div class="col-md-3"><label id="CCRE_lbl_emailiderrormsg" class="errormsg" hidden></label></div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>MOBILE</label>
-    </div>
-    <div class="col-md-3">
-        <input class="form-control numonlynozero mobilevalidation" name="CCRE_Mobile" maxlength="8" style="max-width:100px;" id="CCRE_Mobile" placeholder="Mobile"/>
-    </div>
-    <div class="col-md-3"><label id="CCRE_lbl_mobileerrormsg" class="errormsg" hidden></label></div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>INT'L MOBILE</label>
-    </div>
-    <div class="col-md-3">
-        <input class="form-control" name="CCRE_IntlMobile" maxlength="15" style="max-width:150px;" id="CCRE_IntlMobile" placeholder="Int'l Mobile"/>
-    </div>
-    <div class="col-md-3"><label id="CCRE_lbl_intlmobileerrormsg" class="errormsg" hidden></label></div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>OFFICE NO</label>
-    </div>
-    <div class="col-md-3">
-        <input class="form-control numonlynozero officevalidation" name="CCRE_Officeno" maxlength="8" style="max-width:110px;" id="CCRE_Officeno" placeholder="Office No"/>
-    </div>
-    <div class="col-md-3"><label id="CCRE_lbl_officeerrormsg" class="errormsg" hidden></label></div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>DATE OF BIRTH</label>
-    </div>
-    <div class="col-md-3">
-        <input class="form-control" name="CCRE_DOB"  style="max-width:120px;" id="CCRE_DOB" placeholder="DateOfBirth"/>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>NATIONALITY<span class="labelrequired"><em>*</em></span></label>
-    </div>
-    <div class="col-md-3">
-        <SELECT class="form-control" name="CCRE_Nationality" maxlength="8"  id="CCRE_Nationality" >
-            <OPTION>SELECT</OPTION>
-        </SELECT>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>PASSPORT NUMBER</label>
-    </div>
-    <div class="col-md-2">
-        <input class="form-control alnumonlyzero" name="CCRE_PassportNo" maxlength="15" style="max-width:170px;" id="CCRE_PassportNo" placeholder="Passport No"/>
-    </div>
-    <div class="col-md-5"><label id="CCRE_lbl_passporterrormsg" class="errormsg" hidden></label></div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>PASSPORT DATE</label>
-    </div>
-    <div class="col-md-2">
-        <input class="form-control passportdatevalidation datenonmandtry" name="CCRE_PassportDate" maxlength="15" style="max-width:120px;" id="CCRE_PassportDate" placeholder="PassprotDate">
-    </div>
-    <div class="col-md-5"><label id="CCRE_lbl_passportdateerrormsg" class="errormsg" hidden></label></div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>EP NUMBER</label>
-    </div>
-    <div class="col-md-2">
-        <input class="form-control alnumonlynozero" name="CCRE_EpNo" style="max-width:170px;" maxlength="15" id="CCRE_EpNo" placeholder="EP Number"/>
-    </div>
-    <div class="col-md-5"><label id="CCRE_lbl_epnodateerrormsg" class="errormsg" hidden></label></div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>EP EXPIRY DATE</label>
-    </div>
-    <div class="col-md-2">
-        <input class="form-control epdatevalidation" name="CCRE_EPDate" style="max-width:120px;" id="CCRE_EPDate" placeholder="EP Date"/>
-    </div>
-    <div class="col-md-5"><label id="CCRE_lbl_ep_dateerrormsg" class="errormsg" hidden></label></div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>UNIT NUMBER<span class="labelrequired"><em>*</em></span></label>
-    </div>
-    <div class="col-md-3">
-        <SELECT class="form-control Unitchange" name="CCRE_UnitNo" style="max-width:120px;" id="CCRE_UnitNo">
-            <OPTION>SELECT</OPTION>
-        </SELECT>
-    </div>
-    <div class="col-md-5"><label id="CCRE_Roomtype_error" class="errormsg" hidden></label></div>
-</div>
-<div class="row form-group" id="RoomtypeDiv" hidden>
-    <div class="col-md-3">
-        <label>ROOM TYPE<span class="labelrequired"><em>*</em></span></label>
-    </div>
-    <div class="col-md-3">
-        <SELECT class="form-control" name="CCRE_RoomType" style="max-width:200px;" id="CCRE_RoomType">
-            <OPTION>SELECT</OPTION>
-        </SELECT>
-    </div>
-
-</div>
-<div id="AccessCardDiv" hidden>
-    <div class="row form-group">
-        <div class="col-md-3">
-        </div>
-        <div class="col-md-3">
-            <input type="radio" class="CardNumbers"  name="AccessCard" id="CCRE_Cardnumber" value="Cardnumber">CARD NUMBER
-        </div>
-        <div class="col-md-3"><label id="CCRE_lbl_error" class="errormsg" hidden></label></div>
-    </div>
-    <div  id="CardNumbersdiv" hidden>
-
-    </div>
-    <div class="row form-group">
-        <div class="col-md-3">
-        </div>
-        <div class="col-md-3">
-            <input type="radio" class="CardNumbers" name="AccessCard" id="CCRE_Nullcard" value="Null">NULL
-        </div>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>CHECK IN DATE<span class="labelrequired"><em>*</em></span></label>
-    </div>
-    <div class="col-md-8">
-        <div class="row form-group">
-            <div class="col-md-3">
-                <input class="form-control prorated startdatevalidate datemandtry noticedate proratedcheck" name="CCRE_Startdate"  style="max-width:120px;" id="CCRE_Startdate" placeholder="Check in Date"/>
-            </div>
-            <div id="startdatediv" hidden>
-                <div class="col-md-1">
-                    <label>FROM</label>
-                </div>
-                <div class="col-md-2">
-                    <SELECT class="form-control totimevalidation" name="CCRE_SDStarttime"  style="max-width:100px;" id="CCRE_SDStarttime">
-                        <OPTION>Select</OPTION>
-                    </SELECT>
-                </div>
-                <div id="startdatetotime" hidden>
-                    <div class="col-md-1">
-                        <label>TO</label>
+   <form id="CCRE_Form_CustomerCreation" class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
+        <div class="panel-body">
+                 <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>FIRST NAME<span class="labelrequired"><em>*</em></span></label>
                     </div>
-                    <div class="col-md-2">
-                        <SELECT class="form-control" name="CCRE_SDEndtime"  style="max-width:100px;" id="CCRE_SDEndtime" hidden>
-                            <OPTION>Select</OPTION>
+                    <div class="col-md-3">
+                        <input class="form-control autosize Customernamechange" name="CCRE_FirstName" maxlength="30"  id="CCRE_FirstName" placeholder="Customer First Name"/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>LAST NAME<span class="labelrequired"><em>*</em></span></label>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control autosize Customernamechange" name="CCRE_LastName" maxlength="30"  id="CCRE_LastName" placeholder="Customer Last Name"/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>COMPANY NAME</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control compautosize" name="CCRE_CompanyName" maxlength="50"  id="CCRE_CompanyName" placeholder="Company Name"/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>COMPANY ADDRESS</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control compautosize" name="CCRE_CompanyAddress" maxlength="50"  id="CCRE_CompanyAddress" placeholder="Company Address"/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>COMPANY POSTAL CODE</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control" name="CCRE_CompanyPostalCode" maxlength="6" style="max-width:100px;" id="CCRE_CompanyPostalCode" placeholder="Postal Code"/>
+                    </div>
+                    <div class="col-md-3"><label id="CCRE_lbl_postalerrormsg" class="errormsg" hidden></label></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>E-MAIL ID<span class="labelrequired"><em>*</em></span></label>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control" name="CCRE_Emailid" required id="CCRE_Emailid" placeholder="Customer Email Id"/>
+                    </div>
+                    <div class="col-md-3"><label id="CCRE_lbl_emailiderrormsg" class="errormsg" hidden></label></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>MOBILE</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control numonlynozero mobilevalidation" name="CCRE_Mobile" maxlength="8" style="max-width:100px;" id="CCRE_Mobile" placeholder="Mobile"/>
+                    </div>
+                    <div class="col-md-3"><label id="CCRE_lbl_mobileerrormsg" class="errormsg" hidden></label></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>INT'L MOBILE</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control" name="CCRE_IntlMobile" maxlength="15" style="max-width:150px;" id="CCRE_IntlMobile" placeholder="Int'l Mobile"/>
+                    </div>
+                    <div class="col-md-3"><label id="CCRE_lbl_intlmobileerrormsg" class="errormsg" hidden></label></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>OFFICE NO</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control numonlynozero officevalidation" name="CCRE_Officeno" maxlength="8" style="max-width:110px;" id="CCRE_Officeno" placeholder="Office No"/>
+                    </div>
+                    <div class="col-md-3"><label id="CCRE_lbl_officeerrormsg" class="errormsg" hidden></label></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>DATE OF BIRTH</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control" name="CCRE_DOB"  style="max-width:120px;" id="CCRE_DOB" placeholder="DateOfBirth"/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>NATIONALITY<span class="labelrequired"><em>*</em></span></label>
+                    </div>
+                    <div class="col-md-3">
+                        <SELECT class="form-control" name="CCRE_Nationality" maxlength="8"  id="CCRE_Nationality" >
+                            <OPTION>SELECT</OPTION>
                         </SELECT>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row form-group" id="CusromerEnddate" hidden>
-    <div class="col-md-3">
-        <label>CHECK OUT DATE<span class="labelrequired"><em>*</em></span></label>
-    </div>
-    <div class="col-md-8">
-        <div class="row form-group">
-            <div class="col-md-3">
-                <input class="form-control noticedate datemandtry proratedcheck" name="CCRE_Enddate"  style="max-width:120px;" id="CCRE_Enddate" placeholder="Check Out Date"/>
-            </div>
-            <div class="col-md-1">
-                <label>FROM</label>
-            </div>
-            <div class="col-md-2">
-                <SELECT class="form-control" name="CCRE_EDStarttime"  style="max-width:100px;" id="CCRE_EDStarttime">
-                    <OPTION>Select</OPTION>
-                </SELECT>
-            </div>
-            <div id="endatedateto" hidden>
-                <div class="col-md-1">
-                    <label >TO</label>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>PASSPORT NUMBER</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control alnumonlyzero" name="CCRE_PassportNo" maxlength="15" style="max-width:170px;" id="CCRE_PassportNo" placeholder="Passport No"/>
+                    </div>
+                    <div class="col-md-5"><label id="CCRE_lbl_passporterrormsg" class="errormsg" hidden></label></div>
                 </div>
-                <div class="col-md-2">
-                    <SELECT class="form-control" name="CCRE_EDEndtime"  style="max-width:100px;" id="CCRE_EDEndtime">
-                        <OPTION>Select</OPTION>
-                    </SELECT>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>PASSPORT DATE</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control passportdatevalidation datenonmandtry" name="CCRE_PassportDate" maxlength="15" style="max-width:120px;" id="CCRE_PassportDate" placeholder="PassprotDate">
+                    </div>
+                    <div class="col-md-5"><label id="CCRE_lbl_passportdateerrormsg" class="errormsg" hidden></label></div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>NOTICE PERIOD</label>
-    </div>
-    <div class="col-md-3">
-        <input class="form-control" name="CCRE_NoticePeriod" maxlength="1" style="max-width:70px;" id="CCRE_NoticePeriod" placeholder="No"/>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>NOTICE PERIOD DATE</label>
-    </div>
-    <div class="col-md-3">
-        <input class="form-control" name="CCRE_NoticePeriodDate"  style="max-width:150px;" id="CCRE_NoticePeriodDate" placeholder="Notice Date"/>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>SELECT AIRCON FEE</label>
-    </div>
-    <div class="col-md-6">
-        <div class="row form-group">
-            <div class="col-md-5">
-                <input type="radio" class="Airconfeechange" name="Aircon" id="CCRE_Quaterlyfee" value="QuarterlyFee">QUARTERLY SERVICE FEE
-            </div>
-            <div class="col-md-3">
-                <input type="text" class="form-control CCRE_amtonlyvalidation" maxlength="6" style="max-width:120px;" name="CCRE_Quarterly_fee" id="CCRE_Quarterly_fee" placeholder="0.00"/>
-            </div>
-        </div>
-        <div class="row form-group">
-            <div class="col-md-5">
-                <input type="radio" class="Airconfeechange" name="Aircon" id="CCRE_Quaterlyfee" value="FixedAircon">FIXED AIRCON FEE
-            </div>
-            <div class="col-md-3">
-                <input type="text" class="form-control CCRE_amtonlyvalidation" maxlength="6" style="max-width:120px;" name="CCRE_Fixedaircon_fee" id="CCRE_Fixedaircon_fee" placeholder="0.00"/>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>ELECTRICITY CAPPED</label>
-    </div>
-    <div class="col-md-2">
-        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_ElectricitycapFee"  style="max-width:100px;" id="CCRE_ElectricitycapFee" placeholder="0.00"/>
-    </div>
-    <div class="col-md-5"><label id="CCRE_lbl_electcaperrormsg" class="errormsg" hidden></label></div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>CURTAIN DRY CLEANING FEE</label>
-    </div>
-    <div class="col-md-3">
-        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_Curtain_DrycleanFee"  style="max-width:100px;" id="CCRE_Curtain_DrycleanFee" placeholder="0.00"/>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>CHECKOUT CLEANING FEE</label>
-    </div>
-    <div class="col-md-3">
-        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_CheckOutCleanFee"  style="max-width:100px;" id="CCRE_CheckOutCleanFee" placeholder="0.00"/>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>DEPOSIT</label>
-    </div>
-    <div class="col-md-3">
-        <input class="form-control CCRE_amtonlyvalidationmaxdigit" maxlength="7" name="CCRE_DepositFee"  style="max-width:100px;" id="CCRE_DepositFee" placeholder="0.00"/>
-    </div>
-    <div class="col-md-3"><label id="CCRE_lbl_depositerrormsg" class="errormsg" hidden></label></div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>RENT<span class="labelrequired"><em>*</em></span></label>
-    </div>
-    <div class="col-md-6">
-        <div class="row form-group">
-            <div class="col-md-3">
-                <input class="form-control CCRE_amtonlyvalidationmaxdigit proratedcheck" name="CCRE_Rent" maxlength="7"  style="max-width:100px;" id="CCRE_Rent" placeholder="0.00">
-            </div>
-            <div class="col-md-1">
-                <input id="CCRE_Rent_Prorated" type="checkbox" name="CCRE_Rent_Prorated"><label id="CCRE_lbl_prorated"></label>
-            </div>
-            <div class="col-md-7"><label id="CCRE_lbl_renterrormsg" class="errormsg" hidden></label></div>
-        </div>
-    </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>EP NUMBER</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control alnumonlynozero" name="CCRE_EpNo" style="max-width:170px;" maxlength="15" id="CCRE_EpNo" placeholder="EP Number"/>
+                    </div>
+                    <div class="col-md-5"><label id="CCRE_lbl_epnodateerrormsg" class="errormsg" hidden></label></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>EP EXPIRY DATE</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control epdatevalidation" name="CCRE_EPDate" style="max-width:120px;" id="CCRE_EPDate" placeholder="EP Date"/>
+                    </div>
+                    <div class="col-md-5"><label id="CCRE_lbl_ep_dateerrormsg" class="errormsg" hidden></label></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>UNIT NUMBER<span class="labelrequired"><em>*</em></span></label>
+                    </div>
+                    <div class="col-md-3">
+                        <SELECT class="form-control Unitchange" name="CCRE_UnitNo" style="max-width:120px;" id="CCRE_UnitNo">
+                            <OPTION>SELECT</OPTION>
+                        </SELECT>
+                    </div>
+                    <div class="col-md-5"><label id="CCRE_Roomtype_error" class="errormsg" hidden></label></div>
+                </div>
+                <div class="row form-group" id="RoomtypeDiv" hidden>
+                    <div class="col-md-3">
+                        <label>ROOM TYPE<span class="labelrequired"><em>*</em></span></label>
+                    </div>
+                    <div class="col-md-3">
+                        <SELECT class="form-control" name="CCRE_RoomType" style="max-width:200px;" id="CCRE_RoomType">
+                            <OPTION>SELECT</OPTION>
+                        </SELECT>
+                    </div>
 
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>PROCESSING COST</label>
-    </div>
-    <div class="col-md-6">
-        <div class="row form-group">
-            <div class="col-md-3">
-                <input class="form-control CCRE_processamtonlyvalidationmaxdigit" name="CCRE_ProcessingFee"  style="max-width:100px;" id="CCRE_ProcessingFee" placeholder="0.00">
-            </div>
-            <div class="col-md-1">
-                <input type="checkbox" name="CCRE_process_waived" id="CCRE_process_waived" disabled> <label style="vertical-align: middle" id="CCRE_lbl_waived"></label>
-            </div>
-            <div class="col-md-7"><label id="CCRE_lbl_processerrormsg" class="errormsg" hidden></label></div>
-        </div>
-    </div>
+                </div>
+                <div id="AccessCardDiv" hidden>
+                    <div class="row form-group">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="radio" class="CardNumbers"  name="AccessCard" id="CCRE_Cardnumber" value="Cardnumber">CARD NUMBER
+                        </div>
+                        <div class="col-md-3"><label id="CCRE_lbl_error" class="errormsg" hidden></label></div>
+                    </div>
+                    <div  id="CardNumbersdiv" hidden>
 
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>SELECT THE OPTION<span class="labelrequired"><em>*</em></span></label>
-    </div>
-    <div class="col-md-3">
-        <SELECT class="form-control" name="CCRE_Option"  style="max-width:200px;" id="CCRE_Option">
-            <OPTION>SELECT</OPTION>
-        </SELECT>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>E-MAIL ID<span class="labelrequired"><em>*</em></span></label>
-    </div>
-    <div class="col-md-3">
-        <SELECT class="form-control" name="CCRE_MailList" id="CCRE_MailList">
-            <OPTION>SELECT</OPTION>
-        </SELECT>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>COMMENTS</label>
-    </div>
-    <div class="col-md-3">
-        <textarea class="form-control autogrowcomments" name="CCRE_Comments"  id="CCRE_Comments" placeholder="Comments"></textarea>
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-md-3">
-        <label>FILE UPLOAD</label>
-    </div>
-    <div class="col-md-3">
-        <input type="file" id="CC_fileupload" name="CC_fileupload" class="form-control" />
-    </div>
-</div>
-<div class="row form-group">
-    <div class="col-lg-offset-2 col-lg-3">
-        <input type="button" id="CCRE_btn_savebutton" class="btn" value="CREATE" disabled>         <input type="button" id="CustomerCreation_Reset" class="btn" value="RESET">
-    </div>
-</div>
-</div>
-</form>
+                    </div>
+                    <div class="row form-group">
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-3">
+                            <input type="radio" class="CardNumbers" name="AccessCard" id="CCRE_Nullcard" value="Null">NULL
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>CHECK IN DATE<span class="labelrequired"><em>*</em></span></label>
+                    </div>
+                    <div class="col-md-8">
+                    <div class="row form-group">
+                        <div class="col-md-3">
+                            <input class="form-control prorated startdatevalidate datemandtry noticedate proratedcheck" name="CCRE_Startdate"  style="max-width:120px;" id="CCRE_Startdate" placeholder="Check in Date"/>
+                        </div>
+                       <div id="startdatediv" hidden>
+                        <div class="col-md-1">
+                            <label>FROM</label>
+                        </div>
+                        <div class="col-md-2">
+                            <SELECT class="form-control totimevalidation" name="CCRE_SDStarttime"  style="max-width:100px;" id="CCRE_SDStarttime">
+                              <OPTION>Select</OPTION>
+                            </SELECT>
+                        </div>
+                        <div id="startdatetotime" hidden>
+                        <div class="col-md-1">
+                            <label>TO</label>
+                        </div>
+                        <div class="col-md-2">
+                            <SELECT class="form-control" name="CCRE_SDEndtime"  style="max-width:100px;" id="CCRE_SDEndtime" hidden>
+                                <OPTION>Select</OPTION>
+                            </SELECT>
+                        </div>
+                       </div>
+                      </div>
+                    </div>
+                </div>
+                    </div>
+                <div class="row form-group" id="CusromerEnddate" hidden>
+                    <div class="col-md-3">
+                        <label>CHECK OUT DATE<span class="labelrequired"><em>*</em></span></label>
+                    </div>
+                    <div class="col-md-8">
+                    <div class="row form-group">
+                        <div class="col-md-3">
+                            <input class="form-control noticedate datemandtry proratedcheck" name="CCRE_Enddate"  style="max-width:120px;" id="CCRE_Enddate" placeholder="Check Out Date"/>
+                        </div>
+                        <div class="col-md-1">
+                            <label>FROM</label>
+                        </div>
+                        <div class="col-md-2">
+                            <SELECT class="form-control" name="CCRE_EDStarttime"  style="max-width:100px;" id="CCRE_EDStarttime">
+                                <OPTION>Select</OPTION>
+                            </SELECT>
+                        </div>
+                        <div id="endatedateto" hidden>
+                        <div class="col-md-1">
+                            <label >TO</label>
+                        </div>
+                        <div class="col-md-2">
+                            <SELECT class="form-control" name="CCRE_EDEndtime"  style="max-width:100px;" id="CCRE_EDEndtime">
+                                <OPTION>Select</OPTION>
+                            </SELECT>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+                    </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>NOTICE PERIOD</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control" name="CCRE_NoticePeriod" maxlength="1" style="max-width:70px;" id="CCRE_NoticePeriod" placeholder="No"/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>NOTICE PERIOD DATE</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control" name="CCRE_NoticePeriodDate"  style="max-width:150px;" id="CCRE_NoticePeriodDate" placeholder="Notice Date"/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>SELECT AIRCON FEE</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row form-group">
+                            <div class="col-md-5">
+                                <input type="radio" class="Airconfeechange" name="Aircon" id="CCRE_Quaterlyfee" value="QuarterlyFee">QUARTERLY SERVICE FEE
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control CCRE_amtonlyvalidation" maxlength="6" style="max-width:120px;" name="CCRE_Quarterly_fee" id="CCRE_Quarterly_fee" placeholder="0.00"/>
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-5">
+                                <input type="radio" class="Airconfeechange" name="Aircon" id="CCRE_Quaterlyfee" value="FixedAircon">FIXED AIRCON FEE
+                            </div>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control CCRE_amtonlyvalidation" maxlength="6" style="max-width:120px;" name="CCRE_Fixedaircon_fee" id="CCRE_Fixedaircon_fee" placeholder="0.00"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>ELECTRICITY CAPPED</label>
+                    </div>
+                    <div class="col-md-2">
+                        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_ElectricitycapFee"  style="max-width:100px;" id="CCRE_ElectricitycapFee" placeholder="0.00"/>
+                    </div>
+                    <div class="col-md-5"><label id="CCRE_lbl_electcaperrormsg" class="errormsg" hidden></label></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>CURTAIN DRY CLEANING FEE</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_Curtain_DrycleanFee"  style="max-width:100px;" id="CCRE_Curtain_DrycleanFee" placeholder="0.00"/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>CHECKOUT CLEANING FEE</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control CCRE_amtonlyvalidation" maxlength="6" name="CCRE_CheckOutCleanFee"  style="max-width:100px;" id="CCRE_CheckOutCleanFee" placeholder="0.00"/>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>DEPOSIT</label>
+                    </div>
+                    <div class="col-md-3">
+                        <input class="form-control CCRE_amtonlyvalidationmaxdigit" maxlength="7" name="CCRE_DepositFee"  style="max-width:100px;" id="CCRE_DepositFee" placeholder="0.00"/>
+                    </div>
+                    <div class="col-md-3"><label id="CCRE_lbl_depositerrormsg" class="errormsg" hidden></label></div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>RENT<span class="labelrequired"><em>*</em></span></label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <input class="form-control CCRE_amtonlyvalidationmaxdigit proratedcheck" name="CCRE_Rent" maxlength="7"  style="max-width:100px;" id="CCRE_Rent" placeholder="0.00">
+                            </div>
+                            <div class="col-md-1">
+                                <input id="CCRE_Rent_Prorated" type="checkbox" name="CCRE_Rent_Prorated"><label id="CCRE_lbl_prorated"></label>
+                            </div>
+                            <div class="col-md-7"><label id="CCRE_lbl_renterrormsg" class="errormsg" hidden></label></div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>PROCESSING COST</label>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row form-group">
+                            <div class="col-md-3">
+                                <input class="form-control CCRE_processamtonlyvalidationmaxdigit" name="CCRE_ProcessingFee"  style="max-width:100px;" id="CCRE_ProcessingFee" placeholder="0.00">
+                            </div>
+                            <div class="col-md-1">
+                                <input type="checkbox" name="CCRE_process_waived" id="CCRE_process_waived" disabled> <label style="vertical-align: middle" id="CCRE_lbl_waived"></label>
+                            </div>
+                            <div class="col-md-7"><label id="CCRE_lbl_processerrormsg" class="errormsg" hidden></label></div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>SELECT THE OPTION<span class="labelrequired"><em>*</em></span></label>
+                    </div>
+                    <div class="col-md-3">
+                        <SELECT class="form-control" name="CCRE_Option"  style="max-width:200px;" id="CCRE_Option">
+                            <OPTION>SELECT</OPTION>
+                        </SELECT>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>E-MAIL ID<span class="labelrequired"><em>*</em></span></label>
+                    </div>
+                    <div class="col-md-3">
+                        <SELECT class="form-control" name="CCRE_MailList" id="CCRE_MailList">
+                            <OPTION>SELECT</OPTION>
+                        </SELECT>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <div class="col-md-3">
+                        <label>COMMENTS</label>
+                    </div>
+                    <div class="col-md-3">
+                        <textarea class="form-control autogrowcomments" name="CCRE_Comments"  id="CCRE_Comments" placeholder="Comments"></textarea>
+                    </div>
+                </div>
+                 <div class="row form-group">
+                     <div class="col-md-3">
+                         <label>FILE UPLOAD</label>
+                     </div>
+                     <div class="col-md-3">
+                         <input type="file" id="CC_fileupload" name="CC_fileupload" class="form-control fileextensionchk" />
+                     </div>
+                 </div>
+                <div class="row form-group">
+                    <div class="col-lg-offset-2 col-lg-3">
+                        <input type="button" id="CCRE_btn_savebutton" class="btn" value="CREATE" disabled>         <input type="button" id="CustomerCreation_Reset" class="btn" value="RESET">
+                    </div>
+                </div>
+        </div>
+   </form>
 </div>
 </div>
 </div>

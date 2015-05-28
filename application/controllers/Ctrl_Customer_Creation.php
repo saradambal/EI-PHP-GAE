@@ -44,13 +44,15 @@ Class Ctrl_Customer_Creation extends CI_Controller
     {
         global $UserStamp;
         global $ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token;
+        $this->load->library('Google');
         $Startdate=$_POST['CCRE_Startdate'];
         $Enddate=$_POST['CCRE_Enddate'];
         $this->load->model('Eilib/Common_function');
         $Leaseperiod=$this->Common_function->getLeasePeriod($Startdate,$Enddate);
         $Quoters=$this->Common_function->quarterCalc(new DateTime(date('Y-m-d',strtotime($Startdate))), new DateTime(date('Y-m-d',strtotime($Enddate))));
+        $service=$this->Common_function->get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
         $this->load->model('Customercreation');
-        $Create_confirm=$this->Customercreation->Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters);
+        $Create_confirm=$this->Customercreation->Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters,$service);
         if($Create_confirm[0]==1)
         {
             $this->load->library('Google');
@@ -64,6 +66,7 @@ Class Ctrl_Customer_Creation extends CI_Controller
             echo($Create_confirm[0]);
         }
     }
+
     public function Prorated_check()
     {
         $Startdate=$_POST['SD'];

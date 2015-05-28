@@ -15,7 +15,6 @@
      $(".alphanumonly").doValidation({rule:'alphanumeric'});
      $("#CCRE_SRC_IntlMobile").doValidation({rule:'numbersonly',prop:{realpart:15,leadzero:true}});
      $("#CCRE_SRC_CompanyPostalCode").doValidation({rule:'numbersonly',prop:{realpart:6,leadzero:true}});
-     $('.autogrowcomments').autogrow({onInitialize: true});
      var nationality;
      var errormsg;
      var allunits;
@@ -568,6 +567,7 @@
                  });
              });
          }
+
      });
      //////////////LEASE PERIOD///////////////////////////////
      function leaseperiodvalidation()
@@ -868,7 +868,7 @@
              data:data,
              success: function(data){
                  var value_array=JSON.parse(data);
-                 var CustpmerPersonal_Tabledata="<table id='Customer_Personal_Datatable' border=1 cellspacing='0' data-class='table'  class=' srcresult table' style='width:3500px'>";
+                 var CustpmerPersonal_Tabledata="<table id='Customer_Personal_Datatable' border=1 cellspacing='0' data-class='table'  class=' srcresult table' style='width:2500px'>";
                  CustpmerPersonal_Tabledata+="<thead class='headercolor'><tr class='head' style='text-align:center'>";
                  CustpmerPersonal_Tabledata+="<th style='text-align:center;vertical-align: top'>CUSTOMER ID</th>";
                  CustpmerPersonal_Tabledata+="<th style='text-align:center;vertical-align: top'>CUSTOMER FIRSTNAME</th>";
@@ -912,12 +912,12 @@
                      var custid=CustomerPersonalDetailsarray[i][0];
                      CustpmerPersonal_Tabledata+='<tr style="text-align: center !important;">' +
                          '<td style="width:70px !important;">'+custid+'</td>' +
-                         '<td class="PersonalEdit" style="width:150px !important;" id=Firstname_'+custid+'>'+CustomerPersonalDetailsarray[i][1]+'</td>' +
-                         '<td class="PersonalEdit" style="width:150px !important;" id=Lastname_'+custid+'>'+CustomerPersonalDetailsarray[i][2]+'</td>' +
-                         '<td class="PersonalEdit" style="width:200px !important;" id=Companyname_'+custid+'>'+CustomerPersonalDetailsarray[i][3]+'</td>' +
-                         '<td class="PersonalEdit" style="width:200px !important;" id=CompanyAddress_'+custid+'>'+CustomerPersonalDetailsarray[i][4]+'</td>' +
-                         '<td class="PersonalEdit" style="width:100px !important;" id=Postalcode_'+custid+'>'+CustomerPersonalDetailsarray[i][5]+'</td>' +
-                         '<td class="PersonalEdit" style="width:200px !important;" id=Email_'+custid+'>'+CustomerPersonalDetailsarray[i][6]+'</td>' +
+                         '<td style="width:150px !important;">'+CustomerPersonalDetailsarray[i][1]+'</td>' +
+                         '<td style="width:150px !important;">'+CustomerPersonalDetailsarray[i][2]+'</td>' +
+                         '<td style="width:200px !important;">'+CustomerPersonalDetailsarray[i][3]+'</td>' +
+                         '<td style="width:200px !important;">'+CustomerPersonalDetailsarray[i][4]+'</td>' +
+                         '<td style="width:100px !important;">'+CustomerPersonalDetailsarray[i][5]+'</td>' +
+                         '<td style="width:200px !important;">'+CustomerPersonalDetailsarray[i][6]+'</td>' +
                          "<td style='width:100px !important;'>"+CustomerPersonalDetailsarray[i][7]+"</td>" +
                          "<td style='width:130px !important;'>"+CustomerPersonalDetailsarray[i][8]+"</td>" +
                          "<td style='width:100px !important;'>"+CustomerPersonalDetailsarray[i][9]+"</td>" +
@@ -927,7 +927,7 @@
                          "<td style='width:100px !important;'>"+CustomerPersonalDetailsarray[i][13]+"</td>" +
                          "<td style='width:120px !important;'>"+CustomerPersonalDetailsarray[i][14]+"</td>" +
                          "<td style='width:100px !important;'>"+CustomerPersonalDetailsarray[i][15]+"</td>" +
-                         "<td style='text-align: center !important;'>"+CustomerPersonalDetailsarray[i][16]+"</td></tr>";
+                         "<td style='width:500px !important;'>"+CustomerPersonalDetailsarray[i][16]+"</td></tr>";
                  }
                  CustpmerPersonal_Tabledata+="</body>";
                  $('#Customer_Personal_Table').html(CustpmerPersonal_Tabledata);
@@ -1076,12 +1076,14 @@
                  });
                  $('#CC_SEARCH_DataTable').show();
                  $('.preloader').hide();
+                 $("html, body").animate({ scrollTop: $(document).height() }, "slow");
              },
              error: function(data){
                  alert('error in getting'+JSON.stringify(data));
                  $('.preloader').hide();
              }
          });
+
      });
      $(document).on('change blur','.customernamechange',function(){
          $('#customernamelabel').text($('#CCRE_SRC_FirstName').val()+' '+$('#CCRE_SRC_LastName').val());
@@ -1111,6 +1113,8 @@
                 var SDFlag=Recverdetails[0].STARTFLAG;
                 var EDFlag=Recverdetails[0].ENDFLAG;
                 var allactiveunits=value_array[4];
+                var monthdiff=value_array[5];
+                monthdiff=(monthdiff[0].CCN_DATA);
                 var Accesscard_details=[];
                 for(var i=0;i<value_array[0].length;i++)
                 {
@@ -1125,6 +1129,8 @@
                 $("#CCRE_SRC_Fixedaircon_fee").hide().val('');
                 $('#CCRE_Quaterlyfee').prop('checked',false);
                 $('#CCRE_Airconfee').prop('checked',false);
+                $('#CCRE_SRC_customerid').val(value_array[0][0].CUSTOMER_ID);
+                $('#CCRE_SRC_Recver').val(value_array[0][0].CED_REC_VER);
                 $('#CCRE_SRC_FirstName').val(value_array[0][0].CUSTOMER_FIRST_NAME);
                 $('#CCRE_SRC_LastName').val(value_array[0][0].CUSTOMER_LAST_NAME);
                 $('#CCRE_SRC_CompanyName').val(value_array[0][0].CCD_COMPANY_NAME);
@@ -1156,6 +1162,7 @@
                 $('#CCRE_SRC_Comments').val(value_array[0][0].CPD_COMMENTS);
                 $('#CCRE_lbl_prorated').text(prorated[0].CCN_DATA);
                 $('#CCRE_lbl_waived').text(prorated[1].CCN_DATA);
+
                 if(value_array[0][0].CED_PROCESSING_WAIVED=='X')
                 {
                     $('input:checkbox[name=CCRE_process_waived]').attr("checked",true);
@@ -1261,7 +1268,8 @@
                 var epandppdatemindate=Form_dateConversion(value_array[0][0].ENDDATE)
                 $('#CCRE_SRC_PassportDate').datepicker("option","minDate",epandppdatemindate);
                 $('#CCRE_SRC_EPDate').datepicker("option","minDate",epandppdatemindate);
-                if(MaxRecver==1 && leaseperiod==1 && terminate==null)
+                var CSRC_recheckin=value_array[0][0].CED_RECHECKIN;
+                if(MaxRecver==1 && leaseperiod==1 && terminate==null && CSRC_recheckin!='X')
                 {
                     $('#CCRE_SRC_Startdate').val(value_array[0][0].STARTDATE).prop('disabled', false);
                     $('#CCRE_SRC_SDStarttime').val(timeformatchange(value_array[0][0].CED_SD_STIME)).prop('disabled', false);
@@ -1280,7 +1288,7 @@
                     $('#CCRE_SRC_NoticePeriodDate').prop('disabled', false);
 
                 }
-                else if(MaxRecver==leaseperiod && MaxRecver!=1 && terminate==null)
+                else if(MaxRecver==leaseperiod && MaxRecver!=1 && terminate==null && CSRC_recheckin!='X')
                 {
                     $('#CCRE_SRC_Startdate').val(value_array[0][0].STARTDATE).prop('disabled', true);
                     $('#CCRE_SRC_SDStarttime').val(timeformatchange(value_array[0][0].CED_SD_STIME)).prop('disabled', true);
@@ -1295,7 +1303,7 @@
                     $('#CCRE_SRC_Enddate').datepicker("option","minDate",Endmaxdate);
                     $('#CCRE_SRC_NoticePeriodDate').prop('disabled', false);
                 }
-                else if(MaxRecver==leaseperiod && terminate=='X')
+                else if(MaxRecver==leaseperiod && terminate=='X' && CSRC_recheckin!='X')
                 {
                     $('#CCRE_SRC_Startdate').val(value_array[0][0].STARTDATE).prop('disabled', true);
                     $('#CCRE_SRC_SDStarttime').val(timeformatchange(value_array[0][0].CED_SD_STIME)).prop('disabled', true);
@@ -1305,6 +1313,28 @@
                     $('#CCRE_SRC_EDStarttime').val(timeformatchange(value_array[0][0].CED_ED_STIME)).prop('disabled', true);
                     $('#CCRE_SRC_EDEndtime').val(timeformatchange(value_array[0][0].CED_ED_ETIME)).prop('disabled', true);
                     $('#CCRE_SRC_NoticePeriodDate').prop('disabled', true);
+                }
+                else if(MaxRecver==leaseperiod && terminate!='X' && CSRC_recheckin=='X')
+                {
+                    $('#CCRE_SRC_Startdate').val(value_array[0][0].STARTDATE).prop('disabled', false);
+                    $('#CCRE_SRC_SDStarttime').val(timeformatchange(value_array[0][0].CED_SD_STIME)).prop('disabled', false);
+                    $('#CCRE_SRC_SDEndtime').val(timeformatchange(value_array[0][0].CED_SD_ETIME)).prop('disabled', false);
+
+                    $('#CCRE_SRC_Enddate').val(value_array[0][0].ENDDATE).prop('disabled', false);
+                    $('#CCRE_SRC_EDStarttime').val(timeformatchange(value_array[0][0].CED_ED_STIME)).prop('disabled', false);
+                    $('#CCRE_SRC_EDEndtime').val(timeformatchange(value_array[0][0].CED_ED_ETIME)).prop('disabled', false);
+                    var MinDate=DB_dateConversion(Unit_StartDate);
+                    var previoussd=DB_dateConversion(PreRecver_ED);
+                    var month_DiffDate=DB_beforedateCalculation(monthdiff);
+                    var datearray=[MinDate,month_DiffDate,previoussd]
+                    var chkminDate=new Date(Math.max.apply(null,datearray));
+                    $('#CCRE_SRC_Startdate').datepicker("option","minDate",chkminDate);
+                    var MaxDate=DB_dateConversion(Unit_EndDate);
+                    $('#CCRE_SRC_Startdate').datepicker("option","maxDate",MaxDate);
+                    var Endmaxdate=Form_dateConversion(value_array[0][0].STARTDATE);
+                    $('#CCRE_SRC_Enddate').datepicker("option","maxDate",MaxDate);
+                    $('#CCRE_SRC_Enddate').datepicker("option","minDate",Endmaxdate);
+                    $('#CCRE_SRC_NoticePeriodDate').prop('disabled', false);
                 }
                 else
                 {
@@ -1317,11 +1347,11 @@
                     $('#CCRE_SRC_EDEndtime').val(timeformatchange(value_array[0][0].CED_ED_ETIME)).prop('disabled', true);
                     $('#CCRE_SRC_NoticePeriodDate').prop('disabled', true);
                 }
-
-                if(card.length!=0 )
+                if(Accesscard_details[0].Card!=null && Accesscard_details[0].Card!='')
                 {
                  $('#CCRE_SRC_UnitNo').prop('disabled', true);
                  var appenddata='';
+
                     for (var i=0;i<Accesscard_details.length;i++)
                     {
                         appenddata+='<div class="row form-group">';
@@ -1348,6 +1378,9 @@
                         appenddata+='<div class="col-md-2">';
                         appenddata+='<input type="text" class="form-control" id='+Edid+' name="CSRC_EndDate[]" style="max-width: 100px" value='+Accesscard_details[i].ED+' readonly>';
                         appenddata+='</div>';
+                        appenddata+='<div class="col-md-2">';
+                        appenddata+='<input type="hidden" class="form-control" name="CSRC_card[]" style="max-width: 100px" value='+Accesscard_details[i].Card+' readonly>';
+                        appenddata+='</div>';
                         appenddata+='</div>';
                     }
                   $('#AccessCardDiv').html(appenddata).show();
@@ -1355,6 +1388,8 @@
                 }
                 else
                 {
+                    var appenddata='';
+                    $('#AccessCardDiv').html(appenddata).show();
                     if(MaxRecver==1)
                     {
                         //UNIT//
@@ -1375,6 +1410,7 @@
                 }
                 $('#CSRC_updation_form').show();
                 $('.preloader').hide();
+                $("html, body").animate({ scrollTop: $(document).height() }, "slow");
             },
             error: function(data){
                 alert('error in getting'+JSON.stringify(data));
@@ -1434,6 +1470,12 @@
          var newDate = CCRE_date1.toDateString();
          newDate = new Date( Date.parse( newDate ));
          return newDate;
+     }
+     function DB_beforedateCalculation(startdateperiod)
+     {
+         var inputdate=new Date();
+         var newunitstartdate=new Date(inputdate.getFullYear(),inputdate.getMonth()-parseInt(startdateperiod),inputdate.getDate());
+         return newunitstartdate;
      }
      function DB_dateConversion(inputdate)
      {
@@ -1610,47 +1652,6 @@
      var ep_changedmonth=new Date(epCCRE_d.setFullYear(CCRE_epyear));
      $('#CCRE_SRC_EPDate').datepicker("option","maxDate",ep_changedmonth);
 
-  //INLINE EDIT -PERSONAL DETAILS
-//     var combineid;
-//     var previous_id;
-//     var cval;
-//     var ifcondition;
-//     $(document).on('click','.PersonalEdit', function (){
-//         if(previous_id!=undefined){
-//             $('#'+previous_id).replaceWith("<td align='left' class='PersonalEdit' id='"+previous_id+"' >"+cval+"</td>");
-//         }
-//         var cid = $(this).attr('id');
-//         var id=cid.split('_');
-//         ifcondition=id[0];
-//         combineid=id[1];
-//         previous_id=cid;
-//         cval = $(this).text();
-//             if(ifcondition=='Firstname')
-//             {
-//                 $('#'+cid).replaceWith("<td  class='new' id='"+previous_id+"'><input type='text' id='CCRE_SRC_FirstName' name='CCRE_SRC_FirstName' maxlength='30' class='PersonalUpdate form-control autosize' value='"+cval+"'></td>");
-//                 $(".autosize").doValidation({rule:'alphabets',prop:{whitespace:true,autosize:true}});
-//             }
-//             if(ifcondition=='Lastname')
-//             {
-//                 $('#'+cid).replaceWith("<td  class='new' id='"+previous_id+"'><input type='text' id='CCRE_SRC_LastName' name='CCRE_SRC_LastName' maxlength='30' class='PersonalUpdate form-control autosize' value='"+cval+"'></td>");
-//                 $(".autosize").doValidation({rule:'alphabets',prop:{whitespace:true,autosize:true}});
-//             }
-//             if(ifcondition=='Companyname')
-//             {
-//                 $('#'+cid).replaceWith("<td  class='new' id='"+previous_id+"'><input type='text' id='CCRE_SRC_CompanyName' name='CCRE_SRC_CompanyName' maxlength='50' class='PersonalUpdate form-control compautosize' value='"+cval+"'></td>");
-//                 $(".compautosize").doValidation({rule:'general',prop:{autosize:true}});
-//             }
-//             if(ifcondition=='CompanyAddress')
-//             {
-//                 $('#'+cid).replaceWith("<td  class='new' id='"+previous_id+"'><input type='text' id='CCRE_SRC_CompanyAddress' name='CCRE_SRC_CompanyAddress' maxlength='50' class='PersonalUpdate form-control compautosize' value='"+cval+"'></td>");
-//                 $(".compautosize").doValidation({rule:'general',prop:{autosize:true}});
-//             }
-//             if(ifcondition=='Postalcode')
-//             {
-//                 $('#'+cid).replaceWith("<td  class='new' id='"+previous_id+"'><input type='text' id='CCRE_SRC_CompanyPostalCode' name='CCRE_SRC_CompanyPostalCode' maxlength='6'  class='PersonalUpdate form-control value='"+cval+"'></td>");
-//                 $("#CCRE_CompanyPostalCode").doValidation({rule:'numbersonly',prop:{realpart:6,leadzero:true}});
-//             }
-//     });
      $(document).on('click','#CustomerSearch_Reset', function (){
          $('#CSRC_updation_form').hide();
      });
@@ -1726,25 +1727,97 @@
          $('#CCRE_SRC_Startdate').prop('disabled', false);
          $('#CCRE_SRC_Enddate').prop('disabled', false);
          $('#CCRE_SRC_NoticePeriodDate').prop('disabled', false);
+         var FormElement=document.getElementById("CCRE_Form_CustomerSearch");
          var FormElement=$('#CCRE_Form_CustomerSearch').serialize();
+//         alert(FormElement);
          $.ajax({
                 type: "POST",
                 url: "/index.php/Ctrl_Customer_Search/CustomerDetailsUpdate",
                 data:FormElement,
                 success: function(data){
-                    alert(data);
+                   if(data==1)
+                   {
+                       $('#CC_SEARCH_DataTable').hide();
+                       $('#CSRC_updation_form').hide();
+                       show_msgbox("CUSTOMER CREATION",errormsg[18].EMC_DATA,"success",false);
+                   }
+                    else
+                   {
+                       $('#CCRE_SRC_UnitNo').prop('disabled', true);
+                       $('#CCRE_SRC_SDStarttime').prop('disabled', true);
+                       $('#CCRE_SRC_SDEndtime').prop('disabled', true);
+                       $('#CCRE_SRC_EDStarttime').prop('disabled', true);
+                       $('#CCRE_SRC_EDEndtime').prop('disabled', true);
+                       $('#CCRE_SRC_Startdate').prop('disabled', true);
+                       $('#CCRE_SRC_Enddate').prop('disabled', true);
+                       $('#CCRE_SRC_NoticePeriodDate').prop('disabled', true);
+                       show_msgbox("CUSTOMER CREATION",data,"success",false);
+                   }
                 },
                 error: function(data){
                     alert('error in getting'+JSON.stringify(data));
                 }
         });
      });
+     $(document).on('change','#CCRE_SRC_SDStarttime',function(){
+         var fromtime=$('#CCRE_SRC_SDStarttime').val();
+         if(fromtime!='Select')
+         {
+             var CCRE_timelist=totimecalculation(fromtime);
+             $('#CCRE_SRC_SDEndtime').html(CCRE_timelist);
+             $('#startdatetotime').show();
+         }
+         else
+         {
+             $('#startdatetotime').hide();
+         }
+     });
+     $(document).on('change','#CCRE_SRC_EDStarttime',function(){
+         var fromtime=$('#CCRE_SRC_EDStarttime').val();
+         if(fromtime!='Select')
+         {
+             var CCRE_timelist=totimecalculation(fromtime);
+             $('#CCRE_SRC_EDEndtime').html(CCRE_timelist);
+             $('#endatedateto').show();
+         }
+         else
+         {
+             $('#endatedateto').hide();
+         }
+     });
+     function totimecalculation(starttime)
+     {
+         for(var i=0;i<timelist.length;i++)
+         {
+             if(starttime==timelist[i].TIME)
+             {
+                 var endtime_status=i;
+                 break;
+             }
+         }
+//        var CCRE_timelist='<option>Select</option>';
+         if(starttime!='23:30')
+         {
+             var location=endtime_status+1;
+             var CCRE_timelist;
+             for(var i=location;i<timelist.length;i++)
+             {
+                 var data=timelist[i];
+                 CCRE_timelist += '<option value="' + data.TIME + '">' + data.TIME + '</option>';
+             }
+         }
+         else
+         {
+             CCRE_timelist += '<option value="23:59">23:59</option>';
+         }
+         return CCRE_timelist;
+     }
  });
 </script>
 <body>
 <div class="container">
     <div class="wrapper">
-        <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif" /></div></div></div>
+        <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
         <div class="row title text-center"><h4><b>CUSTOMER SEARCH UPDATE</b></h4></div>
         <div class ='row content'>
                 <div class="panel-body">
@@ -1782,6 +1855,8 @@
                                     </div>
                                     <div class="col-md-3">
                                         <input class="form-control autosize customernamechange" name="CCRE_SRC_FirstName" maxlength="30" required id="CCRE_SRC_FirstName"/>
+                                        <input input type="hidden" class="form-control" name="CCRE_SRC_customerid" style="width:30px;"  id="CCRE_SRC_customerid"/>
+                                        <input input type="hidden" class="form-control" name="CCRE_SRC_Recver" style="width:30px;" id="CCRE_SRC_Recver"/>
                                     </div>
                                 </div>
                                 <div class="row form-group">
@@ -2118,9 +2193,10 @@
                                         <label>COMMENTS</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <textarea class="form-control autogrowcomments" name="CCRE_SRC_Comments"  id="CCRE_SRC_Comments"></textarea>
+                                        <textarea class="form-control" name="CCRE_SRC_Comments"  id="CCRE_SRC_Comments"></textarea>
                                     </div>
                                 </div>
+
                                 <div class="row form-group">
                                     <div class="col-lg-offset-2 col-lg-3">
                                         <input type="button" id="CSRC_btn_Updatebutton" class="btn" value="UPDATE" disabled>         <input type="button" id="CustomerSearch_Reset" class="btn" value="CANCEL">

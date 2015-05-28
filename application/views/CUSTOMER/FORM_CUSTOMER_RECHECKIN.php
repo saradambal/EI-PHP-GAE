@@ -27,6 +27,7 @@ $(document).ready(function() {
         url: '/index.php/Ctrl_Customer_Recheckin/Customer_Initaildatas',
         data:{"Formname":'CustomerCreation',"ErrorList":'1,2,6,33,34,35,36,37,321,324,339,342,343,344,345,346,347,348,400,443,444,458,459,460,461'},
         success: function(data){
+            $('.preloader').hide();
             var value_array=JSON.parse(data);
             timearray=value_array[5];
             errormsg=value_array[4];
@@ -1122,7 +1123,7 @@ var CustomernameDetails;
 <body>
 <div class="container">
 <div class="wrapper">
-<div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif" /></div></div></div>
+    <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
 <div class="row title text-center"><h4><b>CUSTOMER RECHECKIN</b></h4></div>
    <div class ='row content'>
       <div class="panel-body">
