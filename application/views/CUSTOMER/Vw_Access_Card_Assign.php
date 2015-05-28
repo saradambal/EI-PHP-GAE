@@ -970,7 +970,7 @@ require_once "Header.php";
                     <div id="CA_guest_cardno" hidden>
                     </div>
                     <div class="form-group" id="buttons">
-                        <div class="col-sm-offset-1 col-sm-3">
+                        <div class="col-sm-offset-2 col-sm-3">
                             <input class="btn btn-info" type="button" id="CA_btn_submitbutton" name="ASSIGN" value="ASSIGN" disabled/>
                             <input class="btn btn-info" type="button" id="CA_btn_resetbutton" name="RESET" value="RESET"/>
                         </div>

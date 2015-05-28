@@ -69,12 +69,12 @@ require_once "Header.php";
                 $(".preloader").hide();
                 if(DDC_conformationmsgvalue[0]=='DDC_flag_nosheet'){
                     var DDC_errorAarray_ss=DDC_errorAarray[17].EMC_DATA.replace('[SS]', DDC_conformationmsgvalue[1]);
-                    show_msgbox("DEPOSIT DEDUCTION CALCULATIONS",DDC_errorAarray_ss,'success',false);
+                    show_msgbox("DEPOSIT DEDUCTION CALCULATIONS",DDC_errorAarray_ss,'error',false);
                 }
                 else{
                     if((DDC_conformationmsgvalue[0]==0)){
                         if(DDC_conformationmsgvalue[0]==0)
-                            show_msgbox("DEPOSIT DEDUCTION CALCULATIONS",DDC_errorAarray[15].EMC_DATA,'success',false);
+                            show_msgbox("DEPOSIT DEDUCTION CALCULATIONS",DDC_errorAarray[15].EMC_DATA,'error',false);
                     }
                     else{
                         $("#DDC_btn_sbutton").hide();

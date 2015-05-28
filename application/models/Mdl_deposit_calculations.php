@@ -86,7 +86,57 @@ class Mdl_deposit_calculations extends CI_Model{
         $joinarray[]=($custidarray);
         return $joinarray;
     }
-    public function DDC_depcal_submit($unit_value,$name,$chkbox,$radio,$startdate,$enddate,$dep_custid,$DDC_recverlgth,$DDC_recdate,$UserStamp){
+    public function GetAllFilesName($service,$folderid){
+        try{
+            $children1 = $service->children->listChildren($folderid);
+            $filearray1=$children1->getItems();
+            $filenamelist=array();
+            foreach ($filearray1 as $child1) {
+                $fileid=$service->files->get($child1->getId())->id;
+                $filename=$service->files->get($child1->getId())->title;
+                $filenamelist[]=['id'=>$fileid,'title'=>$filename];
+            }
+            return $filenamelist;
+        }
+        catch(Exception $ex){
+            return 0;
+        }
+    }
+    function deleteFile($service, $fileId) {
+        try {
+            $service->files->delete($fileId);
+        }
+        catch (Exception $e) {
+            print "An error occurred: " . $e->getMessage();
+        }
+    }
+    public  function insertFile($service, $title, $description, $parentId) {
+        $file = new Google_Service_Drive_DriveFile();
+        $file->setTitle($title);
+        $file->setDescription($description);
+        $file->setMimeType('application/vnd.google-apps.spreadsheet');
+        // Set the parent folder.
+        if ($parentId != null) {
+            $parent = new Google_Service_Drive_ParentReference();
+            $parent->setId($parentId);
+            $file->setParents(array($parent));
+        }
+        try {
+            $createdFile = $service->files->insert($file, array(
+//                'data' => file_get_contents("./application/models/Eilib/testss.xls"),
+            'mimeType' => 'application/vnd.google-apps.spreadsheet',//$mimeType,
+            'convert' => TRUE,
+            'uploadType'=>'resumable'
+            ));
+            // Uncomment the following line to print the File ID
+//            print 'File ID: %s' % $createdFile->getId();
+            return $createdFile->getId();
+        } catch (Exception $e) {
+            print "An error occurred: " . $e->getMessage();
+        }
+    }
+
+    public function DDC_depcal_submit($unit_value,$name,$chkbox,$radio,$startdate,$enddate,$dep_custid,$DDC_recverlgth,$DDC_recdate,$UserStamp,$service){
         if($radio!='')
             $name=$name.'_'.$radio;
         else
@@ -110,7 +160,8 @@ class Mdl_deposit_calculations extends CI_Model{
             }
         }
         else{
-            $rbuttonX1=$DDC_recdate;
+            $rbuttonX1=array();
+            $rbuttonX1[]=$DDC_recdate;
         }
         $DDC_alllengdate=count($rbuttonX1);
         $DDC_recverarray=[];
@@ -121,7 +172,7 @@ class Mdl_deposit_calculations extends CI_Model{
             $DDC_recver=explode(',',$DDC_splitalvalue[1]);
             $DDC_startdate=$DDC_splitalvalue[2];
             $DDC_enddate=$DDC_splitalvalue[3];
-            $DDC_recverarray[]=($DDC_recver);
+            $DDC_recverarray=($DDC_recver);
             $selectedrecverlength=count($DDC_recverarray);
         }
         $flag='X';
@@ -142,78 +193,87 @@ class Mdl_deposit_calculations extends CI_Model{
         {
             $DDC_nooftimescalculat=$selectedrecverlength;
         }
-        $curdate=date('Y-M');
+        $curdate=date('M-Y');
         $date=explode('-',$curdate);
         $DDC_currentdateyear=$date[1];
         $DDC_currentmonth=$date[0];
         $DDC_ssname_currentyear='EI_DEPOSIT_DEDUCTIONS_'.$DDC_currentdateyear;
-//        $DDC_getfiles = DriveApp.getFolderById(DDC_folderid).getFiles();
+        $DDC_getfiles = $this->GetAllFilesName($service,$DDC_folderid);
         $DDC_flag_ss=0;
-//        while($DDC_getfiles.hasNext())
-//        {
-//            $DDC_oldfile=$DDC_getfiles.next();
-//            $DDC_oldfile.getId();
-//            $DDC_oldfile_id= DDC_oldfile.getId();//DriveApp.getFilesByName(DDC_oldfile).next().getId();
-//            if($DDC_oldfile==$DDC_ssname_currentyear)
-//            {
-//                $DDC_currentfile_id=$DDC_oldfile_id;
-//                $DDC_flag_ss=1;
-//            }
-//            $DDC_olddateyear=$date[1]-1;
-//            $DDC_ssname_oldyear='EI_DEPOSIT_DEDUCTIONS_'.$DDC_olddateyear;
-//            if($DDC_ssname_oldyear==$DDC_oldfile){
-//                $DDC_ssname_getid=$DDC_oldfile_id;
-//            }
-//        }
-//        if($DDC_flag_ss!=1){
-//            if($DDC_ssname_getid=='')
-//            {
-//                $DDC_getfiles = DriveApp.getFolderById($DDC_folderid).getFiles();
-//                while($DDC_getfiles.hasNext())
-//                {
-//                    $DDC_oldfile=$DDC_getfiles.next();
-//                    if($DDC_oldfile==$DDC_ssname_currentyear)
-//                    {
-//                        $DDC_oldfile.setTrashed(true);
-//                    }
-//                }
-//                return ['DDC_flag_nosheet',$DDC_ssname_oldyear];
-//            }
-//            $DDC_newspread=SpreadsheetApp.create($DDC_ssname_currentyear);
-//            $DDC_newspread_ssid=$DDC_newspread.getId();
-//            $DDC_targetFolderId=$DDC_folderid;
-//            $this->load->model('Eilib/Common_function');
-//            $this->Common_function->CUST_moveFileToFolder($DDC_newspread_ssid,"",$DDC_targetFolderId);
-//            conn.setAutoCommit(false);
-            //CREATE TEMPLATE FOR NEW SS
-//            $DDC_source = SpreadsheetApp.openById(DDC_ssname_getid);
-//            $DDC_templatesheet = $DDC_source.getSheets();
-//            $DDC_flg_tempsht=0;
-//            for($i=0;$i<count($DDC_templatesheet);$i++){
-//                if($DDC_templatesheet[$i].getSheetName()=='TEMPLATE'){
-//                    $DDC_flg_tempsht=1;
-//                    $DDC_sh=$DDC_source.getSheets()[$i];
-//                    $DDC_sh.copyTo(SpreadsheetApp.openById($DDC_newspread_ssid));
-//                }
-//            }
+        $DDC_ssname_getid='';
+        for($i=0;$i<count($DDC_getfiles);$i++)
+        {
+            $DDC_oldfile=$DDC_getfiles[$i]['title'];
+            $DDC_oldfile_id=$DDC_getfiles[$i]['id'];
+            if($DDC_oldfile==$DDC_ssname_currentyear)
+            {
+                $DDC_currentfile_id=$DDC_oldfile_id;
+                $DDC_flag_ss=1;
+            }
+            $DDC_olddateyear=$date[1]-1;
+            $DDC_ssname_oldyear='EI_DEPOSIT_DEDUCTIONS_'.$DDC_olddateyear;
+            if($DDC_ssname_oldyear==$DDC_oldfile){
+                $DDC_ssname_getid=$DDC_oldfile_id;
+            }
+        }
+        if($DDC_flag_ss!=1){
+            if($DDC_ssname_getid=='')
+            {
+                $DDC_getfiles = $this->GetAllFilesName($service,$DDC_folderid);
+                for($i=0;$i<count($DDC_getfiles);$i++)
+                {
+                    $DDC_oldfile=$DDC_getfiles[$i]['title'];
+                    $DDC_oldfile_id=$DDC_getfiles[$i]['id'];
+                    if($DDC_oldfile==$DDC_ssname_currentyear)
+                    {
+                        $this->deleteFile($service,$DDC_oldfile_id);
+                    }
+                }
+                return ['DDC_flag_nosheet',$DDC_ssname_oldyear];
+            }
+            $this->load->model('Eilib/Invoice_contract');
+            $parentId=$this->Invoice_contract->getTemplatesFolderId();
+            $DDC_newspread_ssid=$this->insertFile($service, $DDC_ssname_currentyear, 'DD Calculation', $parentId);
+            $DDC_flg_tempsht=0;
+            $data = array();
+            $url="https://script.google.com/macros/s/AKfycbyv58HZU2XsR2kbCMWZjNzMWSmOwoE7xsg_fesXktGk4Kj574u1/exec";
+            $ch = curl_init();
+            $data=http_build_query($data);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true );
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_ENCODING, "gzip,deflate");
+            try {
+                $response = curl_exec($ch);
+            }
+            catch(Exception $e){
+                echo   $e->getMessage();
+            }
+            curl_close($ch);
+            echo '**'.$response;
+
             //RETURN ERR MSG
-//            if($DDC_flg_tempsht==0 ){
-//                $DDC_getfiles = DriveApp.getFolderById($DDC_folderid).getFiles();
-//                while($DDC_getfiles.hasNext())
-//                {
-//                    $DDC_oldfile=$DDC_getfiles.next();
-//                    if($DDC_oldfile==$DDC_ssname_currentyear)
-//                    {
-//                        $DDC_oldfile.setTrashed(true);
-//                    }
-//                }
-//                return [$DDC_flg_tempsht];
-//            }
+            if($DDC_flg_tempsht==0 ){
+                $DDC_getfiles = $this->GetAllFilesName($service,$DDC_folderid);
+                for($i=0;$i<count($DDC_getfiles);$i++)
+                {
+                    $DDC_oldfile=$DDC_getfiles[$i]['title'];
+                    $DDC_oldfile_id=$DDC_getfiles[$i]['id'];
+                    if($DDC_oldfile==$DDC_ssname_currentyear)
+                    {
+                            $this->deleteFile($service,$DDC_oldfile_id);
+                    }
+                }
+                return [$DDC_flg_tempsht];
+            }
 //            $this->db->query("UPDATE FILE_PROFILE SET FP_FILE_ID='".$DDC_newspread_ssid."' WHERE FP_ID=1");
 //            conn.commit();
 //            $DDC_docowner=$this->common_function->CUST_documentowner(conn);
 //            $this->common_function->SetDocOwner($DDC_newspread_ssid,$DDC_docowner,$DDC_docowner);
-            //GIVE PERMISSION TO EDITORS WHEN NEW SS CREATED USING EILIB
+//            //GIVE PERMISSION TO EDITORS WHEN NEW SS CREATED USING EILIB
 //                $this->common_function->Deposit_Deduction_fileSharing($DDC_newspread_ssid, $DDC_folderid)
 //                $DDC_rename=SpreadsheetApp.openById(DDC_newspread_ssid).getSheets();
 //                for($k=0;$k<count($DDC_rename);$k++){
@@ -232,7 +292,7 @@ class Mdl_deposit_calculations extends CI_Model{
 //                }
 //                }
 //              $DDC_currentfile_id=$DDC_newspread_ssid;
-//            }
+            }
 //IF CURRENT SS NOT HAVING TEMPLATE SHEET IT LL CREATE THEM TEMPLATE AND SENDING EMAIL
 //    else{
 //            $temp_sheet = SpreadsheetApp.openById($DDC_currentfile_id).getSheetByName('TEMPLATE');

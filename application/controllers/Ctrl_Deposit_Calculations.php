@@ -1,5 +1,6 @@
 <?php
 include 'GET_USERSTAMP.php';
+include 'GET_CONFIG.php';
 $USERSTAMP=$UserStamp;
 $timeZoneFrmt=$timeZoneFormat;
 class Ctrl_Deposit_Calculations extends CI_Controller{
@@ -20,6 +21,14 @@ class Ctrl_Deposit_Calculations extends CI_Controller{
         $datequery=$this->Mdl_deposit_calculations->DDC_load_datebox($custid,$custname,$unitno);
         echo json_encode($datequery);
     }
+    public function Call_service(){
+        $this->load->library('Google');
+        global $ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token;
+        $this->load->model('Eilib/Common_function');
+        // FUNCTION TO CALL AND GET SERVICE
+        $service= $this->Common_function->get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+        return $service;
+    }
     public function DDC_Dep_Cal_submit(){
         global $USERSTAMP;
         $unit_value=$this->input->post("DDC_lb_unitselect");
@@ -31,8 +40,9 @@ class Ctrl_Deposit_Calculations extends CI_Controller{
         $dep_custid=$this->input->post("DDC_tb_hidecustid");
         $DDC_recverlgth=$this->input->post("DDC_tb_hiderecverlength");
         $DDC_recdate=$this->input->post("DDC_tb_recdate");
+        $service=$this->Call_service();
         $this->load->model('Mdl_deposit_calculations');
-        $calcquery=$this->Mdl_deposit_calculations->DDC_depcal_submit($unit_value,$name,$chkbox,$radio,$startdate,$enddate,$dep_custid,$DDC_recverlgth,$DDC_recdate,$USERSTAMP);
+        $calcquery=$this->Mdl_deposit_calculations->DDC_depcal_submit($unit_value,$name,$chkbox,$radio,$startdate,$enddate,$dep_custid,$DDC_recverlgth,$DDC_recdate,$USERSTAMP,$service);
         echo json_encode($calcquery);
     }
 }
