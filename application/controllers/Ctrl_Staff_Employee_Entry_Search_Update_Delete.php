@@ -34,7 +34,7 @@ class Ctrl_Staff_Employee_Entry_Search_Update_Delete extends CI_Controller{
     public function fetchdata()
     {
         $this->load->model('Mdl_staff_employee_entry_search_update_delete');
-        $result = $this->Mdl_staff_employee_entry_search_update_delete->fetch_data($this->input->post('EMPSRC_UPD_DEL_lb_designation_listbox'),$this->input->post('emp_first_name'),$this->input->post('emp_last_name'),$this->input->post('EMPSRC_UPD_DEL_ta_mobile'),$this->input->post('EMPSRC_UPD_DEL_lb_employeename_listbox'),$this->input->post('EMPSRC_UPD_DEL_lb_searchoption')) ;
+        $result = $this->Mdl_staff_employee_entry_search_update_delete->fetch_data($this->input->post('EMPSRC_UPD_DEL_lb_designation_listbox'),$this->input->post('emp_first_name'),$this->input->post('emp_last_name'),$this->input->post('EMPSRC_UPD_DEL_ta_mobile'),$this->input->post('EMPSRC_UPD_DEL_lb_employeename_listbox'),$this->input->post('EMPSRC_UPD_DEL_lb_searchoption'),$this->input->post('EMPSRC_UPD_DEL_ta_email'),$this->input->post('EMPSRC_UPD_DEL_ta_comments')) ;
         echo JSON_encode($result);
     }
     //PDLY_SEARCH_lb_comments
@@ -43,5 +43,19 @@ class Ctrl_Staff_Employee_Entry_Search_Update_Delete extends CI_Controller{
         $this->load->model('Mdl_staff_employee_entry_search_update_delete');
         $data=$this->Mdl_staff_employee_entry_search_update_delete->EMPSRC_UPD_DEL_comments($this->input->post('EMPSRC_UPD_DEL_lb_searchoption'));
         echo json_encode($data);
+    }
+    //FUNCTION FOR GET CARD NO ND UNIT NO DATA
+    public function EMPSRC_UPD_DEL_getcardnoandunitno(){
+        $this->load->model('Mdl_staff_employee_entry_search_update_delete');
+        $query=$this->Mdl_staff_employee_entry_search_update_delete->EMPSRC_UPD_DEL_getcardnoandunitno($this->input->post('EMPSRC_UPD_DEL_id'));
+        echo json_encode($query);
+    }
+    //FUNCTION FOR SAVE PART
+    public function EMPSRC_UPD_DEL_update()
+    {
+        global $USERSTAMP;
+        $this->load->model('Mdl_staff_employee_entry_search_update_delete');
+        $result = $this->Mdl_staff_employee_entry_search_update_delete->EMPSRC_UPD_DEL_update($USERSTAMP,$this->input->post('EMPSRC_UPD_DEL_email'),$this->input->post('EMPSRC_UPD_DEL_comments'),$this->input->post('EMP_ENTRY_radio_null'),$this->input->post('submenu'),$this->input->post('EMPSRC_UPD_DEL_carcunitarray'),$this->input->post('EMPSRC_UPD_DEL_id')) ;
+        echo JSON_encode($result);
     }
 }

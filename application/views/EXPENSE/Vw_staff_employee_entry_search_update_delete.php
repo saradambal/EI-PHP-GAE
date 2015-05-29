@@ -34,6 +34,8 @@ include 'Header.php';
             var EMPSRC_UPD_DEL_multi_array=[];
             var EMPSRC_UPD_DEL_confmsg_array=[];
             var EMPSRC_UPD_DEL_employeenameconcat;
+            var EMPSRC_UPD_DEL_searchoption_desigdata;
+            var EMPSRC_UPD_DEL_searchoption_desigid;
             //JQUERY LIB VALIDATION START
             $('#EMP_ENTRY_tb_email').doValidation({rule:'email',prop:{uppercase:false,autosize:true}});
             $(".autosizealph").doValidation({rule:'alphabets',prop:{whitespace:true,autosize:true}});
@@ -66,6 +68,7 @@ include 'Header.php';
                     $('#searchform').hide();
                     $("#EMPSRC_UPD_DEL_table_employee").hide();
                     $("#EMPSRC_UPD_DEL_lbl_searchoption").hide();
+                    $("#EMPSRC_UPD_DEL_table_updateform").hide();
                     $.ajax({
                         type: "POST",
                         url: "<?php echo site_url('Ctrl_Staff_Employee_Entry_Search_Update_Delete/Initialdata'); ?>",
@@ -120,10 +123,11 @@ include 'Header.php';
                     $("#EMPSRC_UPD_DEL_table_employee").show();
                     $("#EMPSRC_UPD_DEL_lbl_searchoption").show();
                     $("#EMPSRC_UPD_DEL_lb_searchoption").show();
-                    $('#STDTL_SEARCH_lbl_cpfnumber_listbox').hide();
-                    $('#STDTL_SEARCH_lbl_employeename_listbox').hide();
-                    $('#STDTL_SEARCH_lb_cpfnumber_listbox').hide();
+                    $('#EMPSRC_UPD_DEL_lbl_searchoptionheader').hide();
+                    $('#EMPSRC_UPD_DEL_lbl_designation_listbox').hide();
+                    $('#EMPSRC_UPD_DEL_lb_designation_listbox').hide();
                     $("#STDTL_SEARCH_lb_employeename_listbox").hide();
+                    $("#EMPSRC_UPD_DEL_table_updateform").hide();
                     $.ajax({
                         type: "POST",
                         url: "<?php echo site_url('Ctrl_Staff_Employee_Entry_Search_Update_Delete/EMPSRC_UPD_DEL_searchoptionresult'); ?>",
@@ -150,9 +154,11 @@ include 'Header.php';
                             for (var i = 0; i < EMPSRC_UPD_DEL_searchoption.length; i++) {
                                 if( i>=0 && i<=1)
                                 {
-                                    var EMPSRC_UPD_DEL_searchoption_data=EMPSRC_UPD_DEL_searchoption[i].ECN_DATA;
-                                    var EMPSRC_UPD_DEL_searchoption_id=EMPSRC_UPD_DEL_searchoption[i].ECN_ID;
-                                    $('#EMPSRC_UPD_DEL_lb_designation_listbox').append($('<option>').text(EMPSRC_UPD_DEL_searchoption_data).attr('value', EMPSRC_UPD_DEL_searchoption_id));
+                                     EMPSRC_UPD_DEL_searchoption_desigdata=EMPSRC_UPD_DEL_searchoption[i].ECN_DATA;
+                                     EMPSRC_UPD_DEL_searchoption_desigid=EMPSRC_UPD_DEL_searchoption[i].ECN_ID;
+                                    $('#EMPSRC_UPD_DEL_lb_designation_listbox').append($('<option>').text(EMPSRC_UPD_DEL_searchoption_desigdata).attr('value', EMPSRC_UPD_DEL_searchoption_desigid));
+                                   $('#EMPSRC_UPD_DEL_lb_empdesig').append($('<option>').text(EMPSRC_UPD_DEL_searchoption_desigdata).attr('value', EMPSRC_UPD_DEL_searchoption_desigdata));
+
                                 }
                             }
                             //GET STAFF EMPLOYEE NAME
@@ -163,9 +169,12 @@ include 'Header.php';
                                 EMPSRC_UPD_DEL_expensearray_employeename += '<option value="' + EMPSRC_UPD_DEL_expensearr_employeename[i] + '">' + EMPSRC_UPD_DEL_employeenameconcat[0]+" "+EMPSRC_UPD_DEL_employeenameconcat[1]+ '</option>';
                             }
                             $('#EMPSRC_UPD_DEL_lb_employeename_listbox').html(EMPSRC_UPD_DEL_expensearray_employeename);
-                            $('#EMPSRC_UPD_DEL_lb_empdesig').html(EMPSRC_UPD_DEL_searchoption_data)
+//                            $('#EMPSRC_UPD_DEL_lb_empdesig').html(EMPSRC_UPD_DEL_searchoption_desigdata)
+                            alert(EMPSRC_UPD_DEL_searchoption_desigdata)
                         }
                     });
+//                    $(".EMP_ENTRY_title_alpha").prop("title",EMP_ENTRY_error[0].EMC_DATA)
+//                    $("#EMPSRC_UPD_DEL_tb_mobile").prop("title",EMP_ENTRY_error[1].EMC_DATA)
                 }
             });
             //FUNCTION FOR SORTING
@@ -204,7 +213,7 @@ include 'Header.php';
                     $('#EMP_ENTRY_radio_null').show();
                     $('input[name="EMP_ENTRY_selectcard"]').prop('checked', false);
                     $('input[name="menu"]').prop('checked', false);
-                    $('input[name="submenu"]').prop('checked', false);
+                    $('input[name="submenu[]"]').prop('checked', false);
                 }
             });
 //CLICK FUNCTION FOR RADIO BUTTON
@@ -805,7 +814,8 @@ include 'Header.php';
             });
             //SUCCESS FUNCTION FOR SELECTING DATA
             var EMPSRC_UPD_DEL_result_array;
-            var id;var comments;var EMPSRC_UPD_DEL_unitno;var email;var cardnumber;
+            var id;var comments;var EMPSRC_UPD_DEL_unitno;var EMPSRC_UPD_DEL_emailid;var cardnumber;
+            var EMPSRC_UPD_DEL_fname;var EMPSRC_UPD_DEL_lname;var EMPSRC_UPD_DEL_mobileno;var EMPSRC_UPD_DEL_destination;
             function EMPSRC_UPD_DEL_srch_result()
             {
 //                var STDTL_SEARCH_firstlastname = EMPSRC_UPD_DEL_employeenameconcat
@@ -834,6 +844,11 @@ include 'Header.php';
                         for(var j=0;j<EMPSRC_UPD_DEL_result_array.length;j++){
                             var EMPSRC_UPD_DEL_values=EMPSRC_UPD_DEL_result_array[j]
                             id=EMPSRC_UPD_DEL_result_array[j].ID
+                            EMPSRC_UPD_DEL_fname=EMPSRC_UPD_DEL_result_array[j].Femployeename
+                            EMPSRC_UPD_DEL_lname=EMPSRC_UPD_DEL_result_array[j].Lemployeename
+                            EMPSRC_UPD_DEL_mobileno=EMPSRC_UPD_DEL_result_array[j].mobile
+                            EMPSRC_UPD_DEL_destination=EMPSRC_UPD_DEL_result_array[j].designation
+
                             comments=EMPSRC_UPD_DEL_result_array[j].comments
                             if((comments=='null')||(comments==undefined))
                             {
@@ -844,17 +859,17 @@ include 'Header.php';
                             {
                                 EMPSRC_UPD_DEL_unitno='';
                             }
-                            email=EMPSRC_UPD_DEL_result_array[j].email
-                            if((email=='null')||(email==undefined))
+                            EMPSRC_UPD_DEL_emailid=EMPSRC_UPD_DEL_result_array[j].email
+                            if((EMPSRC_UPD_DEL_emailid=='null')||(EMPSRC_UPD_DEL_emailid==undefined))
                             {
-                                email='';
+                                EMPSRC_UPD_DEL_emailid='';
                             }
                             cardnumber=EMPSRC_UPD_DEL_result_array[j].cardnumber
                             if((cardnumber=='null')||(cardnumber==undefined))
                             {
                                 cardnumber='';
                             }
-                            EMPSRC_UPD_DEL_header+='<tr><td><div class="col-lg-1"><span style="display: block;color:green" class="glyphicon glyphicon-edit staffsalary_editbutton" id='+id+' title="Edit"></div><div class="col-lg-1"><span style="display: block;color:red" class="glyphicon glyphicon-trash deletebutton" id='+id+' title="Delete"></div></td><td>'+EMPSRC_UPD_DEL_values.Femployeename+'</td><td>'+EMPSRC_UPD_DEL_values.Lemployeename+'</td><td>'+EMPSRC_UPD_DEL_values.mobile+'</td><td>'+email+'</td><td>'+EMPSRC_UPD_DEL_values.designation+'</td><td>'+EMPSRC_UPD_DEL_unitno+'</td><td>'+cardnumber+'</td><td>'+comments+'</td><td>'+EMPSRC_UPD_DEL_values.userstamp+'</td><td>'+EMPSRC_UPD_DEL_values.timestamp+'</td></tr>';
+                            EMPSRC_UPD_DEL_header+='<tr><td><div class="col-lg-1"><span style="display: block;color:green" class="glyphicon glyphicon-edit emp_editbutton" id='+id+' title="Edit"></div><div class="col-lg-1"><span style="display: block;color:red" class="glyphicon glyphicon-trash deletebutton" id='+id+' title="Delete"></div></td><td>'+EMPSRC_UPD_DEL_fname+'</td><td>'+EMPSRC_UPD_DEL_lname+'</td><td>'+EMPSRC_UPD_DEL_mobileno+'</td><td>'+EMPSRC_UPD_DEL_emailid+'</td><td>'+EMPSRC_UPD_DEL_destination+'</td><td>'+EMPSRC_UPD_DEL_unitno+'</td><td>'+cardnumber+'</td><td>'+comments+'</td><td>'+EMPSRC_UPD_DEL_values.userstamp+'</td><td>'+EMPSRC_UPD_DEL_values.timestamp+'</td></tr>';
                         }
                     EMPSRC_UPD_DEL_header+='</tbody></table>';
                         $('section').html(EMPSRC_UPD_DEL_header);
@@ -868,7 +883,421 @@ include 'Header.php';
             }
                 });
             }
-        });
+            var currentid
+            //CLICK EVENT FUCNTION FOR edit SEARCH
+            $(document).on('click','.emp_editbutton',function(){
+                currentid = $(this).attr('id');
+//                $(".preloader").show();
+                $("textarea").height(20);
+                $("#EMPSRC_UPD_DEL_lbl_errmsg").hide();
+                $('#EMPSRC_UPD_DEL_tb_mobile').removeClass('invalid');
+                $('#EMPSRC_UPD_DEL_lbl_validemailid').hide();
+                $("#EMPSRC_UPD_DEL_tb_email").removeClass('invalid');
+                $("#EMPSRC_UPD_DEL_lbl_errmsg").hide();
+                $('#EMPSRC_UPD_DEL_tb_mobile').removeClass('invalid');
+                EMPSRC_UPD_DEL_updatefunction(currentid)
+            });
+            var EMPSRC_UPD_DEL_result=[];
+            var EMPSRC_UPD_DEL_radiovalue;
+            function EMPSRC_UPD_DEL_updatefunction(currentid)
+            {
+                $("textarea").height(116);
+                $("textarea").width(300);
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url('Ctrl_Staff_Employee_Entry_Search_Update_Delete/EMPSRC_UPD_DEL_getcardnoandunitno'); ?>",
+                    data :{'EMPSRC_UPD_DEL_id':currentid},
+                    success: function(data){
+                        $('.preloader').hide();
+                        EMPSRC_UPD_DEL_result=JSON.parse(data);
+                        var EMPSRC_UPD_DEL_getallunitno=[];
+                        var EMPSRC_UPD_DEL_getallcardno=[];
+                        EMPSRC_UPD_DEL_getallunitno=EMPSRC_UPD_DEL_result[0];
+                        EMPSRC_UPD_DEL_getallcardno=EMPSRC_UPD_DEL_result[1];
+                        EMPSRC_UPD_DEL_multi_array=EMPSRC_UPD_DEL_result[2];
+                        if((EMPSRC_UPD_DEL_getallunitno!="")&&(EMPSRC_UPD_DEL_getallunitno!=null))
+                        {
+                            $('input:radio[name=EMPSRC_UPD_DEL_selectcard][value=CARD]').attr('checked', true);
+                            EMPSRC_UPD_DEL_updatemultitreeview(EMPSRC_UPD_DEL_multi_array ,EMPSRC_UPD_DEL_getallunitno,EMPSRC_UPD_DEL_getallcardno)
+                        }
+                        else if(EMPSRC_UPD_DEL_getallunitno=="")
+                        {
+                            $('#EMPSRC_UPD_DEL_tble_menu').hide();
+                            $('input:radio[name=EMPSRC_UPD_DEL_selectcard][value=NULL]').attr('checked', true);
+                        }
+                    }
+                });
+               EMPSRC_UPD_DEL_radiovalue = $('input:radio[name=EMPSRC_UPD_DEL_radio_empdetail]:checked').val();
+                for(var j=0;j<EMPSRC_UPD_DEL_result_array.length;j++){
+//                    alert(EMPSRC_UPD_DEL_result_array)
+                    var id=EMPSRC_UPD_DEL_result_array[j].ID;
+                    if(id==currentid)
+                    {
+                        EMPSRC_UPD_DEL_fname=EMPSRC_UPD_DEL_result_array[j].Femployeename
+                        EMPSRC_UPD_DEL_lname=EMPSRC_UPD_DEL_result_array[j].Lemployeename
+                        EMPSRC_UPD_DEL_mobileno=EMPSRC_UPD_DEL_result_array[j].mobile
+                        EMPSRC_UPD_DEL_destination=EMPSRC_UPD_DEL_result_array[j].designation
+                        comments=EMPSRC_UPD_DEL_result_array[j].comments
+                        EMPSRC_UPD_DEL_unitno=EMPSRC_UPD_DEL_result_array[j].EMPSRC_UPD_DEL_unitno
+                        EMPSRC_UPD_DEL_emailid=EMPSRC_UPD_DEL_result_array[j].email
+                        cardnumber=EMPSRC_UPD_DEL_result_array[j].cardnumber
+                        $('#EMPSRC_UPD_DEL_table_updateform').show();
+                $('#EMPSRC_UPD_DEL_tb_updateid').val(EMPSRC_UPD_DEL_radiovalue).hide();
+                        $('#EMPSRC_UPD_DEL_lbl_firstname').show();
+                        $('#EMPSRC_UPD_DEL_tb_firstname').val(EMPSRC_UPD_DEL_fname).show();
+                        $('#EMPSRC_UPD_DEL_lbl_lastname').show();
+                        $('#EMPSRC_UPD_DEL_tb_lastname').val(EMPSRC_UPD_DEL_lname).show();
+                        $('#EMPSRC_UPD_DEL_lbl_empdesig').show();
+                        $('#EMPSRC_UPD_DEL_lb_empdesig').val(EMPSRC_UPD_DEL_destination).show();
+                        $('#EMPSRC_UPD_DEL_lbl_mobile').show();
+                        $('#EMPSRC_UPD_DEL_tb_mobile').val(EMPSRC_UPD_DEL_mobileno).show();
+                        $('#EMPSRC_UPD_DEL_lbl_email').show();
+                        $('#EMPSRC_UPD_DEL_tb_email').val(EMPSRC_UPD_DEL_emailid).show();
+                        $('#EMPSRC_UPD_DEL_lbl_updatecomments').show();
+                        $('#EMPSRC_UPD_DEL_ta_updatecomments').val(EMPSRC_UPD_DEL_comments).show();
+                        $('#EMPSRC_UPD_DEL_tb_firstnamehide').val(EMPSRC_UPD_DEL_fname).hide();
+                        $('#EMPSRC_UPD_DEL_tb_lastnamehide').val(EMPSRC_UPD_DEL_lname).hide();
+                        $('#EMPSRC_UPD_DEL_btn_update').show();
+                        $('#EMPSRC_UPD_DEL_btn_update').attr("disabled", "disabled");
+                        $('#EMPSRC_UPD_DEL_btn_reset').show();
+                        if(EMPSRC_UPD_DEL_destination=='STAFF'){
+                            $('#cardupd').show();
+                            $('#EMPSRC_UPD_DEL_table_updateform').show();
+                            $('#EMPSRC_UPD_DEL_lbl_cardno').show();
+                            $('#EMPSRC_UPD_DEL_div_avail_cardno').show();
+                            $('#EMPSRC_UPD_DEL_tble_avail_cardno').show();
+                            $('#EMPSRC_UPD_DEL_radio_null').show();
+                            $('#EMPSRC_UPD_DEL_lbl_cardno').show();
+                            $('#EMPSRC_UPD_DEL_nullcard').show();
+                            $('#EMPSRC_UPD_DEL_lbl_shwcardno').show();
+                            $('#EMPSRC_UPD_DEL_radio_selectcard').show();
+                        }
+                        else{
+                            $('#EMPSRC_UPD_DEL_lbl_cardno').hide();
+                            $('#cardupd').hide();
+                            $('#EMPSRC_UPD_DEL_div_avail_cardno').hide();
+                            $('#EMPSRC_UPD_DEL_tble_avail_cardno').hide();
+                            $('#EMPSRC_UPD_DEL_radio_null').hide();
+                            $('#EMPSRC_UPD_DEL_lbl_cardno').hide();
+                            $('#EMPSRC_UPD_DEL_nullcard').hide();
+                            $('#EMPSRC_UPD_DEL_lbl_shwcardno').hide();
+                            $('#EMPSRC_UPD_DEL_radio_selectcard').hide();
+                        }
+                        $('#EMPSRC_UPD_DEL_lbl_error').show();
+                    }
+                    }
+            }
+            //SHOW THE UPDATE TREE VIEW//
+            function EMPSRC_UPD_DEL_updatemultitreeview(EMPSRC_UPD_DEL_multi_arraynew ,EMPSRC_UPD_DEL_unitno,EMPSRC_UPD_DEL_multi_cardno)
+            {$(".preloader").hide();
+                var EMPSRC_UPD_DEL_unitno=EMPSRC_UPD_DEL_unitno;
+                var EMPSRC_UPD_DEL_cardno=EMPSRC_UPD_DEL_multi_cardno;
+                $('#EMPSRC_UPD_DEL_tb_checkcard').val(EMPSRC_UPD_DEL_cardno);
+                if((EMPSRC_UPD_DEL_multi_arraynew.length)==0)
+                {
+                    EMPSRC_UPD_DEL_multi_array=EMPSRC_UPD_DEL_multi_arraynew;
+                }else
+                {
+                    var EMPENTRY_multi_array=[];
+                    EMPENTRY_multi_array=EMPSRC_UPD_DEL_multi_arraynew
+                    EMPSRC_UPD_DEL_multi_array=EMPENTRY_multi_array;
+                }
+                if(EMPSRC_UPD_DEL_multi_array.length==0 || EMPSRC_UPD_DEL_multi_array.length==null)
+                {
+                    $('#EMPSRC_UPD_DEL_lbl_cardno').hide();
+                    $('#EMPSRC_UPD_DEL_lbl_error').text(EMPSRC_UPD_DEL_flexheader_array[2]).show();
+                }
+                else
+                {
+                    $('#EMPSRC_UPD_DEL_lbl_error').hide();
+//SHOW TREE VIEW FORMATE//
+                    $('#EMPSRC_UPD_DEL_lbl_cardno').show();
+                    $("#EMPSRC_UPD_DEL_tble_menu").replaceWith("<table id ='EMPSRC_UPD_DEL_tble_menu'></table>");
+                    var EMPSRC_UPD_DEL_menu=''
+                    for (var j = 0; j < EMPSRC_UPD_DEL_multi_array[0].length; j++) {
+                        var id="EMPSRC_UPD_DEL_tble_submenu"+j;
+                        var id1="menu"+"_"+j;
+                        var id2="sub"+j;
+                        var id_menu=j+'m'
+                        var mainmenuid=j;
+                        EMPSRC_UPD_DEL_menu = '<div ><ul style="list-style: none;" ><li style="list-style: none;" ><tr ><td>&nbsp;&nbsp;&nbsp;<input value="+" type="button"  id='+id1+' height="5" width="5" class="exp" /><input type="checkbox" name="menu" id='+id_menu+' value='+EMPSRC_UPD_DEL_multi_array[0][j]+' level="parent" class="tree empsubmitvalidatupd"  />' + EMPSRC_UPD_DEL_multi_array[0][j] + '</td></tr>';//+"_"+j+
+                        EMPSRC_UPD_DEL_menu+='<div id='+id2+' hidden ><tr><td><table id='+id+' class="EMPSRC_UPD_DEL_class_submenu"  ></table></tr></div></li></ul></div>';
+                        $('#EMPSRC_UPD_DEL_tble_menu').append(EMPSRC_UPD_DEL_menu);
+                        for(var u1=0;u1<EMPSRC_UPD_DEL_unitno.length;u1++){
+                            if(EMPSRC_UPD_DEL_multi_array[0][j]==EMPSRC_UPD_DEL_unitno[u1]){
+                                $('#'+EMPSRC_UPD_DEL_multi_array[0][j]+"_"+j).prop("checked", true)
+                            }
+                        }
+                        var EMPSRC_UPD_DEL_submenu='';
+                        var submenulength=EMPSRC_UPD_DEL_multi_array[j+1].length;
+                        for (var j1 = 0; j1 < EMPSRC_UPD_DEL_multi_array[j+1].length; j1++) {
+                            var id3="EMPSRC_UPD_DEL_tble_submenu1"+j1;
+                            var submenuids="EMP_submenus-"+mainmenuid+'-'+submenulength+'-'+j1;
+                            EMPSRC_UPD_DEL_submenu='<div><ul style="list-style: none;"><li style="list-style: none;" ><tr><td>&nbsp;&nbsp;&nbsp;<input type="checkbox" name="submenu[]" id='+submenuids+' value='+EMPSRC_UPD_DEL_multi_array[j+1][j1]+' class="tree submenucheck Child" level="child" />' + EMPSRC_UPD_DEL_multi_array[j+1][j1] + '</td></tr>';
+                            $('#'+"EMPSRC_UPD_DEL_tble_submenu"+j).append(EMPSRC_UPD_DEL_submenu);
+                            for(var m1=0;m1<EMPSRC_UPD_DEL_cardno.length;m1++){
+                                if(EMPSRC_UPD_DEL_multi_array[j+1][j1]==EMPSRC_UPD_DEL_cardno[m1]){
+                                    $('#'+submenuids).prop("checked", true)
+                                    $('#'+id_menu).prop("checked", true)
+                                }
+                            }
+                        }
+                    }
+                }
+                $("#EMPSRC_UPD_DEL_tble_menu").show();
+                $('#EMPSRC_UPD_DEL_table_updateform').show();
+            }
+            //CHANGE FUNCTION FOR DESIGNATION
+            $("#EMPSRC_UPD_DEL_lb_empdesig").change(function(){
+                var EMPSRC_UPD_DEL_desigoption=$(this).val();
+                if((EMPSRC_UPD_DEL_desigoption=="CLEANER")||(EMPSRC_UPD_DEL_desigoption=="SELECT"))
+                {
+                    $('#EMPSRC_UPD_DEL_lbl_cardno').hide();
+                    $('#cardupd').hide();
+                    $('#EMPSRC_UPD_DEL_nullcard').hide();
+                    $('#EMPSRC_UPD_DEL_lbl_shwcardno').hide();
+                    $('#EMPSRC_UPD_DEL_radio_selectcard').hide();
+                    $('#EMPSRC_UPD_DEL_radio_null').hide();
+                    $('#EMPSRC_UPD_DEL_tble_menu').hide();
+                }
+                else
+                {
+                    $('#cardupd').show();
+                    $('#EMPSRC_UPD_DEL_table_updateform').show();
+//                    $('#EMPSRC_UPD_DEL_lbl_cardno').show();
+                    $('#EMPSRC_UPD_DEL_nullcard').show();
+                    $('#EMPSRC_UPD_DEL_lbl_shwcardno').show();
+                    $('#EMPSRC_UPD_DEL_radio_selectcard').show();
+                    $('#EMPSRC_UPD_DEL_radio_null').show();
+                    $('input[name="EMPSRC_UPD_DEL_selectcard"]').prop('checked', false);
+                    $('input[name="menu"]').prop('checked', false);
+                    $('input[name="submenu"]').prop('checked', false);
+                }
+            });
+            //CLICK FUNCTION FOR RADIO BUTTON
+            $('.radio_selectedupd').click(function()
+            {
+                var EMP_ENTRY_radio=$("input[name=EMPSRC_UPD_DEL_selectcard]:checked").val()
+                if(EMP_ENTRY_radio=='CARD')
+                {
+                    EMPSRC_UPD_DEL_multitreeview(EMPSRC_UPD_DEL_multi_array);
+                    $("#EMPSRC_UPD_DEL_btn_update").attr("disabled","disabled");
+                }else
+                {
+                    $('input:checkbox[name="menu"]').attr('disabled', "disabled");
+                    $('input:checkbox[name="submenu[]"]').attr('disabled', "disabled");
+                    $('#EMPSRC_UPD_DEL_tble_menu').hide();
+                    $('#EMPSRC_UPD_DEL_lbl_error').hide();
+                    $(".preloader").hide();
+                }
+            });
+          //SHOW THE RESET TREE VIEW FORMATE//
+    function EMPSRC_UPD_DEL_multitreeview(EMPSRC_UPD_DEL_multi_arraynew)
+    {
+        if((EMPSRC_UPD_DEL_multi_arraynew.length)==0)
+        {
+            EMPSRC_UPD_DEL_multi_array=EMPSRC_UPD_DEL_multi_arraynew;
+        }
+        else
+        {
+            var EMPENTRY_multi_array=[];
+            EMPENTRY_multi_array=EMPSRC_UPD_DEL_multi_arraynew;
+            EMPSRC_UPD_DEL_multi_array=EMPENTRY_multi_array;
+        }
+        if(EMPSRC_UPD_DEL_multi_array.length==0|| EMPSRC_UPD_DEL_multi_array.length==null||EMPSRC_UPD_DEL_multi_array=="")
+        {
+            $('#EMPSRC_UPD_DEL_lbl_error').text(EMPSRC_UPD_DEL_flexheader_array[2]).show();
+            $("#EMPSRC_UPD_DEL_tble_menu").hide();
+            $("#EMPSRC_UPD_DEL_btn_update").attr("disabled","disabled");
+        }
+        else
+        {
+//SHOW TREE VIEW FORMATE//
+            $('#EMPSRC_UPD_DEL_lbl_error').hide();
+            $('#EMPSRC_UPD_DEL_lbl_cardno').show();
+            $("#EMPSRC_UPD_DEL_tble_menu").replaceWith("<table id ='EMPSRC_UPD_DEL_tble_menu'></table>");
+            var EMPSRC_UPD_DEL_menu=''
+            for (var j = 0; j < EMPSRC_UPD_DEL_multi_array[0].length; j++) {
+                var id="EMPSRC_UPD_DEL_tble_submenu"+j;
+                var id1="menu"+"_"+j;
+                var id2="sub"+j;
+                var id_menu=j+'m'
+                var mainmenuid=j;
+                EMPSRC_UPD_DEL_menu = '<div ><ul style="list-style: none;" ><li style="list-style: none;" ><tr ><td>&nbsp;&nbsp;&nbsp;<input value="+" type="button"  id='+id1+' height="5" width="5" class="exp" /><input type="checkbox" name="menu" id='+id_menu+' value='+EMPSRC_UPD_DEL_multi_array[0][j]+' level="parent" class="tree empsubmitvalidatupd"  />' + EMPSRC_UPD_DEL_multi_array[0][j] + '</td></tr>';
+                EMPSRC_UPD_DEL_menu+='<div id='+id2+' hidden ><tr><td><table id='+id+' class="EMPSRC_UPD_DEL_class_submenu"  ></table></tr></div></li></ul></div>';
+                $('#EMPSRC_UPD_DEL_tble_menu').append(EMPSRC_UPD_DEL_menu);
+                var EMPSRC_UPD_DEL_submenu='';
+                var submenulength=EMPSRC_UPD_DEL_multi_array[j+1].length;
+                for (var j1 = 0; j1 < EMPSRC_UPD_DEL_multi_array[j+1].length; j1++) {
+                    var id3="EMPSRC_UPD_DEL_tble_submenu1"+j1;
+                    var submenuids="EMP_submenus-"+mainmenuid+'-'+submenulength+'-'+j1;
+                    EMPSRC_UPD_DEL_submenu='<div><ul style="list-style: none;"><li style="list-style: none;" ><tr><td>&nbsp;&nbsp;&nbsp;<input type="checkbox" name="submenu[]" id='+submenuids+' value='+EMPSRC_UPD_DEL_multi_array[j+1][j1]+' class="tree submenucheck Child" level="child" />' + EMPSRC_UPD_DEL_multi_array[j+1][j1] + '</td></tr>';
+                    $('#'+"EMPSRC_UPD_DEL_tble_submenu"+j).append(EMPSRC_UPD_DEL_submenu);
+                }
+            }
+            $("#EMPSRC_UPD_DEL_tble_menu").show();
+        }
+        $('#EMPSRC_UPD_DEL_table_updateform').show();
+        $(".preloader").hide();
+    }
+            //VALIDATION FOR UPDATE FORRM START
+            //CHANGE EVENT FUNCTION FOR MOBILENO
+            $('#EMPSRC_UPD_DEL_tb_mobile').change(function()
+            {
+                var EMPSRC_UPD_DEL_bmobilenolength=$('#EMPSRC_UPD_DEL_tb_mobile').val();
+                if(EMPSRC_UPD_DEL_bmobilenolength.length<6)
+                {
+                    $('#EMPSRC_UPD_DEL_tb_mobile').addClass('invalid');
+                    $("#EMPSRC_UPD_DEL_btn_update").attr("disabled","disabled");
+                    $("#EMPSRC_UPD_DEL_lbl_errmsg").text(EMPSRC_UPD_DEL_flexheader_array[19]).show();
+                }
+                else
+                {
+                    $('#EMPSRC_UPD_DEL_tb_mobile').removeClass('invalid');
+                    $("#EMPSRC_UPD_DEL_lbl_errmsg").hide();
+                }
+            });
+//BLUR FUNCTION FOR CARD
+            var EMPSRC_UPD_DEL_cardArray=[];
+            $(document).on("change blur",'.empsubmitvalidatupd',function ()
+            {
+                var EMPSRC_UPD_DEL_Firstname= $("#EMPSRC_UPD_DEL_tb_firstname").val();
+                var EMPSRC_UPD_DEL_Lastname =$("#EMPSRC_UPD_DEL_tb_lastname").val();
+                var EMPSRC_UPD_DEL_empdesig =$("#EMPSRC_UPD_DEL_lb_empdesig").val();
+                var EMPSRC_UPD_DEL_Mobileno = $("#EMPSRC_UPD_DEL_tb_mobile").val();
+                var EMPSRC_UPD_DEL_email = $("#EMPSRC_UPD_DEL_tb_email").val();
+                var EMP_ENTRY_menu=$("input[name=menu]").is(":checked");
+//                var EMP_ENTRY_submenu=$("input[name=submenu]").is(":checked");
+                var EMP_ENTRY_submenu=$('input[name="submenu[]"]:checked').length;
+                if( (( EMP_ENTRY_menu==true && EMP_ENTRY_submenu>0 &&( EMPSRC_UPD_DEL_multi_array.length!=0||EMPSRC_UPD_DEL_multi_array!="")) || $('#EMPSRC_UPD_DEL_radio_null').is(":checked")==true) && (EMPSRC_UPD_DEL_Firstname!='') && (EMPSRC_UPD_DEL_Lastname!='' )&&( EMPSRC_UPD_DEL_Mobileno!='' && (parseInt($('#EMPSRC_UPD_DEL_tb_mobile').val())!=0)) && (EMPSRC_UPD_DEL_Mobileno.length>=6)&& (EMPSRC_UPD_DEL_empdesig!='SELECT'))
+                {
+                    $("#EMPSRC_UPD_DEL_btn_update").removeAttr("disabled");
+                }
+                else
+                {
+                    $("#EMPSRC_UPD_DEL_btn_update").attr("disabled","disabled");
+                }
+            });
+            //EMPLOYEE UPDATE BUTTON VALIDATION
+            $("#EMP_ENTRY_form_employeename").change(function(){
+                var EMPSRC_UPD_DEL_Firstname= $("#EMPSRC_UPD_DEL_tb_firstname").val();
+                var EMPSRC_UPD_DEL_Lastname =$("#EMPSRC_UPD_DEL_tb_lastname").val();
+                var EMPSRC_UPD_DEL_empdesig =$("#EMPSRC_UPD_DEL_lb_empdesig").val();
+                var EMPSRC_UPD_DEL_Mobileno = $("#EMPSRC_UPD_DEL_tb_mobile").val();
+                var EMPSRC_UPD_DEL_email = $("#EMPSRC_UPD_DEL_tb_email").val();
+                var EMP_ENTRY_menu=$("input[name=menu]").is(":checked");
+//                var EMP_ENTRY_submenu=$("input[name=submenu]").is(":checked");
+                var EMP_ENTRY_submenu=$('input[name="submenu[]"]:checked').length;
+                if(EMPSRC_UPD_DEL_empdesig=='STAFF'){
+                    if((( EMP_ENTRY_menu==true && EMP_ENTRY_submenu>0 && EMPSRC_UPD_DEL_multi_array.length!=0) || $('#EMPSRC_UPD_DEL_radio_null').is(":checked")==true) && (EMPSRC_UPD_DEL_Firstname!='') && (EMPSRC_UPD_DEL_Lastname!='' )&&( EMPSRC_UPD_DEL_Mobileno!='' && (parseInt($('#EMPSRC_UPD_DEL_tb_mobile').val())!=0)) && (EMPSRC_UPD_DEL_Mobileno.length>=6)&& (EMPSRC_UPD_DEL_empdesig!='SELECT'))
+                    {
+                        $("#EMPSRC_UPD_DEL_btn_update").removeAttr("disabled");
+                    }
+                    else
+                    {
+                        $("#EMPSRC_UPD_DEL_btn_update").attr("disabled","disabled");
+                    }
+                }
+                else if(EMPSRC_UPD_DEL_empdesig=='CLEANER'){
+                    if((EMPSRC_UPD_DEL_Firstname!='') && (EMPSRC_UPD_DEL_Lastname!='' )&&( EMPSRC_UPD_DEL_Mobileno!='' && (parseInt($('#EMPSRC_UPD_DEL_tb_mobile').val())!=0)) && (EMPSRC_UPD_DEL_Mobileno.length>=6)&& (EMPSRC_UPD_DEL_empdesig!='SELECT'))
+                    {
+                        $("#EMPSRC_UPD_DEL_btn_update").removeAttr("disabled");
+                    }
+                    else
+                    {
+                        $("#EMPSRC_UPD_DEL_btn_update").attr("disabled","disabled");
+                    }
+                }
+                else
+                {
+                    $("#EMPSRC_UPD_DEL_btn_update").attr("disabled","disabled");
+                }
+            });
+            //LOAD THE UPDATE FORM//
+            $('#EMPSRC_UPD_DEL_btn_update').click(function(){
+//                $(".preloader").show();
+                var EMPSRC_UPD_DEL_bmobilenolength=$('#EMPSRC_UPD_DEL_tb_mobile').val();
+                if(EMPSRC_UPD_DEL_bmobilenolength.length<6 || EMPSRC_UPD_DEL_bmobilenolength=="" )
+                {
+                    $(".preloader").hide();
+                    $('#EMPSRC_UPD_DEL_tb_mobile').addClass('invalid');
+                    $("#EMPSRC_UPD_DEL_btn_update").attr("disabled","disabled");
+                    $("#EMPSRC_UPD_DEL_lbl_errmsg").text(EMPSRC_UPD_DEL_flexheader_array[19]).show();
+                }
+                else
+                {
+                    $("#EMPSRC_UPD_DEL_lbl_errmsg").hide();
+                    $('#EMPSRC_UPD_DEL_tb_mobile').removeClass('invalid');
+                    var EMPSRC_UPD_DEL_carccheckarray=[];
+                    $('input[name="submenu[]"]:checked').each(function() {
+                        EMPSRC_UPD_DEL_carccheckarray.push(this.value);
+                    });
+                    var EMPSRC_UPD_DEL_carcunitarray=[];
+                    $('input[name="menu"]:checked').each(function() {
+                        EMPSRC_UPD_DEL_carcunitarray.push(this.value);
+                    });
+                    EMPSRC_UPD_DEL_conformation_result(EMPSRC_UPD_DEL_carccheckarray,EMPSRC_UPD_DEL_carcunitarray)
+                }
+            });
+            function EMPSRC_UPD_DEL_conformation_result(EMPSRC_UPD_DEL_carccheckarray,EMPSRC_UPD_DEL_carcunitarray)
+            {
+                var EMPSRC_UPD_DEL_searchoption = $('#EMPSRC_UPD_DEL_lb_searchoption').val();
+                var EMPSRC_UPD_DEL_firstname = $('#EMPSRC_UPD_DEL_tb_firstname').val();
+                var EMPSRC_UPD_DEL_lastname = $('#EMPSRC_UPD_DEL_tb_lastname').val();
+                var EMPSRC_UPD_DEL_empdesigname = $('#EMPSRC_UPD_DEL_lb_empdesig').val();
+                var EMPSRC_UPD_DEL_mobilenumber = $('#EMPSRC_UPD_DEL_tb_mobile').val();
+                var EMPSRC_UPD_DEL_email = $('#EMPSRC_UPD_DEL_tb_email').val();
+                var EMPSRC_UPD_DEL_comments = $('#EMPSRC_UPD_DEL_ta_comments').val();
+                var EMP_ENTRY_radio_null=$('input:radio[name=EMPSRC_UPD_DEL_radio_null]:checked').attr('id');
+//             alert(currentid)
+                var form_element = $('#EMP_ENTRY_form_employeename').serialize();
+                $.ajax({
+                    type: "POST",
+                    'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Employee_Entry_Search_Update_Delete/EMPSRC_UPD_DEL_update",
+                    data:form_element+"&EMPSRC_UPD_DEL_id="+currentid+"&EMPSRC_UPD_DEL_searchoption="+EMPSRC_UPD_DEL_searchoption+"&EMPSRC_UPD_DEL_firstname="+EMPSRC_UPD_DEL_firstname+"&EMPSRC_UPD_DEL_lastname="+EMPSRC_UPD_DEL_lastname+"&EMPSRC_UPD_DEL_empdesigname="+EMPSRC_UPD_DEL_empdesigname+"&EMPSRC_UPD_DEL_mobilenumber="+EMPSRC_UPD_DEL_mobilenumber+"&EMPSRC_UPD_DEL_comments="+EMPSRC_UPD_DEL_comments+"&EMP_ENTRY_radio_null="+EMP_ENTRY_radio_null+"&EMPSRC_UPD_DEL_email="+EMPSRC_UPD_DEL_email+"&EMPSRC_UPD_DEL_carcunitarray="+EMPSRC_UPD_DEL_carcunitarray,
+                    success: function(data) {
+                        $(".preloader").hide();
+//                        alert(data)
+                        var result_value=JSON.parse(data);
+                    }
+                });
+            }
+            //CLICK EVENT FUCNTION FOR RESET
+            $('#EMPSRC_UPD_DEL_btn_reset').click(function()
+            {
+                $(".preloader").show();
+                EMPSRC_UPD_DEL_employeedetailrset()
+            });
+            //RESET ALL THE ELEMENT//
+            function EMPSRC_UPD_DEL_employeedetailrset()
+            {
+                $(".preloader").hide();
+                $("textarea").height(20);
+                $('#EMPSRC_UPD_DEL_tble_menu').hide();
+                $("#EMPSRC_UPD_DEL_btn_update").attr("disabled", "disabled");
+                $('#EMPSRC_UPD_DEL_lbl_validemailid').hide();
+                $('#EMPSRC_UPD_DEL_tble_avail_cardno').hide();
+                $('#EMPSRC_UPD_DEL_div_avail_cardno').hide();
+                $("#EMPSRC_UPD_DEL_tb_email").removeClass('invalid');
+                $('#EMPSRC_UPD_DEL_tb_firstname').val('');
+                $('#EMPSRC_UPD_DEL_tb_lastname').val('');
+                $('#EMPSRC_UPD_DEL_lb_empdesig').val('');
+                $('#EMPSRC_UPD_DEL_tb_mobile').val('');
+                $('#EMPSRC_UPD_DEL_tb_email').val('');
+                $('#EMPSRC_UPD_DEL_tb_mobile').removeClass('invalid');
+                $("#EMPSRC_UPD_DEL_lbl_errmsg").hide();
+                $('#EMPSRC_UPD_DEL_ta_updatecomments').val('');
+                $('input[name="EMPSRC_UPD_DEL_selectcard"]').prop('checked', false);
+                $('.sizefix').prop("size","20");
+                $('#EMPSRC_UPD_DEL_lbl_cardno').hide();
+                $('#cardupd').hide();
+                $('#EMPSRC_UPD_DEL_nullcard').hide();
+                $('#EMPSRC_UPD_DEL_lbl_shwcardno').hide();
+                $('#EMPSRC_UPD_DEL_radio_selectcard').hide();
+                $('#EMPSRC_UPD_DEL_radio_null').hide();
+                $('#EMPSRC_UPD_DEL_tble_menu').hide();
+            }
+  });
         //READY FUNCTION END
     </script>
     <!--SCRIPT TAG END-->
@@ -895,7 +1324,7 @@ include 'Header.php';
                         </div>
                     </form>
                     <div class="row form-group">
-                        <label name="EMP_ENTRY_lbl_firstname" id="EMP_ENTRY_lbl_firstname" class="col-sm-2" hidden>FIRST NAME <em>*</em></label>
+                            <label name="EMP_ENTRY_lbl_firstname" id="EMP_ENTRY_lbl_firstname" class="col-sm-2" hidden>FIRST NAME <em>*</em></label>
                         <div class="col-sm-10">
                             <input  type="text" name="EMP_ENTRY_tb_firstname" id="EMP_ENTRY_tb_firstname" class=" autosizealph EMP_ENTRY_title_alpha empsubmitvalidat sizefix" maxlength=30 hidden>
                         </div>
@@ -997,15 +1426,78 @@ include 'Header.php';
                         <div class="col-sm-3"><textarea name="EMPSRC_UPD_DEL_ta_mobile"  id="EMPSRC_UPD_DEL_ta_mobile" class="form-control auto commentsresultsvalidate keypressvalid" hidden></textarea>
                         </div>
                     </div>
+                    <div class="form-group>
                     <div class="col-lg-3 col-lg-offset-2">
                         <input type="button" class=" btn" name="EMPSRC_UPD_DEL_btn_search_autocomplt" id="EMPSRC_UPD_DEL_btn_search_autocomplt"  disabled=""   value="SEARCH"  >
-                    </div>
+                    </div></div>
                     <div class="srctitle" name="EMPSRC_UPD_DEL_lbl_htmltablemsg" id="EMPSRC_UPD_DEL_lbl_htmltablemsg"></div><br>
                     <div class="errormsg" name="EMPSRC_UPD_DEL_nodataerrormsg" id="EMPSRC_UPD_DEL_nodataerrormsg"></div>
                     <div class="table-responsive" id="EMPSRC_UPD_DEL_div_htmltable" style="  overflow-y: hidden;" hidden>
                         <section>
                         </section>
                     </div>
+        <br>
+        <!----------ELEMENT TO CREATE FOR UPDATE FORM------------------------------------------------>
+        <div id ="EMPSRC_UPD_DEL_table_updateform" hidden>
+            <div class="row form-group">
+                    <label name="EMPSRC_UPD_DEL_lbl_firstname" id="EMPSRC_UPD_DEL_lbl_firstname" class="col-sm-2">FIRST NAME <em>*</em></label>
+                <div class="col-sm-4"><input type="text" name="EMPSRC_UPD_DEL_tb_firstname" id="EMPSRC_UPD_DEL_tb_firstname" maxlength='30' class="autosizealph EMP_ENTRY_title_alpha empsubmitvalidatupd sizefix">
+                <td><input type="text" name="EMPSRC_UPD_DEL_tb_firstnamehide" id="EMPSRC_UPD_DEL_tb_firstnamehide" hidden></td>
+                </div>
+                </div>
+            <div class="row form-group">
+                    <label name="EMPSRC_UPD_DEL_lbl_lastname" id="EMPSRC_UPD_DEL_lbl_lastname" class="col-sm-2">LAST NAME <em>*</em></label>
+                <div class="col-sm-4"><input type="text" name="EMPSRC_UPD_DEL_tb_lastname" id="EMPSRC_UPD_DEL_tb_lastname" maxlength='30' class="autosizealph EMPSRC_UPD_DEL_title_alpha empsubmitvalidatupd sizefix">
+                <td><input type="text" name="EMPSRC_UPD_DEL_tb_lastnamehide" id="EMPSRC_UPD_DEL_tb_lastnamehide" hidden></td>
+                </div>
+             </div>
+            <div class="row form-group">
+                <label name="EMPSRC_UPD_DEL_lbl_empdesig" id="EMPSRC_UPD_DEL_lbl_empdesig" class="col-sm-2">DESIGNATION<em>*</em></label>
+                <div class="col-sm-4"><select name="EMPSRC_UPD_DEL_lb_empdesig" id="EMPSRC_UPD_DEL_lb_empdesig">
+                        <option>SELECT</option>
+                    </select> </div>
+            </div>
+            <div id="cardupd" hidden>
+                <div class="form-group">
+                    <label class="col-sm-3">SELECT THE CARD <em>*</em></label>
+                    <div class="col-md-9">
+                        <div class="radio">
+                            <label><input type="radio" name="EMPSRC_UPD_DEL_selectcard" id="EMPSRC_UPD_DEL_radio_selectcard" value='CARD' class='radio_selectedupd empsubmitvalidatupd' hidden>CARD NUMBER</label>
+                            <label align='bottom' name='error' id='EMPSRC_UPD_DEL_lbl_error' visible="false" class='errormsg'></label>
+                        </div>
+                        <div id="EMPSRC_UPD_DEL_tble_menu" style="padding-left: 10px;display: none;" hidden="hidden">
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="EMPSRC_UPD_DEL_selectcard" id="EMPSRC_UPD_DEL_radio_null" value='NULL' class='radio_selectedupd empsubmitvalidatupd' hidden>NULL</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="EMPSRC_UPD_DEL_div_avail_cardno">
+                <div id="EMPSRC_UPD_DEL_tble_avail_cardno" hidden></div></div>
+            <div class="row form-group">
+                    <label name="EMPSRC_UPD_DEL_lbl_mobile" id="EMPSRC_UPD_DEL_lbl_mobile" class="col-sm-2">MOBILE<em>*</em></label>
+                <div class="col-sm-3"><input type="text" name="EMPSRC_UPD_DEL_tb_mobile" id="EMPSRC_UPD_DEL_tb_mobile"  maxlength='10' style="width:75px"><label hidden name="EMPSRC_UPD_DEL_lbl_errmsg" id="EMPSRC_UPD_DEL_lbl_errmsg" class="errormsg"></label>
+                </div>
+            </div>
+            <div class="row form-group">
+                    <label name="EMPSRC_UPD_DEL_lbl_email" id="EMPSRC_UPD_DEL_lbl_email"  class="col-sm-2">E-MAIL ID</label>
+                <div class="col-sm-3"><input type="text" name="EMPSRC_UPD_DEL_tb_email" id="EMPSRC_UPD_DEL_tb_email" class="sizefix" maxlength="40">
+                <div><label id="EMPSRC_UPD_DEL_lbl_validemailid" name="EMPSRC_UPD_DEL_lbl_validemailid" class="errormsg"></label></div>
+                </div>
+            </div>
+            <div class="row form-group">
+                    <label name="EMPSRC_UPD_DEL_lbl_updatecomments" id="EMPSRC_UPD_DEL_lbl_comments"  class="col-sm-2">COMMENTS</label>
+                <div class="col-sm-3"><textarea name="EMPSRC_UPD_DEL_ta_updatecomments" id="EMPSRC_UPD_DEL_ta_updatecomments" class="autosize"></textarea>
+                </div>
+            </div>
+            <div class="col-sm-offset-1 col-sm-3">
+                <input class="btn btn-info" type="button" id="EMPSRC_UPD_DEL_btn_update" name="UPDATE" value="UPDATE" />
+                <input class="btn btn-info resetsubmit" type="button" id="EMPSRC_UPD_DEL_btn_reset" name="RESET"   value="RESET"/>
+            </div>
+            <td><input type="text" name="EMPSRC_UPD_DEL_tb_checkcard" id="EMPSRC_UPD_DEL_tb_checkcard" hidden></td>
+            <td><input type="text" name="EMPSRC_UPD_DEL_tb_updateid" id="EMPSRC_UPD_DEL_tb_updateid" hidden></td>
+        </div>
                     </div>
                 </fieldset>
         </div>
