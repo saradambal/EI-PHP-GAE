@@ -182,5 +182,47 @@ class Pdfcontroller extends CI_Controller{
         $pdf->WriteHTML($data); // write the HTML into the PDF
         $pdf->Output($pdfheader.'.pdf', 'd');
     }
+    public function pdfexportbizdetailexpense(){
+        $this->load->library('pdf');
+        global $timeZoneFormat;
+        $this->load->database();
+        $Expensetype=$this->input->get('Expensetype');
+        $BTDTL_SEARCH_lb_searchoptions=$this->input->get('BTDTL_SEARCH_lb_searchoptions');
+        $searchvalue=$this->input->get('searchvalue');
+        $startdate=$this->input->get('startdate');
+        $labelheadername=$this->input->get('labelheadername');
+        $BTDTL_SEARCH_parentfunc_flex=$this->input->get('BTDTL_SEARCH_parentfunc_flex');
+        if($Expensetype==16)
+        {
+            $this->load->model('Pdf_model');
+            $data=$this->Pdf_model->BTDTL_SEARCH_flex_aircon($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat);
+        }
+        if($Expensetype==17)
+        {
+            $this->load->model('Pdf_model');
+            $data=$this->Pdf_model->BTDTL_SEARCH_show_carpark($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat);
+        }
+        if($Expensetype==15)
+        {
+            $this->load->model('Pdf_model');
+            $data=$this->Pdf_model->BTDTL_SEARCH_show_digital($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat);
+        }
+        if($Expensetype==13)
+        {
+            $this->load->model('Pdf_model');
+            $data=$this->Pdf_model->BTDTL_SEARCH_show_electricity($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat);
+        }
+        if($Expensetype==14)
+        {
+            $this->load->model('Pdf_model');
+            $data=$this->Pdf_model->BTDTL_SEARCH_show_starhub($startdate,$searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat);
+        }
+        $pdf = $this->pdf->load();
+        $pdf=new mPDF('utf-8','A4');
+        $pdf->SetHTMLHeader('<div style="text-align: center; font-weight: bold;">'.$labelheadername.'</div>', 'O', true);
+        $pdf->SetHTMLFooter('<div style="text-align: center;">{PAGENO}</div>'); // Add a footer for good measure <img src="https://davidsimpson.me/wp-includes/images/smilies/icon_wink.gif" alt=";)" class="wp-smiley">
+        $pdf->WriteHTML($data); // write the HTML into the PDF
+        $pdf->Output($labelheadername.'.pdf', 'd');
+    }
 }
 

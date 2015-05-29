@@ -193,13 +193,51 @@ $this->db->query("CALL SP_CHK_TRANSACTION('$tableid','$rowid',@DELETION_FLAG)");
 $this->db->select('@DELETION_FLAG as DELETION_FLAG', FALSE);
 return $this->db->get()->result_array();
 }
-//FUNCTION TO DELETE A RECORD
-public function DeleteRecord($tableid,$rowid,$UserStamp)
-{
-$this->db->query("CALL SP_SINGLE_TABLE_ROW_DELETION('$tableid',$rowid,'$UserStamp',@DELETE_FLAG)");
-$this->db->select('@DELETION_FLAG as DELETION_FLAG', FALSE);
-return $this->db->get()->result_array();
-}
+    //FUNCTION TO GET UNIT SDATE AND EDATE AND INVDATE ADDING AND SUBTR USING CONFIG MONTH
+    public  function GetUnitSdEdInvdate($unitno)
+    {
+        $BDLY_INPUT_sp_stmt="CALL SP_CONFIG_SDATE_EDATE((SELECT UNIT_ID FROM UNIT WHERE UNIT_NO='$unitno'),@SDATE,@EDATE,@INVDATE)";
+        $this->db->query($BDLY_INPUT_sp_stmt);
+
+        $BDLY_INPUT_sp_rs = 'SELECT @SDATE,@EDATE,@INVDATE';
+        $query = $this->db->query($BDLY_INPUT_sp_rs);
+        foreach ($query->result_array() as $row)
+        {
+            $BDLY_INPUT_getsdate=$row['@SDATE'];
+            $BDLY_INPUT_getedate=$row['@EDATE'];
+            $BDLY_INPUT_invdate=$row['@INVDATE'];
+        }
+
+        $BDLY_INPUT_unitdate=array("unitsdate"=>$BDLY_INPUT_getsdate,"unitedate"=>$BDLY_INPUT_getedate,"invdate"=>$BDLY_INPUT_invdate);
+        return $BDLY_INPUT_unitdate;
+    }
+    //FUNCTION TO CHECK HOUSE KEEPING UNIT NO EXISTS OR NOT
+    public function CheckHKPUnitnoExists($BDLY_INPUT_unitval)
+    {
+        $CheckHKPUnitnoExists = "SELECT EHKU_UNIT_NO FROM EXPENSE_HOUSEKEEPING_UNIT WHERE EHKU_UNIT_NO='$BDLY_INPUT_unitval'";
+        $this->db->query($CheckHKPUnitnoExists);
+        if ($this->db->affected_rows() > 0) {
+            $HKPunitflag= true;
+        }
+        else{
+            $HKPunitflag= false;
+        }
+        return $HKPunitflag;
+    }
+    //FUNCTION TO DELETE A RECORD
+    public  function DeleteRecord($tableid,$rowid,$USERSTAMP)
+    {
+        $deletestmt = "CALL SP_SINGLE_TABLE_ROW_DELETION('$tableid','$rowid','$USERSTAMP',@DELETION_FLAG)";
+        $this->db->query($deletestmt);
+        $PDLY_INPUT_rs_flag = 'SELECT @DELETION_FLAG';
+        $query = $this->db->query($PDLY_INPUT_rs_flag);
+        foreach ($query->result_array() as $row)
+        {
+            $deleteflag=$row['@DELETION_FLAG'];
+        }
+        return $deleteflag;
+    }
+
 //FUNCTION TO GET CALENDAR EVENT TIME FOR STARHUB N UNIT
 public function getStarHubUnitCalTime()
 {

@@ -12,7 +12,9 @@ include "Header.php";
         resize: none;
         overflow: hidden;
     }
-
+    .glyphicon-remove,.glyphicon-trash{
+        color:red;
+    }
 </style>
 <script>
 var ErrorControl ={AmountCompare:'InValid'}
@@ -29,6 +31,7 @@ $(document).ready(function(){
     $(".numonly").doValidation({rule:'numbersonly',prop:{realpart:5}});
     $(".amtonly").doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
     $(".autosize").doValidation({rule:'general',prop:{autosize:true}});
+    $("input.autosize").autoGrowInput();
     $(".PDLY_INPUT_ta_cmtItem").doValidation({rule:'general',prop:{uppercase:false}});
     $('textarea').autogrow({onInitialize: true});
     var perexptype;
@@ -46,6 +49,7 @@ $(document).ready(function(){
     $('#PDLY_SEARCH_btn_babybutton').hide();
     $('#PDLY_SEARCH_lb_babysearchoption').hide();
     $('#PDLY_SEARCH_lb_babyexpansecategory').hide();
+    $('#div_category').hide();
     $("#PDLY_SEARCH_btn_babybutton").hide();
     $("#PDLY_SEARCH_div_htmltable").hide();
     $('#PDLY_btn_pdf').hide();
@@ -245,6 +249,7 @@ $(document).ready(function(){
         $('#PDLY_INPUT_tble_multi').empty();
         $('<tr><td nowrap><label  id="PDLY_INPUT_lbl_expense" >CATEGORY OF EXPENSE<em>*</em></label></td><td style="max-width: 150px;" nowrap><label  id="PDLY_INPUT_lbl_invdate" >INVOICE DATE<em>*</em></label></td><td style="max-width:200px;" nowrap><label id="PDLY_INPUT_lbl_invamt" >INVOICE AMOUNT<em>*</em></label> </td><td ><label id="PDLY_INPUT_lbl_invitm" >INVOICE ITEMS<em>*</em></label> </td><td ><label id="PDLY_INPUT_lbl_invfrom" >INVOICE FROM<em>*</em></label> </td><td><label id="PDLY_INPUT_lbl_invcmt" >COMMENTS</label></td></tr><tr><td> <select class="submultivalid form-control"   name="PDLY_INPUT_lb_category[]" id="PDLY_INPUT_lb_category1"  ><option >SELECT</option> </select> </td> <td><input class=" form-control date-picker submultivalid datemandtry"   type="text" name ="PDLY_INPUT_db_invdate[]" id="PDLY_INPUT_db_invdate1" style="max-width:100px;" /> </td><td><input   type="text" name ="PDLY_INPUT_tb_incamtrp[]" id="PDLY_INPUT_tb_incamtrp1"  class="form-control amtonly submultivalid" style="max-width:80px;"   /></td><td><textarea class="form-control submultivalid PDLY_INPUT_ta_cmtItem"   name="PDLY_INPUT_ta_invitem[]" id="PDLY_INPUT_ta_invitem1"   ></textarea></td><td><input class="form-control submultivalid autosize autocompinc"  type="text" name ="PDLY_INPUT_tb_invfrom[]" id="PDLY_INPUT_tb_invfrom1" /></td><td><textarea  class=" form-control submultivalid PDLY_INPUT_ta_cmtItem" name ="PDLY_INPUT_tb_comments[]" id="PDLY_INPUT_tb_comments1" ></textarea></td><td><input enabled type="button" disabled value="+" class="addbttn" alt="Add Row" style="max-height: 30px; max-width:30px;" name ="PDLY_INPUT_btn_addbtn" id="PDLY_INPUT_btn_addbtn1" disabled/></td><td><input  type="button" value="-" class="deletebttn" alt="delete Row" style="max-height: 30px; max-width:30px;" name ="PDLY_INPUT_btn_delbtn" id="PDLY_INPUT_btn_delbtn1"  disabled /></td></tr>').appendTo($('#PDLY_INPUT_tble_multi'));
         $(".autosize").doValidation({rule:'general',prop:{autosize:true}});
+        $("input.autosize").autoGrowInput();
         $(".amtonly").doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
         $(".date-picker").datepicker({dateFormat:'dd-mm-yy', changeYear: true, changeMonth: true});
         $('.date-picker').datepicker("option","maxDate",new Date());
@@ -290,6 +295,7 @@ $(document).ready(function(){
         fCell.innerHTML ="<td><input  class='submultivalid form-control autosize autocompinc' type='text' name ='PDLY_INPUT_tb_invfrom[]' id='"+"PDLY_INPUT_tb_invfrom"+incid+"' /></td>"
         fCell = newRow.insertCell(5);
         $(".autosize").doValidation({rule:'general',prop:{autosize:true}});
+        $("input.autosize").autoGrowInput();
         fCell.innerHTML = "<td><textarea  class='submultivalid form-control PDLY_INPUT_ta_cmtItem' type='text' name ='PDLY_INPUT_tb_comments[]' id='"+"PDLY_INPUT_tb_comments"+incid+"'></textarea></td>"
         fCell = newRow.insertCell(6);
         fCell.innerHTML ="<td><input type='button' value='+' class='addbttn' alt='Add Row' style='max-height: 30px; max-width:30px;' name ='PDLY_INPUT_btn_addbtn' id='"+"PDLY_INPUT_btn_addbtn"+incid+"'/></td>";
@@ -889,6 +895,7 @@ $(document).ready(function(){
         $(".preloader").show();
         $('#PDLY_SEARCH_db_enddate,#PDLY_SEARCH_db_startdate,#PDLY_SEARCH_tb_searchbyinvfrom').val('');
         $('#PDLY_SEARCH_lbl_searchbyinvitem,#PDLY_SEARCH_lbl_searchbyinvfrom,#PDLY_SEARCH_tb_searchbyinvfrom').hide();
+        $('#div_invoicefrom').hide();
         $('#PDLY_SEARCH_lbl_nodataerrormsg').hide();
         $('#PDLY_SEARCH_lbl_flextableheader').hide();
         var PDLY_SEARCH_lb_babysearchoptionvalue=$('#PDLY_SEARCH_lb_babysearchoption').val();
@@ -925,20 +932,28 @@ $(document).ready(function(){
             $("#PDLY_SEARCH_tble_searchtable").show();
             $('#PDLY_SEARCH_lbl_toamount').hide();
             $('#PDLY_SEARCH_tb_toamount').hide();
+            $('#div_toamt').hide();
             $('#PDLY_SEARCH_lbl_fromamount').hide();
             $('#PDLY_SEARCH_tb_fromamount').hide();
+            $('#div_fromamt').hide();
             $('#PDLY_SEARCH_lbl_searchbyinvfrom').hide();
             $('#PDLY_SEARCH_lbl_searchbyinvitem').hide();
             $('#PDLY_SEARCH_tb_searchbyinvfrom').hide();
+            $('#div_invoicefrom').hide();
             $('#PDLY_SEARCH_tb_searchbyinvitem').hide();
+            $('#div_invoiceitem').hide();
             $('#PDLY_SEARCH_lbl_searchabycmt').hide();
             $('#PDLY_SEARCH_tb_searchabycmt').val('').hide();
+            $('#div_comments').hide();
             $('#PDLY_SEARCH_lbl_babyexpansecategory').hide();
             $('#PDLY_SEARCH_lb_babyexpansecategory').hide();
+            $('#div_category').hide();
             $('#PDLY_SEARCH_lbl_startdate').show();
             $('#PDLY_SEARCH_db_startdate').val('').show();
+            $('#div_startdate').show();
             $('#PDLY_SEARCH_lbl_enddate').show();
             $('#PDLY_SEARCH_db_enddate').val('').show();
+            $('#div_enddate').show();
             $('#PDLY_SEARCH_btn_babybutton').hide();
             $('#PDLY_SEARCH_btn_babybutton').attr("disabled", "disabled");
         }
@@ -948,14 +963,19 @@ $(document).ready(function(){
             $("#PDLY_SEARCH_tble_searchtable").show();
             $('#PDLY_SEARCH_lbl_toamount').hide();
             $('#PDLY_SEARCH_tb_toamount').hide();
+            $('#div_toamt').hide();
             $('#PDLY_SEARCH_lbl_fromamount').hide();
             $('#PDLY_SEARCH_tb_fromamount').hide();
+            $('#div_fromamt').hide();
             $('#PDLY_SEARCH_lbl_searchbyinvfrom').hide();
             $('#PDLY_SEARCH_lbl_searchbyinvitem').hide();
             $('#PDLY_SEARCH_tb_searchbyinvfrom').hide();
+            $('#div_invoicefrom').hide();
             $('#PDLY_SEARCH_tb_searchbyinvitem').hide();
+            $('#div_invoiceitem').hide();
             $('#PDLY_SEARCH_lbl_searchabycmt').hide();
             $('#PDLY_SEARCH_tb_searchabycmt').hide();
+            $('#div_comments').hide();
             var categorydata=$('#PDLY_SEARCH_lb_babysearchoption').val();
             $.ajax({
                 type: "POST",
@@ -985,11 +1005,14 @@ $(document).ready(function(){
                     }
                     $('#PDLY_SEARCH_lb_babyexpansecategory').html(PDLY_SEARCH_options);
                     $('#PDLY_SEARCH_lb_babyexpansecategory').show();
+                    $('#div_category').show();
                     $("select#PDLY_SEARCH_lb_babyexpansecategory")[0].selectedIndex = 0;
                     $('#PDLY_SEARCH_lbl_startdate').show();
                     $('#PDLY_SEARCH_db_startdate').val('').show();
+                    $('#div_startdate').show();
                     $('#PDLY_SEARCH_lbl_enddate').show();
                     $('#PDLY_SEARCH_db_enddate').val('').show();
+                    $('#div_enddate').show();
                     $('#PDLY_SEARCH_btn_babybutton').show();
                     $('#PDLY_SEARCH_btn_babybutton').attr("disabled", "disabled");
                 }
@@ -1005,20 +1028,28 @@ $(document).ready(function(){
             $("#PDLY_SEARCH_tble_searchtable").show();
             $('#PDLY_SEARCH_lbl_babyexpansecategory').hide();
             $('#PDLY_SEARCH_lb_babyexpansecategory').hide();
+            $('#div_category').hide();
             $('#PDLY_SEARCH_lbl_searchbyinvfrom').hide();
             $('#PDLY_SEARCH_lbl_searchbyinvitem').hide();
             $('#PDLY_SEARCH_tb_searchbyinvfrom').hide();
+            $('#div_invoicefrom').hide();
             $('#PDLY_SEARCH_tb_searchbyinvitem').hide();
+            $('#div_invoiceitem').hide();
             $('#PDLY_SEARCH_lbl_searchabycmt').hide();
             $('#PDLY_SEARCH_tb_searchabycmt').hide();
+            $('#div_comments').hide();
             $('#PDLY_SEARCH_lbl_toamount').show();
             $('#PDLY_SEARCH_tb_toamount').val('').show();
+            $('#div_toamt').show();
             $('#PDLY_SEARCH_lbl_fromamount').show();
             $('#PDLY_SEARCH_tb_fromamount').val('').show();
+            $('#div_fromamt').show();
             $('#PDLY_SEARCH_lbl_startdate').show();
             $('#PDLY_SEARCH_db_startdate').val('').show();
+            $('#div_startdate').show();
             $('#PDLY_SEARCH_lbl_enddate').show();
             $('#PDLY_SEARCH_db_enddate').val('').show();
+            $('#div_enddate').show();
             $('#PDLY_SEARCH_btn_babybutton').show();
             $('#PDLY_SEARCH_btn_babybutton').attr("disabled", "disabled");
         }
@@ -1032,20 +1063,28 @@ $(document).ready(function(){
             $("#PDLY_SEARCH_tble_searchtable").show();
             $('#PDLY_SEARCH_lbl_toamount').hide();
             $('#PDLY_SEARCH_tb_toamount').hide();
+            $('#div_toamt').hide();
             $('#PDLY_SEARCH_lbl_fromamount').hide();
             $('#PDLY_SEARCH_tb_fromamount').hide();
+            $('#div_fromamt').hide();
             $('#PDLY_SEARCH_lbl_babyexpansecategory').hide();
             $('#PDLY_SEARCH_lb_babyexpansecategory').hide();
+            $('#div_category').hide();
             $('#PDLY_SEARCH_lbl_searchbyinvfrom').hide();
             $('#PDLY_SEARCH_lbl_searchbyinvitem').hide();
             $('#PDLY_SEARCH_tb_searchbyinvfrom').hide();
+            $('#div_invoicefrom').hide();
             $('#PDLY_SEARCH_tb_searchbyinvitem').hide();
+            $('#div_invoiceitem').hide();
             $('#PDLY_SEARCH_lbl_searchabycmt').hide();
             $('#PDLY_SEARCH_tb_searchabycmt').hide();
+            $('#div_comments').hide();
             $('#PDLY_SEARCH_lbl_startdate').show();
             $('#PDLY_SEARCH_db_startdate').val('').show();
+            $('#div_startdate').show();
             $('#PDLY_SEARCH_lbl_enddate').show();
             $('#PDLY_SEARCH_db_enddate').val('').show();
+            $('#div_enddate').show();
             $('#PDLY_SEARCH_btn_babybutton').show();
             $('#PDLY_SEARCH_btn_babybutton').attr("disabled", "disabled");
         }
@@ -1057,21 +1096,29 @@ $(document).ready(function(){
             $("#PDLY_SEARCH_tble_searchtable").show();
             $('#PDLY_SEARCH_lbl_toamount').hide();
             $('#PDLY_SEARCH_tb_toamount').hide();
+            $('#div_toamt').hide();
             $('#PDLY_SEARCH_lbl_fromamount').hide();
             $('#PDLY_SEARCH_tb_fromamount').hide();
+            $('#div_fromamt').hide();
             $('#PDLY_SEARCH_lbl_babyexpansecategory').hide();
             $('#PDLY_SEARCH_lb_babyexpansecategory').hide();
+            $('#div_category').hide();
             $('#PDLY_SEARCH_lbl_searchabycmt').hide();
             $('#PDLY_SEARCH_tb_searchabycmt').hide();
+            $('#div_comments').hide();
             $('#PDLY_SEARCH_tb_searchbyinvitem').hide();
+            $('#div_invoiceitem').hide();
             $('#PDLY_SEARCH_lbl_bybabycmts').show();
             $('#PDLY_SEARCH_lbl_searchbyinvfrom').text('INVOICE FROM').hide();
             $('#PDLY_SEARCH_lbl_searchbyinvitem').hide();
             $('#PDLY_SEARCH_tb_searchbyinvfrom').val('').hide();
+            $('#div_invoicefrom').hide();
             $('#PDLY_SEARCH_lbl_startdate').show();
             $('#PDLY_SEARCH_db_startdate').val('').show();
+            $('#div_startdate').show();
             $('#PDLY_SEARCH_lbl_enddate').show();
             $('#PDLY_SEARCH_db_enddate').val('').show();
+            $('#div_enddate').show();
             $('#PDLY_SEARCH_btn_babybutton').hide();
             $('#PDLY_SEARCH_btn_babybutton').attr("disabled", "disabled");
         }
@@ -1083,21 +1130,29 @@ $(document).ready(function(){
             $("#PDLY_SEARCH_tble_searchtable").show();
             $('#PDLY_SEARCH_lbl_toamount').hide();
             $('#PDLY_SEARCH_tb_toamount').hide();
+            $('#div_toamt').hide();
             $('#PDLY_SEARCH_lbl_fromamount').hide();
             $('#PDLY_SEARCH_tb_fromamount').hide();
+            $('#div_fromamt').hide();
             $('#PDLY_SEARCH_lbl_babyexpansecategory').hide();
             $('#PDLY_SEARCH_lb_babyexpansecategory').hide();
+            $('#div_category').hide();
             $('#PDLY_SEARCH_lbl_searchabycmt').hide();
             $('#PDLY_SEARCH_tb_searchabycmt').hide();
+            $('#div_comments').hide();
             $('#PDLY_SEARCH_lbl_bybabycmts').show();
             $('#PDLY_SEARCH_lbl_searchbyinvfrom').hide();
             $('#PDLY_SEARCH_tb_searchbyinvfrom').val('').hide();
+            $('#div_invoicefrom').hide();
             $('#PDLY_SEARCH_tb_searchbyinvitem').val('').hide();
+            $('#div_invoiceitem').hide();
             $('#PDLY_SEARCH_lbl_searchbyinvitem').hide();
             $('#PDLY_SEARCH_lbl_startdate').show();
             $('#PDLY_SEARCH_db_startdate').val('').show();
+            $('#div_startdate').show();
             $('#PDLY_SEARCH_lbl_enddate').show();
             $('#PDLY_SEARCH_db_enddate').val('').show();
+            $('#div_enddate').show();
             $('#PDLY_SEARCH_btn_babybutton').hide();
             $('#PDLY_SEARCH_btn_babybutton').attr("disabled", "disabled");
         }
@@ -1277,6 +1332,7 @@ $(document).ready(function(){
                         }
                         $('#PDLY_SEARCH_lbl_searchabycmt').show();
                         $('#PDLY_SEARCH_tb_searchabycmt').show();
+                        $('#div_comments').show();
                         $('#PDLY_SEARCH_btn_babybutton').hide();
                         if(PDLY_SEARCH_flag_deleteupd==1){
                             PDLY_SEARCH_flag_deleteupd=0;
@@ -1335,6 +1391,7 @@ $(document).ready(function(){
 
                         $('#PDLY_SEARCH_lbl_searchbyinvfrom').show();
                         $('#PDLY_SEARCH_tb_searchbyinvfrom').show();
+                        $('#div_invoicefrom').show();
                         var response_len=values.length;
                         if(response_len>0){
                             $('#PDLY_SEARCH_tb_searchbyinvfrom').removeAttr("disabled").attr('placeholder',response_len+' Records Matching').val('');
@@ -1399,6 +1456,7 @@ $(document).ready(function(){
                         }
                         $('#PDLY_SEARCH_tb_searchbyinvitem').val('').show();
                         $('#PDLY_SEARCH_lbl_searchbyinvitem').show();
+                        $('#div_invoiceitem').show();
                         $('#PDLY_SEARCH_btn_babybutton').hide();
                         var response_len=values.length;
                         if(response_len>0){
@@ -1972,7 +2030,7 @@ $(document).ready(function(){
                 $('#PDLY_SEARCH_lbl_flextableheader').text(PDLY_SEARCH_CONFSAVEMSG);
                 $('#PDLY_SEARCH_hdn_flextableheader').val(PDLY_SEARCH_CONFSAVEMSG);
                 $('#PDLY_SEARCH_lbl_flextableheader').show();
-                PDLY_SEARCH_babytable_header='<table id="PDLY_SEARCH_tbl_htmltable" border="1" width="1300px" cellspacing="0" data-class="table" class="srcresult"><thead bgcolor="#6495ed" style="color:white"><tr><th></th><th width="75px" class="uk-date-column"">PAID DATE</th><th width="60px">INVOICE AMOUNT</th><th width="75px" class="uk-date-column"">FROM PERIOD</th><th width="75px" class="uk-date-column"">TO PERIOD</th><th width="230px">COMMENTS</th><th width="250px">USERSTAMP</th><th width="150px" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>';
+                PDLY_SEARCH_babytable_header='<table id="PDLY_SEARCH_tbl_htmltable" border="1" width="1100px" cellspacing="0" data-class="table" class="srcresult"><thead bgcolor="#6495ed" style="color:white"><tr><th></th><th width="75px" class="uk-date-column"">PAID DATE</th><th width="60px">INVOICE AMOUNT</th><th width="75px" class="uk-date-column"">FROM PERIOD</th><th width="75px" class="uk-date-column"">TO PERIOD</th><th width="180px">COMMENTS</th><th width="250px">USERSTAMP</th><th width="150px" class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>';
 
                 for(var i=0;i<PDLY_SEARCH_babyvalue.length;i++)
                 {
@@ -2000,15 +2058,12 @@ $(document).ready(function(){
             $('#PDLY_SEARCH_btn_deletebutton').attr("disabled", "disabled");
             var table=$('#PDLY_SEARCH_tbl_htmltable').DataTable( {
                 "aaSorting": [],
-                "pageLength": 10,
+                "pageLength": 25,
                 "sPaginationType":"full_numbers",
                 "aoColumnDefs" : [
                     { "aTargets" : ["uk-date-column"] , "sType" : "uk_date"}, { "aTargets" : ["uk-timestp-column"] , "sType" : "uk_timestp"} ]
 
             });
-//                    new FixedHeader( table, {
-//                        "offsetTop": 100
-//                    } );
             sorting()
         }
         var PDLY_SEARCH_expensetype=$('#PDLY_SEARCH_lb_typelist').find('option:selected').text();
@@ -2094,7 +2149,7 @@ $(document).ready(function(){
         {
             $('#'+cid).replaceWith("<td  class='new' id='"+previous_id+"'><input type='text' id='Eb_invfrom' name='Eb_invfrom'  class='babyupdate form-control autosize autocompinc' style='width: 150px' value='"+cval+"'></td>");
             $(".autosize").doValidation({rule:'general',prop:{autosize:true}});
-
+            $("input.autosize").autoGrowInput();
         }
         if(ifcondition=='ebinvitem')
         {
@@ -2236,6 +2291,7 @@ $(document).ready(function(){
         {
             $('#'+cid).replaceWith("<td  class='new' id='"+carprevious_id+"'><input type='text' id='Ec_invfrom' name='Ec_invfrom'  class='carupdate form-control autosize autocompinc' style='width: 150px' value='"+carcval+"'></td>");
             $(".autosize").doValidation({rule:'general',prop:{autosize:true}});
+            $("input.autosize").autoGrowInput();
 
         }
         if(carifcondition=='ecinvitem')
@@ -2376,7 +2432,7 @@ $(document).ready(function(){
         {
             $('#'+cid).replaceWith("<td  class='new' id='"+personalprevious_id+"'><input type='text' id='Ep_invfrom' name='Ep_invfrom'  class='personalupdate form-control autosize autocompinc' style='width: 200px' value='"+personalcval+"'></td>");
             $(".autosize").doValidation({rule:'general',prop:{autosize:true}});
-
+            $("input.autosize").autoGrowInput();
         }
         if(personalifcondition=='epinvitem')
         {
@@ -2868,50 +2924,50 @@ $(document).ready(function(){
         <label class="srctitle" id='PDLY_SEARCH_lbl_bybabycmts'  hidden>SEARCH BY BABY EXPENSE COMMENTS<em>*</em></label>
     </div>
     <div id='PDLY_SEARCH_tble_searchtable'>
-        <div class="form-group">
+        <div class="form-group" id="div_category">
             <label  id='PDLY_SEARCH_lbl_babyexpansecategory' class="col-sm-2" hidden>BABY EXPENSE CATEGORY<em>*</em></label>
             <div class="col-sm-2"><select class="submitval form-control" id='PDLY_SEARCH_lb_babyexpansecategory'  name="PDLY_SEARCH_lb_babyexpansecategory"  hidden>
                     <option>SELECT</option>
                 </select></div>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="div_startdate">
             <label  id='PDLY_SEARCH_lbl_startdate' class="col-sm-2" hidden> START DATE <em>*</em></label>
             <div class="col-sm-2">
                 <input  type="text" class="datebox submitval datemandtry form-control"  name="PDLY_SEARCH_db_startdate" id="PDLY_SEARCH_db_startdate" style="width:100px;" hidden />
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="div_enddate">
             <label id='PDLY_SEARCH_lbl_enddate' class="col-sm-2" hidden> END DATE <em>*</em></label>
             <div class="col-sm-2">
                 <input  type="text" class="datebox submitval datemandtry form-control" name="PDLY_SEARCH_db_enddate" id="PDLY_SEARCH_db_enddate" style="width:100px;" hidden />
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="div_comments">
             <label  id='PDLY_SEARCH_lbl_searchabycmt' class="col-sm-2" class="auto"  hidden> COMMENTS <em>*</em></label>
             <div class="col-sm-2">
                 <textarea rows="3" name="PDLY_SEARCH_tb_searchabycmt" class="submitval form-control" id="PDLY_SEARCH_tb_searchabycmt" style="width:330px;" hidden ></textarea>
             </div>
         </div>
         <div><label id='PDLY_SEARCH_lbl_babyshowcomments' class="errormsg" hidden >  </label></div>
-        <div class="form-group">
+        <div class="form-group" id="div_invoicefrom">
             <label  id='PDLY_SEARCH_lbl_searchbyinvfrom' class="col-sm-2" hidden> INVOICE FROM <em>*</em></label>
             <div class="col-sm-2">
                 <input   type="text" class="submitval form-control" name ="PDLY_SEARCH_tb_searchbyinvfrom" id="PDLY_SEARCH_tb_searchbyinvfrom"   style="width:330px;"hidden />
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="div_invoiceitem">
             <label  id='PDLY_SEARCH_lbl_searchbyinvitem' class="col-sm-2" hidden> INVOICE ITEM <em>*</em></label>
             <div class="col-sm-2">
                 <textarea   rows="3" type="text" class="submitval form-control" name ="PDLY_SEARCH_tb_searchbyinvitem" id="PDLY_SEARCH_tb_searchbyinvitem"   style="width:330px;"hidden ></textarea>
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="div_fromamt">
             <label  id='PDLY_SEARCH_lbl_fromamount' class="col-sm-2" hidden> FROM AMOUNT <em>*</em></label>
             <div class="col-sm-2">
                 <input   type="text" name ="PDLY_SEARCH_tb_fromamount" id="PDLY_SEARCH_tb_fromamount"  class="amtsubmitval form-control" style="width:80px;"hidden />
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" id="div_toamt">
             <label  id='PDLY_SEARCH_lbl_toamount' class="col-sm-2" hidden> TO AMOUNT <em>*</em></label>
             <div class="col-sm-2">
                 <input   type="text" name ="PDLY_SEARCH_tb_toamount" id="PDLY_SEARCH_tb_toamount"  class="amtsubmitval form-control" style="width:80px;"hidden />
