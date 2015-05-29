@@ -27,6 +27,11 @@ require_once "Header.php";
 <!--HEAD TAG START-->
 <head>
 
+<style>
+    div.container {
+        width: 80%;
+    }
+</style>
 <script>
 
 //<!----------READY FUNCTION------------->
@@ -97,6 +102,7 @@ $(document).ready(function(){
         $('#CEXP_lbl_fromdate').hide();
         $('#CEXP_lbl_todate').hide();
         $('#CEXP_lbl_beforedate').hide();
+        $('#CWEXP_pdf').hide();
         $('#CEXP_db_selected_before_date').hide().val("");
         $('#CEXP_db_selected_equal_date').datepicker({
             dateFormat:"dd-mm-yy",
@@ -108,6 +114,7 @@ $(document).ready(function(){
     });
     //-------------------EQUAL DATEPICKER CHANGE---------------//
     $('#CEXP_db_selected_equal_date').change(function(){
+
         if($('#CEXP_db_selected_equal_date').val()!=''){
             $('#CEXP_btn_submit').removeAttr('disabled');
         }
@@ -116,6 +123,7 @@ $(document).ready(function(){
         }
         $('#CEXP_lbl_msg').hide()
         $('#CEXP_div_htmltable').hide();
+        $('#CWEXP_pdf').hide();
     });
     //--------------------BEFORE RADIO BUTTON CHANGE------------//
     $('#CEXP_radio_before').change(function(){
@@ -129,6 +137,7 @@ $(document).ready(function(){
         $('#CEXP_db_selected_to_date').hide().val("");
         $('#CEXP_lbl_fromdate').hide();
         $('#CEXP_lbl_todate').hide();
+        $('#CWEXP_pdf').hide();
         $('#CEXP_lbl_beforedate').show();
         $('#CEXP_db_selected_before_date').show();
         $('#CEXP_db_selected_before_date').datepicker({
@@ -149,6 +158,7 @@ $(document).ready(function(){
         }
         $('#CEXP_lbl_msg').hide();
         $('#CEXP_div_htmltable').hide();
+        $('#CWEXP_pdf').hide();
     });
     //--------------------BETWEEN RADIO BUTTON CHANGE------------//
     $('#CEXP_radio_between').change(function(){
@@ -164,6 +174,7 @@ $(document).ready(function(){
         $('#CEXP_db_selected_to_date').hide();
         $('#CEXP_lbl_fromdate').show();
         $('#CEXP_lbl_todate').hide();
+        $('#CWEXP_pdf').hide();
         //SET FROM DATE DATEPICKER
         $('#CEXP_db_selected_from_date').datepicker({
             dateFormat:"dd-mm-yy",
@@ -217,6 +228,7 @@ $(document).ready(function(){
         }
         $('#CEXP_lbl_msg').hide();
         $('#CEXP_div_htmltable').hide();
+        $('#CWEXP_pdf').hide();
     });
     //-------------------FROM DATEPICKER CHANGE---------------//
     $('#CEXP_db_selected_from_date').change(function(){
@@ -245,6 +257,7 @@ $(document).ready(function(){
         }
         $('#CEXP_lbl_msg').hide();
         $('#CEXP_div_htmltable').hide();
+        $('#CWEXP_pdf').hide();
     });
     //--------------FUNCTION TO GET VALUES FROM DATABASE----------------------//
 
@@ -264,6 +277,7 @@ $(document).ready(function(){
                 'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CEXP_get_customer_details",
                 data:{'CEXP_fromdate':CEXP_equaldate,'CEXP_todate':CEXP_equaldate,'CEXP_radio_button_select_value':CEXP_radio_button_select_value},
                 success:function(data){
+                    alert(data)
                     var final_value=JSON.parse(data);
                     CEXP_load_customer_details(final_value);
 
@@ -284,13 +298,14 @@ alert(JSON.stringify(data))
                 'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CEXP_get_customer_details",
                 data:{'CEXP_fromdate':CEXP_beforedate,'CEXP_todate':CEXP_beforedate,'CEXP_radio_button_select_value':CEXP_radio_button_select_value},
                 success:function(data){
+                    alert(data)
                     var final_value=JSON.parse(data);
                     CEXP_load_customer_details(final_value);
 
 
                 },
                 error:function(data){
-
+                    alert(JSON.stringify(data))
 
                 }
             });
@@ -306,6 +321,7 @@ alert(JSON.stringify(data))
                 'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CEXP_get_customer_details",
                 data:{'CEXP_fromdate':CEXP_fromdate,'CEXP_todate':CEXP_enddate,'CEXP_radio_button_select_value':CEXP_radio_button_select_value},
                 success:function(data){
+                    alert(data)
                     var final_value=JSON.parse(data);
                     CEXP_load_customer_details(final_value);
 
@@ -422,7 +438,7 @@ alert(JSON.stringify(data))
             }
         }
         else{
-            var CEXP_table_value='<table id="CEXP_tbl_htmltable" border="1"  cellspacing="0" class="srcresult" style="width:2000px" ><thead><tr><th nowrap>UNIT NO</th><th nowrap>FIRST NAME</th><th>LAST NAME</th><th style="width:80px" >START DATE</th><th style="width:80px">END DATE</th><th style="width:80px">PRETERMINATE DATE</th><th style="width:130px">ROOM TYPE</th><th>EXTENSION</th><th>RE CHECKIN</th><th>RENT</th><th>DEPOSIT</th><th style="width:500px">COMMENTS</th><th>USERSTAMP</th><th style="width:180px">TIMESTAMP</th></tr></thead><tbody>';
+            var CEXP_table_value='<table id="CEXP_tbl_htmltable" border="1"  cellspacing="0" class="srcresult" style="width:3500px" ><thead><tr><th style="width:80px" nowrap>UNIT NO</th><th style="width:150px" nowrap>FIRST NAME</th><th style="width:150px" nowrap>LAST NAME</th><th style="width:100px" nowrap class="uk-timestp-column">START DATE</th><th style="width:100px" nowrap class="uk-timestp-column">END DATE</th><th style="width:100px" nowrap class="uk-timestp-column">PRETERMINATE DATE</th><th style="width:130px" nowrap>ROOM TYPE</th><th style="width:40px" nowrap>EXTENSION</th><th style="width:40px" nowrap>RE CHECKIN</th><th style="width:100px">RENT</th><th style="width:100px">DEPOSIT</th><th style="width:800px">COMMENTS</th><th style="width:200px" nowrap>USERSTAMP</th><th style="width:180px" nowrap class="uk-timestp-column">TIMESTAMP</th></tr></thead><tbody>';
             for(var i=0;i<CEXP_result_array.length;i++)
             {
                 var CEXP_values=CEXP_result_array[i]
@@ -434,25 +450,54 @@ alert(JSON.stringify(data))
                 if(CEXP_preterminatedate!=""){
                     CEXP_preterminatedate=FormTableDateFormat(CEXP_preterminatedate)
                 }
-                CEXP_table_value+='<tr ><td nowarp>'+CEXP_values.unitno+'</td><td nowrap>'+CEXP_values.firstname+'</td><td nowrap>'+CEXP_values.lastname+'</td><td >'+CEXP_startdate+'</td><td>'+CEXP_enddate+'</td><td>'+CEXP_preterminatedate+'</td><td>'+CEXP_values.roomtype+'</td><td>'+CEXP_values.extension+'</td><td>'+CEXP_values.rechecking+'</td><td>'+CEXP_values.rental+'</td><td>'+CEXP_values.deposit+'</td><td>'+CEXP_values.comments+'</td><td>'+CEXP_values.userstamp+'</td><td>'+CEXP_values.timestamp+'</td></tr>';
+                CEXP_table_value+='<tr ><td nowarp style="width:80px" >'+CEXP_values.unitno+'</td><td style="width:150px"  >'+CEXP_values.firstname+'</td><td  style="width:150px" >'+CEXP_values.lastname+'</td><td style="width:100px" >'+CEXP_startdate+'</td><td style="width:100px"  >'+CEXP_enddate+'</td><td style="width:100px"  >'+CEXP_preterminatedate+'</td><td style="width:130px" nowrap >'+CEXP_values.roomtype+'</td><td style="width:40px">'+CEXP_values.extension+'</td><td style="width:40px">'+CEXP_values.rechecking+'</td><td style="width:100px">'+CEXP_values.rental+'</td><td style="width:100px">'+CEXP_values.deposit+'</td><td style="width:800px" >'+CEXP_values.comments+'</td><td style="width:200px">'+CEXP_values.userstamp+'</td><td style="width:180px" nowrap>'+CEXP_values.timestamp+'</td></tr>';
 //                $('#CEXP_tbl_htmltable').append(CEXP_table_value);
             }
              CEXP_table_value+='</tbody></table>';
             $('section').html(CEXP_table_value);
-            $('#CEXP_tbl_htmltable').DataTable( {
+            var table=$('#CEXP_tbl_htmltable').DataTable( {
                 "aaSorting": [],
                 "pageLength": 10,
                 "sPaginationType":"full_numbers",
+//
+                "scrollY": "300px",
+                "scrollX": "100%",
+                     "scrollCollapse": true,
+//                     "paging": false,
                 "aoColumnDefs" : [
                     { "aTargets" : ["uk-date-column"] , "sType" : "uk_date"}, { "aTargets" : ["uk-timestp-column"] , "sType" : "uk_timestp"} ]
             });
-//            sorting();
+//             new $.fn.dataTable.FixedColumns( table );
+//             new $.fn.dataTable.FixedHeader( table );
+            sorting();
 //            $('#CEXP_tbl_htmltable').show();
             $('#CEXP_div_htmltable').show();
              $('#CWEXP_pdf').show();
             $('#CEXP_btn_submit').attr('disabled','disabled');
             $('#CEXP_lbl_msg').show().addClass( "srctitle" );
         }
+    }
+    function sorting(){
+        jQuery.fn.dataTableExt.oSort['uk_date-asc']  = function(a,b) {
+            var x = new Date( Date.parse(FormTableDateFormat(a)));
+            var y = new Date( Date.parse(FormTableDateFormat(b)) );
+            return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+        };
+        jQuery.fn.dataTableExt.oSort['uk_date-desc'] = function(a,b) {
+            var x = new Date( Date.parse(FormTableDateFormat(a)));
+            var y = new Date( Date.parse(FormTableDateFormat(b)) );
+            return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
+        };
+        jQuery.fn.dataTableExt.oSort['uk_timestp-asc']  = function(a,b) {
+            var x = new Date( Date.parse(FormTableDateFormat(a.split(' ')[0]))).setHours(a.split(' ')[1].split(':')[0],a.split(' ')[1].split(':')[1],a.split(' ')[1].split(':')[2]);
+            var y = new Date( Date.parse(FormTableDateFormat(b.split(' ')[0]))).setHours(b.split(' ')[1].split(':')[0],b.split(' ')[1].split(':')[1],b.split(' ')[1].split(':')[2]);
+            return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+        };
+        jQuery.fn.dataTableExt.oSort['uk_timestp-desc'] = function(a,b) {
+            var x = new Date( Date.parse(FormTableDateFormat(a.split(' ')[0]))).setHours(a.split(' ')[1].split(':')[0],a.split(' ')[1].split(':')[1],a.split(' ')[1].split(':')[2]);
+            var y = new Date( Date.parse(FormTableDateFormat(b.split(' ')[0]))).setHours(b.split(' ')[1].split(':')[0],b.split(' ')[1].split(':')[1],b.split(' ')[1].split(':')[2]);
+            return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
+        };
     }
     ////----------FUNCTION TO CLEAR-------------
     function CWEXP_clear(res)
@@ -577,16 +622,16 @@ alert(JSON.stringify(data))
                </div>
                <div>
                     <label name='CEXP_fromdate' id='CEXP_lbl_fromdate' class="col-sm-3"  hidden >ENTER A FROM  DATE <em>*</em></label>
-                        <div class="col-sm-2" ><input type="text" name="selected_from_date" id="CEXP_db_selected_from_date" style="width:110px;display: none" class="datemandtry form-control" hidden ></div>
+                        <div class="col-sm-9" ><input type="text" name="selected_from_date" id="CEXP_db_selected_from_date" style="width:110px;display: none" class="datemandtry form-control" hidden ></div>
 
                </div>
                <div>
-                  <label name='CEXP_todate' id='CEXP_lbl_todate' class="col-sm-2"  hidden>ENTER A  TO DATE <em>*</em> </label>
+                  <label name='CEXP_todate' id='CEXP_lbl_todate' class="col-sm-3"  hidden>ENTER A  TO DATE <em>*</em> </label>
                       <div class="col-sm-2" ><input type="text" name="selected_to_date" id="CEXP_db_selected_to_date" style="width:110px;display: none" class="datemandtry form-control" hidden ></div>
 
                </div>
                     </div>
-               <div class="form-group"><input class="maxbtn" type="button" name="submit" value="SHOW LIST" id="CEXP_btn_submit"   disabled/></div>
+               <div class="form-group" style="position:relative;left:12px;"><input class="maxbtn" type="button" name="submit" value="SHOW LIST" id="CEXP_btn_submit"   disabled/></div>
             </div>
             <div id="CEXP_tble_Weekly_expiry_list" hidden>
                 <div><label class="srctitle" style="text-align:CENTER;width:400px">WEEKLY CUSTOMER EXPIRY LIST</label></div>
