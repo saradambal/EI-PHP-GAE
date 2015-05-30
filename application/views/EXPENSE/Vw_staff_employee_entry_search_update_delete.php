@@ -13,6 +13,8 @@ include 'Header.php';
         var listboxoption;
         var ErrorControl ={EmailId:'Invalid'}
         var EMPSRC_UPD_DEL_sucsval=0;
+        var EMP_ENTRY_error=[];
+        var EMP_ENTRY_fullarr=[];
         $(document).ready(function() {
             $('#spacewidth').height('0%');
             $(".preloader").hide();
@@ -23,8 +25,8 @@ include 'Header.php';
             var EMP_ENTRY_errorMsg_array=[];
             var EMP_ENTRY_expensearr_unitnumber=[];
             var EMP_ENTRY_unitArray=[];
-            var EMP_ENTRY_fullarr=[];
-            var EMP_ENTRY_error=[];
+
+
             //SEARCH FORM
             var EMPSRC_UPD_DEL_fullarray=[];
             var EMPSRC_UPD_DEL_searchoption=[];
@@ -80,7 +82,7 @@ include 'Header.php';
                             EMP_ENTRY_unitArray=EMP_ENTRY_fullarr[1];
                             EMP_ENTRY_multi_array=EMP_ENTRY_fullarr[2];
                             EMP_ENTRY_error=EMP_ENTRY_fullarr[3];
-//                            alert(EMP_ENTRY_error[7].EMC_DATA)
+//                            alert(EMP_ENTRY_error[14].EMC_DATA)
 //                            alert(EMP_ENTRY_multi_array)
                             $(".EMP_ENTRY_title_alpha").prop("title",EMP_ENTRY_error[0].EMC_DATA);
                             $("#EMP_ENTRY_tb_mobile").prop("title",EMP_ENTRY_error[1].EMC_DATA)
@@ -131,11 +133,14 @@ include 'Header.php';
                     $.ajax({
                         type: "POST",
                         url: "<?php echo site_url('Ctrl_Staff_Employee_Entry_Search_Update_Delete/EMPSRC_UPD_DEL_searchoptionresult'); ?>",
+                        data:{'ErrorList':'1,2,34,71,154,248,135,136,153,155,157,158,163,164,165,166,167,168,169,315,339,400,401,446'},
                         success: function(data){
                             $('.preloader').hide();
                             EMPSRC_UPD_DEL_fullarray=JSON.parse(data);
                             EMPSRC_UPD_DEL_searchoption=EMPSRC_UPD_DEL_fullarray[0]
                             EMPSRC_UPD_DEL_expensearr_employeename=EMPSRC_UPD_DEL_fullarray[2]
+                            EMP_ENTRY_error=EMPSRC_UPD_DEL_fullarray[3];
+//                            alert(EMP_ENTRY_error[23].EMC_DATA)
                             //GET STAFF SEARCH OPTION
                             var EMPSRC_UPD_DEL_searchoptions ='';
                             for (var i = 0; i < EMPSRC_UPD_DEL_searchoption.length; i++) {
@@ -170,7 +175,7 @@ include 'Header.php';
                             }
                             $('#EMPSRC_UPD_DEL_lb_employeename_listbox').html(EMPSRC_UPD_DEL_expensearray_employeename);
 //                            $('#EMPSRC_UPD_DEL_lb_empdesig').html(EMPSRC_UPD_DEL_searchoption_desigdata)
-                            alert(EMPSRC_UPD_DEL_searchoption_desigdata)
+//                            alert(EMPSRC_UPD_DEL_searchoption_desigdata)
                         }
                     });
 //                    $(".EMP_ENTRY_title_alpha").prop("title",EMP_ENTRY_error[0].EMC_DATA)
@@ -444,6 +449,7 @@ include 'Header.php';
                 var EMP_ENTRY_email = $('#EMP_ENTRY_tb_email').val();
                 var EMP_ENTRY_comments = $('#EMP_ENTRY_ta_comments').val();
                 var EMP_ENTRY_radio_null=$('input:radio[name=EMP_ENTRY_radio_null]:checked').attr('id');
+//           alert(EMP_ENTRY_radio_null)
                 var form_element = $('#EMP_ENTRY_form_employeename').serialize();
                 $.ajax({
                     type: "POST",
@@ -824,7 +830,7 @@ include 'Header.php';
 //  var STDTL_SEARCH_firstlastname = $("#STDTL_SEARCH_lb_employeename_listbox").val();
                 var emp_first_name=EMPSRC_UPD_DEL_employeenameconcat[0]
                 var emp_last_name=EMPSRC_UPD_DEL_employeenameconcat[1]
-
+                var EMPSRC_UPD_DEL_search_option = $('#EMPSRC_UPD_DEL_lb_searchoption').val();
                 var form_element = $('#EMP_ENTRY_form_employeename').serialize();
                 $.ajax({
                     type: "POST",
@@ -835,10 +841,73 @@ include 'Header.php';
                         EMPSRC_UPD_DEL_result_array=JSON.parse(data);
                 if(EMPSRC_UPD_DEL_result_array.length==0)
                 {
-
+                    if(EMPSRC_UPD_DEL_search_option==95)//DESIGNATION
+                    {
+                        var EMPSRC_UPD_DEL_designation_listbox=$('#EMPSRC_UPD_DEL_lb_designation_listbox').find('option:selected').text();
+                        var EMPSRC_UPD_DEL_flexmsg=EMP_ENTRY_error[10].EMC_DATA;
+                        var EMPSRC_UPD_DEL_getflexmsg = EMPSRC_UPD_DEL_flexmsg.replace('[DESIGNATION]', EMPSRC_UPD_DEL_designation_listbox);
+                    }
+                    if(EMPSRC_UPD_DEL_search_option==90)//EMPLOYEE NAME
+                    {
+                        var EMPSRC_UPD_DEL_employeename=$('#EMPSRC_UPD_DEL_lb_employeename_listbox').val();
+                        var EMPSRC_UPD_DEL_flemployeename=emp_first_name+" "+emp_last_name;
+                        var EMPSRC_UPD_DEL_flexmsg=EMP_ENTRY_error[5].EMC_DATA;
+                        var EMPSRC_UPD_DEL_getflexmsg = EMPSRC_UPD_DEL_flexmsg.replace('[FNAME+LNAME]', EMPSRC_UPD_DEL_flemployeename);
+                    }
+                    if(EMPSRC_UPD_DEL_search_option==94)//COMMENTS
+                    {
+                        var EMPSRC_UPD_DEL_empcomments=$("#EMPSRC_UPD_DEL_btn_search_autocomplt").val();
+                        var EMPSRC_UPD_DEL_empcommentstxt=$('#EMPSRC_UPD_DEL_ta_comments').val();
+                        var EMPSRC_UPD_DEL_getflexmsg=EMP_ENTRY_error[3].EMC_DATA.replace('[COMMENTS]',EMPSRC_UPD_DEL_empcommentstxt);
+                    }
+                    if(EMPSRC_UPD_DEL_search_option==96)//EMAILID
+                    {
+                        var EMPSRC_UPD_DEL_empemailtxt=$('#EMPSRC_UPD_DEL_ta_email').val();
+                        var EMPSRC_UPD_DEL_getflexmsg=EMP_ENTRY_error[12].EMC_DATA.replace('[EMAIL]',EMPSRC_UPD_DEL_empemailtxt);
+                    }
+                    if(EMPSRC_UPD_DEL_search_option==99)//MOBILE NO
+                    {
+                        var EMPSRC_UPD_DEL_empmobiletxt=$('#EMPSRC_UPD_DEL_ta_mobile').val();
+                        var EMPSRC_UPD_DEL_getflexmsg=EMP_ENTRY_error[14].EMC_DATA.replace('[MOBILE NO]',EMPSRC_UPD_DEL_empmobiletxt);
+                    }
+                    $('#EMPSRC_UPD_DEL_nodataerrormsg').text(EMPSRC_UPD_DEL_getflexmsg).show();
                 }
                 else
                 {
+                    $('#EMPSRC_UPD_DEL_nodataerrormsg').hide();
+                    if(EMPSRC_UPD_DEL_search_option==90)//EMPLOYEE NAME
+                    {
+                        var EMPSRC_UPD_DEL_employeename=$('#EMPSRC_UPD_DEL_lb_employeename_listbox').val();
+
+                        var EMPSRC_UPD_DEL_flemployeename=emp_first_name+" "+emp_last_name;
+                        var EMPSRC_UPD_DEL_flexmsg=EMP_ENTRY_error[4].EMC_DATA;
+                        var EMPSRC_UPD_DEL_getflexmsg = EMPSRC_UPD_DEL_flexmsg.replace('[FNAME+LNAME]', EMPSRC_UPD_DEL_flemployeename);
+                    }
+                    if(EMPSRC_UPD_DEL_search_option==95)//DESIGNATION
+                    {
+                        var EMPSRC_UPD_DEL_designation_listbox=$('#EMPSRC_UPD_DEL_lb_designation_listbox').val();
+                        var EMPSRC_UPD_DEL_flexmsg=EMP_ENTRY_error[9].EMC_DATA
+                        var EMPSRC_UPD_DEL_getflexmsg = EMPSRC_UPD_DEL_flexmsg.replace('[DESIGNATION]', EMPSRC_UPD_DEL_designation_listbox);
+                    }
+                    if(EMPSRC_UPD_DEL_search_option==94)//COMMENTS
+                    {
+                        var EMPSRC_UPD_DEL_comments=$('#EMPSRC_UPD_DEL_ta_comments').val();
+                        var EMPSRC_UPD_DEL_flexmsg=EMP_ENTRY_error[8].EMC_DATA
+                        var EMPSRC_UPD_DEL_getflexmsg = EMPSRC_UPD_DEL_flexmsg.replace('[COMTS]', EMPSRC_UPD_DEL_comments);
+                    }
+                    if(EMPSRC_UPD_DEL_search_option==96)//EMAIL
+                    {
+                        var EMPSRC_UPD_DEL_email=$('#EMPSRC_UPD_DEL_ta_email').val();
+                        var EMPSRC_UPD_DEL_flexmsg=EMP_ENTRY_error[11].EMC_DATA
+                        var EMPSRC_UPD_DEL_getflexmsg = EMPSRC_UPD_DEL_flexmsg.replace('[EMAIL]', EMPSRC_UPD_DEL_email);
+                    }
+                    if(EMPSRC_UPD_DEL_search_option==99)//MOBILE NO
+                    {
+                        var EMPSRC_UPD_DEL_mobile=$('#EMPSRC_UPD_DEL_ta_mobile').val();
+                        var EMPSRC_UPD_DEL_flexmsg=EMP_ENTRY_error[13].EMC_DATA;
+                        var EMPSRC_UPD_DEL_getflexmsg = EMPSRC_UPD_DEL_flexmsg.replace('[MOBILE NO]', EMPSRC_UPD_DEL_mobile);
+                    }
+                    $('#EMPSRC_UPD_DEL_lbl_htmltablemsg').text(EMPSRC_UPD_DEL_getflexmsg).show();
                     var EMPSRC_UPD_DEL_value='';
                         var EMPSRC_UPD_DEL_header='<table id="EMPSRC_UPD_DEL_tble_htmltable" border="1"  cellspacing="0" class="srcresult"  ><thead  bgcolor="#6495ed" style="color:white" width="1500"><tr><th>EDIT/DELETE</th><th style="width:80px">FIRST NAME</th><th style="width:80px">LAST NAME</th><th style="width:80px">MOBILE</th><th style="width:80px">EMAIL</th><th style="width:80px">DESIGNATION</th><th style="width:80px">UNIT NO</th><th style="width:80px">CARD NUMBER</th><th style="width:250px">COMMENTS</th><th style="width:200px">USERSTAMP</th><th style="width:150px">TIMESTAMP</th></tr></thead><tbody>'
                         for(var j=0;j<EMPSRC_UPD_DEL_result_array.length;j++){
@@ -1239,6 +1308,8 @@ include 'Header.php';
                     EMPSRC_UPD_DEL_conformation_result(EMPSRC_UPD_DEL_carccheckarray,EMPSRC_UPD_DEL_carcunitarray)
                 }
             });
+            var EMPSRC_UPD_DEL_updateresultflag;
+            var EMPSRC_UPD_DEL_updateresult;
             function EMPSRC_UPD_DEL_conformation_result(EMPSRC_UPD_DEL_carccheckarray,EMPSRC_UPD_DEL_carcunitarray)
             {
                 var EMPSRC_UPD_DEL_searchoption = $('#EMPSRC_UPD_DEL_lb_searchoption').val();
@@ -1247,21 +1318,67 @@ include 'Header.php';
                 var EMPSRC_UPD_DEL_empdesigname = $('#EMPSRC_UPD_DEL_lb_empdesig').val();
                 var EMPSRC_UPD_DEL_mobilenumber = $('#EMPSRC_UPD_DEL_tb_mobile').val();
                 var EMPSRC_UPD_DEL_email = $('#EMPSRC_UPD_DEL_tb_email').val();
-                var EMPSRC_UPD_DEL_comments = $('#EMPSRC_UPD_DEL_ta_comments').val();
-                var EMP_ENTRY_radio_null=$('input:radio[name=EMPSRC_UPD_DEL_radio_null]:checked').attr('id');
-//             alert(currentid)
+                var EMPSRC_UPD_DEL_comments = $('#EMPSRC_UPD_DEL_ta_updatecomments').val();
+//                alert(EMPSRC_UPD_DEL_comments)
+//                var EMP_ENTRY_radio_null=$('input:radio[name=EMPSRC_UPD_DEL_radio_null]:checked').attr('id');
+                var EMP_ENTRY_radio_null = $('input:radio[name=EMPSRC_UPD_DEL_selectcard]:checked').val();
+
+//             alert(EMPSRC_UPD_DEL_radiovalue)
                 var form_element = $('#EMP_ENTRY_form_employeename').serialize();
                 $.ajax({
                     type: "POST",
                     'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Employee_Entry_Search_Update_Delete/EMPSRC_UPD_DEL_update",
-                    data:form_element+"&EMPSRC_UPD_DEL_id="+currentid+"&EMPSRC_UPD_DEL_searchoption="+EMPSRC_UPD_DEL_searchoption+"&EMPSRC_UPD_DEL_firstname="+EMPSRC_UPD_DEL_firstname+"&EMPSRC_UPD_DEL_lastname="+EMPSRC_UPD_DEL_lastname+"&EMPSRC_UPD_DEL_empdesigname="+EMPSRC_UPD_DEL_empdesigname+"&EMPSRC_UPD_DEL_mobilenumber="+EMPSRC_UPD_DEL_mobilenumber+"&EMPSRC_UPD_DEL_comments="+EMPSRC_UPD_DEL_comments+"&EMP_ENTRY_radio_null="+EMP_ENTRY_radio_null+"&EMPSRC_UPD_DEL_email="+EMPSRC_UPD_DEL_email+"&EMPSRC_UPD_DEL_carcunitarray="+EMPSRC_UPD_DEL_carcunitarray,
+                    data:form_element+"&EMPSRC_UPD_DEL_id="+currentid+"&EMPSRC_UPD_DEL_searchoption="+EMPSRC_UPD_DEL_searchoption+"&EMPSRC_UPD_DEL_firstname="+EMPSRC_UPD_DEL_firstname+"&EMPSRC_UPD_DEL_lastname="+EMPSRC_UPD_DEL_lastname+"&EMPSRC_UPD_DEL_empdesigname="+EMPSRC_UPD_DEL_empdesigname+"&EMPSRC_UPD_DEL_mobilenumber="+EMPSRC_UPD_DEL_mobilenumber+"&EMPSRC_UPD_DEL_comments="+EMPSRC_UPD_DEL_comments+"&EMP_ENTRY_radio_null="+EMP_ENTRY_radio_null+"&EMPSRC_UPD_DEL_email="+EMPSRC_UPD_DEL_email,
                     success: function(data) {
                         $(".preloader").hide();
 //                        alert(data)
-                        var result_value=JSON.parse(data);
+                        var EMPSRC_UPD_DEL_updateresult=JSON.parse(data);
+                        EMPSRC_UPD_DEL_updateresultflag=EMPSRC_UPD_DEL_updateresult
+//                        alert(EMPSRC_UPD_DEL_updateresultflag)
                     }
                 });
             }
+            //click event for delete btn
+            var rowid='';
+            $(document).on('click','.deletebutton',function(){
+                rowid = $(this).attr('id');
+                show_msgbox("EMPLOYEE DETAIL ENTRY/SEARCH/UPDATE/DELETE",EMP_ENTRY_error[19].EMC_DATA,"success","delete");
+            });
+            $(document).on('click','.deleteconfirm',function(){
+//                $(".preloader").show();
+
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Employee_Entry_Search_Update_Delete/deleteoption",
+                    data :{'EMPSRC_UPD_DEL_deleteid':rowid},
+                    success: function(data) {
+                        $('.preloader').hide();
+//                        alert(data)
+                        var successresult=JSON.parse(data);
+                        var EMPSRC_UPD_DEL_deletemsgvalue=successresult[0].DELETION_FLAG;
+                        var EMPSRC_UPD_DEL_searchoption=$('#EMPSRC_UPD_DEL_lb_searchoption').val();
+                        if(EMPSRC_UPD_DEL_deletemsgvalue==1)
+                        {
+                            EMPSRC_UPD_DEL_sucsval=2;
+                            if(EMPSRC_UPD_DEL_searchoption==90)
+                            {$(".preloader").show();
+//                                google.script.run.withFailureHandler(EMPSRC_UPD_error).withSuccessHandler(EMPSRC_UPD_DEL_employlstbx).EMPSRC_UPD_DEL_searchoption();
+                                show_msgbox("EMPLOYEE DETAIL ENTRY/SEARCH/UPDATE/DELETE",EMP_ENTRY_error[16].EMC_DATA,"success",false);
+                            }
+                            else
+                            {$(".preloader").show();
+                                EMPSRC_UPD_DEL_srch_result()
+                                show_msgbox("EMPLOYEE DETAIL ENTRY/SEARCH/UPDATE/DELETE",EMP_ENTRY_error[16].EMC_DATA,"success",false);
+                            }
+                        }
+                        else
+                        {
+//MESSAGE BOX FOR NOT DELETE
+                            show_msgbox("EMPLOYEE DETAIL ENTRY/SEARCH/UPDATE/DELETE",EMP_ENTRY_error[23].EMC_DATA,"error",false);
+                        }
+                    }
+                });
+            });
             //CLICK EVENT FUCNTION FOR RESET
             $('#EMPSRC_UPD_DEL_btn_reset').click(function()
             {
@@ -1326,7 +1443,7 @@ include 'Header.php';
                     <div class="row form-group">
                             <label name="EMP_ENTRY_lbl_firstname" id="EMP_ENTRY_lbl_firstname" class="col-sm-2" hidden>FIRST NAME <em>*</em></label>
                         <div class="col-sm-10">
-                            <input  type="text" name="EMP_ENTRY_tb_firstname" id="EMP_ENTRY_tb_firstname" class=" autosizealph EMP_ENTRY_title_alpha empsubmitvalidat sizefix" maxlength=30 hidden>
+                            <input  type="text" name="EMP_ENTRY_tb_firstname" id="EMP_ENTRY_tb_firstname"  class="form-control autosizealph EMP_ENTRY_title_alpha empsubmitvalidat sizefix" maxlength=30 hidden>
                         </div>
                     </div>
                     <div class="row form-group">
