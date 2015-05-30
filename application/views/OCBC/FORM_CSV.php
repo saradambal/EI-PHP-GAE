@@ -4,7 +4,6 @@
 </head>
 <script>
     $(document).ready(function() {
-        $('.preloader').hide();
         $.ajax({
             type: "POST",
             url: '/index.php/Ctrl_CSV/TriggerConfiguration',
@@ -39,6 +38,7 @@
                 data:{Triggernameid:Tirgger},
                 url: '/index.php/Ctrl_CSV/CSV_Initaildatas',
                 success: function(data){
+                    alert(data)
                     var returnvalue=JSON.parse(data);
                     show_msgbox("CSV UPDATION",returnvalue,"success",false);
                     $('.preloader').hide();
@@ -56,7 +56,7 @@
     <body>
     <div class="container">
         <div class="wrapper">
-            <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif" /></div></div></div>
+            <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
             <div class="row title text-center"><h4><b>TRIGGER</b></h4></div>
             <div class ='row content'>
             <form id="TriggerForm" class="form-horizontal" role="form">
