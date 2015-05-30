@@ -8,6 +8,7 @@
             type: "POST",
             url: '/index.php/Ctrl_CSV/TriggerConfiguration',
             success: function(data){
+                $('.preloader').hide();
                 var value_array=JSON.parse(data);
                 for(var i=0;i<value_array.length;i++)
                 {
@@ -17,6 +18,7 @@
             },
             error: function(data){
                 alert('error in getting'+JSON.stringify(data));
+                $('.preloader').hide();
             }
         });
         $(document).on('change','#Triggername',function() {
