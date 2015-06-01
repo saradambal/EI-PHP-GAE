@@ -259,6 +259,7 @@ class Mdl_staff_employee_entry_search_update_delete extends CI_Model{
         $EMPSRC_UPD_DEL_empdesigname =$_POST['EMPSRC_UPD_DEL_empdesigname'];
         $EMPSRC_UPD_DEL_mobilenumber = $_POST['EMPSRC_UPD_DEL_mobilenumber'];
 //echo 'll'.$EMPSRC_UPD_DEL_comments.'test';
+        $EMPSRC_UPD_DEL_commentsupdate=array();
 
         if($EMPSRC_UPD_DEL_email!=''){
 
@@ -343,13 +344,36 @@ class Mdl_staff_employee_entry_search_update_delete extends CI_Model{
 
             $EMPSRC_UPD_DEL_lastupdatecard=$EMPSRC_UPD_DEL_cardno_final;
 //        echo "CALL SP_EMPDTL_UPDATE('$EMPSRC_UPD_DEL_id','$EMPSRC_UPD_DEL_firstname','$EMPSRC_UPD_DEL_lastname','$EMPSRC_UPD_DEL_empdesigname','$EMPSRC_UPD_DEL_mobilenumber',$EMPSRC_UPD_DEL_email,$EMPSRC_UPD_DEL_comments,'$USERSTAMP',".$EMPSRC_UPD_DEL_getcardnoarray_final.",".$EMPSRC_UPD_DEL_lastupdatecard.",@FLAG_ENTRYEMP)";
-         print_r($EMPSRC_UPD_DEL_cardno);
-        print_r($EMPSRC_UPD_DEL_getcardnoarray_final);
-           if($EMPSRC_UPD_DEL_cardno=='null' || $EMPSRC_UPD_DEL_getcardnoarray=='null' || $EMPSRC_UPD_DEL_email==''|| $EMPSRC_UPD_DEL_comments=='' )
+//         print_r($EMPSRC_UPD_DEL_cardno);
+//        print_r($EMPSRC_UPD_DEL_getcardnoarray);
+//        echo $EMPSRC_UPD_DEL_email;
+
+//        exit;
+           if($EMPSRC_UPD_DEL_email=='' &&  $EMPSRC_UPD_DEL_comments=='')
            {
-               echo 'if';
-        $insertquery = "CALL SP_EMPDTL_UPDATE('$EMPSRC_UPD_DEL_id','$EMPSRC_UPD_DEL_firstname','$EMPSRC_UPD_DEL_lastname','$EMPSRC_UPD_DEL_empdesigname','$EMPSRC_UPD_DEL_mobilenumber','$EMPSRC_UPD_DEL_email','$EMPSRC_UPD_DEL_comments','$USERSTAMP',$EMPSRC_UPD_DEL_cardno,$EMPSRC_UPD_DEL_getcardnoarray,@FLAG_ENTRYEMP)";
+//               echo 'if';
+        $insertquery = "CALL SP_EMPDTL_UPDATE('$EMPSRC_UPD_DEL_id','$EMPSRC_UPD_DEL_firstname','$EMPSRC_UPD_DEL_lastname','$EMPSRC_UPD_DEL_empdesigname','$EMPSRC_UPD_DEL_mobilenumber','$EMPSRC_UPD_DEL_email','$EMPSRC_UPD_DEL_comments','$USERSTAMP',".$EMPSRC_UPD_DEL_getcardnoarray_final.",".$EMPSRC_UPD_DEL_lastupdatecard.",@FLAG_ENTRYEMP)";
            }
+           else if($EMPSRC_UPD_DEL_comments=='')
+           {
+               $insertquery = "CALL SP_EMPDTL_UPDATE('$EMPSRC_UPD_DEL_id','$EMPSRC_UPD_DEL_firstname','$EMPSRC_UPD_DEL_lastname','$EMPSRC_UPD_DEL_empdesigname','$EMPSRC_UPD_DEL_mobilenumber',$EMPSRC_UPD_DEL_email,'$EMPSRC_UPD_DEL_comments','$USERSTAMP',".$EMPSRC_UPD_DEL_getcardnoarray_final.",".$EMPSRC_UPD_DEL_lastupdatecard.",@FLAG_ENTRYEMP)";
+
+           }
+           else if($EMPSRC_UPD_DEL_email=='' )
+           {
+//               echo 'asd';
+//               exit;
+               $insertquery = "CALL SP_EMPDTL_UPDATE('$EMPSRC_UPD_DEL_id','$EMPSRC_UPD_DEL_firstname','$EMPSRC_UPD_DEL_lastname','$EMPSRC_UPD_DEL_empdesigname','$EMPSRC_UPD_DEL_mobilenumber','$EMPSRC_UPD_DEL_email',$EMPSRC_UPD_DEL_comments,'$USERSTAMP',".$EMPSRC_UPD_DEL_getcardnoarray_final.",".$EMPSRC_UPD_DEL_lastupdatecard.",@FLAG_ENTRYEMP)";
+
+           }
+//        if($EMPSRC_UPD_DEL_cardno=='null' || $EMPSRC_UPD_DEL_getcardnoarray=='null')
+//           {
+//               print_r($EMPSRC_UPD_DEL_cardno);
+//               print_r($EMPSRC_UPD_DEL_getcardnoarray);
+//               exit;
+//               $insertquery = "CALL SP_EMPDTL_UPDATE('$EMPSRC_UPD_DEL_id','$EMPSRC_UPD_DEL_firstname','$EMPSRC_UPD_DEL_lastname','$EMPSRC_UPD_DEL_empdesigname','$EMPSRC_UPD_DEL_mobilenumber',$EMPSRC_UPD_DEL_email,$EMPSRC_UPD_DEL_comments,'$USERSTAMP',$EMPSRC_UPD_DEL_getcardnoarray,$EMPSRC_UPD_DEL_cardno,@FLAG_ENTRYEMP)";
+//
+//           }
         else
         {
         $insertquery = "CALL SP_EMPDTL_UPDATE('$EMPSRC_UPD_DEL_id','$EMPSRC_UPD_DEL_firstname','$EMPSRC_UPD_DEL_lastname','$EMPSRC_UPD_DEL_empdesigname','$EMPSRC_UPD_DEL_mobilenumber',$EMPSRC_UPD_DEL_email,$EMPSRC_UPD_DEL_comments,'$USERSTAMP',".$EMPSRC_UPD_DEL_getcardnoarray_final.",".$EMPSRC_UPD_DEL_lastupdatecard.",@FLAG_ENTRYEMP)";
@@ -357,14 +381,16 @@ class Mdl_staff_employee_entry_search_update_delete extends CI_Model{
         $query = $this->db->query($insertquery);
         $FLAG= $this->db->query('SELECT @FLAG_ENTRYEMP as SUCCESSMSG');
         $finalFLAG = $FLAG->row()->SUCCESSMSG;
-//        $EMPSRC_UPD_DEL_multi_array = $this->EMPSRC_UPD_DEL_gettreeviewunit($EMPSRC_UPD_DEL_id) ;
+        $EMPSRC_UPD_DEL_multi_array = $this->EMPSRC_UPD_DEL_gettreeviewunit($EMPSRC_UPD_DEL_id) ;
 
-//        if(($EMPSRC_UPD_DEL_searchoption==94)||($EMPSRC_UPD_DEL_searchoption==96)||($EMPSRC_UPD_DEL_searchoption==99))
-//        {
-//            $EMPSRC_UPD_DEL_commentsupdate=EMPSRC_UPD_DEL_comments($EMPSRC_UPD_DEL_searchoption);
-//        }
-//        return $result[]=array($EMPSRC_UPD_DEL_multi_array,$EMPSRC_UPD_DEL_commentsupdate,$finalFLAG);
-        return $insertquery;
+        if(($EMPSRC_UPD_DEL_searchoption==94)||($EMPSRC_UPD_DEL_searchoption==96)||($EMPSRC_UPD_DEL_searchoption==99))
+        {
+            $EMPSRC_UPD_DEL_commentsupdate=EMPSRC_UPD_DEL_comments($EMPSRC_UPD_DEL_searchoption);
+        }
+//        echo $EMPSRC_UPD_DEL_comments;
+//        exit;
+        return $result[]=array($EMPSRC_UPD_DEL_multi_array,$EMPSRC_UPD_DEL_commentsupdate,$finalFLAG);
+//        return $insertquery;
 //        return $result[]=array($finalFLAG);
     }
     //FUNCTION FOR DELETE PART

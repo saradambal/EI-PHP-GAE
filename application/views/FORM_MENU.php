@@ -178,8 +178,9 @@ $(document).ready(function(){
 </head>
 <body >
 <div style="background-color: #EEF8Fb;height:20%">
-    <table><tr><td><img src="images/eilogo.png" align="middle"/></td>
-            <td><h1><b>EXPATS INTEGRATED CRM - DEV</b></h1></td></tr></table>
+    <table><tr><td><img src="images/customLogo.gif"/></td>
+<!--            <td><h1><b>EXPATS INTEGRATED CRM - DEV</b></h1></td>-->
+</tr></table>
 </div>
 <div>
     <table>

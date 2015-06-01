@@ -74,7 +74,7 @@ include 'Header.php';
                     $.ajax({
                         type: "POST",
                         url: "<?php echo site_url('Ctrl_Staff_Employee_Entry_Search_Update_Delete/Initialdata'); ?>",
-                        data:{'ErrorList':'1,2,34,71,154,248,135,136,153,155,157,158,163,164,165,166,167,168,169,315,339,400,401,446'},
+                        data:{'ErrorList':'1,2,34,71,154,248,135,136,153,155,157,158,163,164,165,166,167,168,169,170,315,339,400,401,446'},
                         success: function(data){
                             $('.preloader').hide();
                             EMP_ENTRY_fullarr=JSON.parse(data);
@@ -82,7 +82,6 @@ include 'Header.php';
                             EMP_ENTRY_unitArray=EMP_ENTRY_fullarr[1];
                             EMP_ENTRY_multi_array=EMP_ENTRY_fullarr[2];
                             EMP_ENTRY_error=EMP_ENTRY_fullarr[3];
-//                            alert(EMP_ENTRY_error[14].EMC_DATA)
 //                            alert(EMP_ENTRY_multi_array)
                             $(".EMP_ENTRY_title_alpha").prop("title",EMP_ENTRY_error[0].EMC_DATA);
                             $("#EMP_ENTRY_tb_mobile").prop("title",EMP_ENTRY_error[1].EMC_DATA)
@@ -130,58 +129,68 @@ include 'Header.php';
                     $('#EMPSRC_UPD_DEL_lb_designation_listbox').hide();
                     $("#STDTL_SEARCH_lb_employeename_listbox").hide();
                     $("#EMPSRC_UPD_DEL_table_updateform").hide();
-                    $.ajax({
-                        type: "POST",
-                        url: "<?php echo site_url('Ctrl_Staff_Employee_Entry_Search_Update_Delete/EMPSRC_UPD_DEL_searchoptionresult'); ?>",
-                        data:{'ErrorList':'1,2,34,71,154,248,135,136,153,155,157,158,163,164,165,166,167,168,169,315,339,400,401,446'},
-                        success: function(data){
-                            $('.preloader').hide();
-                            EMPSRC_UPD_DEL_fullarray=JSON.parse(data);
-                            EMPSRC_UPD_DEL_searchoption=EMPSRC_UPD_DEL_fullarray[0]
-                            EMPSRC_UPD_DEL_expensearr_employeename=EMPSRC_UPD_DEL_fullarray[2]
-                            EMP_ENTRY_error=EMPSRC_UPD_DEL_fullarray[3];
-//                            alert(EMP_ENTRY_error[23].EMC_DATA)
-                            //GET STAFF SEARCH OPTION
-                            var EMPSRC_UPD_DEL_searchoptions ='';
-                            for (var i = 0; i < EMPSRC_UPD_DEL_searchoption.length; i++) {
-                                if( i>=2 && i<=6)
-                                {
-                                    var EMPSRC_UPD_DEL_searchoption_data=EMPSRC_UPD_DEL_searchoption[i].ECN_DATA;
-                                    var EMPSRC_UPD_DEL_searchoption_id=EMPSRC_UPD_DEL_searchoption[i].ECN_ID;
-                                    $('#EMPSRC_UPD_DEL_lb_searchoption').append($('<option>').text(EMPSRC_UPD_DEL_searchoption_data).attr('value', EMPSRC_UPD_DEL_searchoption_id));
-                                }
-                            }
-                            EMPSRC_UPD_Sortit('EMPSRC_UPD_DEL_lb_searchoption');
-                            $('#EMPSRC_UPD_DEL_lbl_searchoption').show();
-                            //GET STAFF EMPLOYEE DESIGNATION
-//                            $('#EMPSRC_UPD_DEL_lb_designation_listbox').append($('<option> SELECT </option>'));
-                            var EMPSRC_UPD_DEL_searchoptions ='';
-                            for (var i = 0; i < EMPSRC_UPD_DEL_searchoption.length; i++) {
-                                if( i>=0 && i<=1)
-                                {
-                                     EMPSRC_UPD_DEL_searchoption_desigdata=EMPSRC_UPD_DEL_searchoption[i].ECN_DATA;
-                                     EMPSRC_UPD_DEL_searchoption_desigid=EMPSRC_UPD_DEL_searchoption[i].ECN_ID;
-                                    $('#EMPSRC_UPD_DEL_lb_designation_listbox').append($('<option>').text(EMPSRC_UPD_DEL_searchoption_desigdata).attr('value', EMPSRC_UPD_DEL_searchoption_desigid));
-                                   $('#EMPSRC_UPD_DEL_lb_empdesig').append($('<option>').text(EMPSRC_UPD_DEL_searchoption_desigdata).attr('value', EMPSRC_UPD_DEL_searchoption_desigdata));
-
-                                }
-                            }
-                            //GET STAFF EMPLOYEE NAME
-                            var EMPSRC_UPD_DEL_expensearray_employeename ='<option>SELECT</option>';
-                            for (var i = 0; i < EMPSRC_UPD_DEL_expensearr_employeename.length; i++)
-                            {
-                                EMPSRC_UPD_DEL_employeenameconcat=EMPSRC_UPD_DEL_expensearr_employeename[i].EMP_DETAIL_names_concat.split("_");
-                                EMPSRC_UPD_DEL_expensearray_employeename += '<option value="' + EMPSRC_UPD_DEL_expensearr_employeename[i] + '">' + EMPSRC_UPD_DEL_employeenameconcat[0]+" "+EMPSRC_UPD_DEL_employeenameconcat[1]+ '</option>';
-                            }
-                            $('#EMPSRC_UPD_DEL_lb_employeename_listbox').html(EMPSRC_UPD_DEL_expensearray_employeename);
-//                            $('#EMPSRC_UPD_DEL_lb_empdesig').html(EMPSRC_UPD_DEL_searchoption_desigdata)
-//                            alert(EMPSRC_UPD_DEL_searchoption_desigdata)
-                        }
-                    });
+                    EMPSRC_UPD_DEL_employlstbx();
 //                    $(".EMP_ENTRY_title_alpha").prop("title",EMP_ENTRY_error[0].EMC_DATA)
 //                    $("#EMPSRC_UPD_DEL_tb_mobile").prop("title",EMP_ENTRY_error[1].EMC_DATA)
                 }
             });
+            function EMPSRC_UPD_DEL_employlstbx(){
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo site_url('Ctrl_Staff_Employee_Entry_Search_Update_Delete/EMPSRC_UPD_DEL_searchoptionresult'); ?>",
+                    data:{'ErrorList':'1,2,34,71,154,248,135,136,153,155,157,158,163,164,165,166,167,168,169,170,315,339,400,401,446'},
+                    success: function(data){
+                        $('.preloader').hide();
+                        EMPSRC_UPD_DEL_fullarray=JSON.parse(data);
+                        EMPSRC_UPD_DEL_searchoption=EMPSRC_UPD_DEL_fullarray[0]
+                        EMPSRC_UPD_DEL_expensearr_employeename=EMPSRC_UPD_DEL_fullarray[2]
+                        EMP_ENTRY_error=EMPSRC_UPD_DEL_fullarray[3];
+//                            alert(EMP_ENTRY_error[23].EMC_DATA)
+                        //GET STAFF SEARCH OPTION
+                        var EMPSRC_UPD_DEL_searchoptions ='';
+                        for (var i = 0; i < EMPSRC_UPD_DEL_searchoption.length; i++) {
+                            if( i>=2 && i<=6)
+                            {
+                                var EMPSRC_UPD_DEL_searchoption_data=EMPSRC_UPD_DEL_searchoption[i].ECN_DATA;
+                                var EMPSRC_UPD_DEL_searchoption_id=EMPSRC_UPD_DEL_searchoption[i].ECN_ID;
+                                $('#EMPSRC_UPD_DEL_lb_searchoption').append($('<option>').text(EMPSRC_UPD_DEL_searchoption_data).attr('value', EMPSRC_UPD_DEL_searchoption_id));
+                            }
+                        }
+                        EMPSRC_UPD_Sortit('EMPSRC_UPD_DEL_lb_searchoption');
+                        $('#EMPSRC_UPD_DEL_lbl_searchoption').show();
+                        //GET STAFF EMPLOYEE DESIGNATION
+//                            $('#EMPSRC_UPD_DEL_lb_designation_listbox').append($('<option> SELECT </option>'));
+                        var EMPSRC_UPD_DEL_searchoptions ='';
+                        for (var i = 0; i < EMPSRC_UPD_DEL_searchoption.length; i++) {
+                            if( i>=0 && i<=1)
+                            {
+                                EMPSRC_UPD_DEL_searchoption_desigdata=EMPSRC_UPD_DEL_searchoption[i].ECN_DATA;
+                                EMPSRC_UPD_DEL_searchoption_desigid=EMPSRC_UPD_DEL_searchoption[i].ECN_ID;
+                                $('#EMPSRC_UPD_DEL_lb_designation_listbox').append($('<option>').text(EMPSRC_UPD_DEL_searchoption_desigdata).attr('value', EMPSRC_UPD_DEL_searchoption_desigid));
+                                $('#EMPSRC_UPD_DEL_lb_empdesig').append($('<option>').text(EMPSRC_UPD_DEL_searchoption_desigdata).attr('value', EMPSRC_UPD_DEL_searchoption_desigdata));
+
+                            }
+                        }
+                        //GET STAFF EMPLOYEE NAME
+                        var EMPSRC_UPD_DEL_expensearray_employeename ='<option>SELECT</option>';
+                        for (var i = 0; i < EMPSRC_UPD_DEL_expensearr_employeename.length; i++)
+                        {
+                            EMPSRC_UPD_DEL_employeenameconcat=EMPSRC_UPD_DEL_expensearr_employeename[i].EMP_DETAIL_names_concat.split("_");
+                            EMPSRC_UPD_DEL_expensearray_employeename += '<option value="' + EMPSRC_UPD_DEL_employeenameconcat[0]+" "+EMPSRC_UPD_DEL_employeenameconcat[1] + '">' + EMPSRC_UPD_DEL_employeenameconcat[0]+" "+EMPSRC_UPD_DEL_employeenameconcat[1]+ '</option>';
+                        }
+                        $('#EMPSRC_UPD_DEL_lb_employeename_listbox').html(EMPSRC_UPD_DEL_expensearray_employeename);
+//                            $('#EMPSRC_UPD_DEL_lb_empdesig').html(EMPSRC_UPD_DEL_searchoption_desigdata)
+//                            alert(EMPSRC_UPD_DEL_searchoption_desigdata)
+                    }
+                });
+                $('#EMPSRC_UPD_DEL_tble_htmltable').hide();
+                $('section').html('');
+                $('#EMPSRC_UPD_DEL_searchbutton').hide();
+                $('#EMPSRC_UPD_DEL_deletebutton').hide();
+                $('#EMPSRC_UPD_DEL_nodataerrormsg').hide();
+                $('#EMPSRC_UPD_DEL_lbl_htmltablemsg').hide();
+                $('#EMPSRC_UPD_DEL_lb_employeename_listbox').val('SELECT');
+            }
             //FUNCTION FOR SORTING
             function EMPSRC_UPD_Sortit(lbid) {
                 var $r = $("#"+lbid+" "+"option");
@@ -824,10 +833,10 @@ include 'Header.php';
             var EMPSRC_UPD_DEL_fname;var EMPSRC_UPD_DEL_lname;var EMPSRC_UPD_DEL_mobileno;var EMPSRC_UPD_DEL_destination;
             function EMPSRC_UPD_DEL_srch_result()
             {
-//                var STDTL_SEARCH_firstlastname = EMPSRC_UPD_DEL_employeenameconcat
+                var EMPSRC_UPD_DEL_employeenameconcat = $('#EMPSRC_UPD_DEL_lb_employeename_listbox').val()
 //                data:form_element+"&EMP_ENTRY_firstname="+EMP_ENTRY_firstname+"&EMP_ENTRY_lastname="+EMP_ENTRY_lastname+"&EMP_ENTRY_empdesigname="+EMP_ENTRY_empdesigname+"&EMP_ENTRY_mobilenumber="+EMP_ENTRY_mobilenumber+"&EMP_ENTRY_comments="+EMP_ENTRY_comments+"&EMP_ENTRY_radio_null="+EMP_ENTRY_radio_null,
                 var EMPSRC_UPD_DEL_lb_designation_listbox=$('#EMPSRC_UPD_DEL_lb_designation_listbox').find('option:selected').text();
-//  var STDTL_SEARCH_firstlastname = $("#STDTL_SEARCH_lb_employeename_listbox").val();
+  var EMPSRC_UPD_DEL_employeenameconcat =EMPSRC_UPD_DEL_employeenameconcat.split(' ');
                 var emp_first_name=EMPSRC_UPD_DEL_employeenameconcat[0]
                 var emp_last_name=EMPSRC_UPD_DEL_employeenameconcat[1]
                 var EMPSRC_UPD_DEL_search_option = $('#EMPSRC_UPD_DEL_lb_searchoption').val();
@@ -1023,7 +1032,7 @@ include 'Header.php';
                         $('#EMPSRC_UPD_DEL_lbl_email').show();
                         $('#EMPSRC_UPD_DEL_tb_email').val(EMPSRC_UPD_DEL_emailid).show();
                         $('#EMPSRC_UPD_DEL_lbl_updatecomments').show();
-                        $('#EMPSRC_UPD_DEL_ta_updatecomments').val(EMPSRC_UPD_DEL_comments).show();
+                        $('#EMPSRC_UPD_DEL_ta_updatecomments').val(comments).show();
                         $('#EMPSRC_UPD_DEL_tb_firstnamehide').val(EMPSRC_UPD_DEL_fname).hide();
                         $('#EMPSRC_UPD_DEL_tb_lastnamehide').val(EMPSRC_UPD_DEL_lname).hide();
                         $('#EMPSRC_UPD_DEL_btn_update').show();
@@ -1331,10 +1340,53 @@ include 'Header.php';
                     data:form_element+"&EMPSRC_UPD_DEL_id="+currentid+"&EMPSRC_UPD_DEL_searchoption="+EMPSRC_UPD_DEL_searchoption+"&EMPSRC_UPD_DEL_firstname="+EMPSRC_UPD_DEL_firstname+"&EMPSRC_UPD_DEL_lastname="+EMPSRC_UPD_DEL_lastname+"&EMPSRC_UPD_DEL_empdesigname="+EMPSRC_UPD_DEL_empdesigname+"&EMPSRC_UPD_DEL_mobilenumber="+EMPSRC_UPD_DEL_mobilenumber+"&EMPSRC_UPD_DEL_comments="+EMPSRC_UPD_DEL_comments+"&EMP_ENTRY_radio_null="+EMP_ENTRY_radio_null+"&EMPSRC_UPD_DEL_email="+EMPSRC_UPD_DEL_email,
                     success: function(data) {
                         $(".preloader").hide();
-//                        alert(data)
-                        var EMPSRC_UPD_DEL_updateresult=JSON.parse(data);
-                        EMPSRC_UPD_DEL_updateresultflag=EMPSRC_UPD_DEL_updateresult
+                        var EMPSRC_UPD_DEL_conformation_resultval=JSON.parse(data);
+//                        EMPSRC_UPD_DEL_updateresultflag=EMPSRC_UPD_DEL_conformation_resultval
+                                                EMPSRC_UPD_DEL_updateresultflag=EMPSRC_UPD_DEL_conformation_resultval[2]
 //                        alert(EMPSRC_UPD_DEL_updateresultflag)
+                        if(EMPSRC_UPD_DEL_updateresultflag==1)
+                        {
+                            var EMPSRC_UPD_DEL_firstname=$('#EMPSRC_UPD_DEL_tb_firstname').val();
+                            var EMPSRC_UPD_DEL_lastname=$('#EMPSRC_UPD_DEL_tb_lastname').val();
+                            var EMPSRC_UPD_DEL_firstnamehide=$('#EMPSRC_UPD_DEL_tb_firstnamehide').val();
+                            var EMPSRC_UPD_DEL_lastnamehide=$('#EMPSRC_UPD_DEL_tb_lastnamehide').val();
+                            var EMPSRC_UPD_DEL_searchoption=$('#EMPSRC_UPD_DEL_lb_searchoption').val();
+                            var EMPSRC_UPD_DEL_multi_val=[];
+                            EMPSRC_UPD_DEL_multi_val=EMPSRC_UPD_DEL_conformation_resultval;
+                            EMPSRC_UPD_DEL_multi_array=EMPSRC_UPD_DEL_multi_val[0];
+//                            EMPSRC_UPD_DEL_comments=EMPSRC_UPD_DEL_conformation_resultval[1].EMPSRC_UPD_DEL_searchvalue_autocomplts;
+//                            EMPSRC_UPD_DEL_email=EMPSRC_UPD_DEL_conformation_resultval[1].EMPSRC_UPD_DEL_searchvalue_autocomplts;
+//                            EMPSRC_UPD_DEL_mobile=EMPSRC_UPD_DEL_conformation_resultval[1].EMPSRC_UPD_DEL_searchvalue_autocomplts;
+//                            EMPSRC_UPD_DEL_autocomplt_flag=EMPSRC_UPD_DEL_conformation_resultval[1].EMPSRC_UPD_DEL_flag_autocomplts;
+//                            EMPSRC_UPD_DEL_sucsval=1;
+                            $('#EMPSRC_UPD_DEL_table_updateform').hide();
+                            $('#EMPSRC_UPD_DEL_btn_update').hide();
+                            $('#EMPSRC_UPD_DEL_btn_reset').hide();
+                            if((EMPSRC_UPD_DEL_firstnamehide!=EMPSRC_UPD_DEL_firstname && EMPSRC_UPD_DEL_searchoption==90)||(EMPSRC_UPD_DEL_lastnamehide!=EMPSRC_UPD_DEL_lastname && EMPSRC_UPD_DEL_searchoption==90))
+                            {$(".preloader").show();
+                                EMPSRC_UPD_DEL_employlstbx()
+                                show_msgbox("EMPLOYEE DETAIL ENTRY/SEARCH/UPDATE/DELETE",EMP_ENTRY_error[15].EMC_DATA,"success",false);
+
+//                                google.script.run.withFailureHandler(EMPSRC_UPD_error).withSuccessHandler(EMPSRC_UPD_DEL_employlstbx).EMPSRC_UPD_DEL_searchoption();
+                            }
+                            else
+                            {$(".preloader").show();
+                                EMPSRC_UPD_DEL_srch_result()
+                                show_msgbox("EMPLOYEE DETAIL ENTRY/SEARCH/UPDATE/DELETE",EMP_ENTRY_error[15].EMC_DATA,"success",false);
+//                                google.script.run.withFailureHandler(EMPSRC_UPD_error).withSuccessHandler(EMPSRC_UPD_DEL_srch_result).EMPSRC_UPD_DEL_flextabel_getdatas(document.getElementById('EMPSRC_UPD_DEL_form_employeelist'));
+                            }
+                        }
+                        else{
+//MESSAGE BOX FOR NOT SAVED
+                            if(EMPSRC_UPD_DEL_updateresultflag==0 || EMPSRC_UPD_DEL_updateresultflag==''){
+                                show_msgbox("EMPLOYEE DETAIL ENTRY/SEARCH/UPDATE/DELETE",EMPSRC_UPD_DEL_updateresultflag,"error",false);
+                            }
+                            else
+                            {
+//CARD SHOULD NOT BE ASSIGNED
+                                show_msgbox("EMPLOYEE DETAIL ENTRY/SEARCH/UPDATE/DELETE",EMPSRC_UPD_DEL_updateresultflag,"success",false);
+                            }
+                        }
                     }
                 });
             }
@@ -1342,26 +1394,26 @@ include 'Header.php';
             var rowid='';
             $(document).on('click','.deletebutton',function(){
                 rowid = $(this).attr('id');
-                show_msgbox("EMPLOYEE DETAIL ENTRY/SEARCH/UPDATE/DELETE",EMP_ENTRY_error[19].EMC_DATA,"success","delete");
+                show_msgbox("EMPLOYEE DETAIL ENTRY/SEARCH/UPDATE/DELETE",EMP_ENTRY_error[20].EMC_DATA,"success","delete");
             });
             $(document).on('click','.deleteconfirm',function(){
-//                $(".preloader").show();
-
+                $(".preloader").show();
                 $.ajax({
                     type: "POST",
                     url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Employee_Entry_Search_Update_Delete/deleteoption",
                     data :{'EMPSRC_UPD_DEL_deleteid':rowid},
                     success: function(data) {
                         $('.preloader').hide();
-//                        alert(data)
                         var successresult=JSON.parse(data);
                         var EMPSRC_UPD_DEL_deletemsgvalue=successresult[0].DELETION_FLAG;
                         var EMPSRC_UPD_DEL_searchoption=$('#EMPSRC_UPD_DEL_lb_searchoption').val();
                         if(EMPSRC_UPD_DEL_deletemsgvalue==1)
                         {
-                            EMPSRC_UPD_DEL_sucsval=2;
+//                            EMPSRC_UPD_DEL_sucsval=2;
                             if(EMPSRC_UPD_DEL_searchoption==90)
                             {$(".preloader").show();
+                                EMPSRC_UPD_DEL_employlstbx()
+                                EMPSRC_UPD_DEL_srch_result()
 //                                google.script.run.withFailureHandler(EMPSRC_UPD_error).withSuccessHandler(EMPSRC_UPD_DEL_employlstbx).EMPSRC_UPD_DEL_searchoption();
                                 show_msgbox("EMPLOYEE DETAIL ENTRY/SEARCH/UPDATE/DELETE",EMP_ENTRY_error[16].EMC_DATA,"success",false);
                             }
@@ -1374,7 +1426,7 @@ include 'Header.php';
                         else
                         {
 //MESSAGE BOX FOR NOT DELETE
-                            show_msgbox("EMPLOYEE DETAIL ENTRY/SEARCH/UPDATE/DELETE",EMP_ENTRY_error[23].EMC_DATA,"error",false);
+                            show_msgbox("EMPLOYEE DETAIL ENTRY/SEARCH/UPDATE/DELETE",EMP_ENTRY_error[18].EMC_DATA,"error",false);
                         }
                     }
                 });
@@ -1443,7 +1495,7 @@ include 'Header.php';
                     <div class="row form-group">
                             <label name="EMP_ENTRY_lbl_firstname" id="EMP_ENTRY_lbl_firstname" class="col-sm-2" hidden>FIRST NAME <em>*</em></label>
                         <div class="col-sm-10">
-                            <input  type="text" name="EMP_ENTRY_tb_firstname" id="EMP_ENTRY_tb_firstname"  class="form-control autosizealph EMP_ENTRY_title_alpha empsubmitvalidat sizefix" maxlength=30 hidden>
+                            <input  type="text" name="EMP_ENTRY_tb_firstname" id="EMP_ENTRY_tb_firstname"  class="autosizealph EMP_ENTRY_title_alpha empsubmitvalidat sizefix" maxlength=30 hidden>
                         </div>
                     </div>
                     <div class="row form-group">
@@ -1454,7 +1506,7 @@ include 'Header.php';
                     </div>
                     <div class="row form-group">
                         <label name="EMP_ENTRY_lbl_empdesig" id="EMP_ENTRY_lbl_empdesig" class="col-sm-2" >DESIGNATION<em>*</em></label>
-                        <div class="col-sm-4"><select name="EMP_ENTRY_lb_empdesig" id="EMP_ENTRY_lb_empdesig">
+                        <div class="col-sm-2"><select class="form-control" name="EMP_ENTRY_lb_empdesig" id="EMP_ENTRY_lb_empdesig">
                                 <option>SELECT</option>
                             </select> </div>
                     </div>
@@ -1504,23 +1556,23 @@ include 'Header.php';
                     <div id="EMPSRC_UPD_DEL_table_employee">
                     <div class="row form-group">
                         <label name="EMPSRC_UPD_DEL_lbl_searchoption" id="EMPSRC_UPD_DEL_lbl_searchoption" class="col-sm-2" hidden>SEARCH BY<em>*</em></label>
-                        <div class="col-sm-4"><select name="EMPSRC_UPD_DEL_lb_searchoption" id="EMPSRC_UPD_DEL_lb_searchoption"  hidden>
+                        <div class="col-sm-4"><select class="form-control" name="EMPSRC_UPD_DEL_lb_searchoption" id="EMPSRC_UPD_DEL_lb_searchoption" style="display:none" hidden>
                             </select>
                         </div>
                     </div>
                     <div><lable id = "EMPSRC_UPD_DEL_lbl_searchoptionheader" name = "EMPSRC_UPD_DEL_lbl_searchoptionheader" class = "srctitle" hidden ></div>
                     </div>
                     <!----------ELEMENT TO CREATE SEARCH FORM FOR EMPLOYEE FIRST NAME------------------------------------------------>
-                    <div class="row form-group">
+                    <div class="form-group">
                         <lable id ="EMPSRC_UPD_DEL_lbl_employeename_listbox" class="col-sm-2" hidden> EMPLOYEE NAME </lable>
-                        <div class="col-sm-4"><select id="EMPSRC_UPD_DEL_lb_employeename_listbox" name="EMPSRC_UPD_DEL_lb_employeename_listbox" hidden>
+                        <div class="col-sm-4"><select class="form-control" id="EMPSRC_UPD_DEL_lb_employeename_listbox" name="EMPSRC_UPD_DEL_lb_employeename_listbox"  style="display:none" hidden>
                                 <option>SELECT</option>
                             </select> </div>
                     </div>
                         <!----------ELEMENT TO CREATE SEARCH FORM FOR DESIGNATION------------------------------------------------>
                         <div class="row form-group">
                         <lable id ="EMPSRC_UPD_DEL_lbl_designation_listbox" class="col-sm-2" hidden>DESIGNATION</lable>
-                            <div class="col-sm-4"><select id="EMPSRC_UPD_DEL_lb_designation_listbox" name="EMPSRC_UPD_DEL_lb_designation_listbox" hidden>
+                            <div class="col-sm-4"><select  class="form-control" id="EMPSRC_UPD_DEL_lb_designation_listbox" name="EMPSRC_UPD_DEL_lb_designation_listbox" style="display:none" hidden>
                                     <option>SELECT</option>
                                 </select>
                             </div>
