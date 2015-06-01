@@ -123,12 +123,11 @@ $(document).ready(function()
         return result;
     }
 //FUNCTION TO CALENDER END TIME
-    function CEXTN_startendtimevalues(endtime)
-    {
+    function CEXTN_startendtimevalues(endtime){
         var timearray=[];
         for(var i=0;i<calentime.length;i++)
         {
-            if(endtime==calentime[i])
+            if(endtime==calentime[i].TIME)
             {
                 var endtime_status=i;
                 break;
@@ -148,7 +147,7 @@ $(document).ready(function()
             var length=endtime_status+2;
             for(var j=endtime_status+1;j<=length;j++)
             {
-                timearray.push(calentime[j]);
+                timearray.push(calentime[j].TIME);
             }
         }
         return timearray;
@@ -162,75 +161,72 @@ $(document).ready(function()
         success: function(data){
 
             var value_array=JSON.parse(data);
-
-                    var emailid=[];
-        var prowaived=[];
-        var unitno=[];
-        calentime=[];
-        var CEXTN_allCustExtnUnitno=[];
-        CEXTN_allCustExtnUnitno=value_array[0];//get all extn details
-
-        emailid=value_array[2];
-        prowaived=value_array[6];
-        CEXTN_errmsgs=value_array[4];
-        calentime=value_array[5];
-        for(var k=0;k<CEXTN_allCustExtnUnitno.length;k++)
-        {
-            unitno.push(CEXTN_allCustExtnUnitno[k])
-        }
-
-        unitno=unique(unitno);
-        unitno.sort(function(a,b){return a-b});
-        if(unitno.length==0||emailid.length==0)
-        {
-            $('#CEXTN_form').hide()
-            if(unitno.length==0)
+            var emailid=[];
+            var prowaived=[];
+            var unitno=[];
+            calentime=[];
+            var CEXTN_allCustExtnUnitno=[];
+            CEXTN_allCustExtnUnitno=value_array[0];//get all extn details
+            emailid=value_array[2];
+            prowaived=value_array[6];
+            CEXTN_errmsgs=value_array[4];
+            calentime=value_array[5];
+            for(var k=0;k<CEXTN_allCustExtnUnitno.length;k++)
             {
-                $('#CEXTN_div_allerrmsg').append('<p><label class="errormsg">'+CEXTN_errmsgs[6]+'</label></p>');
+                unitno.push(CEXTN_allCustExtnUnitno[k])
+            }
+            unitno=unique(unitno);
+            unitno.sort(function(a,b){return a-b});
+            if(unitno.length==0||emailid.length==0)
+            {
+                $('#CEXTN_form').hide()
+                if(unitno.length==0)
+                {
+                    $('#CEXTN_div_allerrmsg').append('<p><label class="errormsg">'+CEXTN_errmsgs[6].EMC_DATA+'</label></p>');
+                }
+                else
+                {
+                    if(emailid.length==0)
+                    {
+                        $('#CEXTN_div_allerrmsg').append('<p><label class="errormsg"> '+CEXTN_errmsgs[9].EMC_DATA.replace('[PROFILE]',"CUSTOMER EXTENSION")+'</label></p>');
+                    }
+                }
             }
             else
             {
-                if(emailid.length==0)
+                $('#CEXTN_div_allerrmsg').text("");
+                //GET UNIT NOS
+                var CEXTN_unitnosres='<option>SELECT</option>';
+                for(var i=0;i<unitno.length;i++)
                 {
-                    $('#CEXTN_div_allerrmsg').append('<p><label class="errormsg"> '+CEXTN_errmsgs[9].replace('[PROFILE]',"CUSTOMER EXTENSION")+'</label></p>');
+                    CEXTN_unitnosres += '<option value="' + unitno[i] + '">' + unitno[i] + '</option>';
                 }
+                $('#CEXTN_lb_unitno').html(CEXTN_unitnosres);
+                $('#CEXTN_form').show();
+                //PLACE PRORATED WAIVED VALUE
+                $('#CEXTN_lbl_sameamtprorated').text(prowaived[0].CCN_DATA)
+                $('#CEXTN_lbl_sameamtwaived').text(prowaived[1].CCN_DATA)
+                $('#CEXTN_lbl_diffamtprorated').text(prowaived[0].CCN_DATA)
+                $('#CEXTN_lbl_diffamtwaived').text(prowaived[1].CCN_DATA)
+                //PLACE EMAIL ID IN THE LISTBOX
+                var CEXTN_mailidres='<option>SELECT</option>';
+                for(var i=0;i<emailid.length;i++)
+                {
+                    CEXTN_mailidres += '<option value="' + emailid[i].EL_EMAIL_ID + '">' + emailid[i].EL_EMAIL_ID + '</option>';
+                }
+                $('#CEXTN_lb_emailid').html(CEXTN_mailidres);
+                //PLACE ERROR MESSAGES
+                $('#CEXTN_div_diffunitnocarderrmsg').text(CEXTN_errmsgs[3].EMC_DATA)
+                $('#CEXTN_div_custerrmsg').hide();
+                //PLACE CALENDAR TIME IN LISTBOX
+                var CEXTN_calentimeres='<option>SELECT</option>';
+                for(var i=0;i<calentime.length;i++)
+                {
+                    CEXTN_calentimeres += '<option value="' + calentime[i].TIME + '">' + calentime[i].TIME + '</option>';
+                }
+                $('#CEXTN_lb_chkoutfromtime').html(CEXTN_calentimeres);
+                $('#CEXTN_lb_chkinfromtime').html(CEXTN_calentimeres);
             }
-        }
-        else
-        {
-            $('#CEXTN_div_allerrmsg').text("");
-//GET UNIT NOS
-            var CEXTN_unitnosres='<option>SELECT</option>';
-            for(var i=0;i<unitno.length;i++)
-            {
-                CEXTN_unitnosres += '<option value="' + unitno[i] + '">' + unitno[i] + '</option>';
-            }
-            $('#CEXTN_lb_unitno').html(CEXTN_unitnosres);
-            $('#CEXTN_form').show();
-//PLACE PRORATED WAIVED VALUE
-            $('#CEXTN_lbl_sameamtprorated').text(prowaived[0])
-            $('#CEXTN_lbl_sameamtwaived').text(prowaived[1])
-            $('#CEXTN_lbl_diffamtprorated').text(prowaived[0])
-            $('#CEXTN_lbl_diffamtwaived').text(prowaived[1])
-//PLACE EMAIL ID IN THE LISTBOX
-            var CEXTN_mailidres='<option>SELECT</option>';
-            for(var i=0;i<emailid.length;i++)
-            {
-                CEXTN_mailidres += '<option value="' + emailid[i] + '">' + emailid[i] + '</option>';
-            }
-            $('#CEXTN_lb_emailid').html(CEXTN_mailidres);
-//PLACE ERROR MESSAGES
-            $('#CEXTN_div_diffunitnocarderrmsg').text(CEXTN_errmsgs[3])
-            $('#CEXTN_div_custerrmsg').hide();
-//PLACE CALENDAR TIME IN LISTBOX
-            var CEXTN_calentimeres='<option>SELECT</option>';
-            for(var i=0;i<calentime.length;i++)
-            {
-                CEXTN_calentimeres += '<option value="' + calentime[i] + '">' + calentime[i] + '</option>';
-            }
-            $('#CEXTN_lb_chkoutfromtime').html(CEXTN_calentimeres);
-            $('#CEXTN_lb_chkinfromtime').html(CEXTN_calentimeres);
-        }
             $(".preloader").hide();
         },
         error: function(data){
@@ -324,6 +320,7 @@ $(document).ready(function()
             }
             else
             {
+//                alert(CEXTN_name_id_array)
                 if(CEXTN_name_id_array.length==1)
                 {
                     $('#CEXTN_hidden_custid').val(CEXTN_name_id_array[0]);
@@ -450,7 +447,24 @@ $(document).ready(function()
             $('#CEXTN_lb_diffunituno').val("SELECT");
             $('#CEXTN_lb_diffunitrmtype').val("SELECT");
             $("#CEXTN_hidden_setrmtype").val(this.value);
-            google.script.run.withFailureHandler(onFailure).withSuccessHandler(CEXTN_getRoomType_result).CEXTN_getRoomType(CEXTN_lb_unitno,CEXTN_rmtype);
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_getRoomType',
+                data:{"unitno":CEXTN_lb_unitno,"rmtype":CEXTN_rmtype},
+                success:function(data){
+//                    alert(data);
+                    var CEXTN_rmtype=JSON.parse(data);
+                    CEXTN_getRoomType_result(CEXTN_rmtype);
+
+                },
+                error:function(data){
+
+
+
+                }
+
+            });
+//            google.script.run.withFailureHandler(onFailure).withSuccessHandler(CEXTN_getRoomType_result).CEXTN_getRoomType(CEXTN_lb_unitno,CEXTN_rmtype);
         }
         if(CEXTN_radio_unit!="CEXTN_radio_sameunit")
         {
@@ -561,7 +575,24 @@ $(document).ready(function()
             resetPreloader(newPos);
             $(".preloader").show();
 //ADD DIFF UNIT ROOM TYPE
-            google.script.run.withFailureHandler(onFailure).withSuccessHandler(CEXTN_getRoomType_result).CEXTN_getRoomType(CEXTN_lb_unitno,CEXTN_rmtype);
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_getRoomType',
+                data:{"unitno":CEXTN_lb_unitno,"rmtype":CEXTN_rmtype},
+                success:function(data){
+//                    alert(data);
+                    var CEXTN_rmtype=JSON.parse(data);
+                    CEXTN_getRoomType_result(CEXTN_rmtype);
+
+                },
+                error:function(data){
+
+
+
+                }
+
+            });
+//            google.script.run.withFailureHandler(onFailure).withSuccessHandler(CEXTN_getRoomType_result).CEXTN_getRoomType(CEXTN_lb_unitno,CEXTN_rmtype);
         }
     });
     $("input[name='CEXTN_radio_difunitcard']").on("change", function () {
@@ -576,7 +607,24 @@ $(document).ready(function()
         $('#CEXTN_div_diffunitcardlist').hide();
         if(this.value=="CEXTN_radio_difunitcardno")
         {
-            google.script.run.withFailureHandler(onFailure).withSuccessHandler(CEXTN_getdiffunitCardNo_result).CEXTN_getdiffunitCardNo(CEXTN_lb_unitno,CEXTN_tb_firstname,CEXTN_tb_lastname);
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_getdiffunitCardNo',
+                data:{"unitno":CEXTN_lb_unitno,"CEXTN_tb_firstname":CEXTN_tb_firstname,"CEXTN_tb_lastname":CEXTN_tb_lastname},
+                success:function(data){
+//                    alert(data);
+                    var CEXTN_rmtype=JSON.parse(data);
+                    CEXTN_getdiffunitCardNo_result(CEXTN_rmtype);
+
+                },
+                error:function(data){
+
+
+
+                }
+
+            });
+//            google.script.run.withFailureHandler(onFailure).withSuccessHandler(CEXTN_getdiffunitCardNo_result).CEXTN_getdiffunitCardNo(CEXTN_lb_unitno,CEXTN_tb_firstname,CEXTN_tb_lastname);
         }
         else
         {
@@ -584,689 +632,728 @@ $(document).ready(function()
             $(".preloader").hide();
         }
     });
-////ADD CARD NOS IN THE FORM
-//    function CEXTN_getdiffunitCardNo_result(CEXTN_diffunitcard)
-//    {
-//        CEXTN_finalCard=CEXTN_diffunitcard[1];
-//        $('#CEXTN_tble_diffunitcardlist tr').remove();
-//        $('#CEXTN_div_diffunitnocarderrmsg').hide();
-//        CEXTN_chkcardlen=CEXTN_diffunitcard[0].length;
-//        if(CEXTN_diffunitcard[0].length>0)
-//        {
-//            for(var i=0;i<CEXTN_diffunitcard[0].length;i++)
-//            {
-//                var CEXTN_cardnovalue=CEXTN_diffunitcard[0][i];
-//                var CEXTN_lb_diffunitcardid="CEXTN_lb_diffunitcard"+i;
-//                var CEXTN_cb_diffunitcardid="CEXTN_cb_diffunitcard"+i;
-//                var CEXTN_tb_diffunitcard="CEXTN_tb_diffunitcard"+i;
-//                var CEXTN_cardresult='<tr id="custid"><td> <input type=checkbox class="CEXTN_class_diffunitcard CEXTN_btn_validate_class" name="CEXTN_cb_diffunitcard" id='+i+' value='+CEXTN_cardnovalue+'>'+CEXTN_cardnovalue+'</td><td><select name="CEXTN_lb_diffunitcard" id='+CEXTN_lb_diffunitcardid+' class="CEXTN_class_diffunitcard CEXTN_btn_validate_class" hidden/></td><td><input type="text" name="CEXTN_tb_diffunitcard" id='+CEXTN_tb_diffunitcard+' hidden/></td></tr>';
-//                $('#CEXTN_tble_diffunitcardlist').append(CEXTN_cardresult);
-//                var CEXTN_cardnolbl='<option>SELECT</option>';
-//                for(var j=0;j<CEXTN_diffunitcard.length;j++)
-//                {
-//                    var CEXTN_cardnolabel=CEXTN_diffunitcard[1][j];
-//                    CEXTN_cardnolbl += '<option value="' + CEXTN_cardnolabel + '">' + CEXTN_cardnolabel + '</option>';
-//                }
-//                $('#CEXTN_lb_diffunitcard'+i).html(CEXTN_cardnolbl);
-//            }
-//            $('#CEXTN_div_diffunitcardlist').show();
-//        }
-//        else
-//        {
-//            $('#CEXTN_div_diffunitnocarderrmsg').show();
-//            $('#CEXTN_div_custerrmsg').hide();
-//        }
-//        $(".preloader").hide();
-//    }
-////FUNCTION TO COMPARE TWO ARRAYS
-//    function CEXTN_card_diffArray(a, b) {
-//        var seen = [], diff = [];
-//        for ( var i = 0; i < b.length; i++)
-//            seen[b[i]] = true;
-//        for ( var i = 0; i < a.length; i++)
-//            if (!seen[a[i]])
-//                diff.push(a[i]);
-//        return diff;
-//    }
+//ADD CARD NOS IN THE FORM
+    function CEXTN_getdiffunitCardNo_result(CEXTN_diffunitcard)
+    {
+        CEXTN_finalCard=CEXTN_diffunitcard[1];
+        $('#CEXTN_tble_diffunitcardlist tr').remove();
+        $('#CEXTN_div_diffunitnocarderrmsg').hide();
+        CEXTN_chkcardlen=CEXTN_diffunitcard[0].length;
+        if(CEXTN_diffunitcard[0].length>0)
+        {
+            for(var i=0;i<CEXTN_diffunitcard[0].length;i++)
+            {
+                var CEXTN_cardnovalue=CEXTN_diffunitcard[0][i];
+                var CEXTN_lb_diffunitcardid="CEXTN_lb_diffunitcard"+i;
+                var CEXTN_cb_diffunitcardid="CEXTN_cb_diffunitcard"+i;
+                var CEXTN_tb_diffunitcard="CEXTN_tb_diffunitcard"+i;
+                var CEXTN_cardresult='<tr id="custid"><td> <input type=checkbox class="CEXTN_class_diffunitcard CEXTN_btn_validate_class" name="CEXTN_cb_diffunitcard" id='+i+' value='+CEXTN_cardnovalue+'>'+CEXTN_cardnovalue+'</td><td><select name="CEXTN_lb_diffunitcard" id='+CEXTN_lb_diffunitcardid+' class="CEXTN_class_diffunitcard CEXTN_btn_validate_class" hidden/></td><td><input type="text" name="CEXTN_tb_diffunitcard" id='+CEXTN_tb_diffunitcard+' hidden/></td></tr>';
+                $('#CEXTN_tble_diffunitcardlist').append(CEXTN_cardresult);
+                var CEXTN_cardnolbl='<option>SELECT</option>';
+                for(var j=0;j<CEXTN_diffunitcard.length;j++)
+                {
+                    var CEXTN_cardnolabel=CEXTN_diffunitcard[1][j];
+                    CEXTN_cardnolbl += '<option value="' + CEXTN_cardnolabel + '">' + CEXTN_cardnolabel + '</option>';
+                }
+                $('#CEXTN_lb_diffunitcard'+i).html(CEXTN_cardnolbl);
+            }
+            $('#CEXTN_div_diffunitcardlist').show();
+        }
+        else
+        {
+            $('#CEXTN_div_diffunitnocarderrmsg').show();
+            $('#CEXTN_div_custerrmsg').hide();
+        }
+        $(".preloader").hide();
+    }
+//FUNCTION TO COMPARE TWO ARRAYS
+    function CEXTN_card_diffArray(a, b) {
+        var seen = [], diff = [];
+        for ( var i = 0; i < b.length; i++)
+            seen[b[i]] = true;
+        for ( var i = 0; i < a.length; i++)
+            if (!seen[a[i]])
+                diff.push(a[i]);
+        return diff;
+    }
 //FUNCTION TO CALL DATE PICKER FORMAT
     function FormTableDateFormat(inputdate){
         var string = inputdate.split("-");
         return string[2]+'-'+ string[1]+'-'+string[0];
     }
-////FUNCTION TO CALL PRORATED CHKING FUNCTION AND VALIDATING WAIVED CHKBOX
-//    $(".CEXTN_class_prowaiv").change(function()
-//    {
-////VALIDATING WAIVED CHKBOX
-//        var CEXTN_tb_diffamtprocost=$("#CEXTN_tb_diffamtprocost").val();
-//        var CEXTN_tb_diffamtrent=$("#CEXTN_tb_diffamtrent").val();
-//        var CEXTN_radio_amt =$("input[name='CEXTN_radio_amt']:checked").val()
-//        if(CEXTN_tb_diffamtprocost!="")
-//        {
-//            $("#CEXTN_cb_diffamtwaived").removeAttr('disabled');
-//        }
-//        else
-//        {
-//            $("#CEXTN_cb_diffamtwaived").prop('checked',false).attr('disabled','disabled');
-//        }
-////
-////PRORATED CHK
-//        var CEXTN_db_chkindate=$("#CEXTN_db_chkindate").val();
-//        var CEXTN_db_chkoutdate=$("#CEXTN_db_chkoutdate").val()
-//        if(CEXTN_radio_amt=="CEXTN_radio_sameamt")
-//        {
-//            if(CEXTN_db_chkoutdate!="")
-//            {
+//FUNCTION TO CALL PRORATED CHKING FUNCTION AND VALIDATING WAIVED CHKBOX
+    $(".CEXTN_class_prowaiv").change(function()
+    {
+//VALIDATING WAIVED CHKBOX
+        var CEXTN_tb_diffamtprocost=$("#CEXTN_tb_diffamtprocost").val();
+        var CEXTN_tb_diffamtrent=$("#CEXTN_tb_diffamtrent").val();
+        var CEXTN_radio_amt =$("input[name='CEXTN_radio_amt']:checked").val()
+        if(CEXTN_tb_diffamtprocost!="")
+        {
+            $("#CEXTN_cb_diffamtwaived").removeAttr('disabled');
+        }
+        else
+        {
+            $("#CEXTN_cb_diffamtwaived").prop('checked',false).attr('disabled','disabled');
+        }
+//
+//PRORATED CHK
+        var CEXTN_db_chkindate=$("#CEXTN_db_chkindate").val();
+        var CEXTN_db_chkoutdate=$("#CEXTN_db_chkoutdate").val()
+        if(CEXTN_radio_amt=="CEXTN_radio_sameamt")
+        {
+            if(CEXTN_db_chkoutdate!="")
+            {
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_chkProrated',
+                    data:{"CEXTN_db_chkindate":CEXTN_db_chkindate,"CEXTN_db_chkoutdate":CEXTN_db_chkoutdate},
+                    success:function(data){
+//                        alert(data);
+                        var CEXTN_rmtype=JSON.parse(data);
+                        CEXTN_chkProrated_result(CEXTN_rmtype);
+
+                    },
+                    error:function(data){
+
+
+
+                    }
+
+
+                })
+
+
 //                google.script.run.withFailureHandler(onFailure).withSuccessHandler(CEXTN_chkProrated_result).CEXTN_chkProrated(CEXTN_db_chkindate,CEXTN_db_chkoutdate);
-//            }
-//        }
-//        else
-//        {
-//            if(CEXTN_db_chkoutdate!=""&&CEXTN_tb_diffamtrent!="")
-//            {
+            }
+        }
+        else
+        {
+            if(CEXTN_db_chkoutdate!=""&&CEXTN_tb_diffamtrent!="")
+            {
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_chkProrated',
+                    data:{"CEXTN_db_chkindate":CEXTN_db_chkindate,"CEXTN_db_chkoutdate":CEXTN_db_chkoutdate},
+                    success:function(data){
+//                        alert(data);
+                        var CEXTN_rmtype=JSON.parse(data);
+                        CEXTN_chkProrated_result(CEXTN_rmtype);
+
+                    },
+                    error:function(data){
+
+
+
+                    }
+
+
+                })
+
 //                google.script.run.withFailureHandler(onFailure).withSuccessHandler(CEXTN_chkProrated_result).CEXTN_chkProrated(CEXTN_db_chkindate,CEXTN_db_chkoutdate);
-//            }
-//        }
-//        if(CEXTN_tb_diffamtrent==""||CEXTN_radio_amt=="CEXTN_radio_sameamt")
-//        {
-//            $("#CEXTN_cb_diffamtprorated").attr("disabled","disabled").prop('checked',false);
-//        }
-////
-//        $('#CEXTN_db_noticeperioddate').removeAttr("disabled");
-////SET NOTICE PERIOD DATE
-//        $('#CEXTN_db_noticeperioddate').datepicker({
-//            dateFormat: "dd-mm-yy" ,
-//            changeYear: true,
-//            changeMonth: true
-//        });
-//        var CEXTN_db_noticeperioddate=$("#CEXTN_db_noticeperioddate").val()
-//        var CEXTN_date1 = $('#CEXTN_db_chkindate').val();
-//        var CEXTN_db_prevchkindate=$('#CEXTN_db_prevchkindate').val();
-//        if((CEXTN_db_chkoutdate!=""))
-//        {
-//            var CEXTN_db_chkindate1 = new Date( Date.parse( FormTableDateFormat(CEXTN_db_chkindate)) );
-//            CEXTN_db_chkindate1.setDate( CEXTN_db_chkindate1.getDate() + 1 );
-//            var CEXTN_db_chkindate1 = CEXTN_db_chkindate1.toDateString();
-//            CEXTN_db_chkindate1 = new Date( Date.parse( CEXTN_db_chkindate1 ) );
-//            if(new Date(CEXTN_db_chkindate1)<new Date())
-//            {
-//                var CEXTN_date = new Date();
-//                CEXTN_date.setDate( CEXTN_date.getDate() + 1 );
-//                var CEXTN_newDate = CEXTN_date.toDateString();
-//                CEXTN_newDate = new Date( Date.parse(CEXTN_newDate ) );
-//                $('#CEXTN_db_noticeperioddate').datepicker("option","minDate",CEXTN_newDate);
-//            }
-//            else
-//            {
-//                $('#CEXTN_db_noticeperioddate').datepicker("option","minDate",CEXTN_db_chkindate1);
-//            }
-//            var CEXTN_db_chkoutdate1 = new Date( Date.parse(FormTableDateFormat(CEXTN_db_chkoutdate)) );
-//            CEXTN_db_chkoutdate1.setDate( CEXTN_db_chkoutdate1.getDate()-1);
-//            var CEXTN_db_chkoutdate1 = CEXTN_db_chkoutdate1.toDateString();
-//            CEXTN_db_chkoutdate1 = new Date( Date.parse( CEXTN_db_chkoutdate1 ) );
-//            var CEXTN_chkoutdate=CEXTN_db_chkoutdate1.getDate()
-//            var CEXTN_chkoutmonth=CEXTN_db_chkoutdate1.getMonth()+1
-//            var CEXTN_chkoutyear=CEXTN_db_chkoutdate1.getFullYear()
-//            var CEXTN_finnoticedate=CEXTN_chkoutyear+"-"+CEXTN_chkoutmonth+"-"+CEXTN_chkoutdate;
-//            CEXTN_finnoticedate = new Date( Date.parse( CEXTN_finnoticedate ) );
-//            $('#CEXTN_db_noticeperioddate').datepicker("option","maxDate",CEXTN_db_chkoutdate1);
-//            if(new Date(CEXTN_finnoticedate).setHours(0,0,0,0)<=new Date(FormTableDateFormat(CEXTN_db_chkindate)).setHours(0,0,0,0))
-//            {
-//                $('#CEXTN_db_noticeperioddate').val("");
-//                $('#CEXTN_db_noticeperioddate').attr("disabled","disabled");
-//            }
-//            if(new Date(CEXTN_finnoticedate).setHours(0,0,0,0)<=new Date().setHours(0,0,0,0))
-//            {
-//                $('#CEXTN_db_noticeperioddate').val("");
-//                $('#CEXTN_db_noticeperioddate').attr("disabled","disabled");
-//            }
-//        }
-//        var CEXTN_db_chkoutdate=$("#CEXTN_db_chkoutdate").val();
-//    });
-////FUNCTION TO ENABLE PROCESSING COST CHECK BOX USING THE RETURN RESULT
-//    function CEXTN_chkProrated_result(CEXTN_chkproflag)
-//    {
-//        var CEXTN_radio_amt =$("input[name='CEXTN_radio_amt']:checked").val()
-//        if(CEXTN_chkproflag==true)
-//        {
-//            if(CEXTN_radio_amt!="CEXTN_radio_sameamt")
-//            {
-//                $("#CEXTN_cb_diffamtprorated").removeAttr("disabled").prop('checked',true);
-//            }
-//            $("#CEXTN_cb_sameamtprorated").removeAttr("disabled").prop('checked',true);
-//        }
-//        else
-//        {
-//            if(CEXTN_radio_amt!="CEXTN_radio_sameamt")
-//            {
-//                $("#CEXTN_cb_diffamtprorated").attr("disabled","disabled").prop('checked',true);
-//            }
-//            $("#CEXTN_cb_sameamtprorated").attr("disabled","disabled").prop('checked',true);
-//        }
-//        var chkedvalue="X";
-//        var sameproratedchk=$("#CEXTN_cb_sameamtprorated").prop("checked");
-//        var diffwaivedchk=$("#CEXTN_cb_diffamtwaived").prop("checked");
-//        var diffproratedchk=$("#CEXTN_cb_diffamtprorated").prop("checked");
-//        if (sameproratedchk==true)
-//        {
-//            $("#CEXTN_hidden_sameamtprorated").val(chkedvalue);
-//        }
-//        else
-//        {
-//            $("#CEXTN_hidden_sameamtprorated").val("");
-//        }
-//        if (diffproratedchk==true)
-//        {
-//            $("#CEXTN_hidden_diffamtprorated").val(chkedvalue);
-//        }
-//        else
-//        {
-//            $("#CEXTN_hidden_diffamtprorated").val("");
-//        }
-//    }
-//    function CEXTN_setproratedvalue()
-//    {
-//        var chkedvalue="X";
-//        var sameproratedchk=$("#CEXTN_cb_sameamtprorated").prop("checked");
-//        var diffwaivedchk=$("#CEXTN_cb_diffamtwaived").prop("checked");
-//        var diffproratedchk=$("#CEXTN_cb_diffamtprorated").prop("checked");
-//        if (sameproratedchk==true)
-//        {
-//            $("#CEXTN_hidden_sameamtprorated").val(chkedvalue);
-//        }
-//        else
-//        {
-//            $("#CEXTN_hidden_sameamtprorated").val("");
-//        }
-//        if (diffproratedchk==true)
-//        {
-//            $("#CEXTN_hidden_diffamtprorated").val(chkedvalue);
-//        }
-//        else
-//        {
-//            $("#CEXTN_hidden_diffamtprorated").val("");
-//        }
-//    }
-////
-////FUNCTION TO GET TO TIME FOR CHECK IN DATE
-//    $("#CEXTN_lb_chkinfromtime").change(function()
-//    {
-//        $(".preloader").show();
-//        var CEXTN_lb_chkinfromtime=$("#CEXTN_lb_chkinfromtime").val();
-//        if(CEXTN_lb_chkinfromtime!="SELECT")
-//        {
-//            var CEXTN_totimelb=''
-//            var totime=CEXTN_startendtimevalues(CEXTN_lb_chkinfromtime)
-//            for(var j=0;j<totime.length;j++)
-//            {
-//                CEXTN_totimelb += '<option value="' + totime[j] + '">' + totime[j]+ '</option>';
-//            }
-//            $("#CEXTN_lbl_chkinto").show();
-//            $('#CEXTN_lb_chkintotime').html(CEXTN_totimelb).show();
-//            $(".preloader").hide();
-//        }
-//        else
-//        {
-//            $(".preloader").hide();
-//            $('#CEXTN_lb_chkintotime').hide();
-//            $("#CEXTN_lbl_chkinto").hide();
-//        }
-//    });
-////FUNCTION TO GET TO TIME FOR CHECK OUT DATE
-//    $("#CEXTN_lb_chkoutfromtime").change(function()
-//    {
-//        $(".preloader").show();
-//        var CEXTN_totimelb="";
-//        var CEXTN_lb_chkoutfromtime=$("#CEXTN_lb_chkoutfromtime").val();
-//        if(CEXTN_lb_chkoutfromtime!="SELECT")
-//        {
-//            var totime=CEXTN_startendtimevalues(CEXTN_lb_chkoutfromtime)
-//            for(var j=0;j<totime.length;j++)
-//            {
-//                CEXTN_totimelb += '<option value="' + totime[j] + '">' + totime[j]+ '</option>';
-//            }
-//            $('#CEXTN_lbl_chkoutto').show();
-//            $('#CEXTN_lb_chkouttotime').html(CEXTN_totimelb).show();
-//            $(".preloader").hide();
-//        }
-//        else
-//        {
-//            $(".preloader").hide();
-//            $('#CEXTN_lb_chkouttotime').hide();
-//            $('#CEXTN_lbl_chkoutto').hide();
-//        }
-//    });
-////FUNCTION TO VALIDATE FORM
-//    $(document).on("change blur",'#CEXTN_form', function ()
-//    {
-//        var CEXTN_validinput=1;
-//        var CEXTN_validoutput=CEXTN_validateinputform(CEXTN_validinput);
-//        CEXTN_validatesubmitbtn(CEXTN_validoutput);
-//    });
-////FUNCTION TO VALIDATE INPUT FIELDS
-//    function CEXTN_validateinputform(CEXTN_validinput)
-//    {
-//        var CEXTN_db_passdate=$('#CEXTN_db_passdate').val();
-//        var CEXTN_tb_passno=$('#CEXTN_tb_passno').val();
-//        var CEXTN_db_epdate=$('#CEXTN_db_epdate').val();
-//        var CEXTN_tb_epno=$('#CEXTN_tb_epno').val();
-//        var CEXTN_db_chkoutdate=$('#CEXTN_db_chkoutdate').val();
-//        var CEXTN_lb_diffunituno=$('#CEXTN_lb_diffunituno').val();
-//        var CEXTN_tb_emailid=$('#CEXTN_tb_emailid').val();
-//        var CEXTN_lb_sameunitdiffrmrmtype=$('#CEXTN_lb_sameunitdiffrmrmtype').val();
-//        var CEXTN_lb_chkoutfromtime=$("#CEXTN_lb_chkoutfromtime").val();
-//        var CEXTN_lb_chkouttotime=$('#CEXTN_lb_chkouttotime').val();
-//        var CEXTN_lb_chkinfromtime=$("#CEXTN_lb_chkinfromtime").val();
-//        var CEXTN_lb_chkintotime=$('#CEXTN_lb_chkintotime').val();
-//        var CEXTN_radio_amt =$("input[name='CEXTN_radio_amt']:checked").val()
-//        var CEXTN_radio_unit =$("input[name='CEXTN_radio_unit']:checked").val()
-//        var CEXTN_tb_diffamtrent=$("#CEXTN_tb_diffamtrent").val();
-//        var CEXTN_lb_diffunituno=$("#CEXTN_lb_diffunituno").val();
-//        var CEXTN_lb_diffunitrmtype=$("#CEXTN_lb_diffunitrmtype").val();
-//        var CEXTN_lb_emailid=$("#CEXTN_lb_emailid").val();
-//        var CEXTN_radio_difunitcard=$("input[name='CEXTN_radio_difunitcard']:checked").val();
-//        var CEXTN_chkdifunitcard=$("input:radio[name='CEXTN_radio_difunitcard']").is(":checked")
-//        var emailchk="";
-//        var atpos=CEXTN_tb_emailid.indexOf("@");
-//        var dotpos=CEXTN_tb_emailid.lastIndexOf(".");
-//        if(CEXTN_tb_emailid.length>0)
-//        {
-//            if ((/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(CEXTN_tb_emailid) || "" == CEXTN_tb_emailid)
-//                &&(atpos-1!=CEXTN_tb_emailid.indexOf(".")))
-//            {
-//                $('#CEXTN_tb_emailid').removeClass("invalid");
-//                $("#CEXTN_lbl_emailerrmsg").text("");
-//                $('#CEXTN_tb_emailid').val($('#CEXTN_tb_emailid').val().toLowerCase());
-//                emailchk="valid";
-//            }
-//            else
-//            {
-//                emailchk="invalid";
-//                $("#CEXTN_lbl_emailerrmsg").text(CEXTN_errmsgs[5])
-//                $('#CEXTN_tb_emailid').addClass("invalid")
-//            }
-//        }
-//        else
-//        {
-//            $('#CEXTN_tb_emailid').removeClass("invalid");
-//            $("#CEXTN_lbl_emailerrmsg").text("");
-//            emailchk="invalid";
-//        }
-////SHOW OR HIDE TIME BOX
-//        if($("#CEXTN_db_chkoutdate").val()!="")
-//        {
-//            if($("#CEXTN_db_passdate").val()!=""&&new Date(FormTableDateFormat($("#CEXTN_db_passdate").val())).setHours(0,0,0,0)<=new Date(FormTableDateFormat($("#CEXTN_db_chkoutdate").val())).setHours(0,0,0,0))
-//            {
-//                $('#CEXTN_db_passdate').addClass("invalid")
-//                $("#CEXTN_passdate_err").text(CEXTN_errmsgs[28])
-//                CEXTN_validinput=0;
-//            }
-//            else
-//            {
-//                $('#CEXTN_db_passdate').removeClass("invalid");
-//                $("#CEXTN_passdate_err").text("");
-//            }
-//            if($("#CEXTN_db_epdate").val()!=""&&new Date(FormTableDateFormat($("#CEXTN_db_epdate").val())).setHours(0,0,0,0)<=new Date(FormTableDateFormat($("#CEXTN_db_chkoutdate").val())).setHours(0,0,0,0))
-//            {
-//                $('#CEXTN_db_epdate').addClass("invalid")
-//                $("#CEXTN_epdate_err").text(CEXTN_errmsgs[27])
-//                CEXTN_validinput=0;
-//            }
-//            else
-//            {
-//                $('#CEXTN_db_epdate').removeClass("invalid");
-//                $("#CEXTN_epdate_err").text("");
-//            }
-//            $("#CEXTN_lb_chkoutfromtime").show();
-//        }
-//        else
-//        {
-//            $("#CEXTN_lb_chkoutfromtime").val("SELECT").hide();
-//            $("#CEXTN_lb_chkouttotime").hide();
-//            $('#CEXTN_lbl_chkoutto').hide();
-//        }
-//        if(CEXTN_radio_unit=="CEXTN_radio_diffunit"&&CEXTN_radio_difunitcard=="CEXTN_radio_difunitcardno")
-//        {
-//            $("#CEXTN_btn_save").attr("disabled","disabled");
-//////VALIDATION TO SHOW CARD FOR DIFFERENT UNIT OPTION N CODING  TO CHK CARD CHKBOX N LISTBOX
-//            var CEXTN_cardlist=[];
-//            var CEXTN_selectcardlist=[];
-//            for(var k=0;k<CEXTN_finalCard.length;k++)
-//            {
-//                var CEXTN_Cardnos=CEXTN_finalCard[k];
-//                CEXTN_cardlist.push(CEXTN_Cardnos)
-//            }
-//            var cardnos = [];
-//            var cardid=[];
-//            var cardlblll=[];
-//            $('input:checkbox[name=CEXTN_cb_diffunitcard]:checked').each(function() {
-//                if ($(this).val()) {
-//                    cardnos.push($(this).val());
-//                    var id=$(this).attr("id")
-//                    var CEXTN_lb_diffunitcard= $('#CEXTN_lb_diffunitcard'+id).val();
-//                    if(CEXTN_lb_diffunitcard!="SELECT")
-//                    {
-//                        cardlblll.push(CEXTN_lb_diffunitcard)
-//                    }
-//                    cardid.push(id);
-//                }
-//            });
-//            $('#CEXTN_slctcustlbl').val(cardlblll)
-//            var cardnos1 = [];
-//            var cardid1=[];
-//            $('input:checkbox[name=CEXTN_cb_diffunitcard]:not(:checked)').each(function() {
-//                cardnos1.push($(this).val());
-//                var id=$(this).attr("id")
-//                cardid1.push(id);
-//                if(cardid.length>0)
-//                {
-//                    $('#'+id).attr("disabled","disabled");
-//                }
-//            });
-//            CEXTN_cardcount=0;
-//            var CEXTN_chkcustflag=0;
-//            var CEXTN_chkcard=0;
-//            for(var i=0;i<cardid.length;i++)
-//            {
-//                var id=cardid[i];
-//                var cardno=$("input[name='CEXTN_cb_diffunitcard']:checked").val();
-//                $('#CEXTN_lb_diffunitcard'+id)
-//                var CEXTN_tb_firstname=$('#CEXTN_tb_firstname').val();
-//                var CEXTN_tb_lastname=$('#CEXTN_tb_lastname').val();
-//                var CEXTN_lb_diffunitcard= $('#CEXTN_lb_diffunitcard'+id).show().val();
-//                CEXTN_chkcard=1;
-//                if(CEXTN_lb_diffunitcard!="SELECT")
-//                {
-//                    $('#CEXTN_lb_diffunitcard'+id).attr("disabled","disabled");
-//                    CEXTN_cardcount++;
-//                    CEXTN_selectcardlist.push(CEXTN_lb_diffunitcard);
-//                    if(CEXTN_lb_diffunitcard==CEXTN_tb_firstname+" "+CEXTN_tb_lastname)
-//                    {
-//                        CEXTN_chkcustflag=1;
-//                    }
-//                    var cardlabl=CEXTN_lb_diffunitcard.replace(/ /g,"_");
-//                    $('#CEXTN_tb_diffunitcard'+id).val(cardlabl);
-//                }
-//            }
-//            if(CEXTN_cardcount>0)
-//            {
-//                if(CEXTN_chkcustflag==0)
-//                {
-//                    CEXTN_validinput=0;
-//                    $('#CEXTN_div_custerrmsg').text(CEXTN_errmsgs[4]).show();
-//                    $('#CEXTN_div_diffunitnocarderrmsg').hide();
-//                }
-//                else
-//                {
-//                    $('#CEXTN_div_custerrmsg').hide();
-//                }
-//            }
-//            var fincardlbl=CEXTN_card_diffArray(CEXTN_cardlist,CEXTN_selectcardlist);
-//            for(var i=0;i<cardid.length;i++)
-//            {
-//                var id=cardid[i];
-//                var CEXTN_lb_diffunitcard= $('#CEXTN_lb_diffunitcard'+id).show().val();
-//                if(CEXTN_lb_diffunitcard=="SELECT")
-//                {
-//                    CEXTN_validinput=0;
-//                    var CEXTN_cardnolbl='<option>SELECT</option>';
-//                    for(var j=0;j<fincardlbl.length;j++)
-//                    {
-//                        var CEXTN_cardnolabel=fincardlbl[j];
-//                        CEXTN_cardnolbl += '<option value="' + CEXTN_cardnolabel + '">' + CEXTN_cardnolabel+ '</option>';
-//                    }
-//                    $('#CEXTN_lb_diffunitcard'+id).html(CEXTN_cardnolbl);
-//                }
-//            }
-//            for(var i=0;i<cardid1.length;i++)
-//            {
-//                var id=cardid1[i];
-//                $('#CEXTN_tb_diffunitcard'+id).val("");
-////SET CARD LABEL IN CARD LISTBOX
-//                var CEXTN_cardnolbl='<option>SELECT</option>';
-//                var CEXTN_chkselect=0;
-//                for(var j=0;j<fincardlbl.length;j++)
-//                {
-//                    var CEXTN_cardnolabel=fincardlbl[j];
-//                    CEXTN_cardnolbl += '<option value="' + CEXTN_cardnolabel + '">' + CEXTN_cardnolabel+ '</option>';
-//                }
-//                $('#CEXTN_lb_diffunitcard'+id).html(CEXTN_cardnolbl);
-//                $('#CEXTN_lb_diffunitcard'+id).removeAttr("disabled");
-//                $('#CEXTN_lb_diffunitcard'+id).val("SELECT")
-//                $('#CEXTN_lb_diffunitcard'+id).hide();
-//                for(var kk=0;kk<cardid.length;kk++)
-//                {
-//                    var idd=cardid[kk];
-//                    var CEXTN_lb_diffunitcard= $('#CEXTN_lb_diffunitcard'+idd).val();
-//                    if(CEXTN_lb_diffunitcard=="SELECT")
-//                    {
-//                        CEXTN_chkselect=1;
-//                    }
-//                }
-//                if(CEXTN_chkselect==0&&CEXTN_cardcount<=3)
-//                {
-//                    $('#'+id).removeAttr("disabled");
-//                }
-//            }
-//        }
-//        CEXTN_setproratedvalue()
-//        var samewaivedchk=$("#CEXTN_cb_sameamtwaived").prop("checked");
-//        var chkedvalue="X";
-//        var diffwaivedchk=$("#CEXTN_cb_diffamtwaived").prop("checked");
-//        if (samewaivedchk==true)
-//        {
-//            $("#CEXTN_hidden_sameamtwaived").val(chkedvalue);
-//        }
-//        else
-//        {
-//            $("#CEXTN_hidden_sameamtwaived").val("");
-//        }
-////
-//        if (diffwaivedchk==true)
-//        {
-//            $("#CEXTN_hidden_diffamtwaived").val(chkedvalue);
-//        }
-//        else
-//        {
-//            $("#CEXTN_hidden_diffamtwaived").val("");
-//        }
-//        if(emailchk=="invalid"||CEXTN_db_chkoutdate==""||CEXTN_lb_chkoutfromtime=="SELECT"||CEXTN_lb_emailid=="SELECT"||CEXTN_chkunitdateflag==1)
-//        {
-//            CEXTN_validinput=0;
-//        }
-//        if(CEXTN_radio_amt=='CEXTN_radio_diffamt'&&($("#CEXTN_tb_diffamtrent").val()==""||parseFloat($("#CEXTN_tb_diffamtrent").val())==0))
-//        {
-//            CEXTN_validinput=0;
-//        }
-//        var CEXTN_epnoflag=0,CEXTN_passnoflag=0;
-////VALIDATING PASSPORT EXPIRY DATE N NO,EP EXPIRY DATE N NO
-//        if(CEXTN_db_passdate!=""&&CEXTN_tb_passno=="")
-//        {
-//            CEXTN_validinput=0;
-//            CEXTN_passnoflag=1;
-//            $("#CEXTN_passno_err").text(CEXTN_errmsgs[22]);
-//            $("#CEXTN_tb_passno").addClass("invalid")
-//        }
-//        if(CEXTN_db_epdate!=""&&CEXTN_tb_epno=="")
-//        {
-//            CEXTN_epnoflag=1;
-//            CEXTN_validinput=0;
-//            $("#CEXTN_epno_err").text(CEXTN_errmsgs[23]);
-//            $("#CEXTN_tb_epno").addClass("invalid")
-//        }
-////MINIMUM DIGIT VALIDATION START
-//        if((parseInt($("#CEXTN_tb_electcapfee").val().split('.')[0])==0||$("#CEXTN_tb_electcapfee").val().split('.')[0]==""||parseInt($("#CEXTN_tb_electcapfee").val().split('.')[0]).toString().length<2)&&parseFloat($("#CEXTN_tb_electcapfee").val())!=0&&$("#CEXTN_tb_electcapfee").val()!="")
-//        {
-//            CEXTN_validinput=0;
-//            $("#CEXTN_tb_electcapfee").addClass("invalid")
-//            $("#CEXTN_electcap_err").text(CEXTN_errmsgs[19])
-//        }
-//        else
-//        {
-//            $("#CEXTN_tb_electcapfee").removeClass("invalid")
-//            $("#CEXTN_electcap_err").text("")
-//        }
-//        if((parseInt($("#CEXTN_tb_diffamtrent").val().split('.')[0])==0||$("#CEXTN_tb_diffamtrent").val().split('.')[0]==""||parseInt($("#CEXTN_tb_diffamtrent").val().split('.')[0]).toString().length<3)&&parseFloat($("#CEXTN_tb_diffamtrent").val())!=0&&$("#CEXTN_tb_diffamtrent").val()!="")
-//        {
-//            CEXTN_validinput=0;
-//            $("#CEXTN_tb_diffamtrent").addClass("invalid")
-//            $("#CEXTN_diffamtrent_err").text(CEXTN_errmsgs[16])
-//        }
-//        else
-//        {
-//            $("#CEXTN_tb_diffamtrent").removeClass("invalid")
-//            $("#CEXTN_diffamtrent_err").text("")
-//        }
-//        if((parseInt($("#CEXTN_tb_diffamtdep").val().split('.')[0])==0||$("#CEXTN_tb_diffamtdep").val().split('.')[0]==""||parseInt($("#CEXTN_tb_diffamtdep").val().split('.')[0]).toString().length<3)&&parseFloat($("#CEXTN_tb_diffamtdep").val())!=0&&$("#CEXTN_tb_diffamtdep").val()!="")
-//        {
-//            CEXTN_validinput=0;
-//            $("#CEXTN_tb_diffamtdep").addClass("invalid")
-//            $("#CEXTN_diffamtdeposit_err").text(CEXTN_errmsgs[17])
-//        }
-//        else
-//        {
-//            $("#CEXTN_tb_diffamtdep").removeClass("invalid")
-//            $("#CEXTN_diffamtdeposit_err").text("")
-//        }
-//        if((parseInt($("#CEXTN_tb_diffamtprocost").val().split('.')[0])==0||$("#CEXTN_tb_diffamtprocost").val().split('.')[0]==""||parseInt($("#CEXTN_tb_diffamtprocost").val().split('.')[0]).toString().length<3)&&parseFloat($("#CEXTN_tb_diffamtprocost").val())!=0&&$("#CEXTN_tb_diffamtprocost").val()!="")
-//        {
-//            CEXTN_validinput=0;
-//            $("#CEXTN_tb_diffamtprocost").addClass("invalid")
-//            $("#CEXTN_diffamtprofee_err").text(CEXTN_errmsgs[18])
-//        }
-//        else
-//        {
-//            $("#CEXTN_tb_diffamtprocost").removeClass("invalid")
-//            $("#CEXTN_diffamtprofee_err").text("")
-//        }
-//        if($("#CEXTN_tb_comppostcode").val()!=""&&($("#CEXTN_tb_comppostcode").val()).toString().length<5&&parseInt($("#CEXTN_tb_comppostcode").val())!=0)
-//        {
-//            CEXTN_validinput=0;
-//            $("#CEXTN_tb_comppostcode").addClass("invalid")
-//            $("#CEXTN_postcode_err").text(CEXTN_errmsgs[15])
-//        }
-//        else
-//        {
-//            $("#CEXTN_tb_comppostcode").removeClass("invalid")
-//            $("#CEXTN_postcode_err").text("")
-//        }
-//        if(($("#CEXTN_tb_passno").val().trim()!=""&&($("#CEXTN_tb_passno").val()).trim().toString().length<6))
-//        {
-//            CEXTN_validinput=0;
-//            $("#CEXTN_tb_passno").addClass("invalid")
-//            $("#CEXTN_passno_err").text(CEXTN_errmsgs[13])
-//        }
-//        else if(CEXTN_passnoflag==0)
-//        {
-//            $("#CEXTN_tb_passno").val($("#CEXTN_tb_passno").val().toUpperCase())
-//            $("#CEXTN_tb_passno").removeClass("invalid")
-//            $("#CEXTN_passno_err").text("")
-//        }
-//        if(($("#CEXTN_tb_epno").val().trim()!=""&&($("#CEXTN_tb_epno").val()).trim().toString().length<6))
-//        {
-//            CEXTN_validinput=0;
-//            $("#CEXTN_tb_epno").addClass("invalid")
-//            $("#CEXTN_epno_err").text(CEXTN_errmsgs[14])
-//        }
-//        else if(CEXTN_epnoflag==0)
-//        {
-//            $("#CEXTN_tb_epno").val($("#CEXTN_tb_epno").val().toUpperCase())
-//            $("#CEXTN_tb_epno").removeClass("invalid")
-//            $("#CEXTN_epno_err").text("")
-//        }
-////MINIMUM DIGIT VALIDATION END
-////CONTACT NO VALIDATION START
-//        if($("#CEXTN_tb_mobileno").val()!=""&&(parseInt($("#CEXTN_tb_mobileno").val()).toString().length)<6&&parseInt($("#CEXTN_tb_mobileno").val())!=0)
-//        {
-//            CEXTN_validinput=0;
-//            $("#CEXTN_tb_mobileno").addClass("invalid")
-//            $("#CEXTN_mobile_err").text(CEXTN_errmsgs[12])
-//        }
-//        else
-//        {
-//            $("#CEXTN_tb_mobileno").removeClass("invalid")
-//            $("#CEXTN_mobile_err").text("")
-//        }
-//        if($("#CEXTN_tb_intmobileno").val()!=""&&($("#CEXTN_tb_intmobileno").val().toString().length)<6&&parseInt($("#CEXTN_tb_intmobileno").val())!=0)
-//        {
-//            CEXTN_validinput=0;
-//            $("#CEXTN_tb_intmobileno").addClass("invalid")
-//            $("#CEXTN_intlmobile_err").text(CEXTN_errmsgs[12])
-//        }
-//        else
-//        {
-//            $("#CEXTN_tb_intmobileno").removeClass("invalid")
-//            $("#CEXTN_intlmobile_err").text("")
-//        }
-//        if($("#CEXTN_tb_officeno").val()!=""&&(parseInt($("#CEXTN_tb_officeno").val()).toString().length)<6&&parseInt($("#CEXTN_tb_officeno").val())!=0)
-//        {
-//            CEXTN_validinput=0;
-//            $("#CEXTN_tb_officeno").addClass("invalid")
-//            $("#CEXTN_officeno_err").text(CEXTN_errmsgs[12])
-//        }
-//        else
-//        {
-//            $("#CEXTN_tb_officeno").removeClass("invalid")
-//            $("#CEXTN_officeno_err").text("")
-//        }
-////CONTACT NO VALIDATION END
-//        if(CEXTN_radio_unit=="CEXTN_radio_sameunitdiffroom")
-//        {
-//            if((CEXTN_lb_sameunitdiffrmrmtype=="SELECT"||CEXTN_lb_sameunitdiffrmrmtype==null))
-//            {
-//                CEXTN_validinput=0;
-//            }
-//            if((CEXTN_lb_chkinfromtime=="SELECT"||CEXTN_lb_chkinfromtime==null))
-//            {
-//                CEXTN_validinput=0;
-//            }
-//        }
-//        if(CEXTN_radio_unit=="CEXTN_radio_diffunit")
-//        {
-//            if((CEXTN_lb_diffunituno=="SELECT"||CEXTN_lb_diffunituno==null))
-//            {
-//                CEXTN_validinput=0;
-//            }
-//            if(CEXTN_lb_diffunitrmtype=="SELECT"||CEXTN_lb_diffunitrmtype==null)
-//            {
-//                CEXTN_validinput=0;
-//            }
-//            if((CEXTN_lb_chkinfromtime=="SELECT"||CEXTN_lb_chkinfromtime==null))
-//            {
-//                CEXTN_validinput=0;
-//            }
-//            if(CEXTN_chkcard==0)
-//            {
-//                CEXTN_validinput=0;
-//            }
-//            if(CEXTN_chkfuturedate==0)
-//            {
-//                if(CEXTN_chkdifunitcard==false)
-//                {
-//                    CEXTN_validinput=0;
-//                }
-//                if(CEXTN_radio_difunitcard=="CEXTN_radio_difunitcardno")
-//                {
-//                    if(CEXTN_chkcardlen==0)
-//                    {
-//                        CEXTN_validinput=0;
-//                    }
-//                }
-//            }
-//        }
-//        return CEXTN_validinput;
-//    }
-////FUNCTION TO VALIDATE SUBMIT BUTTON
-//    function CEXTN_validatesubmitbtn(CEXTN_validoutput)
-//    {
-//        if(CEXTN_validoutput==0)
-//        {
-//            $("#CEXTN_btn_save").attr("disabled","disabled");
-//        }
-//        else
-//        {
-//            $("#CEXTN_btn_save").removeAttr("disabled");
-//        }
-//    }
+            }
+        }
+        if(CEXTN_tb_diffamtrent==""||CEXTN_radio_amt=="CEXTN_radio_sameamt")
+        {
+            $("#CEXTN_cb_diffamtprorated").attr("disabled","disabled").prop('checked',false);
+        }
+//
+        $('#CEXTN_db_noticeperioddate').removeAttr("disabled");
+//SET NOTICE PERIOD DATE
+        $('#CEXTN_db_noticeperioddate').datepicker({
+            dateFormat: "dd-mm-yy" ,
+            changeYear: true,
+            changeMonth: true
+        });
+        var CEXTN_db_noticeperioddate=$("#CEXTN_db_noticeperioddate").val()
+        var CEXTN_date1 = $('#CEXTN_db_chkindate').val();
+        var CEXTN_db_prevchkindate=$('#CEXTN_db_prevchkindate').val();
+        if((CEXTN_db_chkoutdate!=""))
+        {
+            var CEXTN_db_chkindate1 = new Date( Date.parse( FormTableDateFormat(CEXTN_db_chkindate)) );
+            CEXTN_db_chkindate1.setDate( CEXTN_db_chkindate1.getDate() + 1 );
+            var CEXTN_db_chkindate1 = CEXTN_db_chkindate1.toDateString();
+            CEXTN_db_chkindate1 = new Date( Date.parse( CEXTN_db_chkindate1 ) );
+            if(new Date(CEXTN_db_chkindate1)<new Date())
+            {
+                var CEXTN_date = new Date();
+                CEXTN_date.setDate( CEXTN_date.getDate() + 1 );
+                var CEXTN_newDate = CEXTN_date.toDateString();
+                CEXTN_newDate = new Date( Date.parse(CEXTN_newDate ) );
+                $('#CEXTN_db_noticeperioddate').datepicker("option","minDate",CEXTN_newDate);
+            }
+            else
+            {
+                $('#CEXTN_db_noticeperioddate').datepicker("option","minDate",CEXTN_db_chkindate1);
+            }
+            var CEXTN_db_chkoutdate1 = new Date( Date.parse(FormTableDateFormat(CEXTN_db_chkoutdate)) );
+            CEXTN_db_chkoutdate1.setDate( CEXTN_db_chkoutdate1.getDate()-1);
+            var CEXTN_db_chkoutdate1 = CEXTN_db_chkoutdate1.toDateString();
+            CEXTN_db_chkoutdate1 = new Date( Date.parse( CEXTN_db_chkoutdate1 ) );
+            var CEXTN_chkoutdate=CEXTN_db_chkoutdate1.getDate()
+            var CEXTN_chkoutmonth=CEXTN_db_chkoutdate1.getMonth()+1
+            var CEXTN_chkoutyear=CEXTN_db_chkoutdate1.getFullYear()
+            var CEXTN_finnoticedate=CEXTN_chkoutyear+"-"+CEXTN_chkoutmonth+"-"+CEXTN_chkoutdate;
+            CEXTN_finnoticedate = new Date( Date.parse( CEXTN_finnoticedate ) );
+            $('#CEXTN_db_noticeperioddate').datepicker("option","maxDate",CEXTN_db_chkoutdate1);
+            if(new Date(CEXTN_finnoticedate).setHours(0,0,0,0)<=new Date(FormTableDateFormat(CEXTN_db_chkindate)).setHours(0,0,0,0))
+            {
+                $('#CEXTN_db_noticeperioddate').val("");
+                $('#CEXTN_db_noticeperioddate').attr("disabled","disabled");
+            }
+            if(new Date(CEXTN_finnoticedate).setHours(0,0,0,0)<=new Date().setHours(0,0,0,0))
+            {
+                $('#CEXTN_db_noticeperioddate').val("");
+                $('#CEXTN_db_noticeperioddate').attr("disabled","disabled");
+            }
+        }
+        var CEXTN_db_chkoutdate=$("#CEXTN_db_chkoutdate").val();
+    });
+//FUNCTION TO ENABLE PROCESSING COST CHECK BOX USING THE RETURN RESULT
+    function CEXTN_chkProrated_result(CEXTN_chkproflag)
+    {
+        var CEXTN_radio_amt =$("input[name='CEXTN_radio_amt']:checked").val()
+        if(CEXTN_chkproflag==true)
+        {
+            if(CEXTN_radio_amt!="CEXTN_radio_sameamt")
+            {
+                $("#CEXTN_cb_diffamtprorated").removeAttr("disabled").prop('checked',true);
+            }
+            $("#CEXTN_cb_sameamtprorated").removeAttr("disabled").prop('checked',true);
+        }
+        else
+        {
+            if(CEXTN_radio_amt!="CEXTN_radio_sameamt")
+            {
+                $("#CEXTN_cb_diffamtprorated").attr("disabled","disabled").prop('checked',true);
+            }
+            $("#CEXTN_cb_sameamtprorated").attr("disabled","disabled").prop('checked',true);
+        }
+        var chkedvalue="X";
+        var sameproratedchk=$("#CEXTN_cb_sameamtprorated").prop("checked");
+        var diffwaivedchk=$("#CEXTN_cb_diffamtwaived").prop("checked");
+        var diffproratedchk=$("#CEXTN_cb_diffamtprorated").prop("checked");
+        if (sameproratedchk==true)
+        {
+            $("#CEXTN_hidden_sameamtprorated").val(chkedvalue);
+        }
+        else
+        {
+            $("#CEXTN_hidden_sameamtprorated").val("");
+        }
+        if (diffproratedchk==true)
+        {
+            $("#CEXTN_hidden_diffamtprorated").val(chkedvalue);
+        }
+        else
+        {
+            $("#CEXTN_hidden_diffamtprorated").val("");
+        }
+    }
+    function CEXTN_setproratedvalue()
+    {
+        var chkedvalue="X";
+        var sameproratedchk=$("#CEXTN_cb_sameamtprorated").prop("checked");
+        var diffwaivedchk=$("#CEXTN_cb_diffamtwaived").prop("checked");
+        var diffproratedchk=$("#CEXTN_cb_diffamtprorated").prop("checked");
+        if (sameproratedchk==true)
+        {
+            $("#CEXTN_hidden_sameamtprorated").val(chkedvalue);
+        }
+        else
+        {
+            $("#CEXTN_hidden_sameamtprorated").val("");
+        }
+        if (diffproratedchk==true)
+        {
+            $("#CEXTN_hidden_diffamtprorated").val(chkedvalue);
+        }
+        else
+        {
+            $("#CEXTN_hidden_diffamtprorated").val("");
+        }
+    }
+//
+//FUNCTION TO GET TO TIME FOR CHECK IN DATE
+    $("#CEXTN_lb_chkinfromtime").change(function()
+    {
+        $(".preloader").show();
+        var CEXTN_lb_chkinfromtime=$("#CEXTN_lb_chkinfromtime").val();
+        if(CEXTN_lb_chkinfromtime!="SELECT")
+        {
+            var CEXTN_totimelb=''
+            var totime=CEXTN_startendtimevalues(CEXTN_lb_chkinfromtime)
+            for(var j=0;j<totime.length;j++)
+            {
+                CEXTN_totimelb += '<option value="' + totime[j] + '">' + totime[j]+ '</option>';
+            }
+            $("#CEXTN_lbl_chkinto").show();
+            $('#CEXTN_lb_chkintotime').html(CEXTN_totimelb).show();
+            $(".preloader").hide();
+        }
+        else
+        {
+            $(".preloader").hide();
+            $('#CEXTN_lb_chkintotime').hide();
+            $("#CEXTN_lbl_chkinto").hide();
+        }
+    });
+//FUNCTION TO GET TO TIME FOR CHECK OUT DATE
+    $("#CEXTN_lb_chkoutfromtime").change(function()
+    {
+        $(".preloader").show();
+        var CEXTN_totimelb="";
+        var CEXTN_lb_chkoutfromtime=$("#CEXTN_lb_chkoutfromtime").val();
+        if(CEXTN_lb_chkoutfromtime!="SELECT")
+        {
+            var totime=CEXTN_startendtimevalues(CEXTN_lb_chkoutfromtime)
+            for(var j=0;j<totime.length;j++)
+            {
+                CEXTN_totimelb += '<option value="' + totime[j] + '">' + totime[j]+ '</option>';
+            }
+            $('#CEXTN_lbl_chkoutto').show();
+            $('#CEXTN_lb_chkouttotime').html(CEXTN_totimelb).show();
+            $(".preloader").hide();
+        }
+        else
+        {
+            $(".preloader").hide();
+            $('#CEXTN_lb_chkouttotime').hide();
+            $('#CEXTN_lbl_chkoutto').hide();
+        }
+    });
+//FUNCTION TO VALIDATE FORM
+    $(document).on("change blur",'#CEXTN_form', function ()
+    {
+        var CEXTN_validinput=1;
+        var CEXTN_validoutput=CEXTN_validateinputform(CEXTN_validinput);
+        CEXTN_validatesubmitbtn(CEXTN_validoutput);
+    });
+//FUNCTION TO VALIDATE INPUT FIELDS
+    function CEXTN_validateinputform(CEXTN_validinput)
+    {
+        var CEXTN_db_passdate=$('#CEXTN_db_passdate').val();
+        var CEXTN_tb_passno=$('#CEXTN_tb_passno').val();
+        var CEXTN_db_epdate=$('#CEXTN_db_epdate').val();
+        var CEXTN_tb_epno=$('#CEXTN_tb_epno').val();
+        var CEXTN_db_chkoutdate=$('#CEXTN_db_chkoutdate').val();
+        var CEXTN_lb_diffunituno=$('#CEXTN_lb_diffunituno').val();
+        var CEXTN_tb_emailid=$('#CEXTN_tb_emailid').val();
+        var CEXTN_lb_sameunitdiffrmrmtype=$('#CEXTN_lb_sameunitdiffrmrmtype').val();
+        var CEXTN_lb_chkoutfromtime=$("#CEXTN_lb_chkoutfromtime").val();
+        var CEXTN_lb_chkouttotime=$('#CEXTN_lb_chkouttotime').val();
+        var CEXTN_lb_chkinfromtime=$("#CEXTN_lb_chkinfromtime").val();
+        var CEXTN_lb_chkintotime=$('#CEXTN_lb_chkintotime').val();
+        var CEXTN_radio_amt =$("input[name='CEXTN_radio_amt']:checked").val()
+        var CEXTN_radio_unit =$("input[name='CEXTN_radio_unit']:checked").val()
+        var CEXTN_tb_diffamtrent=$("#CEXTN_tb_diffamtrent").val();
+        var CEXTN_lb_diffunituno=$("#CEXTN_lb_diffunituno").val();
+        var CEXTN_lb_diffunitrmtype=$("#CEXTN_lb_diffunitrmtype").val();
+        var CEXTN_lb_emailid=$("#CEXTN_lb_emailid").val();
+        var CEXTN_radio_difunitcard=$("input[name='CEXTN_radio_difunitcard']:checked").val();
+        var CEXTN_chkdifunitcard=$("input:radio[name='CEXTN_radio_difunitcard']").is(":checked")
+        var emailchk="";
+        var atpos=CEXTN_tb_emailid.indexOf("@");
+        var dotpos=CEXTN_tb_emailid.lastIndexOf(".");
+        if(CEXTN_tb_emailid.length>0)
+        {
+            if ((/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(CEXTN_tb_emailid) || "" == CEXTN_tb_emailid)
+                &&(atpos-1!=CEXTN_tb_emailid.indexOf(".")))
+            {
+                $('#CEXTN_tb_emailid').removeClass("invalid");
+                $("#CEXTN_lbl_emailerrmsg").text("");
+                $('#CEXTN_tb_emailid').val($('#CEXTN_tb_emailid').val().toLowerCase());
+                emailchk="valid";
+            }
+            else
+            {
+                emailchk="invalid";
+                $("#CEXTN_lbl_emailerrmsg").text(CEXTN_errmsgs[5])
+                $('#CEXTN_tb_emailid').addClass("invalid")
+            }
+        }
+        else
+        {
+            $('#CEXTN_tb_emailid').removeClass("invalid");
+            $("#CEXTN_lbl_emailerrmsg").text("");
+            emailchk="invalid";
+        }
+//SHOW OR HIDE TIME BOX
+        if($("#CEXTN_db_chkoutdate").val()!="")
+        {
+            if($("#CEXTN_db_passdate").val()!=""&&new Date(FormTableDateFormat($("#CEXTN_db_passdate").val())).setHours(0,0,0,0)<=new Date(FormTableDateFormat($("#CEXTN_db_chkoutdate").val())).setHours(0,0,0,0))
+            {
+                $('#CEXTN_db_passdate').addClass("invalid")
+                $("#CEXTN_passdate_err").text(CEXTN_errmsgs[28])
+                CEXTN_validinput=0;
+            }
+            else
+            {
+                $('#CEXTN_db_passdate').removeClass("invalid");
+                $("#CEXTN_passdate_err").text("");
+            }
+            if($("#CEXTN_db_epdate").val()!=""&&new Date(FormTableDateFormat($("#CEXTN_db_epdate").val())).setHours(0,0,0,0)<=new Date(FormTableDateFormat($("#CEXTN_db_chkoutdate").val())).setHours(0,0,0,0))
+            {
+                $('#CEXTN_db_epdate').addClass("invalid")
+                $("#CEXTN_epdate_err").text(CEXTN_errmsgs[27])
+                CEXTN_validinput=0;
+            }
+            else
+            {
+                $('#CEXTN_db_epdate').removeClass("invalid");
+                $("#CEXTN_epdate_err").text("");
+            }
+            $("#CEXTN_lb_chkoutfromtime").show();
+        }
+        else
+        {
+            $("#CEXTN_lb_chkoutfromtime").val("SELECT").hide();
+            $("#CEXTN_lb_chkouttotime").hide();
+            $('#CEXTN_lbl_chkoutto').hide();
+        }
+        if(CEXTN_radio_unit=="CEXTN_radio_diffunit"&&CEXTN_radio_difunitcard=="CEXTN_radio_difunitcardno")
+        {
+            $("#CEXTN_btn_save").attr("disabled","disabled");
+////VALIDATION TO SHOW CARD FOR DIFFERENT UNIT OPTION N CODING  TO CHK CARD CHKBOX N LISTBOX
+            var CEXTN_cardlist=[];
+            var CEXTN_selectcardlist=[];
+            for(var k=0;k<CEXTN_finalCard.length;k++)
+            {
+                var CEXTN_Cardnos=CEXTN_finalCard[k];
+                CEXTN_cardlist.push(CEXTN_Cardnos)
+            }
+            var cardnos = [];
+            var cardid=[];
+            var cardlblll=[];
+            $('input:checkbox[name=CEXTN_cb_diffunitcard]:checked').each(function() {
+                if ($(this).val()) {
+                    cardnos.push($(this).val());
+                    var id=$(this).attr("id")
+                    var CEXTN_lb_diffunitcard= $('#CEXTN_lb_diffunitcard'+id).val();
+                    if(CEXTN_lb_diffunitcard!="SELECT")
+                    {
+                        cardlblll.push(CEXTN_lb_diffunitcard)
+                    }
+                    cardid.push(id);
+                }
+            });
+            $('#CEXTN_slctcustlbl').val(cardlblll)
+            var cardnos1 = [];
+            var cardid1=[];
+            $('input:checkbox[name=CEXTN_cb_diffunitcard]:not(:checked)').each(function() {
+                cardnos1.push($(this).val());
+                var id=$(this).attr("id")
+                cardid1.push(id);
+                if(cardid.length>0)
+                {
+                    $('#'+id).attr("disabled","disabled");
+                }
+            });
+            CEXTN_cardcount=0;
+            var CEXTN_chkcustflag=0;
+            var CEXTN_chkcard=0;
+            for(var i=0;i<cardid.length;i++)
+            {
+                var id=cardid[i];
+                var cardno=$("input[name='CEXTN_cb_diffunitcard']:checked").val();
+                $('#CEXTN_lb_diffunitcard'+id)
+                var CEXTN_tb_firstname=$('#CEXTN_tb_firstname').val();
+                var CEXTN_tb_lastname=$('#CEXTN_tb_lastname').val();
+                var CEXTN_lb_diffunitcard= $('#CEXTN_lb_diffunitcard'+id).show().val();
+                CEXTN_chkcard=1;
+                if(CEXTN_lb_diffunitcard!="SELECT")
+                {
+                    $('#CEXTN_lb_diffunitcard'+id).attr("disabled","disabled");
+                    CEXTN_cardcount++;
+                    CEXTN_selectcardlist.push(CEXTN_lb_diffunitcard);
+                    if(CEXTN_lb_diffunitcard==CEXTN_tb_firstname+" "+CEXTN_tb_lastname)
+                    {
+                        CEXTN_chkcustflag=1;
+                    }
+                    var cardlabl=CEXTN_lb_diffunitcard.replace(/ /g,"_");
+                    $('#CEXTN_tb_diffunitcard'+id).val(cardlabl);
+                }
+            }
+            if(CEXTN_cardcount>0)
+            {
+                if(CEXTN_chkcustflag==0)
+                {
+                    CEXTN_validinput=0;
+                    $('#CEXTN_div_custerrmsg').text(CEXTN_errmsgs[4]).show();
+                    $('#CEXTN_div_diffunitnocarderrmsg').hide();
+                }
+                else
+                {
+                    $('#CEXTN_div_custerrmsg').hide();
+                }
+            }
+            var fincardlbl=CEXTN_card_diffArray(CEXTN_cardlist,CEXTN_selectcardlist);
+            for(var i=0;i<cardid.length;i++)
+            {
+                var id=cardid[i];
+                var CEXTN_lb_diffunitcard= $('#CEXTN_lb_diffunitcard'+id).show().val();
+                if(CEXTN_lb_diffunitcard=="SELECT")
+                {
+                    CEXTN_validinput=0;
+                    var CEXTN_cardnolbl='<option>SELECT</option>';
+                    for(var j=0;j<fincardlbl.length;j++)
+                    {
+                        var CEXTN_cardnolabel=fincardlbl[j];
+                        CEXTN_cardnolbl += '<option value="' + CEXTN_cardnolabel + '">' + CEXTN_cardnolabel+ '</option>';
+                    }
+                    $('#CEXTN_lb_diffunitcard'+id).html(CEXTN_cardnolbl);
+                }
+            }
+            for(var i=0;i<cardid1.length;i++)
+            {
+                var id=cardid1[i];
+                $('#CEXTN_tb_diffunitcard'+id).val("");
+//SET CARD LABEL IN CARD LISTBOX
+                var CEXTN_cardnolbl='<option>SELECT</option>';
+                var CEXTN_chkselect=0;
+                for(var j=0;j<fincardlbl.length;j++)
+                {
+                    var CEXTN_cardnolabel=fincardlbl[j];
+                    CEXTN_cardnolbl += '<option value="' + CEXTN_cardnolabel + '">' + CEXTN_cardnolabel+ '</option>';
+                }
+                $('#CEXTN_lb_diffunitcard'+id).html(CEXTN_cardnolbl);
+                $('#CEXTN_lb_diffunitcard'+id).removeAttr("disabled");
+                $('#CEXTN_lb_diffunitcard'+id).val("SELECT")
+                $('#CEXTN_lb_diffunitcard'+id).hide();
+                for(var kk=0;kk<cardid.length;kk++)
+                {
+                    var idd=cardid[kk];
+                    var CEXTN_lb_diffunitcard= $('#CEXTN_lb_diffunitcard'+idd).val();
+                    if(CEXTN_lb_diffunitcard=="SELECT")
+                    {
+                        CEXTN_chkselect=1;
+                    }
+                }
+                if(CEXTN_chkselect==0&&CEXTN_cardcount<=3)
+                {
+                    $('#'+id).removeAttr("disabled");
+                }
+            }
+        }
+        CEXTN_setproratedvalue()
+        var samewaivedchk=$("#CEXTN_cb_sameamtwaived").prop("checked");
+        var chkedvalue="X";
+        var diffwaivedchk=$("#CEXTN_cb_diffamtwaived").prop("checked");
+        if (samewaivedchk==true)
+        {
+            $("#CEXTN_hidden_sameamtwaived").val(chkedvalue);
+        }
+        else
+        {
+            $("#CEXTN_hidden_sameamtwaived").val("");
+        }
+//
+        if (diffwaivedchk==true)
+        {
+            $("#CEXTN_hidden_diffamtwaived").val(chkedvalue);
+        }
+        else
+        {
+            $("#CEXTN_hidden_diffamtwaived").val("");
+        }
+        if(emailchk=="invalid"||CEXTN_db_chkoutdate==""||CEXTN_lb_chkoutfromtime=="SELECT"||CEXTN_lb_emailid=="SELECT"||CEXTN_chkunitdateflag==1)
+        {
+            CEXTN_validinput=0;
+        }
+        if(CEXTN_radio_amt=='CEXTN_radio_diffamt'&&($("#CEXTN_tb_diffamtrent").val()==""||parseFloat($("#CEXTN_tb_diffamtrent").val())==0))
+        {
+            CEXTN_validinput=0;
+        }
+        var CEXTN_epnoflag=0,CEXTN_passnoflag=0;
+//VALIDATING PASSPORT EXPIRY DATE N NO,EP EXPIRY DATE N NO
+        if(CEXTN_db_passdate!=""&&CEXTN_tb_passno=="")
+        {
+            CEXTN_validinput=0;
+            CEXTN_passnoflag=1;
+            $("#CEXTN_passno_err").text(CEXTN_errmsgs[22]);
+            $("#CEXTN_tb_passno").addClass("invalid")
+        }
+        if(CEXTN_db_epdate!=""&&CEXTN_tb_epno=="")
+        {
+            CEXTN_epnoflag=1;
+            CEXTN_validinput=0;
+            $("#CEXTN_epno_err").text(CEXTN_errmsgs[23]);
+            $("#CEXTN_tb_epno").addClass("invalid")
+        }
+//MINIMUM DIGIT VALIDATION START
+        if((parseInt($("#CEXTN_tb_electcapfee").val().split('.')[0])==0||$("#CEXTN_tb_electcapfee").val().split('.')[0]==""||parseInt($("#CEXTN_tb_electcapfee").val().split('.')[0]).toString().length<2)&&parseFloat($("#CEXTN_tb_electcapfee").val())!=0&&$("#CEXTN_tb_electcapfee").val()!="")
+        {
+            CEXTN_validinput=0;
+            $("#CEXTN_tb_electcapfee").addClass("invalid")
+            $("#CEXTN_electcap_err").text(CEXTN_errmsgs[19])
+        }
+        else
+        {
+            $("#CEXTN_tb_electcapfee").removeClass("invalid")
+            $("#CEXTN_electcap_err").text("")
+        }
+        if((parseInt($("#CEXTN_tb_diffamtrent").val().split('.')[0])==0||$("#CEXTN_tb_diffamtrent").val().split('.')[0]==""||parseInt($("#CEXTN_tb_diffamtrent").val().split('.')[0]).toString().length<3)&&parseFloat($("#CEXTN_tb_diffamtrent").val())!=0&&$("#CEXTN_tb_diffamtrent").val()!="")
+        {
+            CEXTN_validinput=0;
+            $("#CEXTN_tb_diffamtrent").addClass("invalid")
+            $("#CEXTN_diffamtrent_err").text(CEXTN_errmsgs[16])
+        }
+        else
+        {
+            $("#CEXTN_tb_diffamtrent").removeClass("invalid")
+            $("#CEXTN_diffamtrent_err").text("")
+        }
+        if((parseInt($("#CEXTN_tb_diffamtdep").val().split('.')[0])==0||$("#CEXTN_tb_diffamtdep").val().split('.')[0]==""||parseInt($("#CEXTN_tb_diffamtdep").val().split('.')[0]).toString().length<3)&&parseFloat($("#CEXTN_tb_diffamtdep").val())!=0&&$("#CEXTN_tb_diffamtdep").val()!="")
+        {
+            CEXTN_validinput=0;
+            $("#CEXTN_tb_diffamtdep").addClass("invalid")
+            $("#CEXTN_diffamtdeposit_err").text(CEXTN_errmsgs[17])
+        }
+        else
+        {
+            $("#CEXTN_tb_diffamtdep").removeClass("invalid")
+            $("#CEXTN_diffamtdeposit_err").text("")
+        }
+        if((parseInt($("#CEXTN_tb_diffamtprocost").val().split('.')[0])==0||$("#CEXTN_tb_diffamtprocost").val().split('.')[0]==""||parseInt($("#CEXTN_tb_diffamtprocost").val().split('.')[0]).toString().length<3)&&parseFloat($("#CEXTN_tb_diffamtprocost").val())!=0&&$("#CEXTN_tb_diffamtprocost").val()!="")
+        {
+            CEXTN_validinput=0;
+            $("#CEXTN_tb_diffamtprocost").addClass("invalid")
+            $("#CEXTN_diffamtprofee_err").text(CEXTN_errmsgs[18])
+        }
+        else
+        {
+            $("#CEXTN_tb_diffamtprocost").removeClass("invalid")
+            $("#CEXTN_diffamtprofee_err").text("")
+        }
+        if($("#CEXTN_tb_comppostcode").val()!=""&&($("#CEXTN_tb_comppostcode").val()).toString().length<5&&parseInt($("#CEXTN_tb_comppostcode").val())!=0)
+        {
+            CEXTN_validinput=0;
+            $("#CEXTN_tb_comppostcode").addClass("invalid")
+            $("#CEXTN_postcode_err").text(CEXTN_errmsgs[15])
+        }
+        else
+        {
+            $("#CEXTN_tb_comppostcode").removeClass("invalid")
+            $("#CEXTN_postcode_err").text("")
+        }
+        if(($("#CEXTN_tb_passno").val().trim()!=""&&($("#CEXTN_tb_passno").val()).trim().toString().length<6))
+        {
+            CEXTN_validinput=0;
+            $("#CEXTN_tb_passno").addClass("invalid")
+            $("#CEXTN_passno_err").text(CEXTN_errmsgs[13])
+        }
+        else if(CEXTN_passnoflag==0)
+        {
+            $("#CEXTN_tb_passno").val($("#CEXTN_tb_passno").val().toUpperCase())
+            $("#CEXTN_tb_passno").removeClass("invalid")
+            $("#CEXTN_passno_err").text("")
+        }
+        if(($("#CEXTN_tb_epno").val().trim()!=""&&($("#CEXTN_tb_epno").val()).trim().toString().length<6))
+        {
+            CEXTN_validinput=0;
+            $("#CEXTN_tb_epno").addClass("invalid")
+            $("#CEXTN_epno_err").text(CEXTN_errmsgs[14])
+        }
+        else if(CEXTN_epnoflag==0)
+        {
+            $("#CEXTN_tb_epno").val($("#CEXTN_tb_epno").val().toUpperCase())
+            $("#CEXTN_tb_epno").removeClass("invalid")
+            $("#CEXTN_epno_err").text("")
+        }
+//MINIMUM DIGIT VALIDATION END
+//CONTACT NO VALIDATION START
+        if($("#CEXTN_tb_mobileno").val()!=""&&(parseInt($("#CEXTN_tb_mobileno").val()).toString().length)<6&&parseInt($("#CEXTN_tb_mobileno").val())!=0)
+        {
+            CEXTN_validinput=0;
+            $("#CEXTN_tb_mobileno").addClass("invalid")
+            $("#CEXTN_mobile_err").text(CEXTN_errmsgs[12])
+        }
+        else
+        {
+            $("#CEXTN_tb_mobileno").removeClass("invalid")
+            $("#CEXTN_mobile_err").text("")
+        }
+        if($("#CEXTN_tb_intmobileno").val()!=""&&($("#CEXTN_tb_intmobileno").val().toString().length)<6&&parseInt($("#CEXTN_tb_intmobileno").val())!=0)
+        {
+            CEXTN_validinput=0;
+            $("#CEXTN_tb_intmobileno").addClass("invalid")
+            $("#CEXTN_intlmobile_err").text(CEXTN_errmsgs[12])
+        }
+        else
+        {
+            $("#CEXTN_tb_intmobileno").removeClass("invalid")
+            $("#CEXTN_intlmobile_err").text("")
+        }
+        if($("#CEXTN_tb_officeno").val()!=""&&(parseInt($("#CEXTN_tb_officeno").val()).toString().length)<6&&parseInt($("#CEXTN_tb_officeno").val())!=0)
+        {
+            CEXTN_validinput=0;
+            $("#CEXTN_tb_officeno").addClass("invalid")
+            $("#CEXTN_officeno_err").text(CEXTN_errmsgs[12])
+        }
+        else
+        {
+            $("#CEXTN_tb_officeno").removeClass("invalid")
+            $("#CEXTN_officeno_err").text("")
+        }
+//CONTACT NO VALIDATION END
+        if(CEXTN_radio_unit=="CEXTN_radio_sameunitdiffroom")
+        {
+            if((CEXTN_lb_sameunitdiffrmrmtype=="SELECT"||CEXTN_lb_sameunitdiffrmrmtype==null))
+            {
+                CEXTN_validinput=0;
+            }
+            if((CEXTN_lb_chkinfromtime=="SELECT"||CEXTN_lb_chkinfromtime==null))
+            {
+                CEXTN_validinput=0;
+            }
+        }
+        if(CEXTN_radio_unit=="CEXTN_radio_diffunit")
+        {
+            if((CEXTN_lb_diffunituno=="SELECT"||CEXTN_lb_diffunituno==null))
+            {
+                CEXTN_validinput=0;
+            }
+            if(CEXTN_lb_diffunitrmtype=="SELECT"||CEXTN_lb_diffunitrmtype==null)
+            {
+                CEXTN_validinput=0;
+            }
+            if((CEXTN_lb_chkinfromtime=="SELECT"||CEXTN_lb_chkinfromtime==null))
+            {
+                CEXTN_validinput=0;
+            }
+            if(CEXTN_chkcard==0)
+            {
+                CEXTN_validinput=0;
+            }
+            if(CEXTN_chkfuturedate==0)
+            {
+                if(CEXTN_chkdifunitcard==false)
+                {
+                    CEXTN_validinput=0;
+                }
+                if(CEXTN_radio_difunitcard=="CEXTN_radio_difunitcardno")
+                {
+                    if(CEXTN_chkcardlen==0)
+                    {
+                        CEXTN_validinput=0;
+                    }
+                }
+            }
+        }
+        return CEXTN_validinput;
+    }
+//FUNCTION TO VALIDATE SUBMIT BUTTON
+    function CEXTN_validatesubmitbtn(CEXTN_validoutput)
+    {
+        if(CEXTN_validoutput==0)
+        {
+            $("#CEXTN_btn_save").attr("disabled","disabled");
+        }
+        else
+        {
+            $("#CEXTN_btn_save").removeAttr("disabled");
+        }
+    }
 //FUNCTION FOR ON CLICK OF CUST ID
     $(document).on("change",'.CEXTN_class_custid', function ()
     {
@@ -1283,11 +1370,27 @@ $(document).ready(function()
         var CEXTN_lb_unitno=$('#CEXTN_lb_unitno').val();
         var CEXTN_id=$("input[name=CEXTN_radiocustid]:checked").val();
         $('#CEXTN_hidden_custid').val(CEXTN_id);
-        google.script.run.withFailureHandler(onFailure).withSuccessHandler(CEXTN_getCustomerdtls_result).CEXTN_getCustomerdtls(CEXTN_id,CEXTN_lb_unitno);
+        $.ajax({
+            type: "POST",
+            url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_getCustomerdtls_result',
+            data:{"unitno":CEXTN_lb_unitno,"customerId":CEXTN_id},
+            success: function(data){
+                var value_array=JSON.parse(data);
+                CEXTN_getCustomerdtls_result(value_array)
+
+            },
+            error: function(data){
+                alert('error in getting'+JSON.stringify(data));
+
+            }
+        });
+
+//        google.script.run.withFailureHandler(onFailure).withSuccessHandler(CEXTN_getCustomerdtls_result).CEXTN_getCustomerdtls(CEXTN_id,CEXTN_lb_unitno);
     }
 //SET VALUES OF THE CUST DETAILS RESULT
     function CEXTN_getCustomerdtls_result(CEXTN_custdtls1)
     {
+//           alert(JSON.stringify(CEXTN_custdtls1));
         var CEXTN_custdtls=CEXTN_custdtls1.custdtls;
 
         if(CEXTN_custdtls!=""&&CEXTN_custdtls!=undefined)
@@ -1438,8 +1541,8 @@ $(document).ready(function()
                 $('#CEXTN_db_chkindate').val(FormTableDateFormat(CEXTN_custdtls.cust_chkoutdate));
             }
 ////START PLACE CARD
-            $('#CTERM_tbl_sameunitsamermcust_card tr').remove();
-            $('#CTERM_tbl_sameunitdiffrmcust_card tr').remove();
+            $('#CTERM_tbl_sameunitsamermcust_card > div').remove();
+            $('#CTERM_tbl_sameunitdiffrmcust_card > div').remove();
             var CEXTN_card=[];
             CEXTN_card=CEXTN_custdtls1.cardarray;
             if(CEXTN_card.length>0&&CEXTN_card[0]!="")
@@ -1448,18 +1551,18 @@ $(document).ready(function()
                 {
                     if(i==0)
                     {
-                        var CEXTN_cardlabel='<label >CUSTOMER CARD</label>'
+                        var CEXTN_cardlabel='<div class="form-group"><label class="col-sm-3" >CUSTOMER CARD</label>'
                         var CEXTN_custlbl=$('#CEXTN_tb_firstname').val()+"_"+$('#CEXTN_tb_lastname').val()
                         CEXTN_custlbl=CEXTN_custlbl.replace(/ /g,"_")
                     }
                     else
                     {
-                        var CEXTN_cardlabel='<label >GUEST '+i+' CARD</label>'
+                        var CEXTN_cardlabel='<label class="col-sm-3" >GUEST '+i+' CARD</label>'
                         var CEXTN_custlbl='GUEST'+i;
                     }
                     var cardsize=CEXTN_card[i].length;
-                    var CEXTN_result='<tr><td>'+CEXTN_cardlabel+' <td><input type="text" name="CEXTN_tb_sameunitsamermcustcard" value='+CEXTN_card[i]+' size='+cardsize+' readonly><td><input type="text" name="CEXTN_hidden_sameunitsamermcustcard"  value='+CEXTN_custlbl+' hidden/></tr>';
-                    var CEXTN_result1='<tr><td>'+CEXTN_cardlabel+' <td><input type="text" name="CEXTN_tb_sameunitdiffrmcustcard" value='+CEXTN_card[i]+' size='+cardsize+' readonly><td><input type="text" name="CEXTN_hidden_sameunitdiffrmcustcard"  value='+CEXTN_custlbl+' hidden/></tr>';
+                    var CEXTN_result=CEXTN_cardlabel+' <div class="col-sm-2"><input type="text" name="CEXTN_tb_sameunitsamermcustcard" value='+CEXTN_card[i]+' size='+cardsize+' readonly></div><div><input type="text" name="CEXTN_hidden_sameunitsamermcustcard"  value='+CEXTN_custlbl+' hidden/></div>';
+                    var CEXTN_result1=CEXTN_cardlabel+' <div class="col-sm-2"><input type="text" name="CEXTN_tb_sameunitdiffrmcustcard" value='+CEXTN_card[i]+' size='+cardsize+' readonly></div><div><input type="text" name="CEXTN_hidden_sameunitdiffrmcustcard"  value='+CEXTN_custlbl+' hidden/></div>';
                     $('#CTERM_tbl_sameunitsamermcust_card').append(CEXTN_result);
                     $('#CTERM_tbl_sameunitdiffrmcust_card').append(CEXTN_result1);
                 }
@@ -1544,7 +1647,7 @@ $(document).ready(function()
             $('#CEXTN_hidden_prechkintotime').val(prechkintotimee[0]+":"+prechkintotimee[1])
             $('#CEXTN_hidden_chkinfromtime').val(chkinfromtimee[0]+":"+chkinfromtimee[1])
             $('#CEXTN_hidden_chkintotime').val(chkintotimee[0]+":"+chkintotimee[1])
-            $('#CEXTN_tb_noticeperiod').val(CEXTN_custdtls.cust_noticeperiod).prop("title",CEXTN_errmsgs[1]);
+            $('#CEXTN_tb_noticeperiod').val(CEXTN_custdtls.cust_noticeperiod).prop("title",CEXTN_errmsgs[1].EMC_DATA);
             $('#CEXTN_div_seconform').show();
 //SET RADIO BUTTON
             $('#CEXTN_div_sameunitsamerm').show();
@@ -1587,7 +1690,7 @@ $(document).ready(function()
         {
             CEXTN_chkunitdateflag=1;
             $('#CEXTN_db_chkindate').addClass("invalid");
-            $('#CEXTN_usdatexpiremsg').text(CEXTN_errmsgs[10]);
+            $('#CEXTN_usdatexpiremsg').text(CEXTN_errmsgs[10].EMC_DATA);
             $('#CEXTN_db_chkoutdate').datepicker( "destroy" )
             $('#CEXTN_db_chkoutdate').attr('disabled','disabled');
             $('#CEXTN_db_chkoutdate').val('');
@@ -1661,7 +1764,7 @@ $(document).ready(function()
                 $('#CEXTN_db_chkoutdate').datepicker( "destroy" )
                 $('#CEXTN_db_chkoutdate').attr('disabled','disabled');
                 $('#CEXTN_db_chkoutdate').val('');
-                $('#CEXTN_uedatexpiremsg').text(CEXTN_errmsgs[24]);//.text(CEXTN_errmsgs[10])
+                $('#CEXTN_uedatexpiremsg').text(CEXTN_errmsgs[24].EMC_DATA);//.text(CEXTN_errmsgs[10])
                 CEXTN_chkunitdateflag=1;
             }
             else
@@ -1672,7 +1775,7 @@ $(document).ready(function()
                     CEXTN_chkunitdateflag=1;
                     $('#CEXTN_db_chkoutdate').val("");
                     $('#CEXTN_db_chkoutdate').addClass("invalid")
-                    $('#CEXTN_uedatexpiremsg').text(CEXTN_errmsgs[10])
+                    $('#CEXTN_uedatexpiremsg').text(CEXTN_errmsgs[10].EMC_DATA)
                     $("#CEXTN_lb_chkoutfromtime").val("SELECT").hide();
                     $("#CEXTN_lb_chkouttotime").hide();
                     $('#CEXTN_lbl_chkoutto').hide();
@@ -1703,87 +1806,103 @@ $(document).ready(function()
         $("#CEXTN_lb_emailid").val("SELECT");
         $("#CEXTN_btn_save").attr("disabled","disabled");
     }
-////FUNCTION TO CALL SAVE FUNCTION
-//    $("#CEXTN_btn_save").click(function()
-//    {
-//        var  newPos= adjustPosition($("#CEXTN_div_save").position(),100,150);
-//        resetPreloader(newPos);
-//        $(".preloader").show();
-//        var CEXTN_validinput=1;
-//        var CEXTN_validoutput=CEXTN_validateinputform(CEXTN_validinput);
-//        CEXTN_validatesubmitbtn(CEXTN_validoutput);
-//        if(CEXTN_validoutput==1)
-//        {
+//FUNCTION TO CALL SAVE FUNCTION
+    $("#CEXTN_btn_save").click(function()
+    {
+        var  newPos= adjustPosition($("#CEXTN_div_save").position(),100,150);
+        resetPreloader(newPos);
+        $(".preloader").show();
+        var CEXTN_validinput=1;
+        var CEXTN_validoutput=CEXTN_validateinputform(CEXTN_validinput);
+        CEXTN_validatesubmitbtn(CEXTN_validoutput);
+        if(CEXTN_validoutput==1)
+        {
+            var form_element=$('#CCAN_form_cancelform').serialize();
+            $.ajax({
+                type: "POST",
+                url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_SaveDetails',
+                data:form_element,
+                success: function(data){
+                    var saveresult=JSON.parse(data);
+                    CEXTN_SaveDetails_result(saveresult)
+
+                },
+                error: function(data){
+                    alert('error in getting'+JSON.stringify(data));
+
+                }
+            });
+
 //            google.script.run.withFailureHandler(onFailure).withSuccessHandler(CEXTN_SaveDetails_result).CEXTN_SaveDetails(document.getElementById("CEXTN_form"));
-//        }
-//        else
-//        {
-//            $(".preloader").hide();
-//        }
-//    });
-////FUNCTION TO RETURN SAVE RESULT
-//    function CEXTN_SaveDetails_result(saveresult)
-//    {
-//        var CEXTN_tb_firstname=$("#CEXTN_tb_firstname").val();
-//        var CEXTN_tb_lastname=$("#CEXTN_tb_lastname").val();
-//        var CEXTN_successmsg=CEXTN_errmsgs[7];
-//        if(saveresult.match("SCRIPT EXCEPTION:"))
-//        {
-//            $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXTENSION",msgcontent:saveresult,position:$("#CEXTN_div_save").position()}});
-//            $(".preloader").hide();
-//        }
-//        else
-//        {
-//            var paymentchkmsg=saveresult.split("_")[1];
-//            var saveresult=saveresult.split("_")[0];
-//            if(saveresult==1)
-//            {
-//                CEXTN_clearForm();
-//                CEXTN_successmsg=CEXTN_successmsg.replace('[FIRST NAME]',CEXTN_tb_firstname)
-//                CEXTN_successmsg=CEXTN_successmsg.replace('[LAST NAME]',CEXTN_tb_lastname)
-//                if(paymentchkmsg!='null')
-//                {
-//                    $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXTENSION",msgcontent:CEXTN_successmsg+"<br>"+paymentchkmsg,position:{top:150,left:500}}});
-//                }
-//                else
-//                {
-//                    $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXTENSION",msgcontent:CEXTN_successmsg,position:{top:150,left:500}}});
-//                }
-//            }
-//            else
-//            {
-//                if(saveresult.toString()=='0')
-//                {
-//                    $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXTENSION",msgcontent:CEXTN_errmsgs[21],position:$("#CEXTN_div_save").position()}});
-//                }
-//                else
-//                {
-//                    $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXTENSION",msgcontent:saveresult,position:$("#CEXTN_div_save").position()}});
-//                }
-//                $(".preloader").hide();
-//            }
-//        }
-//    }
+        }
+        else
+        {
+            $(".preloader").hide();
+        }
+    });
+//FUNCTION TO RETURN SAVE RESULT
+    function CEXTN_SaveDetails_result(saveresult)
+    {
+        var CEXTN_tb_firstname=$("#CEXTN_tb_firstname").val();
+        var CEXTN_tb_lastname=$("#CEXTN_tb_lastname").val();
+        var CEXTN_successmsg=CEXTN_errmsgs[7];
+        if(saveresult.match("SCRIPT EXCEPTION:"))
+        {
+            $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXTENSION",msgcontent:saveresult,position:$("#CEXTN_div_save").position()}});
+            $(".preloader").hide();
+        }
+        else
+        {
+            var paymentchkmsg=saveresult.split("_")[1];
+            var saveresult=saveresult.split("_")[0];
+            if(saveresult==1)
+            {
+                CEXTN_clearForm();
+                CEXTN_successmsg=CEXTN_successmsg.replace('[FIRST NAME]',CEXTN_tb_firstname)
+                CEXTN_successmsg=CEXTN_successmsg.replace('[LAST NAME]',CEXTN_tb_lastname)
+                if(paymentchkmsg!='null')
+                {
+                    $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXTENSION",msgcontent:CEXTN_successmsg+"<br>"+paymentchkmsg,position:{top:150,left:500}}});
+                }
+                else
+                {
+                    $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXTENSION",msgcontent:CEXTN_successmsg,position:{top:150,left:500}}});
+                }
+            }
+            else
+            {
+                if(saveresult.toString()=='0')
+                {
+                    $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXTENSION",msgcontent:CEXTN_errmsgs[21],position:$("#CEXTN_div_save").position()}});
+                }
+                else
+                {
+                    $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXTENSION",msgcontent:saveresult,position:$("#CEXTN_div_save").position()}});
+                }
+                $(".preloader").hide();
+            }
+        }
+    }
 ////FUNCTION TO CLEAR LIST BOX FIELD
-//    function CEXTN_clearForm()
-//    {
-//        var  newPos= adjustPosition($('#CEXTN_lb_unitno').position(),100,150);
-//        resetPreloader(newPos);
-//        $(".preloader").show();
-//        CEXTN_clearerrmsg();
-//        $('#CEXTN_lbl_custname').hide();
-//        $('#CEXTN_lb_custname').hide();
-//        $('#CEXTN_div_custid').hide();
-//        $('#CEXTN_div_seconform').hide();
-//        $("#CEXTN_form").hide();
-////CALL FUNCTION TO GET UNIT NOS,ERROR MSGS,PRORATED N WAIVED VALUE
-//        google.script.run.withFailureHandler(onFailure).withSuccessHandler(CEXTN_getCommonvalues_result).CEXTN_getCommonvalues();
-//    }
-////RESET FORM FIELDS
-//    $("#CEXTN_btn_reset").click(function(){
-//        CEXTN_clearForm();
-//        $('#CEXTN_ta_comments').height(20);
-//    });
+    function CEXTN_clearForm()
+    {
+        var  newPos= adjustPosition($('#CEXTN_lb_unitno').position(),100,150);
+        resetPreloader(newPos);
+        $(".preloader").show();
+        CEXTN_clearerrmsg();
+        $('#CEXTN_lbl_custname').hide();
+        $('#CEXTN_lb_custname').hide();
+        $('#CEXTN_div_custid').hide();
+        $('#CEXTN_div_seconform').hide();
+        $("#CEXTN_form").hide();
+//CALL FUNCTION TO GET UNIT NOS,ERROR MSGS,PRORATED N WAIVED VALUE
+        google.script.run.withFailureHandler(onFailure).withSuccessHandler(CEXTN_getCommonvalues_result).CEXTN_getCommonvalues();
+    }
+//RESET FORM FIELDS
+    $("#CEXTN_btn_reset").click(function(){
+        CEXTN_clearForm();
+        $('#CEXTN_ta_comments').height(20);
+    });
 //FUNCTION TO CLEAR ERR MSG
     function CEXTN_clearerrmsg()
     {
@@ -1823,359 +1942,311 @@ $(document).ready(function()
 <!--BODY TAG START-->
 <body>
 <div class="container">
-    <div class="wrapper">
-            <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
-            <div class="row title text-center"><h4><b>CUSTOMER EXTENSION</b></h4></div>
-            <div id="CEXTN_div_allerrmsg"></div>
-            <form class="content form-horizontal" name="CEXTN_form" id="CEXTN_form" hidden>
-                <div class="panel-body">
-                   <div id="CEXTN_tble_first" >
-                       <div class="form-group">
-                           <label class="col-sm-3" name="CEXTN_lbl_unitno" id="CEXTN_lbl_unitno">UNIT NUMBER <em>*</em></label>
-                           <div class="col-sm-2"> <select id="CEXTN_lb_unitno" name="CEXTN_lb_unitno" class="CEXTN_btn_validate_class form-control"></select></div>
-                       </div>
-                       <div class="form-group">
-                           <label class="col-sm-3" name="CEXTN_lbl_custname" id="CEXTN_lbl_custname" hidden>CUSTOMER NAME <em>*</em></label>
-                           <div class="col-sm-2"> <select id="CEXTN_lb_custname" name="CEXTN_lb_custname"  class="CEXTN_btn_validate_class form-control " style=" display:none" ></select></div>
-                       </div>
-                       <div id="CEXTN_div_custid">
-                          <div id="CEXTN_tble_custid"></div>
-                       </div>
-                   </div>
-                   <div id="CEXTN_div_nocusterr" class="errormsg"></div>
-                   <div id="CEXTN_div_seconform" hidden>
-                       <div id='CEXTN_tble_seconform'>
-                           <div class="form-group">
-                               <label class="col-sm-3">FIRST NAME</label>
-                               <div class="col-sm-3"> <input type="text" name="CEXTN_tb_firstname" id="CEXTN_tb_firstname"  class="form-control CCAN_formvalidation" maxlength="50" readonly /><p class="field" ></p><input type="hidden" name="CEXTN_hidden_custid" id="CEXTN_hidden_custid"></div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-3">LAST NAME</label>
-                               <div class="col-sm-3"> <input type="text" name="CEXTN_tb_lastname" id="CEXTN_tb_lastname"  maxlength="50" class="form-control CCAN_formvalidation"  readonly/></div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-3">COMPANY NAME</label>
-                               <div class="col-sm-3"> <input type="text" name="CCAN_tb_companyname" id="CCAN_tb_companyname"  class="form-control autosize"  /></div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-3">COMPANY ADDRESS</label>
-                               <div class="col-sm-3"> <input type="text" name="CEXTN_tb_compaddr" id="CEXTN_tb_compaddr"  maxlength="50"  class="form-control autosize "  /></div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-3">COMPANY POSTAL CODE</label>
-                               <div class="col-sm-3"> <input type="text" name="CEXTN_tb_comppostcode" id="CEXTN_tb_comppostcode" maxlength="6" class="form-control CEXTN_btn_validate_class"  /> <p id="CEXTN_postcode_err" class="errormsg" ></p></div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-3">EMAIL ID</label>
-                               <div class="col-sm-3"> <input type="text" name="CEXTN_tb_emailid" id="CEXTN_tb_emailid"  maxlength="40"  class="form-control CEXTN_btn_validate_class"  readonly/><label  id="CEXTN_lbl_emailerrmsg" class="errormsg"></label></div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-3">MOBILE</label>
-                               <div class="col-sm-2"> <input type="text" name="CEXTN_tb_mobileno" id="CEXTN_tb_mobileno"  class="numonlynozero CEXTN_btn_validate_class form-control"/><p id="CEXTN_mobile_err" class="errormsg"></p></div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-3">INT'L MOBILE NO</label>
-                               <div class="col-sm-2"> <input type="text" name="CEXTN_tb_intmobileno" id="CEXTN_tb_intmobileno"  class="CEXTN_btn_validate_class form-control"/><p id="CEXTN_intlmobile_err" class="errormsg"></p></div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-3">OFFICE NO</label>
-                               <div class="col-sm-2"> <input type="text" name="CEXTN_tb_officeno" id="CEXTN_tb_officeno"  style="width:70px;" maxlength="8"  class="numonlynozero CEXTN_btn_validate_class form-control" /><p id="CEXTN_officeno_err" class="errormsg"></p></div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-3">DATE OF BIRTH</label>
-                               <div class="col-sm-2"> <input type="text" name="CEXTN_db_dob" id="CEXTN_db_dob"  maxlength="10" style="width:75px;" class="datenonmandtry"/><p class="field" ></div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-3">NATIONALITY</label>
-                               <div class="col-sm-3"> <input type="text" name="CEXTN_tb_nation" id="CEXTN_tb_nation" maxlength="50" class="form-control"  readonly/></div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-3">PASSPORT NUMBER</label>
-                               <div class="col-sm-3"> <input type="text" name="CEXTN_tb_passno" id="CEXTN_tb_passno"  maxlength="15" class="alnumonlyzero CEXTN_btn_validate_class form-control" /><p id="CEXTN_passno_err" class="errormsg"></p></div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-3">PASSPORT EXPIRY DATE</label>
-                               <div class="col-sm-2"> <input type="text" name="CEXTN_db_passdate" id="CEXTN_db_passdate"  maxlength="10" style="width:75px;" class="datenonmandtry CEXTN_btn_validate_class form-control"/><p id="CEXTN_passdate_err" class="errormsg" ></p></div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-3">EP NUMBER</label>
-                               <div class="col-sm-2"> <input type="text" name="CEXTN_tb_epno" id="CEXTN_tb_epno"  maxlength="15" class="alnumonlynozero CEXTN_btn_validate_class form-control" /><p id="CEXTN_epno_err" class="errormsg"></div>
-                           </div>
-                           <div class="form-group">
-                               <label class="col-sm-3">EP EXPIRY DATE</label>
-                               <div class="col-sm-2"> <input type="text" name="CEXTN_db_epdate" id="CEXTN_db_epdate"  maxlength="10" style="width:75px;" class="datenonmandtry CEXTN_btn_validate_class"/><p id="CEXTN_epdate_err" class="errormsg" ></p></div>
-                           </div>
-<!--                           <tr>-->
-<!--    <td><input type="hidden" name="CEXTN_hidden_custid" id="CEXTN_hidden_custid"><label>FIRST NAME</label></td><td><input type="text" name="CEXTN_tb_firstname" id="CEXTN_tb_firstname"  maxlength="30" class="rdonly" readonly/></td> <td><p class="field" ></p></td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td><label>LAST NAME</label></td><td><input type="text" name="CEXTN_tb_lastname" id="CEXTN_tb_lastname"  maxlength="30" class="rdonly" readonly/></td> <td><p class="field" ></p></td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td><label>COMPANY NAME</label></td><td> <input type="text" name="CEXTN_tb_compname" id="CEXTN_tb_compname"  maxlength="50"  class="autosize"/></td> <td><p class="field" ></p></td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td><label>COMPANY ADDRESS</label></td><td> <input type="text" name="CEXTN_tb_compaddr" id="CEXTN_tb_compaddr"  maxlength="50"  class="autosize"/></td> <td><p class="field" ></p></td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td><label>COMPANY POSTAL CODE</label></td><td> <input type="text" name="CEXTN_tb_comppostcode" id="CEXTN_tb_comppostcode"  style="width:55px;" maxlength="6" class="autosize CEXTN_btn_validate_class"/></td> <td><p id="CEXTN_postcode_err" class="errormsg" ></p></td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td><label>E-MAIL ID<em>*</em></label></td><td> <input type="text" name="CEXTN_tb_emailid" id="CEXTN_tb_emailid"  maxlength="40" class="CEXTN_btn_validate_class"/><label  id="CEXTN_lbl_emailerrmsg" class="errormsg"></label></td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td><label>MOBILE</label></td><td> <input type="text" name="CEXTN_tb_mobileno" id="CEXTN_tb_mobileno" style="width:70px;" class="numonlynozero CEXTN_btn_validate_class"/></td> <td><p id="CEXTN_mobile_err" class="errormsg"></p></td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td><label>INT'L MOBILE</label></td><td> <input type="text" name="CEXTN_tb_intmobileno" id="CEXTN_tb_intmobileno"  class="CEXTN_btn_validate_class"/></td> <td><p id="CEXTN_intlmobile_err" class="errormsg"></p></td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td><label>OFFICE NO</label></td><td> <input type="text" name="CEXTN_tb_officeno" id="CEXTN_tb_officeno"  style="width:70px;" maxlength="8"  class="numonlynozero CEXTN_btn_validate_class" /></td> <td><p id="CEXTN_officeno_err" class="errormsg"></p></td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td><label>DATE OF BIRTH</label></td><td> <input type="text" name="CEXTN_db_dob" id="CEXTN_db_dob"  maxlength="10" style="width:75px;" class="datenonmandtry"/></td> <td><p class="field" ></p></td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td><label>NATIONALITY</label></td><td> <input type="text" name="CEXTN_tb_nation" id="CEXTN_tb_nation"  maxlength="50" class="rdonly" readonly/></td> <td><p class="field" ></p></td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td><label>PASSPORT NUMBER</label></td><td> <input type="text" name="CEXTN_tb_passno" id="CEXTN_tb_passno"  maxlength="15" class="alnumonlyzero CEXTN_btn_validate_class" /></td> <td><p id="CEXTN_passno_err" class="errormsg"></p></td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td><label>PASSPORT EXPIRY DATE</label></td><td> <input type="text" name="CEXTN_db_passdate" id="CEXTN_db_passdate"  maxlength="10" style="width:75px;" class="datenonmandtry CEXTN_btn_validate_class"/></td> <td><p id="CEXTN_passdate_err" class="errormsg" ></p></td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td><label>EP NUMBER</label></td><td> <input type="text" name="CEXTN_tb_epno" id="CEXTN_tb_epno"  maxlength="15" class="alnumonlynozero CEXTN_btn_validate_class" /></td> <td><p id="CEXTN_epno_err" class="errormsg"></td>-->
-<!--</tr>-->
-<!--<tr>-->
-<!--    <td><label>EP EXPIRY DATE</label></td><td> <input type="text" name="CEXTN_db_epdate" id="CEXTN_db_epdate"  maxlength="10" style="width:75px;" class="datenonmandtry CEXTN_btn_validate_class"/></td> <td><p id="CEXTN_epdate_err" class="errormsg" ></p></td>-->
-<!--</tr>-->
-                           <div class="form-group">
-                                   <label class="col-sm-3">SAME/DIFFERENT UNIT<em>*</em></label>
-                                   <input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_sameunit" value="CEXTN_radio_sameunit" checked="checked" class="CEXTN_btn_validate_class"/>
-                                   <label>SAME UNIT & SAME ROOM </label><input type="hidden" id="CEXTN_hidden_setrmtype"/>
 
-        <div id="CEXTN_div_sameunitsamerm">
-            <div id="CEXTN_tble_sameunitsamerm">
+    <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
+    <div class="row title text-center"><h4><b>CUSTOMER EXTENSION</b></h4></div>
+    <div id="CEXTN_div_allerrmsg"></div>
+    <form class="content form-horizontal" name="CEXTN_form" id="CEXTN_form" hidden>
+        <div class="panel-body">
+            <div id="CEXTN_tble_first" >
                 <div class="form-group">
-                   <label  class="col-sm-3">UNIT NUMBER</label>
-
-                    <div class="col-sm-2"> <input type="text" name="CEXTN_tb_sameunitsamermuno" id="CEXTN_tb_sameunitsamermuno" style="width:35px;" class="rdonly" readonly />
-                    </div>
+                    <label class="col-sm-3" name="CEXTN_lbl_unitno" id="CEXTN_lbl_unitno">UNIT NUMBER <em>*</em></label>
+                    <div class="col-sm-2"> <select id="CEXTN_lb_unitno" name="CEXTN_lb_unitno" class="CEXTN_btn_validate_class form-control"></select></div>
                 </div>
                 <div class="form-group">
-                    <label class="col-sm-3">ROOM TYPE</label>
-
-                    <div class="col-sm-2">  <input type="text" name="CEXTN_tb_sameunitsamermrmtype" id="CEXTN_tb_sameunitsamermrmtype" class="rdonly" readonly />
-                    </div>
+                    <label class="col-sm-3" name="CEXTN_lbl_custname" id="CEXTN_lbl_custname" hidden>CUSTOMER NAME <em>*</em></label>
+                    <div class="col-sm-4"> <select id="CEXTN_lb_custname" name="CEXTN_lb_custname"  class="CEXTN_btn_validate_class form-control " style=" display:none" ></select></div>
+                </div>
+                <div id="CEXTN_div_custid">
+                    <div id="CEXTN_tble_custid"></div>
                 </div>
             </div>
-            <div id="CTERM_tbl_sameunitsamermcust_card" hidden>
-            </div>
-        </div>
-        <input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_sameunitdiffroom"  value="CEXTN_radio_sameunitdiffroom" class="CEXTN_btn_validate_class" />
-        <label>SAME UNIT & DIFFERENT ROOM</label><div id="CEXTN_div_sameunitdiffroomerr" class="errormsg"></div>
-
-        <div id="CEXTN_div_sameunitdiffrm" hidden>
-            <div id="CEXTN_tble_sameunitdiffrm" >
-                <div class="form-group">
-                    <label class="col-sm-3" id="CEXTN_lbl_sameunitdiffrmuno">UNIT NUMBER</label>
-                    <div class="col-sm-2"><input type="text" name="CEXTN_tb_sameunitdiffrmuno" id="CEXTN_tb_sameunitdiffrmuno" style="width:35px;" class="rdonly" readonly />
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3" id="CEXTN_lbl_sameunitdiffrmrmtype">ROOM TYPE<em>*</em></label>
-                    <div class="col-sm-2"><select name="CEXTN_lb_sameunitdiffrmrmtype" id="CEXTN_lb_sameunitdiffrmrmtype" ></select>
-                    </div>
-                </div>
-            </div>
-            <div id="CTERM_tbl_sameunitdiffrmcust_card" hidden>
-            </div>
-        </div>
-        <div><input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_diffunit" value="CEXTN_radio_diffunit" class="CEXTN_btn_validate_class" /><label>DIFFERENT UNIT</label><div id="CEXTN_div_nodiffuniterr" class="errormsg"></div>
-        <div id="CEXTN_div_diffunit" hidden>
-            <div id="CEXTN_tble_diffunit">
-                <div class="form-group">
-                   <label class="col-sm-3" id="CEXTN_lbl_diffunituno">UNIT NUMBER<em>*</em></label>
-                    <div class="col-sm-2"><select id="CEXTN_lb_diffunituno" name="CEXTN_lb_diffunituno" class="CEXTN_btn_validate_class">
-                        </select>
-                        <div id="CEXTN_div_normtypeerr" class="errormsg"></div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-3" id="CEXTN_lbl_diffunitrmtype" hidden>ROOM TYPE<em>*</em></label>
-                    <div class="col-sm-2">
-                        <select id="CEXTN_lb_diffunitrmtype" name="CEXTN_lb_diffunitrmtype" class="CEXTN_btn_validate_class" hidden>
-                        </select>
-                    </div>
-                </div>
-                <div class="form-group">
-                        <label id="CEXTN_lbl_diffunitselectcard" hidden>SELECT THE CARD<em>*</em></label>
-                    <div class="col-sm-2">
-                        <input type="radio" name="CEXTN_radio_difunitcard" id="CEXTN_radio_difunitcardno"  value="CEXTN_radio_difunitcardno" class="CEXTN_btn_validate_class" hidden />
-                        <label id="CEXTN_lbl_diffunitcard" hidden>CARD NUMBER</label><label id="CEXTN_div_custerrmsg" class="errormsg" hidden></label>
-                    </div>
-               </div>
-                <div>
-                        <div id="CEXTN_div_diffunitcardlist" hidden><table id="CEXTN_tble_diffunitcardlist" class="CEXTN_btn_validate_class"></table></div>
-                        <div id="CEXTN_div_diffunitnocarderrmsg" class="errormsg" hidden></div>
-               </div>
-                <tr>
-                    <td>
-                    <td>
-                        <input type="radio" name="CEXTN_radio_difunitcard" id="CEXTN_radio_difunitnullcard"  value="CEXTN_radio_difunitnullcard" class="CEXTN_btn_validate_class" hidden/><label id="CEXTN_lbl_diffunitnull" hidden>NULL</label>
-                    </td>
-                </tr>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-sm-3">INITIAL CHECK IN DATE </label>
-            <div class="col-sm-2">
-                <input type="text" name="CEXTN_db_prevchkindate" id="CEXTN_db_prevchkindate" style="width:75px;" class="rdonly" readonly />
-                <input type="hidden" name="CEXTN_hidden_prechkinfromtime" id="CEXTN_hidden_prechkinfromtime"><input type="hidden" name="CEXTN_hidden_prechkintotime" id="CEXTN_hidden_prechkintotime">
-            </div>
-        </div>
-        <div class="form-group">
-              <label class="col-sm-3" id="CEXTN_lbl_chkindate">CURRENT CHECK OUT DATE </label>
-            <input type="text" name="CEXTN_db_chkindate" id="CEXTN_db_chkindate" style="width:75px;" class="rdonly" readonly />
-        <select id="CEXTN_lb_chkinfromtime" name="CEXTN_lb_chkinfromtime"  style="width:75px;" class="CEXTN_btn_validate_class" hidden><option>SELECT</option>
-        </select>
-        <label  id="CEXTN_lbl_chkinto" style="width:25px;" hidden>TO</label>
-        <select id="CEXTN_lb_chkintotime" name="CEXTN_lb_chkintotime"  style="width:75px;" class="CEXTN_btn_validate_class" hidden><option>SELECT</option></select>
-        <input type="hidden" name="CEXTN_hidden_chkinfromtime" id="CEXTN_hidden_chkinfromtime"><input type="hidden" name="CEXTN_hidden_chkintotime" id="CEXTN_hidden_chkintotime">
-<div class="errormsg" id="CEXTN_usdatexpiremsg"></div>
-
-<label>NEW CHECK OUT DATE<em>*</em></label><input type="text" name="CEXTN_db_chkoutdate" id="CEXTN_db_chkoutdate" maxlength="10" class="CEXTN_class_prowaiv datemandtry CEXTN_btn_validate_class" style="width:75px;" />
-        <select id="CEXTN_lb_chkoutfromtime" name="CEXTN_lb_chkoutfromtime" style="width:75px;" class="CEXTN_btn_validate_class" hidden><option>SELECT</option>
-        </select>
-        <label  id="CEXTN_lbl_chkoutto" style="width:25px;" hidden>TO</label>
-        <select id="CEXTN_lb_chkouttotime" name="CEXTN_lb_chkouttotime"  style="width:75px;" class="CEXTN_btn_validate_class" hidden><option>SELECT</option></select>
- <div class="errormsg" id="CEXTN_uedatexpiremsg"></div>
-</tr>
-<tr><td><label>NOTICE PERIOD</label></td><td> <input type="text" name="CEXTN_tb_noticeperiod" id="CEXTN_tb_noticeperiod" style="width:15px;"/>
-</tr>
-<tr><td><label>NOTICE PERIOD DATE</label></td><td> <input type="text" name="CEXTN_db_noticeperioddate" id="CEXTN_db_noticeperioddate" class="CEXTN_class_prowaiv CEXTN_btn_validate_class datenonmandtry" maxlength="10" style="width:75px;" />
-</tr>
-<tr><td><label>SELECT AIRCON FEE</label></td><td><input type="radio" name="CEXTN_radio_airconfee" id="CEXTN_radio_quartairconfee" value="CEXTN_radio_quartairconfee" class="CEXTN_btn_validate_class"/>
-        <label>QUARTERLY SERVICE FEE</label>&nbsp;
-        <input type="text" name="CEXTN_tb_airquarterfee" id="CEXTN_tb_airquarterfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class" hidden /></td>
-</tr>
-<tr><td><td><input type="radio" name="CEXTN_radio_airconfee" id="CEXTN_radio_fixedairconfee" value="CEXTN_radio_fixedairconfee" class="CEXTN_btn_validate_class"/>
-        <label>FIXED AIRCON FEE</label>&nbsp;
-        <input type="text" name="CEXTN_tb_fixedairfee" id="CEXTN_tb_fixedairfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class" hidden /></td>
-</tr>
-            <div class="form-group">
-                <label class="col-sm-2">SAME/DIFFERENT AMOUNT<em>*</em></label>
-                <div class="radio">
-                    <label >
-                      <input type="radio" name="CEXTN_radio_amt" id="CEXTN_radio_sameamt" value="CEXTN_radio_sameamt" checked="checked" class="CEXTN_class_prowaiv CEXTN_btn_validate_class" / >
-                        SAME AMOUNT
-                    </label>
-                </div>
-            </div>
-
-              <div id="CEXTN_div_sameamt">
-                 <div id="CEXTN_tble_sameamt">
-                     <div class="form-group">
-                         <label class="col-sm-2" id="CEXTN_lbl_sameamtdep">DEPOSIT</label>
-                         <div class="col-sm-2">
-                            <input type="text" name="CEXTN_tb_sameamtdep" id="CEXTN_tb_sameamtdep" style="width:55px;" class="rdonly" readonly />
-                         </div>
-                     </div>
-                     <div class="form-group">
-                         <label id="CEXTN_lbl_sameamtrent">RENT</label>
-                         <div class="col-sm-2">
-                            <input type="text" name="CEXTN_tb_sameamtrent" id="CEXTN_tb_sameamtrent" style="width:55px;" class="rdonly" readonly />
-                            <input type="checkbox" name="CEXTN_cb_sameamtprorated" id="CEXTN_cb_sameamtprorated" disabled /><label id="CEXTN_lbl_sameamtprorated"></label><input type="hidden" name="CEXTN_hidden_sameamtprorated" id="CEXTN_hidden_sameamtprorated" />
-                         </div>
-                     </div>
-                     <div class="form-group">
-                         <label class="col-sm-2" id="CEXTN_lbl_sameamtprocost">PROCESSING COST</label>
-                         <div class="col-sm-2">
-                            <input type="text" name="CEXTN_tb_sameamtprocost" id="CEXTN_tb_sameamtprocost" style="width:55px;" class="rdonly" readonly />
-                            <input type="checkbox" name="CEXTN_cb_sameamtwaived" id="CEXTN_cb_sameamtwaived" class="CEXTN_btn_validate_class" disabled /><label id="CEXTN_lbl_sameamtwaived"></label><input type="hidden" id="CEXTN_hidden_sameamtwaived" name="CEXTN_hidden_sameamtwaived"/>
-                         </div>
-                     </div>
-                 </div>
-              </div>
-              <div class="radio">
-                    <label >
-                        <input type="radio" name="CEXTN_radio_amt" id="CEXTN_radio_diffamt"  value="CEXTN_radio_diffamt" class="CEXTN_class_prowaiv CEXTN_btn_validate_class" / >
-                        DIFFERENT AMOUNT
-                    </label>
-              </div>
-            <div id="CEXTN_div_diffamt" hidden>
-                <div id="CEXTN_tble_diffamt">
+            <div id="CEXTN_div_nocusterr" class="errormsg"></div>
+            <div id="CEXTN_div_seconform" hidden>
+                <div id='CEXTN_tble_seconform'>
                     <div class="form-group">
-                        <label class="col-sm-2" id="CEXTN_lbl_diffamtdep">DEPOSIT</label>
-                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_diffamtdep" id="CEXTN_tb_diffamtdep" style="width:55px;" class="5digitdollaronly CEXTN_btn_validate_class"/>
-                        <p id="CEXTN_diffamtdeposit_err" class="errormsg"></p>
+                        <label class="col-sm-3">FIRST NAME</label>
+                        <div class="col-sm-3"> <input type="text" name="CEXTN_tb_firstname" id="CEXTN_tb_firstname"  class="form-control CCAN_formvalidation" maxlength="50" readonly /><p class="field" ></p><input type="hidden" name="CEXTN_hidden_custid" id="CEXTN_hidden_custid"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">LAST NAME</label>
+                        <div class="col-sm-3"> <input type="text" name="CEXTN_tb_lastname" id="CEXTN_tb_lastname"  maxlength="50" class="form-control CCAN_formvalidation"  readonly/></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">COMPANY NAME</label>
+                        <div class="col-sm-3"> <input type="text" name="CCAN_tb_companyname" id="CCAN_tb_companyname"  class="form-control autosize"  /></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">COMPANY ADDRESS</label>
+                        <div class="col-sm-3"> <input type="text" name="CEXTN_tb_compaddr" id="CEXTN_tb_compaddr"  maxlength="50"  class="form-control autosize "  /></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">COMPANY POSTAL CODE</label>
+                        <div class="col-sm-3"> <input type="text" name="CEXTN_tb_comppostcode" id="CEXTN_tb_comppostcode" maxlength="6" class="form-control CEXTN_btn_validate_class"  /> <p id="CEXTN_postcode_err" class="errormsg" ></p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">EMAIL ID</label>
+                        <div class="col-sm-3"> <input type="text" name="CEXTN_tb_emailid" id="CEXTN_tb_emailid"  maxlength="40"  class="form-control CEXTN_btn_validate_class"  readonly/><label  id="CEXTN_lbl_emailerrmsg" class="errormsg"></label></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">MOBILE</label>
+                        <div class="col-sm-2"> <input type="text" name="CEXTN_tb_mobileno" id="CEXTN_tb_mobileno"  class="numonlynozero CEXTN_btn_validate_class form-control"/><p id="CEXTN_mobile_err" class="errormsg"></p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">INT'L MOBILE NO</label>
+                        <div class="col-sm-2"> <input type="text" name="CEXTN_tb_intmobileno" id="CEXTN_tb_intmobileno"  class="CEXTN_btn_validate_class form-control"/><p id="CEXTN_intlmobile_err" class="errormsg"></p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">OFFICE NO</label>
+                        <div class="col-sm-2"> <input type="text" name="CEXTN_tb_officeno" id="CEXTN_tb_officeno"  style="width:70px;" maxlength="8"  class="numonlynozero CEXTN_btn_validate_class form-control" /><p id="CEXTN_officeno_err" class="errormsg"></p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">DATE OF BIRTH</label>
+                        <div class="col-sm-2"> <input type="text" name="CEXTN_db_dob" id="CEXTN_db_dob"  maxlength="10" style="width:75px;" class="datenonmandtry"/><p class="field" ></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">NATIONALITY</label>
+                        <div class="col-sm-3"> <input type="text" name="CEXTN_tb_nation" id="CEXTN_tb_nation" maxlength="50" class="form-control"  readonly/></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">PASSPORT NUMBER</label>
+                        <div class="col-sm-3"> <input type="text" name="CEXTN_tb_passno" id="CEXTN_tb_passno"  maxlength="15" class="alnumonlyzero CEXTN_btn_validate_class form-control" /><p id="CEXTN_passno_err" class="errormsg"></p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">PASSPORT EXPIRY DATE</label>
+                        <div class="col-sm-2"> <input type="text" name="CEXTN_db_passdate" id="CEXTN_db_passdate"  maxlength="10" style="width:75px;" class="datenonmandtry CEXTN_btn_validate_class form-control"/><p id="CEXTN_passdate_err" class="errormsg" ></p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">EP NUMBER</label>
+                        <div class="col-sm-2"> <input type="text" name="CEXTN_tb_epno" id="CEXTN_tb_epno"  maxlength="15" class="alnumonlynozero CEXTN_btn_validate_class form-control" /><p id="CEXTN_epno_err" class="errormsg"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">EP EXPIRY DATE</label>
+                        <div class="col-sm-2"> <input type="text" name="CEXTN_db_epdate" id="CEXTN_db_epdate"  maxlength="10" style="width:75px;" class="datenonmandtry CEXTN_btn_validate_class"/><p id="CEXTN_epdate_err" class="errormsg" ></p></div>
+                    </div>
+                    <div class="form-group">
+                            <label class="col-sm-3">SAME/DIFFERENT UNIT<em>*</em></label>
+                        <div class="col-lg-9">
+                            <label><input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_sameunit" value="CEXTN_radio_sameunit" checked="checked" class="CEXTN_btn_validate_class"/>
+                            SAME UNIT & SAME ROOM </label><input type="hidden" id="CEXTN_hidden_setrmtype"/>
+                            <div id="CEXTN_div_sameunitsamerm" class="col-sm-offset-3">
+                            <div id="CEXTN_tble_sameunitsamerm" class="form-group">
+                                <div class="form-group">
+                                    <label  class="col-sm-3">UNIT NUMBER</label>
+
+                                    <div class="col-sm-2"> <input type="text" name="CEXTN_tb_sameunitsamermuno" id="CEXTN_tb_sameunitsamermuno" style="width:35px;" class="rdonly" readonly />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3">ROOM TYPE</label>
+
+                                    <div class="col-sm-2">  <input type="text" name="CEXTN_tb_sameunitsamermrmtype" id="CEXTN_tb_sameunitsamermrmtype" class="rdonly" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="CTERM_tbl_sameunitsamermcust_card" hidden>
+                            </div>
+                        </div>
+                        <label><input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_sameunitdiffroom"  value="CEXTN_radio_sameunitdiffroom" class="CEXTN_btn_validate_class" />
+                                   SAME UNIT & DIFFERENT ROOM</label><div id="CEXTN_div_sameunitdiffroomerr" class="errormsg"></div>
+                        <div id="CEXTN_div_sameunitdiffrm" hidden>
+                            <div id="CEXTN_tble_sameunitdiffrm" class="col-sm-offset-3">
+                                <div class="form-group">
+                                    <label class="col-sm-3" id="CEXTN_lbl_sameunitdiffrmuno">UNIT NUMBER</label>
+                                    <div class="col-sm-2"><input type="text" name="CEXTN_tb_sameunitdiffrmuno" id="CEXTN_tb_sameunitdiffrmuno" style="width:35px;" class="rdonly" readonly />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3" id="CEXTN_lbl_sameunitdiffrmrmtype">ROOM TYPE<em>*</em></label>
+                                    <div class="col-sm-2"><select name="CEXTN_lb_sameunitdiffrmrmtype" id="CEXTN_lb_sameunitdiffrmrmtype" ></select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="CTERM_tbl_sameunitdiffrmcust_card" hidden></div>
+                        </div>
+                        <label><input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_diffunit" value="CEXTN_radio_diffunit" class="CEXTN_btn_validate_class" />
+                        DIFFERENT UNIT</label><div id="CEXTN_div_nodiffuniterr" class="errormsg"></div>
+                        <div id="CEXTN_div_diffunit" hidden>
+                            <div id="CEXTN_tble_diffunit" class="col-sm-offset-3">
+                                <div class="form-group">
+                                    <label class="col-sm-3" id="CEXTN_lbl_diffunituno">UNIT NUMBER<em>*</em></label>
+                                    <div class="col-sm-2"><select id="CEXTN_lb_diffunituno" name="CEXTN_lb_diffunituno" class="CEXTN_btn_validate_class">
+                                        </select>
+                                        <div id="CEXTN_div_normtypeerr" class="errormsg"></div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3" id="CEXTN_lbl_diffunitrmtype" hidden>ROOM TYPE<em>*</em></label>
+                                    <div class="col-sm-2">
+                                        <select id="CEXTN_lb_diffunitrmtype" name="CEXTN_lb_diffunitrmtype" class="CEXTN_btn_validate_class" hidden>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label id="CEXTN_lbl_diffunitselectcard" hidden>SELECT THE CARD<em>*</em></label>
+                                    <div class="col-sm-2">
+                                        <input type="radio" name="CEXTN_radio_difunitcard" id="CEXTN_radio_difunitcardno"  value="CEXTN_radio_difunitcardno" class="CEXTN_btn_validate_class" hidden />
+                                        <label id="CEXTN_lbl_diffunitcard" hidden>CARD NUMBER</label><label id="CEXTN_div_custerrmsg" class="errormsg" hidden></label>
+                                    </div>
+                                </div>
+                                <div id="CEXTN_div_diffunitcardlist" hidden><div id="CEXTN_tble_diffunitcardlist" class="CEXTN_btn_validate_class"></div>
+                                <div id="CEXTN_div_diffunitnocarderrmsg" class="errormsg" hidden></div>
+                            </div>
+                            <input type="radio" name="CEXTN_radio_difunitcard" id="CEXTN_radio_difunitnullcard"  value="CEXTN_radio_difunitnullcard" class="CEXTN_btn_validate_class" hidden/><label id="CEXTN_lbl_diffunitnull" hidden>NULL</label>
                         </div>
                     </div>
+                        </div>
                     <div class="form-group">
-                        <label class="col-sm-2" id="CEXTN_lbl_diffamtrent">RENT<em style="color:red">*</em></label>
+                        <label class="col-sm-3">INITIAL CHECK IN DATE </label>
                         <div class="col-sm-2">
-                            <input type="text" name="CEXTN_tb_diffamtrent" id="CEXTN_tb_diffamtrent" style="width:55px;" class="CEXTN_class_prowaiv 5digitdollaronly CEXTN_btn_validate_class"/>
-                            <input type="checkbox" name="CEXTN_cb_diffamtprorated" id="CEXTN_cb_diffamtprorated"  class="CEXTN_btn_validate_class" disabled/><label id="CEXTN_lbl_diffamtprorated"></label><input type="hidden" name="CEXTN_hidden_diffamtprorated" id="CEXTN_hidden_diffamtprorated" />
-                            <p id="CEXTN_diffamtrent_err" class="errormsg"></p>
+                            <input type="text" name="CEXTN_db_prevchkindate" id="CEXTN_db_prevchkindate" style="width:75px;" class="rdonly" readonly />
+                            <input type="hidden" name="CEXTN_hidden_prechkinfromtime" id="CEXTN_hidden_prechkinfromtime"><input type="hidden" name="CEXTN_hidden_prechkintotime" id="CEXTN_hidden_prechkintotime">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2" id="CEXTN_lbl_diffamtprocost">PROCESSING COST</label>
-                        <div class="col-sm-2">
-                            <input type="text" name="CEXTN_tb_diffamtprocost" id="CEXTN_tb_diffamtprocost" style="width:55px;" maxlength="7" class="CEXTN_class_prowaiv CEXTN_btn_validate_class"/>
-                            <input type="checkbox" name="CEXTN_cb_diffamtwaived" id="CEXTN_cb_diffamtwaived" class="CEXTN_class_prowaiv CEXTN_btn_validate_class" disabled /><label id="CEXTN_lbl_diffamtwaived"></label><input type="hidden" id="CEXTN_hidden_diffamtwaived" name="CEXTN_hidden_diffamtwaived"/>
-                            <p id="CEXTN_diffamtprofee_err" class="errormsg"></p>
+                        <label class="col-sm-3" id="CEXTN_lbl_chkindate">CURRENT CHECK OUT DATE </label>
+                        <input type="text" name="CEXTN_db_chkindate" id="CEXTN_db_chkindate" style="width:75px;" class="rdonly" readonly />
+                        <select id="CEXTN_lb_chkinfromtime" name="CEXTN_lb_chkinfromtime"  style="width:75px;" class="CEXTN_btn_validate_class" hidden><option>SELECT</option>
+                        </select>
+                        <label  id="CEXTN_lbl_chkinto" style="width:25px;" hidden>TO</label>
+                        <select id="CEXTN_lb_chkintotime" name="CEXTN_lb_chkintotime"  style="width:75px;" class="CEXTN_btn_validate_class" hidden><option>SELECT</option></select>
+                        <input type="hidden" name="CEXTN_hidden_chkinfromtime" id="CEXTN_hidden_chkinfromtime"><input type="hidden" name="CEXTN_hidden_chkintotime" id="CEXTN_hidden_chkintotime">
+                        <div class="errormsg" id="CEXTN_usdatexpiremsg"></div>
+                        <label class="col-sm-3">NEW CHECK OUT DATE<em>*</em></label>
+                        <input type="text" name="CEXTN_db_chkoutdate" id="CEXTN_db_chkoutdate" maxlength="10" class="CEXTN_class_prowaiv datemandtry CEXTN_btn_validate_class" style="width:75px;" />
+                        <select id="CEXTN_lb_chkoutfromtime" name="CEXTN_lb_chkoutfromtime" style="width:75px;" class="CEXTN_btn_validate_class" hidden><option>SELECT</option>
+                        </select>
+                        <label  id="CEXTN_lbl_chkoutto" style="width:25px;" hidden>TO</label>
+                        <select id="CEXTN_lb_chkouttotime" name="CEXTN_lb_chkouttotime"  style="width:75px;" class="CEXTN_btn_validate_class" hidden><option>SELECT</option></select>
+                        <div class="errormsg" id="CEXTN_uedatexpiremsg"></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">NOTICE PERIOD</label>
+                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_noticeperiod" id="CEXTN_tb_noticeperiod" style="width:15px;"/></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">NOTICE PERIOD DATE</label>
+                        <div class="col-sm-2"><input type="text" name="CEXTN_db_noticeperioddate" id="CEXTN_db_noticeperioddate" class="CEXTN_class_prowaiv CEXTN_btn_validate_class datenonmandtry" maxlength="10" style="width:75px;" /></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">SELECT AIRCON FEE</label>
+                        <div class="radio"><label><input type="radio" name="CEXTN_radio_airconfee" id="CEXTN_radio_quartairconfee" value="CEXTN_radio_quartairconfee" class="CEXTN_btn_validate_class"/>
+                                QUARTERLY SERVICE FEE</label></div>
+                        <div ><input type="text" name="CEXTN_tb_airquarterfee" id="CEXTN_tb_airquarterfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class" hidden /></div>
+                        <div class="radio"><label><input type="radio" name="CEXTN_radio_airconfee" id="CEXTN_radio_fixedairconfee" value="CEXTN_radio_fixedairconfee" class="CEXTN_btn_validate_class"/>
+                                FIXED AIRCON FEE</label></div>
+                        <div ><input type="text" name="CEXTN_tb_fixedairfee" id="CEXTN_tb_fixedairfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class" hidden />
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">SAME/DIFFERENT AMOUNT<em>*</em></label>
+                        <div class="radio" class="col-sm-3">
+                            <label >
+                                <input type="radio" name="CEXTN_radio_amt" id="CEXTN_radio_sameamt" value="CEXTN_radio_sameamt" checked="checked" class="CEXTN_class_prowaiv CEXTN_btn_validate_class" / >
+                                SAME AMOUNT
+                            </label>
+                        </div>
+                        <div id="CEXTN_div_sameamt">
+                            <div id="CEXTN_tble_sameamt" class="">
+                                <div class="form-group">
+                                    <label class="col-sm-2" id="CEXTN_lbl_sameamtdep">DEPOSIT</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" name="CEXTN_tb_sameamtdep" id="CEXTN_tb_sameamtdep" style="width:55px;" class="rdonly" readonly />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label id="CEXTN_lbl_sameamtrent">RENT</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" name="CEXTN_tb_sameamtrent" id="CEXTN_tb_sameamtrent" style="width:55px;" class="rdonly" readonly />
+                                        <input type="checkbox" name="CEXTN_cb_sameamtprorated" id="CEXTN_cb_sameamtprorated" disabled /><label id="CEXTN_lbl_sameamtprorated"></label><input type="hidden" name="CEXTN_hidden_sameamtprorated" id="CEXTN_hidden_sameamtprorated" />
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2" id="CEXTN_lbl_sameamtprocost">PROCESSING COST</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" name="CEXTN_tb_sameamtprocost" id="CEXTN_tb_sameamtprocost" style="width:55px;" class="rdonly" readonly />
+                                        <input type="checkbox" name="CEXTN_cb_sameamtwaived" id="CEXTN_cb_sameamtwaived" class="CEXTN_btn_validate_class" disabled /><label id="CEXTN_lbl_sameamtwaived"></label><input type="hidden" id="CEXTN_hidden_sameamtwaived" name="CEXTN_hidden_sameamtwaived"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="radio">
+                            <label >
+                                <input type="radio" name="CEXTN_radio_amt" id="CEXTN_radio_diffamt"  value="CEXTN_radio_diffamt" class="CEXTN_class_prowaiv CEXTN_btn_validate_class" / >
+                                DIFFERENT AMOUNT
+                            </label>
+                        </div>
+                        <div id="CEXTN_div_diffamt" hidden>
+                            <div id="CEXTN_tble_diffamt" class="">
+                                <div class="form-group">
+                                    <label class="col-sm-2" id="CEXTN_lbl_diffamtdep">DEPOSIT</label>
+                                    <div class="col-sm-2"><input type="text" name="CEXTN_tb_diffamtdep" id="CEXTN_tb_diffamtdep" style="width:55px;" class="5digitdollaronly CEXTN_btn_validate_class"/>
+                                        <p id="CEXTN_diffamtdeposit_err" class="errormsg"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2" id="CEXTN_lbl_diffamtrent">RENT<em>*</em></label>
+                                    <div class="col-sm-2">
+                                        <input type="text" name="CEXTN_tb_diffamtrent" id="CEXTN_tb_diffamtrent" style="width:55px;" class="CEXTN_class_prowaiv 5digitdollaronly CEXTN_btn_validate_class"/>
+                                        <input type="checkbox" name="CEXTN_cb_diffamtprorated" id="CEXTN_cb_diffamtprorated"  class="CEXTN_btn_validate_class" disabled/><label id="CEXTN_lbl_diffamtprorated"></label><input type="hidden" name="CEXTN_hidden_diffamtprorated" id="CEXTN_hidden_diffamtprorated" />
+                                        <p id="CEXTN_diffamtrent_err" class="errormsg"></p>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2" id="CEXTN_lbl_diffamtprocost">PROCESSING COST</label>
+                                    <div class="col-sm-2">
+                                        <input type="text" name="CEXTN_tb_diffamtprocost" id="CEXTN_tb_diffamtprocost" style="width:55px;" maxlength="7" class="CEXTN_class_prowaiv CEXTN_btn_validate_class"/>
+                                        <input type="checkbox" name="CEXTN_cb_diffamtwaived" id="CEXTN_cb_diffamtwaived" class="CEXTN_class_prowaiv CEXTN_btn_validate_class" disabled /><label id="CEXTN_lbl_diffamtwaived"></label><input type="hidden" id="CEXTN_hidden_diffamtwaived" name="CEXTN_hidden_diffamtwaived"/>
+                                        <p id="CEXTN_diffamtprofee_err" class="errormsg"></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">ELECTRICITY CAPPED</label>
+                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_electcapfee" id="CEXTN_tb_electcapfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control"/>
+                            <p id="CEXTN_electcap_err" class="errormsg"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">CURTAIN DRY CLEANING FEE</label>
+                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_curtaindryfee" id="CEXTN_tb_curtaindryfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control"/></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">CURTAIN DRY CLEANING FEE</label>
+                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_curtaindryfee" id="CEXTN_tb_curtaindryfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control"/></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">CURTAIN DRY CLEANING FEE</label>
+                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_curtaindryfee" id="CEXTN_tb_curtaindryfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control"/></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">CHECKOUT CLEANING FEE</label>
+                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_chkoutcleanfee" id="CEXTN_tb_chkoutcleanfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control"/></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">E-MAIL ID<em>*</em></label>
+                        <div class="col-sm-2"><select id="CEXTN_lb_emailid" name="CEXTN_lb_emailid" class="CEXTN_btn_validate_class"><option>SELECT</option></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3">COMMENTS</label>
+                        <div class="col-sm-4"><textarea  name="CEXTN_ta_comments" id="CEXTN_ta_comments" class="CEXTN_btn_validate_class" rows="5"></textarea></div>
+                    </div>
+                </div>
+                <div style="position:relative;left:105px;" id="CEXTN_div_save">
+                    <table>
+                        <tr>
+                            <td> <input  type="button" value="EXTEND" id="CEXTN_btn_save" class="btn" disabled /></td><td><input type="button" value="RESET"  id="CEXTN_btn_reset" class="btn"/></td>
+                        </tr>
+                    </table>
                 </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-2">ELECTRICITY CAPPED</label>
-                <div class="col-sm-2"><input type="text" name="CEXTN_tb_electcapfee" id="CEXTN_tb_electcapfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class"/>
-                    <p id="CEXTN_electcap_err" class="errormsg"></p>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2">CURTAIN DRY CLEANING FEE</label>
-                <div class="col-sm-2"><input type="text" name="CEXTN_tb_curtaindryfee" id="CEXTN_tb_curtaindryfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class"/></div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2">CURTAIN DRY CLEANING FEE</label>
-                <div class="col-sm-2"><input type="text" name="CEXTN_tb_curtaindryfee" id="CEXTN_tb_curtaindryfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class"/></div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2">CURTAIN DRY CLEANING FEE</label>
-                <div class="col-sm-2"><input type="text" name="CEXTN_tb_curtaindryfee" id="CEXTN_tb_curtaindryfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class"/></div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2">CHECKOUT CLEANING FEE</label>
-                <div class="col-sm-2"><input type="text" name="CEXTN_tb_chkoutcleanfee" id="CEXTN_tb_chkoutcleanfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class"/></div>
-            </div>
-            <div class="form-group">
-                <label class="col-sm-2">E-MAIL ID<em>*</em></label>
-                <div class="col-sm-2"><select id="CEXTN_lb_emailid" name="CEXTN_lb_emailid" class="CEXTN_btn_validate_class"><option>SELECT</option></select>
-                 </div>
-            </div>
-                <div class="form-group">
-                    <label class="col-sm-3">COMMENTS</label>
-                    <div class="col-sm-4"><textarea  name="CEXTN_ta_comments" id="CEXTN_ta_comments" class="CEXTN_btn_validate_class" rows="5"></textarea></div>
-                </div>
 
-</div>
-<table style="width:675px;">
-</table>
-<div style="position:relative;left:105px;" id="CEXTN_div_save">
-    <table>
-        <tr>
-            <td> <input  type="button" value="EXTEND" id="CEXTN_btn_save" class="btn" disabled /></td><td><input type="button" value="RESET"  id="CEXTN_btn_reset" class="btn"/></td>
-        </tr>
-    </table>
-</div>
-</div>
-</div>
-<input type="hidden" name="CEXTN_slctcustlbl" id="CEXTN_slctcustlbl">
-</form>
+            <input type="hidden" name="CEXTN_slctcustlbl" id="CEXTN_slctcustlbl">
+        </div>
+    </form>
 </div>
 </body>
 <!--BODY TAG END-->

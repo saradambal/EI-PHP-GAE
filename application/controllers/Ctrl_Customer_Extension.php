@@ -10,10 +10,10 @@ class Ctrl_Customer_Extension extends CI_Controller{
     public function CEXTN_getCommonvalues()
     {
         $this->load->model('Eilib/Common_function');
-        $this->load->model('CUSTOMER/Mdl_Customer_Extension');
+        $this->load->model('CUSTOMER/Mdl_customer_extension');
         $formname=$_POST['Formname'];
         $errorlist=$_POST['ErrorList'];
-        $unit = $this->Mdl_Customer_Extension->CEXTN_getExtnUnitNo();
+        $unit = $this->Mdl_customer_extension->CEXTN_getExtnUnitNo();
         $nationality = $this->Common_function->getNationality();
         $EmailList= $this->Common_function->getEmailId($formname);
         $Option= $this->Common_function->getOption();
@@ -27,8 +27,8 @@ class Ctrl_Customer_Extension extends CI_Controller{
     public function CEXTN_getCustomerNameId_result()
     {
         $CEXTN_lb_unitno=$_POST['unitno'];
-        $this->load->model('CUSTOMER/Mdl_Customer_Extension');
-        $customer_IdName = $this->Mdl_Customer_Extension->CEXTN_getCustomerNameId($CEXTN_lb_unitno);
+        $this->load->model('CUSTOMER/Mdl_customer_extension');
+        $customer_IdName = $this->Mdl_customer_extension->CEXTN_getCustomerNameId($CEXTN_lb_unitno);
         echo json_encode($customer_IdName);
     }
     public function  CEXTN_getCustomerdtls_result()
@@ -36,14 +36,23 @@ class Ctrl_Customer_Extension extends CI_Controller{
         global $USERSTAMP;
         $CEXTN_unitno=$_POST['unitno'];
         $CEXTN_custid=$_POST['customerId'];
-        $this->load->model('CUSTOMER/Mdl_Customer_Extension');
-        $customer_finaldetls = $this->Mdl_Customer_Extension->CEXTN_getCustomerdtls($CEXTN_custid,$CEXTN_unitno,$USERSTAMP);
+        $this->load->model('CUSTOMER/Mdl_customer_extension');
+        $customer_finaldetls = $this->Mdl_customer_extension->CEXTN_getCustomerdtls($CEXTN_custid,$CEXTN_unitno,$USERSTAMP);
         echo json_encode($customer_finaldetls);
     }
+    public function CEXTN_getRoomType(){
+
+        $this->load->model('CUSTOMER/Mdl_customer_extension');
+        $CEXTN_rmtype=$this->Mdl_customer_extension->CEXTN_getRoomType($this->input->post('unitno'),$this->input->post('rmtype'));
+        echo json_encode($CEXTN_rmtype);
+    }
+    public  function CEXTN_getdiffunitCardNo(){
+
+        $this->load->model('CUSTOMER/Mdl_customer_extension');
+        $final_value=$this->Mdl_customer_extension->CEXTN_getdiffunitCardNo($this->input->post('unitno'),$this->input->post('CEXTN_tb_firstname'),$this->input->post('CEXTN_tb_lastname'));
+        echo json_encode($final_value);
 
 
-
-
-
+    }
 
 }
