@@ -1,6 +1,6 @@
 <?php
 error_reporting(0);
-class Financeterminated_customermodel extends CI_Model {
+class Mdl_financeterminated_customermodel extends CI_Model {
     public function FIN_payment_Customer($UserStamp)
     {
         $termtemptablequery="CALL SP_PAYMENT_ENTRY_TERMINATED_CUSTOMER('$UserStamp',@PAYMENT_ENTRY_TERMINATED_CUSTOMER)";

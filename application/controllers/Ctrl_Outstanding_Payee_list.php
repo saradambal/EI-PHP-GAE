@@ -6,7 +6,7 @@ Class Ctrl_Outstanding_Payee_list extends CI_Controller
 {
     public function Index()
     {
-        $this->load->view('FINANCE/FORM_OPL');
+        $this->load->view('FINANCE/Vw_OPL');
     }
     public function ProfileEmailId($formname)
     {
@@ -22,10 +22,13 @@ Class Ctrl_Outstanding_Payee_list extends CI_Controller
         try
         {
             global $UserStamp;
-            $this->load->model('Opllistmodel');
-            $confirm_message=$this->Opllistmodel->OPL_list_creation($UserStamp);
+            $this->load->model('FINANCE/Mdl_opllistmodel');
+            $confirm_message=$this->Mdl_opllistmodel->OPL_list_creation($UserStamp);
+//            $name="OPL";
+//            $form='kumar.r@ssomens.com';
+//            $loginid='kumar.r@ssomens.com';
 //            $message1 = new Message();
-//            $message1->setSender($name.'<'.$from.'>');
+//            $message1->setSender($name.'<'.$form.'>');
 //            $message1->addTo($loginid);
 //            $message1->addCc($cclist);
 //            $message1->setSubject($confirm_message[0]);

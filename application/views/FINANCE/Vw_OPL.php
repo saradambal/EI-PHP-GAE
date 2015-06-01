@@ -6,7 +6,6 @@
     $(document).ready(function() {
         $('#spacewidth').height('0%');
         var Message;
-        $('.preloader').hide();
         $.ajax({
             type: "POST",
             url: '/index.php/Ctrl_Outstanding_Payee_list/ProfileEmailId',
@@ -165,6 +164,11 @@
                         <div class="col-lg-offset-2 col-lg-3">
                             <input type="button" class="btn" name="FIN_OPL_btn_save" id="FIN_OPL_btn_save" disabled value="SUBMIT">         <input type="button" class="btn" name="FIN_OPL_btn_reset" id="FIN_OPL_btn_reset"  value="RESET">
                         </div>
+                    </div>
+                    <div>
+                        <section>
+
+                        </section>
                     </div>
                 </div>
             </form>

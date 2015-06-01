@@ -4,7 +4,6 @@
 </head>
 <script>
     $(document).ready(function() {
-        $('.preloader').hide();
         $('#FIN_Payment_id').hide();
         $(".amtonly").doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
         $("#FIN_TER_Payment_Paiddate").datepicker({
@@ -42,7 +41,7 @@
         var allunitdetails;
         $.ajax({
             type: "POST",
-            url: '/Ctrl_Payment_Terminated_Customer_Forms/PaymentInitialDatas',
+            url: '/index.php/Ctrl_Payment_Terminated_Customer_Forms/PaymentInitialDatas',
             data:{"ErrorList":'2,3,92,248,309'},
             success: function(data){
                 $('.preloader').hide();
@@ -277,7 +276,7 @@
             var FormElements=$('#FIN_TER_PaymentEntry_form').serialize();
             $.ajax({
                 type: "POST",
-                url: "/Ctrl_Payment_Terminated_Customer_Forms/Term_PaymentEntry_Save",
+                url: "/index.php/Ctrl_Payment_Terminated_Customer_Forms/Term_PaymentEntry_Save",
                 data:FormElements,
                 success: function(data){
                     var returnvalue=JSON.parse(data);

@@ -1,6 +1,6 @@
 <?php
 error_reporting(0);
-class Banktt_model extends CI_Model
+class Mdl_banktt_model extends CI_Model
 {
     public function getAllModels_Details($timeZoneFormat)
     {

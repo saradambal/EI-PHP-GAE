@@ -5,7 +5,6 @@
 <script>
     $(document).ready(function() {
         $('#spacewidth').height('0%');
-        $('.preloader').hide();
         $('.amtonly').doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
         $('.autogrowcomments').autogrow({onInitialize: true});
         var Allunits;

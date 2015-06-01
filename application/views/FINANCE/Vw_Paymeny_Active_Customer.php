@@ -5,6 +5,7 @@
 <script>
     $(document).ready(function() {
         $('#spacewidth').height('0%');
+        $('.preloader').hide();
         var t=$('#Finance_Entry_Table').DataTable();
         var ActiveUnits;
         var Paymenttype;
@@ -15,9 +16,8 @@
         $.ajax({
             type: "POST",
             url: '/index.php/Ctrl_Payment_Active_Customer/PaymentInitialDatas',
-            data:{ErrorList:'2,3,248,309'},
+            data:{ErrorList:'2,3,92,248,309'},
             success: function(data){
-                $('.preloader').hide();
                 var valuearray=JSON.parse(data);
                 ActiveUnits=valuearray[0];
                 Paymenttype=valuearray[1];
@@ -103,6 +103,7 @@
             var id=this.id;
             var splittedid=id.split('_');
             var unit=$('#'+id).val();
+            $('#customeremptymessage').text('');
             var options ='<option value="empty">SELECT</option>';
             if(unit!='SELECT')
             {
@@ -135,6 +136,7 @@
                         }
                         else
                         {
+                            $('#customeremptymessage').text(ErrorMsg[2].EMC_DATA);
                             $('#Leaseperiodid_'+splittedid[1]).prop('disabled', true);
                             $('#Customerid_'+splittedid[1]).prop('disabled', true);
                         }
@@ -241,7 +243,7 @@
                             var recverdateperiod=data.CLP_STARTDATE+' --- '+enddate;
                             LpDetailsDate.push(data.CLP_STARTDATE+'/'+enddate);
                             LP.push(recver);
-                            options += '<option title="'+recverdateperiod+'" value="' + data.CED_REC_VER + '">' + data.CED_REC_VER + '</option>';
+                            options += '<option title="LP" value="' + data.CED_REC_VER + '">' + data.CED_REC_VER + '</option>';
                         }
                         $('#Leaseperiodid_'+rowid).html(options);
                         if(value_array.length!=0)
@@ -501,7 +503,11 @@
                             </table>
                          </section>
                     </div>
-                    <br><br>
+                    <br>
+                        <div>
+                            <label id="customeremptymessage" class="errormsg"></label>
+                        </div>
+                    <br>
                     <div class="row form-group">
                         <div class="col-lg-offset-1 col-lg-2">
                             <input type="button" id="Payment_btn_submitbutton" class="btn" value="SAVE" disabled>

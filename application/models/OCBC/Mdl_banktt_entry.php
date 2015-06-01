@@ -1,6 +1,6 @@
 <?php
 error_reporting(0);
-class Banktt_entry_model extends CI_Model {
+class Mdl_banktt_entry extends CI_Model {
     public function Initial_data()
     {
         $this->db->select('BCN_DATA');

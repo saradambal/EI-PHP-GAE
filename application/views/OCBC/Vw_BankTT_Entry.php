@@ -8,7 +8,7 @@ require_once "Header.php";
 </style>
 <script>
 $(document).ready(function(){
-    $('.preloader').hide();
+    $('.preloader').show();
     $(".date-picker").datepicker({
         dateFormat:"dd-mm-yy",
         changeYear: true,
@@ -259,6 +259,7 @@ $(document).ready(function(){
         $('#banktt_errormsgcustomer').hide();
         $('#banktt_modelnameerrormsg').hide();
         $('#temp_customerid').val();
+        $('#multiplecustomerdiv').html('');
     }
     // type change
     $(document).on('change','#banktt_lb_transtype',function(){

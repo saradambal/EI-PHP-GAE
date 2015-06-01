@@ -1,5 +1,5 @@
 <?php
-class Financemodel extends CI_Model {
+class Mdl_financemodel extends CI_Model {
    public function FinanceEntrySave($unit,$customerid,$lp,$paymenttype,$amount,$forperiod,$paiddate,$Comments,$flag,$UserStamp)
    {
     $unitnos;$Customerids;$lps;$paymentypes;$amounts;$periods;$paiddates;$comments;$flags;
@@ -67,7 +67,7 @@ class Financemodel extends CI_Model {
        if($Option==3)
        {
            $temptablequery="CALL SP_PAYMENT_SEARCH_TEMP_TABLE('$unit','$customer',null,null,null,'$Option','$UserStamp',@FINALTABLENAME)";
-           $FIN_SRC_searchquery='SELECT RD.PP_ID,RD.PD_ID,U.UNIT_NO,RD.CUSTOMER_ID,RD.CED_REC_VER,C.CUSTOMER_FIRST_NAME,C.CUSTOMER_LAST_NAME,RUFD.PD_PAYMENT,RD.PD_HIGHLIGHT_FLAG,RUFD.PD_DEPOSIT,RUFD.PD_PROCESSING_FEE,RUFD.PD_CLEANING_FEE,RUFD.PD_DEPOSIT_REFUND,DATE_FORMAT(RD.PD_FOR_PERIOD,"%M-%Y") AS PD_FOR_PERIOD,DATE_FORMAT(RD.PD_PAID_DATE,"%d-%m-%Y") AS PD_PAID_DATE,RD.PD_COMMENTS,ULD.ULD_lOGINID,RD.PD_TIMESTAMP FROM TEMP_PAYMENT_FEE_DETAIL RUFD,PAYMENT_DETAILS RD ,UNIT U,CUSTOMER C,USER_LOGIN_DETAILS ULD WHERE RUFD.PD_ID=RD.PD_ID AND C.CUSTOMER_ID=RD.CUSTOMER_ID AND RD.CUSTOMER_ID=RUFD.CUSTOMER_ID AND RD.UNIT_ID=U.UNIT_ID AND RUFD.UNIT_ID=RD.UNIT_ID AND RD.ULD_ID=ULD.ULD_ID ORDER BY U.UNIT_NO,C.CUSTOMER_FIRST_NAME,PD_FOR_PERIOD';
+           $FIN_SRC_searchquery='SELECT RD.PP_ID,RD.PD_ID,U.UNIT_NO,RD.CUSTOMER_ID,RD.CED_REC_VER,C.CUSTOMER_FIRST_NAME,C.CUSTOMER_LAST_NAME,RUFD.PD_PAYMENT,RD.PD_HIGHLIGHT_FLAG,RUFD.PD_DEPOSIT,RUFD.PD_PROCESSING_FEE,RUFD.PD_CLEANING_FEE,RUFD.PD_DEPOSIT_REFUND,DATE_FORMAT(RD.PD_FOR_PERIOD,"%M-%Y") AS PD_FOR_PERIOD,DATE_FORMAT(RD.PD_PAID_DATE,"%d-%m-%Y") AS PD_PAID_DATE,RD.PD_COMMENTS,ULD.ULD_lOGINID,RD.PD_TIMESTAMP FROM TEMP_PAYMENT_FEE_DETAIL RUFD,PAYMENT_DETAILS RD ,UNIT U,CUSTOMER C,USER_LOGIN_DETAILS ULD WHERE RUFD.PD_ID=RD.PD_ID AND C.CUSTOMER_ID=RD.CUSTOMER_ID AND RD.CUSTOMER_ID=RUFD.CUSTOMER_ID AND RD.UNIT_ID=U.UNIT_ID AND RUFD.UNIT_ID=RD.UNIT_ID AND RD.ULD_ID=ULD.ULD_ID ORDER BY C.CUSTOMER_FIRST_NAME,PD_FOR_PERIOD';
        }
        if($Option==4)
        {
@@ -137,7 +137,8 @@ class Financemodel extends CI_Model {
       $paiddate=date('Y-m-d',strtotime($_POST['UD_Payment_Paiddate']));
       $comments=$this->db->escape_like_str($_POST['UD_Payment_Comments']);
       $flag=$_POST['UD_Payment_Amountflag'];
-      if($flag=='on'){$paymentflag='X';}else{$paymentflag='';}
+       if($flag=='on'){$paymentflag='X';}else{$paymentflag='';}
+
        $UpdateQuery="CALL SP_PAYMENT_DETAIL_UPDATE('$pdid','$unit','$customer','$paymenttype','$LP','$amount','$period','$paiddate','$paymentflag','$comments','$UserStamp',@ERRORMSG)";
         $this->db->query($UpdateQuery);
         $Confirm_query = 'SELECT @ERRORMSG AS CONFIRM';
@@ -146,4 +147,5 @@ class Financemodel extends CI_Model {
         $this->db->query("COMMIT");
         return $Confirm_Meessage;
     }
+
 }

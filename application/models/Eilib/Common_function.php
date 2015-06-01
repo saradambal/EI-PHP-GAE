@@ -1051,4 +1051,10 @@ function USRC_shareUnSharecalender($URSRC_loginid,$role,$ClientId,$ClientSecret,
         $this->db->where("CCN_ID=11");
         return $this->db->get()->row()->CCN_DATA;
     }
+    public function getActive_Customer_Recver_Dates($unit,$customer,$Recever)
+    {
+        $LPselectquery="SELECT CLP.CLP_STARTDATE,CLP.CLP_ENDDATE,CLP.CLP_PRETERMINATE_DATE FROM CUSTOMER_LP_DETAILS CLP,CUSTOMER_ENTRY_DETAILS CED,UNIT U WHERE CED.CUSTOMER_ID=CLP.CUSTOMER_ID AND CED.UNIT_ID = U.UNIT_ID AND CLP.CED_REC_VER = CED.CED_REC_VER AND CED.CUSTOMER_ID='$customer' AND CED.CED_REC_VER='$Recever' AND U.UNIT_NO='$unit'";
+        $resultset=$this->db->query($LPselectquery);
+        return $resultset->result();
+    }
 }

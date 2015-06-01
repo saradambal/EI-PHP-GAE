@@ -6,14 +6,14 @@ class Ctrl_Banktt_Search_Forms extends CI_Controller
 {
     public function index()
     {
-        $this->load->view('OCBC/BANKTT_SEARCH_UPDATE');
+        $this->load->view('OCBC/Vw_BankTT_Search_Update');
     }
     public function Banktt_initialdatas()
     {
-        $this->load->model('Banktt_entry_model');
-        $Searchoption=$this->Banktt_entry_model->Banktt_Search_Option();
-        $unit = $this->Banktt_entry_model->Banktt_Unit();
-        $modelnames=$this->Banktt_entry_model->get_ModelNames();
+        $this->load->model('OCBC/Mdl_banktt_entry');
+        $Searchoption=$this->Mdl_banktt_entry->Banktt_Search_Option();
+        $unit = $this->Mdl_banktt_entry->Banktt_Unit();
+        $modelnames=$this->Mdl_banktt_entry->get_ModelNames();
         $this->load->model('Eilib/Common_function');
         $errorlist=$_REQUEST['ErrorList'];
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
@@ -23,14 +23,14 @@ class Ctrl_Banktt_Search_Forms extends CI_Controller
     public function Banktt_customer()
     {
         $unit=$_POST['Unit'];
-        $this->load->model('Banktt_entry_model');
-        $customer=$this->Banktt_entry_model->get_Banktt_Csutomer($unit);
+        $this->load->model('OCBC/Mdl_banktt_entry');
+        $customer=$this->Mdl_banktt_entry->get_Banktt_Csutomer($unit);
         echo json_encode($customer);
     }
     public function Banktt_getAccname()
     {
-        $this->load->model('Banktt_entry_model');
-        $accname=$this->Banktt_entry_model->get_Accountnames();
+        $this->load->model('OCBC/Mdl_banktt_entry');
+        $accname=$this->Mdl_banktt_entry->get_Accountnames();
         echo json_encode($accname);
     }
     public function Banktt_Search_Details()
@@ -40,15 +40,15 @@ class Ctrl_Banktt_Search_Forms extends CI_Controller
         $option=$_POST['Option'];
         $unit=$_POST['Unit'];
         $customer=$_POST['Customer'];
-        $this->load->model('Banktt_entry_model');
-        $SearchResults=$this->Banktt_entry_model->get_SearchResults($option,$UserStamp,$timeZoneFormat,$unit,$customer);
+        $this->load->model('OCBC/Mdl_banktt_entry');
+        $SearchResults=$this->Mdl_banktt_entry->get_SearchResults($option,$UserStamp,$timeZoneFormat,$unit,$customer);
         echo json_encode($SearchResults);
     }
     public function Banktt_Update_Save()
     {
         global $UserStamp;
-        $this->load->model('Banktt_entry_model');
-        $Confirm_message=$this->Banktt_entry_model->getBanktt_UpdateSave($UserStamp);
+        $this->load->model('OCBC/Mdl_banktt_entry');
+        $Confirm_message=$this->Mdl_banktt_entry->getBanktt_UpdateSave($UserStamp);
         echo json_encode($Confirm_message);
     }
 }

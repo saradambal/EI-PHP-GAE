@@ -5,7 +5,7 @@ Class Ctrl_Ocbc_Forms extends CI_Controller
 {
     public function Index()
     {
-        $this->load->view('FINANCE/FORM_OCBC');
+        $this->load->view('FINANCE/Vw_OCBC');
     }
     public function Fin_OCBC_Submit()
     {
@@ -15,8 +15,8 @@ Class Ctrl_Ocbc_Forms extends CI_Controller
         $paymenttype=$this->Common_function->getPaymenttype();
         $errorlist=$_REQUEST['ErrorList'];
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
-        $this->load->model('Ocbcmodel');
-        $SubmittedData=$this->Ocbcmodel->getOCBCData($Period);
+        $this->load->model('FINANCE/Mdl_ocbcmodel');
+        $SubmittedData=$this->Mdl_ocbcmodel->getOCBCData($Period);
         $values=array($SubmittedData,$unit,$paymenttype,$ErrorMessage);
         echo json_encode($values);
     }
@@ -48,8 +48,8 @@ Class Ctrl_Ocbc_Forms extends CI_Controller
         $comments=$this->db->escape_like_str($comments);
         $flag=$_POST['FLAG'];
         $id=$_POST['ID'];
-        $this->load->model('Ocbcmodel');
-        $Result = $this->Ocbcmodel->RecordSave($unit,$customerid,$recver,$payment,$amount,$period,$comments,$flag,$id,$UserStamp);
+        $this->load->model('FINANCE/Mdl_ocbcmodel');
+        $Result = $this->Mdl_ocbcmodel->RecordSave($unit,$customerid,$recver,$payment,$amount,$period,$comments,$flag,$id,$UserStamp);
         echo json_encode($Result);
     }
 }

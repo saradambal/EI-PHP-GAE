@@ -6,7 +6,7 @@ Class Ctrl_Payment_Search_Forms extends CI_Controller
 {
     public function Index()
     {
-        $this->load->view('FINANCE/FORM_PAYMENT_SEARCH_UPDATE');
+        $this->load->view('FINANCE/Form_Payment_Search_Upadte');
     }
     public function InitialDataLoad()
     {
@@ -15,8 +15,8 @@ Class Ctrl_Payment_Search_Forms extends CI_Controller
         $paymenttype=$this->Common_function->getPaymenttype();
         $errorlist=$_REQUEST['ErrorList'];
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
-        $this->load->model('Financemodel');
-        $searchOption=$this->Financemodel->getSearchOption();
+        $this->load->model('FINANCE/Mdl_financemodel');
+        $searchOption=$this->Mdl_financemodel->getSearchOption();
         $ReturnValues=array($unit,$paymenttype,$ErrorMessage,$searchOption);
         echo json_encode($ReturnValues);
     }
@@ -30,15 +30,15 @@ Class Ctrl_Payment_Search_Forms extends CI_Controller
          $Todate=$_POST['Todate'];
          $fromamount=$_POST['Fromamount'];
          $toamount=$_POST['Toamount'];
-         $this->load->model('Financemodel');
-         $searchResults=$this->Financemodel->getSearchResults($SearchOption,$unit,$Customer,$Fromdate,$Todate,$fromamount,$toamount,$UserStamp);
+         $this->load->model('FINANCE/Mdl_financemodel');
+         $searchResults=$this->Mdl_financemodel->getSearchResults($SearchOption,$unit,$Customer,$Fromdate,$Todate,$fromamount,$toamount,$UserStamp);
          echo json_encode($searchResults);
     }
     public function UnitCustomer()
     {
         $unit=$_POST['Unit'];
-        $this->load->model('Financemodel');
-        $searchResults=$this->Financemodel->getUnitCustomer($unit);
+        $this->load->model('FINANCE/Mdl_financemodel');
+        $searchResults=$this->Mdl_financemodel->getUnitCustomer($unit);
         echo json_encode($searchResults);
     }
     public function PaymentsearchRowDetails()
@@ -47,17 +47,17 @@ Class Ctrl_Payment_Search_Forms extends CI_Controller
        $customerid=$_POST['Customerid'];
        $Rowid=$_POST['Rowid'];
        $Recver=$_POST['Recversion'];
-       $this->load->model('Financemodel');
-       $searchResults=$this->Financemodel->getPaymentRowDetails($Rowid);
-       $LPsearchResults=$this->Financemodel->getPaymentRowLPDetails($customerid,$unit);
+       $this->load->model('FINANCE/Mdl_financemodel');
+       $searchResults=$this->Mdl_financemodel->getPaymentRowDetails($Rowid);
+       $LPsearchResults=$this->Mdl_financemodel->getPaymentRowLPDetails($customerid,$unit);
        $Returnvalues=array($searchResults,$LPsearchResults,$Recver);
        echo json_encode($Returnvalues);
     }
     public function PaymentUpdationDetails()
     {
         global $UserStamp;
-        $this->load->model('Financemodel');
-        $Create_confirm=$this->Financemodel->Payment_Updation($UserStamp);
+        $this->load->model('FINANCE/Mdl_financemodel');
+        $Create_confirm=$this->Mdl_financemodel->Payment_Updation($UserStamp);
         print_r($Create_confirm);
     }
     public function PaymentsDetails()

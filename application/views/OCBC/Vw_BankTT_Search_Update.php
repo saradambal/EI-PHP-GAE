@@ -30,7 +30,6 @@ require_once "Header.php";
             url: "/index.php/Ctrl_Banktt_Search_Forms/Banktt_initialdatas",
             data:{'ErrorList':'1,2,4,6,45,247,385,401'},
             success: function(data){
-                $('#BankTT_Updation_Form').hide();
                 $('.preloader').hide();
                 var value=JSON.parse(data);
                 var searchoption=value[0];

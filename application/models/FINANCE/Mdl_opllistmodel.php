@@ -1,6 +1,6 @@
 <?php
 //error_reporting(0);
-class Opllistmodel extends CI_Model
+class Mdl_opllistmodel extends CI_Model
 {
     public function OPL_list_creation($UserStamp)
     {

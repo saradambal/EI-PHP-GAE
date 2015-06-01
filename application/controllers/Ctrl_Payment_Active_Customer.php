@@ -5,7 +5,7 @@ Class Ctrl_Payment_Active_Customer extends CI_Controller
 {
     public function Index()
     {
-        $this->load->view('FINANCE/FORM_PAYMENT_ACTIVE_CUSTOMER');
+        $this->load->view('FINANCE/Vw_Paymeny_Active_Customer');
     }
     public function PaymentInitialDatas()
     {
@@ -53,8 +53,8 @@ Class Ctrl_Payment_Active_Customer extends CI_Controller
      $forperiod=$_POST['FORPERIOD'];
      $paiddate=$_POST['PAIDDATE'];
      $comments=$_POST['Comments'];
-     $this->load->model('Financemodel');
-     $Confirm_message = $this->Financemodel->FinanceEntrySave($unit,$customerid,$leaseperiod,$paymenttype,$amount,$forperiod,$paiddate,$comments,$flag,$UserStamp);
+     $this->load->model('FINANCE/Mdl_financemodel');
+     $Confirm_message = $this->Mdl_financemodel->FinanceEntrySave($unit,$customerid,$leaseperiod,$paymenttype,$amount,$forperiod,$paiddate,$comments,$flag,$UserStamp);
      echo json_encode($Confirm_message);
     }
 }

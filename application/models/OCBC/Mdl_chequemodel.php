@@ -1,6 +1,6 @@
 <?php
 error_reporting(0);
-class Chequemodel extends CI_Model
+class Mdl_chequemodel extends CI_Model
 {
   public function Cheque_Entry_FormData_Save($UserStamp)
   {
