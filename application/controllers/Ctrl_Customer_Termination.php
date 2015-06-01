@@ -35,4 +35,21 @@ Class Ctrl_Customer_Termination extends CI_Controller
         $data=$this->Mdl_customer_termination->CTERM_getCustomerdtls($custid,$radiooption,$USERSTAMP,$timeZoneFormat);
         echo json_encode($data);
     }
+    public function CTERM_UpdatePtd(){
+        global $USERSTAMP;
+        global $timeZoneFormat;
+        $this->load->model('Mdl_customer_termination');
+        $data=$this->Mdl_customer_termination->CTERM_UpdatePtd($USERSTAMP,$timeZoneFormat);
+        echo json_encode($data);
+    }
+    public function CTERM_getMinPTD(){
+        global $USERSTAMP;
+        global $timeZoneFormat;
+        $CTERM_custid=$this->input->post('CTERM_custid');
+        $CTERM_radio_termoption=$this->input->post('CTERM_radio_termoption');
+        $CTERM_unitno=$this->input->post('CTERM_unitno');
+        $this->load->model('Mdl_customer_termination');
+        $data=$this->Mdl_customer_termination->CTERM_getMinPTD($CTERM_custid,$CTERM_radio_termoption,$CTERM_unitno);
+        echo json_encode($data);
+    }
 }
