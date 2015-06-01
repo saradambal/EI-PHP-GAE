@@ -3,7 +3,7 @@
 
 
 
-class Mdl_Customer_Extension extends CI_Model{
+class Mdl_customer_extension extends CI_Model{
     //FUNCTION TO GET ALL EXTENSION UNIT NOS
     public  function CEXTN_getExtnUnitNo()
     {
