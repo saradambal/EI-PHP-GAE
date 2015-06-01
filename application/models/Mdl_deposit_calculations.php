@@ -94,7 +94,7 @@ class Mdl_deposit_calculations extends CI_Model{
                 if($service->files->get($child->getId())->getExplicitlyTrashed()==1)continue;
                 $fileid=$service->files->get($child->getId())->id;
                 $filename=$service->files->get($child->getId())->title;
-                $filenamelist[]=['id'=>$fileid,'title'=>$filename];
+                $filenamelist[]=['id'=>$fileid,'title'=>$filename];break;
             }
             return $filenamelist;
         }
@@ -180,16 +180,23 @@ class Mdl_deposit_calculations extends CI_Model{
             $rbuttonX1[]=$DDC_recdate;
         }
         $DDC_alllengdate=count($rbuttonX1);
-        $DDC_recverarray=[];
+        $DDC_recverarray='';
+        $recverlen=[];
         for($i=0;$i<count($rbuttonX1);$i++)
         {
             $DDC_splitalvalue=explode('^',$rbuttonX1[$i]);
             $DDC_id=$DDC_splitalvalue[0];
-            $DDC_recver=explode(',',$DDC_splitalvalue[1]);
+            $DDC_recver=$DDC_splitalvalue[1];
             $DDC_startdate=$DDC_splitalvalue[2];
             $DDC_enddate=$DDC_splitalvalue[3];
-            $DDC_recverarray=($DDC_recver);
-            $selectedrecverlength=count($DDC_recverarray);
+            $recverlen[]=$DDC_recver;
+            if($i==0){
+                $DDC_recverarray=$DDC_recver;
+            }
+            else{
+                $DDC_recverarray=$DDC_recverarray.','.$DDC_recver;
+            }
+            $selectedrecverlength=count($recverlen);
         }
         $flag='X';
         $DDC_nooftimescalculat='';
@@ -260,7 +267,7 @@ class Mdl_deposit_calculations extends CI_Model{
             // GIVE PERMISSION TO EDITORS WHEN NEW SS CREATED USING EILIB
 //            $this->common_function->Deposit_Deduction_fileSharing($DDC_newspread_ssid, $DDC_folderid);
             $DDC_flg_tempsht=0;
-            $data=array('DDC_newspread_ssid'=>$DDC_newspread_ssid,'DDC_ssname_getid'=>$DDC_ssname_getid,'DDC_currentmonth'=>$DDC_currentmonth,'flag'=>1);
+            $data=array('ssflag'=>1,'DDC_newspread_ssid'=>$DDC_newspread_ssid,'DDC_ssname_getid'=>$DDC_ssname_getid,'DDC_currentmonth'=>$DDC_currentmonth);
             $ssnameload=array();
             $ssnameload=$this->Func_curl($data);
             $ssnameload=explode(',',$ssnameload);
@@ -283,20 +290,13 @@ class Mdl_deposit_calculations extends CI_Model{
         }
         // IF CURRENT SS NOT HAVING TEMPLATE SHEET IT LL CREATE THEM TEMPLATE AND SENDING EMAIL
         else{
-            $data1=array('flag'=>2,'DDC_currentfile_id'=>$DDC_currentfile_id,'DDC_ssname_getid'=>$DDC_ssname_getid,'DDC_ssname_oldyear'=>$DDC_ssname_oldyear);
+            $data1=array('ssflag'=>2,'DDC_currentfile_id'=>$DDC_currentfile_id,'DDC_ssname_getid'=>$DDC_ssname_getid,'DDC_ssname_oldyear'=>$DDC_ssname_oldyear);
             $ssnametemp=array();
             $ssnametemp=$this->Func_curl($data1);
             $ssnametemp=explode(',',$ssnametemp);
             if($ssnametemp[0]=='DDC_flag_nosheet'){
                 return $ssnametemp;
             }
-        }
-        $data2=array('flag'=>3,'DDC_currentfile_id'=>$DDC_currentfile_id,'DDC_currentmonth'=>$DDC_currentmonth);
-        $ssreangtemp=array();
-        $ssreangtemp=$this->Func_curl($data2);
-        $ssreangtemp=explode(',',$ssreangtemp);
-        if($ssreangtemp[0]==0 && $ssreangtemp[1]==1){
-            return [0,1];
         }
         $DDC_callstorepcedurquery="CALL SP_DD_CALCULATION('".$unit_value."','".$dep_custid."','".$DDC_recverarray."','".$flag."','".$UserStamp."',@TEMP_DD_DYNAMICTBLE)";
         $this->db->query($DDC_callstorepcedurquery);
@@ -342,7 +342,7 @@ class Mdl_deposit_calculations extends CI_Model{
             }
             if($flag=="X")
             {
-                $DDC_calltemptable="SELECT * FROM ".$DDC_temptble_name." where DDRECVER=".$DDC_recverarray[$i];
+                $DDC_calltemptable="SELECT * FROM ".$DDC_temptble_name." where DDRECVER=".$recverlen[$i];
             }
             $DDC_temptblresult=$this->db->query($DDC_calltemptable);
             foreach($DDC_temptblresult->result_array() as $row)
@@ -375,186 +375,244 @@ class Mdl_deposit_calculations extends CI_Model{
                         $DDC_enddatearrary[]=($row["DDENDDATE"]);
                     }
                 }
-                if($row["DDNOOFDIVISION"]!=null)
+//                if($row["DDNOOFDIVISION"]!=null)
+//                {
+//                    $DDC_no_ofdivision = $row["DDNOOFDIVISION"];
+//                }
+//                if($row["DDCARDCOUNT"]!=null)
+//                {
+//                    $DDC_cardcount = $row["DDCARDCOUNT"];
+//                }
+//                if($row["DDCARDAMOUNT"]!=null)
+//                {
+//                    $DDC_cardamount = $row["DDCARDAMOUNT"];
+//                }
+//                if($row["DDCARDTILLDATE"]!=null)
+//                {
+//                    $DDC_cardtilldate = $row["DDCARDTILLDATE"];
+//                }
+//                if($row["DDEEINVOICEDATE"]!=null)
+//                {
+//                    $DDC_invoicedate[]=((object)['value'=>$row["DDEEINVOICEDATE"],'key'=>$row["DDRECVER"]]);
+//                }
+//                if($row["DDEEAMOUNT"]!=null)
+//                {
+//                    if((is_array($row["DDEEAMOUNT"]))==true){
+//                        $DDC_eleamount=$row["DDEEAMOUNT"];
+//                    }
+//                    else
+//                    {
+//                        $DDC_eleamount[]=($row["DDEEAMOUNT"]);
+//                    }
+//                }
+//                if($row["DDEEDIVAMOUNT"]!=null)
+//                {
+//                    if((is_array( $row["DDEEDIVAMOUNT"]))==true){
+//                        $DDC_eledivamount= $row["DDEEDIVAMOUNT"];
+//                    }
+//                    else
+//                    {
+//                        $DDC_eledivamount[]=( $row["DDEEDIVAMOUNT"]);
+//                    }
+//                }
+//                if($row["DDUNITINVOICEDATE"]!=null)
+//                {
+//                    if((is_array( $row["DDUNITINVOICEDATE"]))==true){
+//                        $DDC_unitinvoicedate= $row["DDUNITINVOICEDATE"];
+//                    }
+//                    else
+//                    {
+//                        $DDC_unitinvoicedate[]=( $row["DDUNITINVOICEDATE"]);
+//                    }
+//                }
+//                if($row["DDUNITAMOUNT"]!=null)
+//                {
+//                    if((is_array( $row["DDUNITAMOUNT"]))==true){
+//                        $DDC_unitamount= $row["DDUNITAMOUNT"];
+//                    }
+//                    else
+//                    {
+//                        $DDC_unitamount[]=( $row["DDUNITAMOUNT"]);
+//                    }
+//                }
+//                if($row["DDUNITDIVAMOUNT"]!=null)
+//                {
+//                    if((is_array( $row["DDUNITDIVAMOUNT"]))==true){
+//                        $DDC_unitdivamount= $row["DDUNITDIVAMOUNT"];
+//                    }
+//                    else
+//                    {
+//                        $DDC_unitdivamount[]=($row["DDUNITDIVAMOUNT"]);
+//                    }
+//                }
+//                if($row["DDUNITINVOICEITEM"]!=null)
+//                {
+//                    if((is_array( $row["DDUNITINVOICEITEM"]))==true){
+//                        $DDC_unitinvoiceitem= $row["DDUNITINVOICEITEM"];
+//                    }
+//                    else
+//                    {
+//                        $DDC_unitinvoiceitem[]=($row["DDUNITINVOICEITEM"]);
+//                    }
+//                }
+//                if($row["DDCPPID"]!=null)
+//                {
+//                    $DDC_custpaymentid=$row["DDCPPID"];
+//                }
+//                if($row["DDPAYMENTUNPAIDDATE"]!=null)
+//                {
+//                    $DDC_payunpaiddate[]=($row["DDPAYMENTUNPAIDDATE"].'(LP:'.$DDC_sprecverarray.') ');
+//                }
+//                if($row["DDEECAP"]!=null)
+//                {
+//                    $DDC_electrcap[]=((object)['value'=>$row["DDEECAP"],'key'=>$row["DDRECVER"]]);
+//                }
+//                if($row["DDPROCUNPAID"]!=null)
+//                {
+//                    $DDC_proratedunpaid=$row["DDPROCUNPAID"];
+//                }
+//                if($row["DDDEPOAMOUNT"]!=null)
+//                {
+//                    $DDC_depositeamount[]=($row["DDDEPOAMOUNT"]);
+//
+//                }
+//                //CHARGE AMOUNT//
+//                if($row["DDCHARGETYPE"]!=null)
+//                {
+//                    if((is_array($row["DDCHARGETYPE"]))==true){
+//                        $DDC_chargtype=$row["DDCHARGETYPE"];
+//                    }
+//                    else
+//                    {
+//                        $DDC_chargtype[]=($row["DDCHARGETYPE"]);
+//                    }
+//                }
+//                if($row["DDCHARGE"]!=null)
+//                {
+//                    if((is_array($row["DDCHARGE"]))==true){
+//                        $DDC_chargamount=$row["DDCHARGE"];
+//                    }
+//                    else
+//                    {
+//                        $DDC_chargamount[]=($row["DDCHARGE"]);
+//                    }
+//                }
+//                if($row["DDDEPOUNPAID"]!=null)
+//                {
+//                    $DDC_depositeunpaid[]=((object)['value'=>$row["DDDEPOUNPAID"],'key'=>$row["DDRECVER"]]);
+//                }
+//                if($row["DDQUATERS"]!=null)
+//                {
+//                    $DDC_quaters[]=((object)['value'=>$row["DDQUATERS"],'key'=>$row["DDRECVER"]]);
+//                }
+//                if($row["DDAIRCONQ"]!=null)
+//                {
+//                    $DDC_airconquater[]=((object)['value'=>$row["DDAIRCONQ"],'key'=>$row["DDRECVER"]]);
+//                }
+//                if($row["DDAIRCON"]!=null)
+//                {
+//                    if($row["DDAIRCONQ"]==null){
+//                        $DDC_fixedaircon=(object)['value'=>$row["DDAIRCON"],'key'=>$row["DDRECVER"]];
+//                    }
+//                    else{
+//                        $DDC_aircon[]=((object)['valueDiff'=>$row["DDAIRCON"],'value'=>$row["DDAIRCONQ"],'key'=>$row["DDRECVER"],'quater'=>$row["DDQUATERS"]]);
+//                    }
+//                }
+//                if($row["DDCHECKOUTCLEAN"]!=null)
+//                {
+//                    $DDC_checkoutclean=(object)['value'=>$row["DDCHECKOUTCLEAN"],'key'=>$row["DDRECVER"]];
+//                }
+//                if($row["DDQUATERTOTAL"]!=null)
+//                {
+//                    $DDC_sumofquater[]=((object)['value'=>$row["DDPERQUATER"],'quater'=>$row["DDSUMOFQUATER"],'total'=>$row["DDQUATERTOTAL"]]);
+//                }
+//                if($row["DDDRYCLEAN"]!=null)
+//                {
+//                    $DDC_dryclean=(object)['value'=>$row["DDDRYCLEAN"],'key'=>$row["DDRECVER"]];
+//                }
+//                $DDC_electsubtotal=$row["DDSUBTOTAL_ONE"];
+//                if($DDC_electsubtotal==null)
+//                {
+//                    $DDC_electsubtotal="";
+//                }
+//                $DDC_airconsubtotal=$row["DDSUBTOTAL_TWO"];
+//                if($DDC_airconsubtotal==null)
+//                {
+//                    $DDC_airconsubtotal="";
+//                }
+//                $DDC_unitsubtotal=$row["DDSUBTOTAL_THREE"];
+//                if($DDC_unitsubtotal==null)
+//                {
+//                    $DDC_unitsubtotal="";
+//                }
+//                $DDC_totalallsubtl=$row["DDTOTAL_DD"];
+//                if($DDC_totalallsubtl==null)
+//                {
+//                    $DDC_totalallsubtl="";
+//                }
+//                $DDC_tefundtotal=$row["DDTOTAL_REFUND"];
+//                if($DDC_tefundtotal==null)
+//                {
+//                    $DDC_tefundtotal="";
+//                }
+            }
+            //SET THE START DATE//
+            if($flag=="")
+            {
+                $DDC_startdatearrary=$DDC_startdatearrary[0];
+                $DDC_enddatearrary=$DDC_enddatearrary[count($DDC_enddatearrary)-1];
+            }
+            else{
+                $DDC_startdatearrary=$DDC_startdatearrary[$i];
+                $DDC_enddatearrary=$DDC_enddatearrary[$i];
+            }
+            if($DDC_recverlgth==$selectedrecverlength)
+            {
+                $DDC_recverarray=$recverlen[$i];
+            }
+            else
+            {
+                $DDC_recverarray=$recverlen[$i];
+            }
+            //DEPOSITE VALUE FILL IN THE SHEET//
+            $DDC_depositeunpaid_rec=[];
+            $dep_value = $DDC_depositeamount;
+            if($flag=="X"){
+                if($DDC_depositeamount==0)
                 {
-                    $DDC_no_ofdivision = $row["DDNOOFDIVISION"];
+                    $dep_value = 0;
                 }
-                if($row["DDCARDCOUNT"]!=null)
-                {
-                    $DDC_cardcount = $row["DDCARDCOUNT"];
-                }
-                if($row["DDCARDAMOUNT"]!=null)
-                {
-                    $DDC_cardamount = $row["DDCARDAMOUNT"];
-                }
-                if($row["DDCARDTILLDATE"]!=null)
-                {
-                    $DDC_cardtilldate = $row["DDCARDTILLDATE"];
-                }
-                if($row["DDEEINVOICEDATE"]!=null)
-                {
-                    $DDC_invoicedate[]=((object)['value'=>$row["DDEEINVOICEDATE"],'key'=>$row["DDRECVER"]]);
-                }
-                if($row["DDEEAMOUNT"]!=null)
-                {
-                    if((is_array($row["DDEEAMOUNT"]))==true){
-                        $DDC_eleamount=$row["DDEEAMOUNT"];
-                    }
-                    else
+                if(count($DDC_depositeunpaid)!=0){
+                    if($DDC_depositeamount==0 && $DDC_depositeunpaid[0]->value=="UNPAID")
                     {
-                        $DDC_eleamount[]=($row["DDEEAMOUNT"]);
+                        $entalcase=3;
+                        $ep_value = 0;
+                        $depcomment="DEPO NT PAID";
                     }
                 }
-                if($row["DDEEDIVAMOUNT"]!=null)
-                {
-                    if((is_array( $row["DDEEDIVAMOUNT"]))==true){
-                        $DDC_eledivamount= $row["DDEEDIVAMOUNT"];
-                    }
-                    else
-                    {
-                        $DDC_eledivamount[]=( $row["DDEEDIVAMOUNT"]);
-                    }
+            }
+            else if($flag=="")
+            {
+                $sum=0;
+                for($D=0;$D<count($DDC_depositeamount);$D++){
+                    $sum.=parseInt($DDC_depositeamount[$D]);
+                    $dep_value=$sum;
                 }
-                if($row["DDUNITINVOICEDATE"]!=null)
-                {
-                    if((is_array( $row["DDUNITINVOICEDATE"]))==true){
-                        $DDC_unitinvoicedate= $row["DDUNITINVOICEDATE"];
-                    }
-                    else
-                    {
-                        $DDC_unitinvoicedate[]=( $row["DDUNITINVOICEDATE"]);
-                    }
+                for($k=0;$k<count($DDC_depositeunpaid);$k++){
+                    $DDC_depositeunpaid_rec[$k]= $DDC_depositeunpaid[$k]->key;
+                    $rentalcase=3;
                 }
-                if($row["DDUNITAMOUNT"]!=null)
-                {
-                    if((is_array( $row["DDUNITAMOUNT"]))==true){
-                        $DDC_unitamount= $row["DDUNITAMOUNT"];
-                    }
-                    else
-                    {
-                        $DDC_unitamount[]=( $row["DDUNITAMOUNT"]);
-                    }
-                }
-                if($row["DDUNITDIVAMOUNT"]!=null)
-                {
-                    if((is_array( $row["DDUNITDIVAMOUNT"]))==true){
-                        $DDC_unitdivamount= $row["DDUNITDIVAMOUNT"];
-                    }
-                    else
-                    {
-                        $DDC_unitdivamount[]=($row["DDUNITDIVAMOUNT"]);
-                    }
-                }
-                if($row["DDUNITINVOICEITEM"]!=null)
-                {
-                    if((is_array( $row["DDUNITINVOICEITEM"]))==true){
-                        $DDC_unitinvoiceitem= $row["DDUNITINVOICEITEM"];
-                    }
-                    else
-                    {
-                        $DDC_unitinvoiceitem[]=($row["DDUNITINVOICEITEM"]);
-                    }
-                }
-                if($row["DDCPPID"]!=null)
-                {
-                    $DDC_custpaymentid=$row["DDCPPID"];
-                }
-                if($row["DDPAYMENTUNPAIDDATE"]!=null)
-                {
-                    $DDC_payunpaiddate[]=($row["DDPAYMENTUNPAIDDATE"].'(LP:'.$DDC_sprecverarray.') ');
-                }
-                if($row["DDEECAP"]!=null)
-                {
-                    $DDC_electrcap[]=((object)['value'=>$row["DDEECAP"],'key'=>$row["DDRECVER"]]);
-                }
-                if($row["DDPROCUNPAID"]!=null)
-                {
-                    $DDC_proratedunpaid=$row["DDPROCUNPAID"];
-                }
-                if($row["DDDEPOAMOUNT"]!=null)
-                {
-                    $DDC_depositeamount[]=($row["DDDEPOAMOUNT"]);
+                $depcomment="DEPO NT PAID FR LEASE PERIOD ".$DDC_depositeunpaid_rec;
+            }
 
-                }
-                //CHARGE AMOUNT//
-                if($row["DDCHARGETYPE"]!=null)
-                {
-                    if((is_array($row["DDCHARGETYPE"]))==true){
-                        $DDC_chargtype=$row["DDCHARGETYPE"];
-                    }
-                    else
-                    {
-                        $DDC_chargtype[]=($row["DDCHARGETYPE"]);
-                    }
-                }
-                if($row["DDCHARGE"]!=null)
-                {
-                    if((is_array($row["DDCHARGE"]))==true){
-                        $DDC_chargamount=$row["DDCHARGE"];
-                    }
-                    else
-                    {
-                        $DDC_chargamount[]=($row["DDCHARGE"]);
-                    }
-                }
-                if($row["DDDEPOUNPAID"]!=null)
-                {
-                    $DDC_depositeunpaid[]=((object)['value'=>$row["DDDEPOUNPAID"],'key'=>$row["DDRECVER"]]);
-                }
-                if($row["DDQUATERS"]!=null)
-                {
-                    $DDC_quaters[]=((object)['value'=>$row["DDQUATERS"],'key'=>$row["DDRECVER"]]);
-                }
-                if($row["DDAIRCONQ"]!=null)
-                {
-                    $DDC_airconquater[]=((object)['value'=>$row["DDAIRCONQ"],'key'=>$row["DDRECVER"]]);
-                }
-                if($row["DDAIRCON"]!=null)
-                {
-                    if($row["DDAIRCONQ"]==null){
-                        $DDC_fixedaircon=(object)['value'=>$row["DDAIRCON"],'key'=>$row["DDRECVER"]];
-                    }
-                    else{
-                        $DDC_aircon[]=((object)['valueDiff'=>$row["DDAIRCON"],'value'=>$row["DDAIRCONQ"],'key'=>$row["DDRECVER"],'quater'=>$row["DDQUATERS"]]);
-                    }
-                }
-                if($row["DDCHECKOUTCLEAN"]!=null)
-                {
-                    $DDC_checkoutclean=(object)['value'=>$row["DDCHECKOUTCLEAN"],'key'=>$row["DDRECVER"]];
-                }
-                if($row["DDQUATERTOTAL"]!=null)
-                {
-                    $DDC_sumofquater[]=((object)['value'=>$row["DDPERQUATER"],'quater'=>$row["DDSUMOFQUATER"],'total'=>$row["DDQUATERTOTAL"]]);
-                }
-                if($row["DDDRYCLEAN"]!=null)
-                {
-                    $DDC_dryclean=(object)['value'=>$row["DDDRYCLEAN"],'key'=>$row["DDRECVER"]];
-                }
-                $DDC_electsubtotal=$row["DDSUBTOTAL_ONE"];
-                if($DDC_electsubtotal==null)
-                {
-                    $DDC_electsubtotal="";
-                }
-                $DDC_airconsubtotal=$row["DDSUBTOTAL_TWO"];
-                if($DDC_airconsubtotal==null)
-                {
-                    $DDC_airconsubtotal="";
-                }
-                $DDC_unitsubtotal=$row["DDSUBTOTAL_THREE"];
-                if($DDC_unitsubtotal==null)
-                {
-                    $DDC_unitsubtotal="";
-                }
-                $DDC_totalallsubtl=$row["DDTOTAL_DD"];
-                if($DDC_totalallsubtl==null)
-                {
-                    $DDC_totalallsubtl="";
-                }
-                $DDC_tefundtotal=$row["DDTOTAL_REFUND"];
-                if($DDC_tefundtotal==null)
-                {
-                    $DDC_tefundtotal="";
-                }
+            $data2=array('ssflag'=>3,'DDC_currentfile_id'=>$DDC_currentfile_id,'DDC_currentmonth'=>$DDC_currentmonth,'unit_value'=>$unit_value,'name'=>$name,
+                'flag'=>$flag,'DDC_startdatearrary'=>$DDC_startdatearrary,'DDC_enddatearrary'=>$DDC_enddatearrary,'DDC_recverlgth'=>$DDC_recverlgth,
+                'selectedrecverlength'=>$selectedrecverlength,'DDC_recverarray'=>$DDC_recverarray,'dep_value'=>$dep_value);
+            $ssreangtemp=array();
+            $ssreangtemp=$this->Func_curl($data2);
+            $ssreangtemp=explode(',',$ssreangtemp);
+            if($ssreangtemp[0]==0 && $ssreangtemp[1]==1){
+                return [0,1];
             }
         }
     }
