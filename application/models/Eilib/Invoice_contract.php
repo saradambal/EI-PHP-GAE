@@ -5,6 +5,10 @@
  * Date: 18/5/15
  * Time: 7:54 PM
  */
+//******************************************INVOICE AND CONTRACT********************************************//
+//DONE BY:SARADAMBAL
+//VER 0.01-SD:22/05/2015 ED:06/02/2015,COMPLETED INVOICE AND CONTRACT
+//*******************************************************************************************************//
 include "./application/controllers/GET_USERSTAMP.php";
 //require_once 'google/appengine/api/mail/Message.php';
 //use \google\appengine\api\mail\Message;
@@ -581,7 +585,7 @@ class Invoice_contract extends CI_Model{
                     $proratedrent= $this->ProratedCalc->sMonthProratedCalc($check_in_date,$rent);
                 }
                 $this->load->model('Eilib/Common_function');
-                $url="https://script.google.com/macros/s/AKfycbyv58HZU2XsR2kbCMWZjNzMWSmOwoE7xsg_fesXktGk4Kj574u1/exec";
+//                $url="https://script.google.com/macros/s/AKfycbyv58HZU2XsR2kbCMWZjNzMWSmOwoE7xsg_fesXktGk4Kj574u1/exec";
                 $data = array('pro_rated_lineno'=>$pro_rated_lineno,'prlbl1'=>$prlbl1,'prlbl2'=>$prlbl2,'LastMonthformat'=>$LastMonthformat,'DEPOSITEword'=>$DEPOSITEword,'ntc_date1'=>$ntc_date1,'todaydat'=>$todaydat,'todaydatestring'=>$todaydatestring,'finalep_pass'=>$finalep_pass,
                     'LastMonthformat'=>$LastMonthformat,'flag_paraAlign'=>$flag_paraAlign,'flag_paraAlign_sec'=>$flag_paraAlign_sec,'flag_paraAlign_thrd'=>$flag_paraAlign_thrd,'flag_paraAlign_four'=>$flag_paraAlign_four,'flag_paraAlign_five'=>$flag_paraAlign_five,
                     'cexdd'=>$cexdd,'check_in_dated'=>$check_in_dated,'noticeSt'=>$noticeSt,'address1value'=>$address1value,'cardno'=>$cardno,'fixedstmtfetch'=>$fixedstmtfetch,'noepcontlineno'=>$noepcontlineno,'elec_fetch'=>$elec_fetch,'dryclean_fetch'=>$dryclean_fetch,
@@ -617,13 +621,11 @@ class Invoice_contract extends CI_Model{
                 catch(Exception $e){
                     echo   $e->getMessage();
                 }
-// return $response;
             }} catch (Exception $ex) {
             print "An error occurred: " . $ex->getMessage();
         }
         $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
-         return $response;
-    }
+        return $response;    }
 //GET INVOICE ID ,CONTRACT ID ,SERIAL NO,INVOIC DATE
     public function CUST_invoice_contractreplacetext()
     {
@@ -685,21 +687,20 @@ class Invoice_contract extends CI_Model{
         {
             $Slno++;
             if(0>=$Slno && $Slno<=9){
-                $Slno= (String)("00"+$Slno);
+                $Slno= (String)("00".$Slno);
             }
             else if(10>=$Slno && $Slno<=99){
                 $Slno= "0".$Slno;
             }
             $this->load->model('Eilib/Common_function');
-            $this->Common_function->CUST_invoicesearialnoupdation($Slno);
+            $this->Common_function->CUST_invoicesearialnoupdation($Slno,$UserStamp);
         }
         else
         {
             $Slno = 1;
             if($Slno==1){
-                $Slno= (String)("00"+$Slno);
+                $Slno= (String)("00".$Slno);
             }
-
             $todaydatc = date("d/m/Y");// Utilities.formatDate(new Date(sysdate), TimeZone, "dd/MM/yyyy");
             $cc_invoicedate = date("Y/m/d");//  Utilities.formatDate(new Date(sysdate), TimeZone, "yyyy/MM/dd");
             $this->load->model('Eilib/Common_function');
@@ -953,23 +954,6 @@ class Invoice_contract extends CI_Model{
             echo $e->getMessage();
         }
         $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
-         return $response;
-    }
-    //MAIL PART FOR CONTRACT AND INVOICE
-    public function mailInvoiceContract($sender,$reciver,$subject,$body,$fileData,$title){
-        try
-        {
-            $image_data=$fileData;
-            $image_content_id=$title;
-            $message = new Message();
-            $message->setSender($sender);
-            $message->addTo($reciver);
-            $message->setSubject($subject);
-            $message->setTextBody($body);
-            $message->addAttachment($title.'.docx', $image_data, $image_content_id);
-            $message->send();
-        } catch (InvalidArgumentException $e) {
-            echo $e->getMessage();
-        }
+        return $response;
     }
 }

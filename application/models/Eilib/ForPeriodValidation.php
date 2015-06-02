@@ -5,6 +5,10 @@
  * Date: 12/5/15
  * Time: 1:30 PM
  */
+//******************************************FOR PERIOD VALIDATION********************************************//
+//DONE BY:SARADAMBAL
+//VER 0.01-SD:13/05/2015 ED:13/02/2015,COMPLETED FOR PERIOD VALIDATION
+//*******************************************************************************************************//
 class ForPeriodValidation extends CI_Model {
 //PAYMENT FORPERIOD TERMINATED CUSTOMER VALIDATION
  public  function Payment_forperiod_TermCustvalidation($unit,$customer)

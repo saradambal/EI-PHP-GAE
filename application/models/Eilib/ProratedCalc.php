@@ -5,6 +5,10 @@
 * Date: 11/5/15
 * Time: 10:57 AM
 */
+//******************************************PRORATED CALCULATION********************************************//
+//DONE BY:SARADAMBAL
+//VER 0.01-SD:14/05/2015 ED:14/02/2015,COMPLETED PRORATED CALCULATION
+//*******************************************************************************************************//
 class ProratedCalc extends CI_Model {
 //FUNCTION TO GET PRORATED AMOUNT USING CHECK IN DATE
 public function sMonthProratedCalc($check_in_date,$rentPerMonth)

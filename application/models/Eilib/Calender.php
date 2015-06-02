@@ -5,15 +5,12 @@
  * Date: 13/5/15
  * Time: 10:25 AM
  */
+//******************************************CALENDER********************************************//
+//DONE BY:SARADAMBAL
+//VER 0.01-SD:14/05/2015 ED:20/02/2015,COMPLETED CALENDER CALCULATION
+//*******************************************************************************************************//
 class Calender  extends CI_Model {
     //TIME CONVERSION
-//    public function CalenderTime_Convertion($startdate,$startdate_starttime,$startdate_endtime){
-//        $start = new Google_Service_Calendar_EventDateTime();
-//        $start->setDateTime($startdate.'T'.$startdate_starttime.'.000+08:00');
-//        $end = new Google_Service_Calendar_EventDateTime();
-//        $end->setDateTime($startdate.'T'.$startdate_endtime.'.000+08:00');
-//        return array($start,$end);
-//    }
     public function CalenderTime_Convertion($startdate,$startdate_starttime,$startdate_endtime){
         $splitStart=explode(':',$startdate_starttime);
         $startdate_starttime  =$splitStart[0].':'.$splitStart[1];
@@ -55,24 +52,6 @@ class Calender  extends CI_Model {
 //SAMPLE TESTING
     public function test($cal){
         $this->CUST_customercalendercreation($cal,10,"2015-09-14","10:00","10:30","2015-09-16","10:00","10:30","SARADA","MUNUSAMY","99999999","34324","TEST","SARADA@GMAIL.COM","0810","ROOM TYPE","ROOM TYPE");
-//$event = new Google_Service_Calendar_Event();
-//$start = new Google_Service_Calendar_EventDateTime();
-//$start->setDateTime('2016-04-15T10:00:00.000-00:00');//setDate('2014-11-18');
-//$event->setStart($start);
-////       $event->setEnd($start);
-//
-//$end = new Google_Service_Calendar_EventDateTime();
-//$end->setDateTime('2016-04-16T10:00:00.000-00:00');//2014-8-23T10:25:00.000+05:30
-//$event->setEnd($end);
-//try{
-//   $createdEvent = $cal->events->insert('ssomens.com_i7h5a6b4dfee8afi84kkrqqmlc@group.calendar.google.com', $event);
-//   $cal_flag=1;
-//   return $createdEvent->getId();
-//}
-//catch(Exception $e){
-//   $cal_flag=0;
-//   return $e->getMessage();
-//}
     }
 //CALENDAR EVENT CREATION FOR STARHUB N UNIT FORM
     public  function  StarHubUnit_CreateCalEvent($cal,$startdate,$startdate_starttime,$startdate_endtime,$enddate,$enddate_starttime,$enddate_endtime,$TypeOfExp,$unitno,$accountno,$starteventtype,$endeventtype,$eiornonei,$rent)

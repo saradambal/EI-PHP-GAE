@@ -5,17 +5,22 @@
 * Date: 8/5/15
 * Time: 5:59 PM
 */
+//******************************************COMMON FUNCTION********************************************//
+//DONE BY:SARADAMBAL
+//VER 0.02-SD:02/06/2015 ED:02/06/2015,GET THE LOGO & CALENDAR IMAGE PATH AND THEN GET THE SERVICE ID
+//VER 0.01-SD:08/05/2015 ED:09/05/2015,COMPLETED COMMON FUNCTION
+//*******************************************************************************************************//
 class Common_function extends CI_Model {
 //FUNCTION TO GET BANK_TRANSFER_MODELS
-    public function getRecheckinCustomerUnit()
-    {
-        $this->db->select("UNIT_NO");
-        $this->db->order_by("UNIT_NO", "ASC");
-        $this->db->from('VW_RECHECKIN_CUSTOMER');
-        $this->db->distinct();
-        $query = $this->db->get();
-        return $query->result();
-    }
+public function getRecheckinCustomerUnit()
+{
+    $this->db->select("UNIT_NO");
+    $this->db->order_by("UNIT_NO", "ASC");
+    $this->db->from('VW_RECHECKIN_CUSTOMER');
+    $this->db->distinct();
+    $query = $this->db->get();
+    return $query->result();
+}
 Public function getBankTransferModels()
 {
 $this->db->select("BTM_ID,BTM_DATA");
@@ -175,16 +180,16 @@ return $query->result();
 //FUNCTION TO CHECK UNIT NO EXISTS OR NOT
 public function CheckUnitnoExists($BDLY_INPUT_unitval)
 {
-    $CheckUnitnoExists ="SELECT * FROM UNIT WHERE UNIT_NO=".$BDLY_INPUT_unitval;
-    $this->db->query($CheckUnitnoExists);
-    if ($this->db->affected_rows() > 0) {
-        $Unitnoflag= true;
-    }
-    else
-    {
-        $Unitnoflag= false;
-    }
-    return $Unitnoflag;
+$CheckUnitnoExists ="SELECT * FROM UNIT WHERE UNIT_NO=".$BDLY_INPUT_unitval;
+$this->db->query($CheckUnitnoExists);
+if ($this->db->affected_rows() > 0) {
+    $Unitnoflag= true;
+}
+else
+{
+    $Unitnoflag= false;
+}
+return $Unitnoflag;
 }
 //FUNCTION TO CHECK TRANSACTION OF A RECORD
 public  function ChkTransactionBeforeDelete($tableid,$rowid)
@@ -193,50 +198,50 @@ $this->db->query("CALL SP_CHK_TRANSACTION('$tableid','$rowid',@DELETION_FLAG)");
 $this->db->select('@DELETION_FLAG as DELETION_FLAG', FALSE);
 return $this->db->get()->result_array();
 }
-    //FUNCTION TO GET UNIT SDATE AND EDATE AND INVDATE ADDING AND SUBTR USING CONFIG MONTH
-    public  function GetUnitSdEdInvdate($unitno)
-    {
-        $BDLY_INPUT_sp_stmt="CALL SP_CONFIG_SDATE_EDATE((SELECT UNIT_ID FROM UNIT WHERE UNIT_NO='$unitno'),@SDATE,@EDATE,@INVDATE)";
-        $this->db->query($BDLY_INPUT_sp_stmt);
+//FUNCTION TO GET UNIT SDATE AND EDATE AND INVDATE ADDING AND SUBTR USING CONFIG MONTH
+public  function GetUnitSdEdInvdate($unitno)
+{
+    $BDLY_INPUT_sp_stmt="CALL SP_CONFIG_SDATE_EDATE((SELECT UNIT_ID FROM UNIT WHERE UNIT_NO='$unitno'),@SDATE,@EDATE,@INVDATE)";
+    $this->db->query($BDLY_INPUT_sp_stmt);
 
-        $BDLY_INPUT_sp_rs = 'SELECT @SDATE,@EDATE,@INVDATE';
-        $query = $this->db->query($BDLY_INPUT_sp_rs);
-        foreach ($query->result_array() as $row)
-        {
-            $BDLY_INPUT_getsdate=$row['@SDATE'];
-            $BDLY_INPUT_getedate=$row['@EDATE'];
-            $BDLY_INPUT_invdate=$row['@INVDATE'];
-        }
+    $BDLY_INPUT_sp_rs = 'SELECT @SDATE,@EDATE,@INVDATE';
+    $query = $this->db->query($BDLY_INPUT_sp_rs);
+    foreach ($query->result_array() as $row)
+    {
+        $BDLY_INPUT_getsdate=$row['@SDATE'];
+        $BDLY_INPUT_getedate=$row['@EDATE'];
+        $BDLY_INPUT_invdate=$row['@INVDATE'];
+    }
 
-        $BDLY_INPUT_unitdate=array("unitsdate"=>$BDLY_INPUT_getsdate,"unitedate"=>$BDLY_INPUT_getedate,"invdate"=>$BDLY_INPUT_invdate);
-        return $BDLY_INPUT_unitdate;
+    $BDLY_INPUT_unitdate=array("unitsdate"=>$BDLY_INPUT_getsdate,"unitedate"=>$BDLY_INPUT_getedate,"invdate"=>$BDLY_INPUT_invdate);
+    return $BDLY_INPUT_unitdate;
+}
+//FUNCTION TO CHECK HOUSE KEEPING UNIT NO EXISTS OR NOT
+public function CheckHKPUnitnoExists($BDLY_INPUT_unitval)
+{
+    $CheckHKPUnitnoExists = "SELECT EHKU_UNIT_NO FROM EXPENSE_HOUSEKEEPING_UNIT WHERE EHKU_UNIT_NO='$BDLY_INPUT_unitval'";
+    $this->db->query($CheckHKPUnitnoExists);
+    if ($this->db->affected_rows() > 0) {
+        $HKPunitflag= true;
     }
-    //FUNCTION TO CHECK HOUSE KEEPING UNIT NO EXISTS OR NOT
-    public function CheckHKPUnitnoExists($BDLY_INPUT_unitval)
+    else{
+        $HKPunitflag= false;
+    }
+    return $HKPunitflag;
+}
+//FUNCTION TO DELETE A RECORD
+public  function DeleteRecord($tableid,$rowid,$USERSTAMP)
+{
+    $deletestmt = "CALL SP_SINGLE_TABLE_ROW_DELETION('$tableid','$rowid','$USERSTAMP',@DELETION_FLAG)";
+    $this->db->query($deletestmt);
+    $PDLY_INPUT_rs_flag = 'SELECT @DELETION_FLAG';
+    $query = $this->db->query($PDLY_INPUT_rs_flag);
+    foreach ($query->result_array() as $row)
     {
-        $CheckHKPUnitnoExists = "SELECT EHKU_UNIT_NO FROM EXPENSE_HOUSEKEEPING_UNIT WHERE EHKU_UNIT_NO='$BDLY_INPUT_unitval'";
-        $this->db->query($CheckHKPUnitnoExists);
-        if ($this->db->affected_rows() > 0) {
-            $HKPunitflag= true;
-        }
-        else{
-            $HKPunitflag= false;
-        }
-        return $HKPunitflag;
+        $deleteflag=$row['@DELETION_FLAG'];
     }
-    //FUNCTION TO DELETE A RECORD
-    public  function DeleteRecord($tableid,$rowid,$USERSTAMP)
-    {
-        $deletestmt = "CALL SP_SINGLE_TABLE_ROW_DELETION('$tableid','$rowid','$USERSTAMP',@DELETION_FLAG)";
-        $this->db->query($deletestmt);
-        $PDLY_INPUT_rs_flag = 'SELECT @DELETION_FLAG';
-        $query = $this->db->query($PDLY_INPUT_rs_flag);
-        foreach ($query->result_array() as $row)
-        {
-            $deleteflag=$row['@DELETION_FLAG'];
-        }
-        return $deleteflag;
-    }
+    return $deleteflag;
+}
 
 //FUNCTION TO GET CALENDAR EVENT TIME FOR STARHUB N UNIT
 public function getStarHubUnitCalTime()
@@ -630,47 +635,47 @@ public function Get_MailDisplayName($s){
 switch($s)
 {
 case 'BANK_TT':
-    return 'BANK TT';
-    break;
+return 'BANK TT';
+break;
 case 'ERM':
-    return 'ERM';
-    break;
+return 'ERM';
+break;
 case 'ACTIVE_CC_LIST':
-    return 'ACTIVE CC LIST';
-    break;
+return 'ACTIVE CC LIST';
+break;
 case 'CUSTOMER_EXPIRY':
-    return 'CUSTOMER EXPIRY LIST';
-    break;
+return 'CUSTOMER EXPIRY LIST';
+break;
 case 'OUTSTANDING_PAYEES':
-    return 'OUTSTANDING PAYEES LIST';
-    break;
+return 'OUTSTANDING PAYEES LIST';
+break;
 case 'NON_PAYMENT_REMINDER':
-    return 'NON PAYMENT REMINDER';
-    break;
+return 'NON PAYMENT REMINDER';
+break;
 case 'NON_PAYMENT_NON_INTIMATED_CC':
-    return 'NON PAYMENT_NON INTIMATED CC LIST';
-    break;
+return 'NON PAYMENT_NON INTIMATED CC LIST';
+break;
 case 'MONTHLY_PAYMENT_NON_INTIMATED_CC':
-    return 'MONTHLY PAYMENT_NON INTIMATED CC LIST';
-    break;
+return 'MONTHLY PAYMENT_NON INTIMATED CC LIST';
+break;
 case 'DEPOSIT_DEDUCTION':
-    return 'DEPOSIT DEDUCTION';
-    break;
+return 'DEPOSIT DEDUCTION';
+break;
 case 'INVOICE':
-    return 'INVOICE';
-    break;
+return 'INVOICE';
+break;
 case 'CONTRACT':
-    return 'CONTRACT';
-    break;
+return 'CONTRACT';
+break;
 case 'INVOICE_N_CONTRACT':
-    return 'INVOICE N CONTRACT';
-    break;
+return 'INVOICE N CONTRACT';
+break;
 case 'MONTHLY_PAYMENT_REMINDER':
-    return 'MONTHLY PAYMENT REMINDER';
-    break;
+return 'MONTHLY PAYMENT REMINDER';
+break;
 case 'DROP_TEMP_TABLE':
-    return 'TEMPORARY TABLE LIST';
-    break;
+return 'TEMPORARY TABLE LIST';
+break;
 }
 }
 //FUNCTION TO GET CURRENT TIMEZONE IN 24 HRS FORMAT
@@ -714,11 +719,11 @@ strpos($Leaseperiod,"Day")==false?$daychk=-1:$daychk=strpos($Leaseperiod,"Day");
 if(($yearchk>0)||($monthschk>0)||(($monthchk>0)&&($daychk>0)))
 {
 
-  $chkproflag='true';
+$chkproflag='true';
 }
 else if((($yearchk<0)&&($monthschk<0)&&($daychk>0)&&($monthchk<0))||(($yearchk<0)&&($monthschk<0)&&($daychk<0)&&($monthchk>0)))
 {
-  $chkproflag='false';
+$chkproflag='false';
 }
 }
 return $chkproflag;
@@ -728,355 +733,343 @@ public function getTimezone()
 {
 return ("'+00:00','+08:00'");
 }
-
 //ALGORITHM
-//
-//get days of current year
-//test=divide by 4;
-//get days diff between two dates;
-//getdays%test;
 // QUARTER CALCULATION
-    public  function quarterCalc( $d1,  $d2)
+public  function quarterCalc( $d1,  $d2)
+{
+    $urlLink=base_url().'JS/quarterCal.js';
+    echo '<script src="'.$urlLink.'"></script><script>var result=quarterCalc( "' . $d1 . '","' . $d2 . '");</script>';
+    $mi = "<script >document.write(result);</script>";
+    return $mi;
+}
+//FUNCTION TO GET THE URL TO USE GAS SCRIPT
+public  function getUrlAccessGasScript()
+{
+    $this->db->select("URC_DATA");
+    $this->db->from('USER_RIGHTS_CONFIGURATION');
+    $this->db->where('URC_ID=7');
+    return $this->db->get()->row()->URC_DATA;
+}
+//FUNCTION TO GET THE CLIENT,TOKEN ID
+public  function getCalendarIdCilentIdService()
+{
+    $this->db->select("URC_DATA");
+    $this->db->from('USER_RIGHTS_CONFIGURATION');
+    $this->db->where('URC_ID IN(8,9,10,11,12,13,16,17)');
+    foreach ($this->db->get()->result_array() as $key=>$val)
     {
-        echo '<script src="http://localhost/CI-GAE/JS/quarterCal.js"></script><script>var result=quarterCalc( "' . $d1 . '","' . $d2 . '");</script>';
-        $mi = "<script >document.write(result);</script>";
-        return $mi;
+        $result[]=$val['URC_DATA'];
     }
-    //FUNCTION TO GET THE URL TO USE GAS SCRIPT
-    public  function getUrlAccessGasScript()
+    return $result;
+}
+//FUNCTION TO LOGO AND CALENDAR
+public  function getLogoCalendar()
+{
+    $this->db->select("URC_DATA");
+    $this->db->from('USER_RIGHTS_CONFIGURATION');
+    $this->db->where('URC_ID IN(14,15)');
+    foreach ($this->db->get()->result_array() as $key=>$val)
     {
-        $this->db->select("URC_DATA");
-        $this->db->from('USER_RIGHTS_CONFIGURATION');
-        $this->db->where('URC_ID=7');
-        return $this->db->get()->row()->URC_DATA;
+        $result[]=$val['URC_DATA'];
     }
-    //FUNCTION TO GET THE CLIENT,TOKEN ID
-    public  function getCalendarIdCilentIdService()
-    {
-        $this->db->select("URC_DATA");
-        $this->db->from('USER_RIGHTS_CONFIGURATION');
-        $this->db->where('URC_ID IN(8,9,10,11,12,13,16,17)');
-        foreach ($this->db->get()->result_array() as $key=>$val)
-        {
-            $result[]=$val['URC_DATA'];
-        }
-        return $result;
-    }
-    //FUNCTION TO LOGO AND CALENDAR
-    public  function getLogoCalendar()
-    {
-        $this->db->select("URC_DATA");
-        $this->db->from('USER_RIGHTS_CONFIGURATION');
-        $this->db->where('URC_ID IN(14,15)');
-        foreach ($this->db->get()->result_array() as $key=>$val)
-        {
-            $result[]=$val['URC_DATA'];
-        }
-        return $result;
-    }
+    return $result;
+}
 //FUNCTION TO GET EVENTS BEFORE UPDATE TABLE
 public  function CTermExtn_GetCalevent($CTermExtn_custid)
 {
-    $sql = "CALL SP_CUSTOMER_MIN_MAX_RV(".$CTermExtn_custid.",@MIN_LP,@MAX_LP)";
+$sql = "CALL SP_CUSTOMER_MIN_MAX_RV(".$CTermExtn_custid.",@MIN_LP,@MAX_LP)";
 $this->db->query($sql);
 $this->db->select('@MIN_LP AS MIN,@MAX_LP AS MAX', FALSE);
 $minLP = $this->db->get()->row()->MIN;
 $queryCustomer=$this->db->query("SELECT  C.CUSTOMER_FIRST_NAME,C.CUSTOMER_LAST_NAME,CED.CED_REC_VER,CTD.CLP_GUEST_CARD,CTD.CLP_STARTDATE,IF(CTD.CLP_PRETERMINATE_DATE IS NULL,CTD.CLP_ENDDATE ,CTD.CLP_PRETERMINATE_DATE) AS ENDDATE,CPD.CPD_MOBILE,CPD.CPD_INTL_MOBILE,CCD.CCD_OFFICE_NO,CPD.CPD_EMAIL,U.UNIT_NO,URTD.URTD_ROOM_TYPE,CTPA.CTP_DATA AS CED_SD_STIME, CTPB.CTP_DATA AS CED_SD_ETIME,CTPC.CTP_DATA AS CED_ED_STIME, CTPD.CTP_DATA AS CED_ED_ETIME FROM  CUSTOMER_ENTRY_DETAILS CED LEFT JOIN CUSTOMER_TIME_PROFILE CTPA ON CED.CED_SD_STIME = CTPA.CTP_ID LEFT JOIN CUSTOMER_TIME_PROFILE CTPB ON CED.CED_SD_ETIME = CTPB.CTP_ID LEFT JOIN CUSTOMER_TIME_PROFILE CTPC ON CED.CED_ED_STIME = CTPC.CTP_ID LEFT JOIN CUSTOMER_TIME_PROFILE CTPD ON CED.CED_ED_ETIME = CTPD.CTP_ID LEFT JOIN CUSTOMER_COMPANY_DETAILS CCD ON CED.CUSTOMER_ID=CCD.CUSTOMER_ID LEFT JOIN  CUSTOMER_PERSONAL_DETAILS CPD ON CED.CUSTOMER_ID=CPD.CUSTOMER_ID,CUSTOMER_LP_DETAILS CTD,UNIT_ROOM_TYPE_DETAILS URTD, UNIT_ACCESS_STAMP_DETAILS UASD ,UNIT U,CUSTOMER C WHERE  CED.UNIT_ID=U.UNIT_ID AND (CED.CUSTOMER_ID=".$CTermExtn_custid.")AND (CTD.CUSTOMER_ID=CED.CUSTOMER_ID) AND (CED.CED_REC_VER=CTD.CED_REC_VER) AND (CTD.CLP_GUEST_CARD IS NULL) AND CED.CED_CANCEL_DATE IS  NULL AND(UASD.UASD_ID=CED.UASD_ID) AND(UASD.URTD_ID=URTD.URTD_ID)  AND (C.CUSTOMER_ID=CED.CUSTOMER_ID) AND (CTD.CUSTOMER_ID=C.CUSTOMER_ID) AND CED.CED_REC_VER>=".$minLP." AND CTD.CLP_GUEST_CARD IS NULL ORDER BY CED.CED_REC_VER, CTD.CLP_GUEST_CARD ASC");
-    $result []=$queryCustomer->row_array();
+$result []=$queryCustomer->row_array();
 for ($s=0;$s<count($result);$s++)
 {
-  $finalResult[]=array('sddate'=>$result[$s]['CLP_STARTDATE'],'sdtimein'=>$result[$s]['CED_SD_STIME'],'sdtimeout'=>$result[$s]['CED_SD_ETIME'],'eddate'=>$result[$s]['CLP_STARTDATE'],'edtimein'=>$result[$s]['CLP_STARTDATE'],'edtimeout'=>$result[$s]['CLP_STARTDATE']);
+$finalResult[]=array('sddate'=>$result[$s]['CLP_STARTDATE'],'sdtimein'=>$result[$s]['CED_SD_STIME'],'sdtimeout'=>$result[$s]['CED_SD_ETIME'],'eddate'=>$result[$s]['CLP_STARTDATE'],'edtimein'=>$result[$s]['CLP_STARTDATE'],'edtimeout'=>$result[$s]['CLP_STARTDATE']);
 
 }
 return $finalResult;
 }
-
 //FUNCTION TO SHARE DOCS FOR THE LOGIN ID
 function URSRC_shareDocuments($URSRC_custom_role,$URSRC_loginid,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
-    $URSRC_sharedocflag='';
-    try{
-        $URSRC_usermenu_array=array();
-        $URSRC_fileid_array=array();
-        $URSRC_folderid_array=array();
-        $URSRC_new_folder_array=array();
-        $URSRC_fileid=array();
-        if($URSRC_custom_role==""){
-            $this->db->select();
-            $this->db->from('USER_FILE_DETAILS UFD');
-            $this->db->join('FILE_PROFILE  FP','UFD.FP_ID=FP.FP_ID');
-            $this->db->where('UFD.RC_ID=(select RC_ID from ROLE_CREATION where RC_NAME=(SELECT RC.RC_NAME FROM USER_ACCESS UA,USER_LOGIN_DETAILS ULD,ROLE_CREATION RC WHERE RC.RC_ID=UA.RC_ID AND ULD.ULD_ID=UA.ULD_ID AND ULD_LOGINID="'.$URSRC_loginid.'" AND UA.UA_REC_VER=(SELECT MAX(UA.UA_REC_VER) FROM USER_ACCESS UA,USER_LOGIN_DETAILS ULD,ROLE_CREATION RC WHERE RC.RC_ID=UA.RC_ID AND ULD.ULD_ID=UA.ULD_ID AND ULD_LOGINID="'.$URSRC_loginid.'")))');
-            $URSRC_select_files=$this->db->get();
-        }else{
-            $this->db->select();
-            $this->db->from('USER_FILE_DETAILS UFD');
-            $this->db->join('FILE_PROFILE  FP','UFD.FP_ID=FP.FP_ID');
-            $this->db->where('UFD.RC_ID=(select RC_ID from ROLE_CREATION where RC_NAME="'.$URSRC_custom_role.'")');
-            $URSRC_select_files=$this->db->get();
-        }
-        foreach($URSRC_select_files->result_array() as $row){
-            $fileid=$row['FP_FILE_ID'];
-            $folderid=$row['FP_FOLDER_ID'];
-            if($fileid!=null){
-                $URSRC_fileid_array[]=($fileid);
-                $URSRC_folderid_array[]=($folderid);
-                $URSRC_fileid[]=($fileid);
-            }
-            if($fileid==null ||$fileid!=null){
-                $URSRC_fileid_array[]=($row["FP_FOLDER_ID"]);
-            }
-            if($fileid==null){
-                $URSRC_new_folder_array[]=($row["FP_FOLDER_ID"]);
-            }
-        }
-        $URSRC_fileid_array=array_values(array_unique($URSRC_fileid_array));
-        $URSRC_folderid_array=array_values(array_unique($URSRC_folderid_array));
-        $URSRC_all_fileid_array=array();
+$URSRC_sharedocflag='';
+try{
+    $URSRC_usermenu_array=array();
+    $URSRC_fileid_array=array();
+    $URSRC_folderid_array=array();
+    $URSRC_new_folder_array=array();
+    $URSRC_fileid=array();
+    if($URSRC_custom_role==""){
         $this->db->select();
-        $this->db->from('FILE_PROFILE');
-        $this->db->where('FP_FILE_FLAG is null');
-        $URSRC_select_allfiles=$this->db->get();
-        foreach($URSRC_select_allfiles->result_array() as $row){
-            $fileid=$row['FP_FILE_ID'];
-            if($fileid!=null){
-                $URSRC_all_fileid_array[]=($fileid);
-            }
-            if($fileid==null || $fileid!=null){
-                $URSRC_all_fileid_array[]=$row["FP_FOLDER_ID"];
-            }
+        $this->db->from('USER_FILE_DETAILS UFD');
+        $this->db->join('FILE_PROFILE  FP','UFD.FP_ID=FP.FP_ID');
+        $this->db->where('UFD.RC_ID=(select RC_ID from ROLE_CREATION where RC_NAME=(SELECT RC.RC_NAME FROM USER_ACCESS UA,USER_LOGIN_DETAILS ULD,ROLE_CREATION RC WHERE RC.RC_ID=UA.RC_ID AND ULD.ULD_ID=UA.ULD_ID AND ULD_LOGINID="'.$URSRC_loginid.'" AND UA.UA_REC_VER=(SELECT MAX(UA.UA_REC_VER) FROM USER_ACCESS UA,USER_LOGIN_DETAILS ULD,ROLE_CREATION RC WHERE RC.RC_ID=UA.RC_ID AND ULD.ULD_ID=UA.ULD_ID AND ULD_LOGINID="'.$URSRC_loginid.'")))');
+        $URSRC_select_files=$this->db->get();
+    }else{
+        $this->db->select();
+        $this->db->from('USER_FILE_DETAILS UFD');
+        $this->db->join('FILE_PROFILE  FP','UFD.FP_ID=FP.FP_ID');
+        $this->db->where('UFD.RC_ID=(select RC_ID from ROLE_CREATION where RC_NAME="'.$URSRC_custom_role.'")');
+        $URSRC_select_files=$this->db->get();
+    }
+    foreach($URSRC_select_files->result_array() as $row){
+        $fileid=$row['FP_FILE_ID'];
+        $folderid=$row['FP_FOLDER_ID'];
+        if($fileid!=null){
+            $URSRC_fileid_array[]=($fileid);
+            $URSRC_folderid_array[]=($folderid);
+            $URSRC_fileid[]=($fileid);
         }
-
-        $URSRC_all_fileid_array=array_values(array_unique($URSRC_all_fileid_array));
-        $service=$this->get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
-        for($i=0;$i<count($URSRC_all_fileid_array);$i++){
+        if($fileid==null ||$fileid!=null){
+            $URSRC_fileid_array[]=($row["FP_FOLDER_ID"]);
+        }
+        if($fileid==null){
+            $URSRC_new_folder_array[]=($row["FP_FOLDER_ID"]);
+        }
+    }
+    $URSRC_fileid_array=array_values(array_unique($URSRC_fileid_array));
+    $URSRC_folderid_array=array_values(array_unique($URSRC_folderid_array));
+    $URSRC_all_fileid_array=array();
+    $this->db->select();
+    $this->db->from('FILE_PROFILE');
+    $this->db->where('FP_FILE_FLAG is null');
+    $URSRC_select_allfiles=$this->db->get();
+    foreach($URSRC_select_allfiles->result_array() as $row){
+        $fileid=$row['FP_FILE_ID'];
+        if($fileid!=null){
+            $URSRC_all_fileid_array[]=($fileid);
+        }
+        if($fileid==null || $fileid!=null){
+            $URSRC_all_fileid_array[]=$row["FP_FOLDER_ID"];
+        }
+    }
+    $URSRC_all_fileid_array=array_values(array_unique($URSRC_all_fileid_array));
+    $service=$this->get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+    for($i=0;$i<count($URSRC_all_fileid_array);$i++){
 //            $file_type=$this->get_MIME_type($service,$URSRC_all_fileid_array[$i]);//DriveApp.getFileById(URSRC_all_fileid_array[i]).getMimeType();
-            $Folder_editor1=$this->URSRC_GetAllEditors($service,$URSRC_all_fileid_array[$i]);
-            if(count($Folder_editor1)==0){
-                $URSRC_sharedocflag=0;
-                break;
-            }
-            else $URSRC_sharedocflag=1;
-            for($j=0;$j<count($Folder_editor1);$j++){
-                if($URSRC_loginid==$Folder_editor1[$j])
-                {
-                    $URSRC_sharedocflag=$this->URSRC_RemoveEditor($service,$URSRC_all_fileid_array[$i],$URSRC_loginid);
-                }
+        $Folder_editor1=$this->URSRC_GetAllEditors($service,$URSRC_all_fileid_array[$i]);
+        if(count($Folder_editor1)==0){
+            $URSRC_sharedocflag=0;
+            break;
+        }
+        else $URSRC_sharedocflag=1;
+        for($j=0;$j<count($Folder_editor1);$j++){
+            if($URSRC_loginid==$Folder_editor1[$j])
+            {
+                $URSRC_sharedocflag=$this->URSRC_RemoveEditor($service,$URSRC_all_fileid_array[$i],$URSRC_loginid);
             }
         }
-        for($i=0;$i<count($URSRC_fileid_array);$i++)
-        {
-            $shar_Folder=$this->URSRC_AddEditor($service,$URSRC_fileid_array[$i],$URSRC_loginid);//DriveApp.getFolderById(URSRC_fileid_array[i]).addEditor(URSRC_loginid);
+    }
+    for($i=0;$i<count($URSRC_fileid_array);$i++)
+    {
+        $shar_Folder=$this->URSRC_AddEditor($service,$URSRC_fileid_array[$i],$URSRC_loginid);//DriveApp.getFolderById(URSRC_fileid_array[i]).addEditor(URSRC_loginid);
+    }
+    $get_files_array=array();
+    for($a=0;$a<count($URSRC_new_folder_array);$a++){
+        $get_files=$this->URSRC_GetAllFiles($service,$URSRC_new_folder_array[$a]);
+        for($h=0;$h<count($get_files);$h++){
+            $get_files_array[]=($get_files[$h]);
         }
-        $get_files_array=array();
-        for($a=0;$a<count($URSRC_new_folder_array);$a++){
-            $get_files=$this->URSRC_GetAllFiles($service,$URSRC_new_folder_array[$a]);
-            for($h=0;$h<count($get_files);$h++){
-                $get_files_array[]=($get_files[$h]);
-
-            }
-
-        }
-        for($h=0;$h<count($get_files_array);$h++){
+    }
+    for($h=0;$h<count($get_files_array);$h++){
 //$file_type=$this->get_MIME_type($service,$get_files_array[$h]);
-            $new_fileeditors=$this->URSRC_GetAllEditors($service,$get_files_array[$h]);
-            for($j=0;$j<count($new_fileeditors);$j++){
-                if($URSRC_loginid==$new_fileeditors[$j]){
-                    $this->URSRC_RemoveEditor($service,$get_files_array[$j],$URSRC_loginid);
-                }
+        $new_fileeditors=$this->URSRC_GetAllEditors($service,$get_files_array[$h]);
+        for($j=0;$j<count($new_fileeditors);$j++){
+            if($URSRC_loginid==$new_fileeditors[$j]){
+                $this->URSRC_RemoveEditor($service,$get_files_array[$j],$URSRC_loginid);
             }
         }
-        $allid_array=array();
-        if(count($URSRC_folderid_array)!=0){
-            $folder=$URSRC_folderid_array[0];
-            $allid_array=$this->URSRC_getAllFiles($service,$folder);//TO GET FOLDER FILES
-        }
-        $URSRC_new_diff_array=array();
-        if(count($URSRC_fileid)!=0){
-            $URSRC_new_diff_array=array_diff($allid_array,$allid_array);//;getDifferenceArray($URSRC_fileid,$allid_array);
-            $URSRC_new_diff_array=array_values($URSRC_new_diff_array);
-            for($k=0;$k< count($URSRC_new_diff_array);$k++){
+    }
+    $allid_array=array();
+    if(count($URSRC_folderid_array)!=0){
+        $folder=$URSRC_folderid_array[0];
+        $allid_array=$this->URSRC_getAllFiles($service,$folder);//TO GET FOLDER FILES
+    }
+    $URSRC_new_diff_array=array();
+    if(count($URSRC_fileid)!=0){
+        $URSRC_new_diff_array=array_diff($allid_array,$allid_array);//;getDifferenceArray($URSRC_fileid,$allid_array);
+        $URSRC_new_diff_array=array_values($URSRC_new_diff_array);
+        for($k=0;$k< count($URSRC_new_diff_array);$k++){
 //            $file_type=$this->get_MIME_type($service,$URSRC_new_diff_array[$k]);
-                $foldereditors=$this->URSRC_GetAllEditors($service,$URSRC_new_diff_array[$k]);
-                for($l=0;$l<count($foldereditors);$l++){
-                    if($foldereditors[$l]=='')continue;
-                    if($URSRC_loginid==$foldereditors[$l])
-                    {
-                        $this->URSRC_RemoveEditor($service,$URSRC_new_diff_array[$k],$URSRC_loginid);
-                    }
+            $foldereditors=$this->URSRC_GetAllEditors($service,$URSRC_new_diff_array[$k]);
+            for($l=0;$l<count($foldereditors);$l++){
+                if($foldereditors[$l]=='')continue;
+                if($URSRC_loginid==$foldereditors[$l])
+                {
+                    $this->URSRC_RemoveEditor($service,$URSRC_new_diff_array[$k],$URSRC_loginid);
                 }
             }
         }
     }
-    catch(Exception $e){
-        $URSRC_sharedocflag=0;
-    }
-    return $URSRC_sharedocflag;
+}
+catch(Exception $e){
+    $URSRC_sharedocflag=0;
+}
+return $URSRC_sharedocflag;
 }
 //FUNCTION TO UNSHARE DOCS
 public function URSRC_unshareDocuments($URSRC_custom_role,$URSRC_loginid,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
-    $URSRC_sharedocflag='';
-    try{
-        $URSRC_fileid_array=array();
-        $URSRC_old_fileid_array=array();
-        if($URSRC_custom_role==""){
-            $this->db->select();
-            $this->db->from('USER_FILE_DETAILS UFD');
-            $this->db->join('FILE_PROFILE FP','FP.FP_ID=UFD.FP_ID');
-            $this->db->where('UFD.RC_ID=(select RC_ID from ROLE_CREATION where RC_NAME=(SELECT RC.RC_NAME FROM USER_ACCESS UA,USER_LOGIN_DETAILS ULD,ROLE_CREATION RC WHERE RC.RC_ID=UA.RC_ID AND ULD.ULD_ID=UA.ULD_ID AND ULD_LOGINID="'.$URSRC_loginid.'" AND UA.UA_REC_VER=(SELECT MAX(UA.UA_REC_VER) FROM USER_ACCESS UA,USER_LOGIN_DETAILS ULD,ROLE_CREATION RC WHERE RC.RC_ID=UA.RC_ID AND ULD.ULD_ID=UA.ULD_ID AND ULD_LOGINID="'.$URSRC_loginid.'")))');
-            $URSRC_select_files=$this->db->get();
-        }else{
-            $this->db->select();
-            $this->db->from('USER_FILE_DETAILS UFD');
-            $this->db->join('FILE_PROFILE FP','FP.FP_ID=UFD.FP_ID');
-            $this->db->where('UFD.RC_ID=(select RC_ID from ROLE_CREATION where RC_NAME="'.$URSRC_custom_role.'")');
-            $URSRC_select_files=$this->db->get();
+$URSRC_sharedocflag='';
+try{
+    $URSRC_fileid_array=array();
+    $URSRC_old_fileid_array=array();
+    if($URSRC_custom_role==""){
+        $this->db->select();
+        $this->db->from('USER_FILE_DETAILS UFD');
+        $this->db->join('FILE_PROFILE FP','FP.FP_ID=UFD.FP_ID');
+        $this->db->where('UFD.RC_ID=(select RC_ID from ROLE_CREATION where RC_NAME=(SELECT RC.RC_NAME FROM USER_ACCESS UA,USER_LOGIN_DETAILS ULD,ROLE_CREATION RC WHERE RC.RC_ID=UA.RC_ID AND ULD.ULD_ID=UA.ULD_ID AND ULD_LOGINID="'.$URSRC_loginid.'" AND UA.UA_REC_VER=(SELECT MAX(UA.UA_REC_VER) FROM USER_ACCESS UA,USER_LOGIN_DETAILS ULD,ROLE_CREATION RC WHERE RC.RC_ID=UA.RC_ID AND ULD.ULD_ID=UA.ULD_ID AND ULD_LOGINID="'.$URSRC_loginid.'")))');
+        $URSRC_select_files=$this->db->get();
+    }else{
+        $this->db->select();
+        $this->db->from('USER_FILE_DETAILS UFD');
+        $this->db->join('FILE_PROFILE FP','FP.FP_ID=UFD.FP_ID');
+        $this->db->where('UFD.RC_ID=(select RC_ID from ROLE_CREATION where RC_NAME="'.$URSRC_custom_role.'")');
+        $URSRC_select_files=$this->db->get();
+    }
+    foreach($URSRC_select_files->result_array() as $row){
+        $fileid=$row["FP_FILE_ID"];
+        $folderid=$row["FP_FOLDER_ID"];
+        if($fileid!=null){
+            $URSRC_fileid_array[]=($fileid);
         }
-        foreach($URSRC_select_files->result_array() as $row){
-            $fileid=$row["FP_FILE_ID"];
-            $folderid=$row["FP_FOLDER_ID"];
-            if($fileid!=null){
-                $URSRC_fileid_array[]=($fileid);
-            }
-            if($fileid==null ||$fileid!=null){
-                $URSRC_fileid_array[]=($row["FP_FOLDER_ID"]);
-            }
+        if($fileid==null ||$fileid!=null){
+            $URSRC_fileid_array[]=($row["FP_FOLDER_ID"]);
         }
-        $service=$this->get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
-        for($i=0;$i<count($URSRC_fileid_array);$i++)
-        {
-            $Folder_editor1=$this->URSRC_GetAllEditors($service,$URSRC_fileid_array[$i]);
-            for($j=0;$j<count($Folder_editor1);$j++){
-                if($URSRC_loginid==$Folder_editor1[$j])
-                {
-                    $this->URSRC_RemoveEditor($service,$URSRC_fileid_array[$i],$URSRC_loginid);
-                    $URSRC_sharedocflag=1;
-                }
+    }
+    $service=$this->get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+    for($i=0;$i<count($URSRC_fileid_array);$i++)
+    {
+        $Folder_editor1=$this->URSRC_GetAllEditors($service,$URSRC_fileid_array[$i]);
+        for($j=0;$j<count($Folder_editor1);$j++){
+            if($URSRC_loginid==$Folder_editor1[$j])
+            {
+                $this->URSRC_RemoveEditor($service,$URSRC_fileid_array[$i],$URSRC_loginid);
+                $URSRC_sharedocflag=1;
             }
         }
     }
-    catch(Exception $e){
-        $URSRC_sharedocflag=0;
-    }
-    return $URSRC_sharedocflag;
+}
+catch(Exception $e){
+    $URSRC_sharedocflag=0;
+}
+return $URSRC_sharedocflag;
 }
 public function get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
-    $drive = new Google_Client();
-    $drive->setClientId($ClientId);
-    $drive->setClientSecret($ClientSecret);
-    $drive->setRedirectUri($RedirectUri);
-    $drive->setScopes(array($DriveScopes,$CalenderScopes));
-    $drive->setAccessType('online');
-    $authUrl = $drive->createAuthUrl();
-    $refresh_token= $Refresh_Token;
-    $drive->refreshToken($refresh_token);
-    $service = new Google_Service_Drive($drive);
-    return $service;
+$drive = new Google_Client();
+$drive->setClientId($ClientId);
+$drive->setClientSecret($ClientSecret);
+$drive->setRedirectUri($RedirectUri);
+$drive->setScopes(array($DriveScopes,$CalenderScopes));
+$drive->setAccessType('online');
+$authUrl = $drive->createAuthUrl();
+$refresh_token= $Refresh_Token;
+$drive->refreshToken($refresh_token);
+$service = new Google_Service_Drive($drive);
+return $service;
 }
 
 public function URSRC_GetAllEditors($service,$fileid){
 
-    try {
-        $permission_id=array();
-        $emailadrress=array();
-        $role_array=array();
-        $permissions = $service->permissions->listPermissions($fileid);
-        $return_value= $permissions->getItems();
-        foreach ($return_value as $key => $value) {
-            $permission_id[]=$value->id;
-            $emailadrress[]=$value->emailAddress;
-            $role_array[]=$value->role;
-        }
-    } catch (Exception $e) {
-        $emailadrress=array();
-    }
-    return $emailadrress;
-}
-public  function URSRC_RemoveEditor($service,$fileid,$URSRC_loginid){
-    $URSRC_sharedocflag='';
-  try {
+try {
+    $permission_id=array();
+    $emailadrress=array();
+    $role_array=array();
     $permissions = $service->permissions->listPermissions($fileid);
     $return_value= $permissions->getItems();
-    $permission_id='';
     foreach ($return_value as $key => $value) {
-        if ($value->emailAddress==$URSRC_loginid) {
-            $permission_id=$value->id;
-        }
+        $permission_id[]=$value->id;
+        $emailadrress[]=$value->emailAddress;
+        $role_array[]=$value->role;
     }
-    if($permission_id!=''){
-        try {
-            $service->permissions->delete($fileid, $permission_id);
+} catch (Exception $e) {
+    $emailadrress=array();
+}
+return $emailadrress;
+}
+public  function URSRC_RemoveEditor($service,$fileid,$URSRC_loginid){
+$URSRC_sharedocflag='';
+try {
+$permissions = $service->permissions->listPermissions($fileid);
+$return_value= $permissions->getItems();
+$permission_id='';
+foreach ($return_value as $key => $value) {
+    if ($value->emailAddress==$URSRC_loginid) {
+        $permission_id=$value->id;
+    }
+}
+if($permission_id!=''){
+    try {
+        $service->permissions->delete($fileid, $permission_id);
 //        $ss_flag=1;
-        } catch (Exception $e) {
+    } catch (Exception $e) {
 //        $ss_flag=0;
-        }
     }
-    $URSRC_sharedocflag=1;
-  }
-  catch (Exception $e) {
-    $URSRC_sharedocflag=0;
+}
+$URSRC_sharedocflag=1;
+}
+catch (Exception $e) {
+$URSRC_sharedocflag=0;
 }
 return $URSRC_sharedocflag;
 
 }
+//ADD EDITORS
 public  function URSRC_AddEditor($service,$fileid,$URSRC_loginid){
-
-    $value=$URSRC_loginid;
-    $type='user';
-    $role='writer';
-    $email=$URSRC_loginid;
-    $newPermission = new Google_Service_Drive_Permission();
-    $newPermission->setValue($value);
-    $newPermission->setType($type);
-    $newPermission->setRole($role);
-    $newPermission->setEmailAddress($email);
-    try {
-        $service->permissions->insert($fileid, $newPermission);
-    } catch (Exception $e) {
-    }
+$value=$URSRC_loginid;
+$type='user';
+$role='writer';
+$email=$URSRC_loginid;
+$newPermission = new Google_Service_Drive_Permission();
+$newPermission->setValue($value);
+$newPermission->setType($type);
+$newPermission->setRole($role);
+$newPermission->setEmailAddress($email);
+try {
+    $service->permissions->insert($fileid, $newPermission);
+} catch (Exception $e) {
 }
-
+}
+//get all files using folder id
 public function URSRC_GetAllFiles($service,$folderid){
-
-    $children1 = $service->children->listChildren($folderid);
-    $filearray1=$children1->getItems();
-    $emp_uploadfilenamelist=array();
-    foreach ($filearray1 as $child1) {
-//            if($service->files->get($child1->getId())->getExplicitlyTrashed()==1)continue;
-//            $emp_uploadfilenamelist[]=$service->files->get($child1->getId())->id;
-        $emp_uploadfilenamelist[]=($child1->getId());
-    }
-    return $emp_uploadfilenamelist;
+$children1 = $service->children->listChildren($folderid);
+$filearray1=$children1->getItems();
+$emp_uploadfilenamelist=array();
+foreach ($filearray1 as $child1) {
+    $emp_uploadfilenamelist[]=($child1->getId());
+}
+return $emp_uploadfilenamelist;
 }
 //FUNCTION TO SHARE/UNSHARE CALENDAR
 function USRC_shareUnSharecalender($URSRC_loginid,$role,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
-    $this->load->model('Eilib/Calender');
-    $calendarId=$this->Calender->GetEICalendarId();
-    try{
-        $cal = $this->Calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
-        $rule = new Google_Service_Calendar_AclRule();
-        $scope = new Google_Service_Calendar_AclRuleScope();
-        $scope->setType("user");
-        $scope->setValue($URSRC_loginid);
-        $rule->setScope($scope);
-        $rule->setRole($role);
-        $createdRule = $cal->acl->insert($calendarId, $rule);
-        return 1;
-    }
-    catch(Exception $e){
-        return 0;
-    }
- }
+$this->load->model('Eilib/Calender');
+$calendarId=$this->Calender->GetEICalendarId();
+try{
+    $cal = $this->Calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+    $rule = new Google_Service_Calendar_AclRule();
+    $scope = new Google_Service_Calendar_AclRuleScope();
+    $scope->setType("user");
+    $scope->setValue($URSRC_loginid);
+    $rule->setScope($scope);
+    $rule->setRole($role);
+    $createdRule = $cal->acl->insert($calendarId, $rule);
+    return 1;
+}
+catch(Exception $e){
+    return 0;
+}
+}
 //FUNCTION TO FILE ID TO GET TITLE
-    public  function CUST_FileId_invoiceTem()
-    {
-        $this->db->select("CCN_DATA");
-        $this->db->from('CUSTOMER_CONFIGURATION');
-        $this->db->where("CCN_ID=11");
-        return $this->db->get()->row()->CCN_DATA;
-    }
-    public function getActive_Customer_Recver_Dates($unit,$customer,$Recever)
-    {
-        $LPselectquery="SELECT CLP.CLP_STARTDATE,CLP.CLP_ENDDATE,CLP.CLP_PRETERMINATE_DATE FROM CUSTOMER_LP_DETAILS CLP,CUSTOMER_ENTRY_DETAILS CED,UNIT U WHERE CED.CUSTOMER_ID=CLP.CUSTOMER_ID AND CED.UNIT_ID = U.UNIT_ID AND CLP.CED_REC_VER = CED.CED_REC_VER AND CED.CUSTOMER_ID='$customer' AND CED.CED_REC_VER='$Recever' AND U.UNIT_NO='$unit'";
-        $resultset=$this->db->query($LPselectquery);
-        return $resultset->result();
-    }
+public  function CUST_FileId_invoiceTem()
+{
+    $this->db->select("CCN_DATA");
+    $this->db->from('CUSTOMER_CONFIGURATION');
+    $this->db->where("CCN_ID=11");
+    return $this->db->get()->row()->CCN_DATA;
+}
+public function getActive_Customer_Recver_Dates($unit,$customer,$Recever)
+{
+    $LPselectquery="SELECT CLP.CLP_STARTDATE,CLP.CLP_ENDDATE,CLP.CLP_PRETERMINATE_DATE FROM CUSTOMER_LP_DETAILS CLP,CUSTOMER_ENTRY_DETAILS CED,UNIT U WHERE CED.CUSTOMER_ID=CLP.CUSTOMER_ID AND CED.UNIT_ID = U.UNIT_ID AND CLP.CED_REC_VER = CED.CED_REC_VER AND CED.CUSTOMER_ID='$customer' AND CED.CED_REC_VER='$Recever' AND U.UNIT_NO='$unit'";
+    $resultset=$this->db->query($LPselectquery);
+    return $resultset->result();
+}
 }

@@ -1,5 +1,8 @@
 <?php
-
+//******************************************CURRENCTY TO WORD********************************************//
+//DONE BY:SARADAMBAL
+//VER 0.01-SD:12/05/2015 ED:12/02/2015,COMPLETED CURRENCY TO WORD
+//*******************************************************************************************************//
 // Yes, you can create your own exceptions in PHP
 class currencyToWord extends CI_Model {
     public function test($amt){
