@@ -750,7 +750,30 @@ return ("'+00:00','+08:00'");
         $this->db->where('URC_ID=7');
         return $this->db->get()->row()->URC_DATA;
     }
-//}
+    //FUNCTION TO GET THE CLIENT,TOKEN ID
+    public  function getCalendarIdCilentIdService()
+    {
+        $this->db->select("URC_DATA");
+        $this->db->from('USER_RIGHTS_CONFIGURATION');
+        $this->db->where('URC_ID IN(8,9,10,11,12,13,16,17)');
+        foreach ($this->db->get()->result_array() as $key=>$val)
+        {
+            $result[]=$val['URC_DATA'];
+        }
+        return $result;
+    }
+    //FUNCTION TO LOGO AND CALENDAR
+    public  function getLogoCalendar()
+    {
+        $this->db->select("URC_DATA");
+        $this->db->from('USER_RIGHTS_CONFIGURATION');
+        $this->db->where('URC_ID IN(16,17)');
+        foreach ($this->db->get()->result_array() as $key=>$val)
+        {
+            $result[]=$val['URC_DATA'];
+        }
+        return $result;
+    }
 //FUNCTION TO GET EVENTS BEFORE UPDATE TABLE
 public  function CTermExtn_GetCalevent($CTermExtn_custid)
 {

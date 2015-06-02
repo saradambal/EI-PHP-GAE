@@ -955,4 +955,21 @@ class Invoice_contract extends CI_Model{
         $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
          return $response;
     }
+    //MAIL PART FOR CONTRACT AND INVOICE
+    public function mailInvoiceContract($sender,$reciver,$subject,$body,$fileData,$title){
+        try
+        {
+            $image_data=$fileData;
+            $image_content_id=$title;
+            $message = new Message();
+            $message->setSender($sender);
+            $message->addTo($reciver);
+            $message->setSubject($subject);
+            $message->setTextBody($body);
+            $message->addAttachment($title.'.docx', $image_data, $image_content_id);
+            $message->send();
+        } catch (InvalidArgumentException $e) {
+            echo $e->getMessage();
+        }
+    }
 }
