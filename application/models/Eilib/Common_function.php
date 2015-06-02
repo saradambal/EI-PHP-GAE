@@ -736,20 +736,19 @@ return ("'+00:00','+08:00'");
 //get days diff between two dates;
 //getdays%test;
 // QUARTER CALCULATION
-    public  function quarterCalc(DateTime $d1, DateTime $d2){
-        //Returns the number of quarters between two dateTime objects
-        if ($d2 > $d1){
-            $dtmp = $d1;
-            $d1=$d2;
-            $d2=$dtmp;
-            unset($dtmp);
-        }
-        $d1q = $d1->format('m')/3;
-        $d2q = $d2->format('m')/3;
-        $d1y = $d1->format('y');
-        $d2y = $d2->format('y');
-
-        return round($d1q - $d2q + 4*($d1y - $d2y),2);
+    public  function quarterCalc( $d1,  $d2)
+    {
+        echo '<script src="http://localhost/CI-GAE/JS/quarterCal.js"></script><script>var result=quarterCalc( "' . $d1 . '","' . $d2 . '");</script>';
+        $mi = "<script >document.write(result);</script>";
+        return $mi;
+    }
+    //FUNCTION TO GET THE URL TO USE GAS SCRIPT
+    public  function getUrlAccessGasScript()
+    {
+        $this->db->select("URC_DATA");
+        $this->db->from('USER_RIGHTS_CONFIGURATION');
+        $this->db->where('URC_ID=7');
+        return $this->db->get()->row()->URC_DATA;
     }
 //}
 //FUNCTION TO GET EVENTS BEFORE UPDATE TABLE

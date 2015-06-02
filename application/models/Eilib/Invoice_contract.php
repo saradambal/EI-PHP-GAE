@@ -307,7 +307,7 @@ class Invoice_contract extends CI_Model{
             $this->load->model('Eilib/Common_function');
             $fileid= $this->Common_function->CUST_FileId_invoiceTem();
             $parentId= $this->Common_function->CUST_TargetFolderId();
-            $url = "https://script.google.com/macros/s/AKfycbyv58HZU2XsR2kbCMWZjNzMWSmOwoE7xsg_fesXktGk4Kj574u1/exec";
+            $url= $this->Common_function->getUrlAccessGasScript();
             $cust_config_array=$this->CUST_invoice_contractreplacetext();
             $this->load->model('Eilib/currencyToWord');
             $this->load->model('Eilib/ProratedCalc');
@@ -579,23 +579,6 @@ class Invoice_contract extends CI_Model{
                 else
                 {
                     $proratedrent= $this->ProratedCalc->sMonthProratedCalc($check_in_date,$rent);
-//                 if($proratedrent!=0)
-//                     if($proratedrent!=0)
-//                     {
-//                         if($rent_check=='true')
-//                         {
-//                         	$flag_paraAlign_five=1;
-//                             $filecontent= str_replace("PRORATED",'$'.$proratedrent, $filecontent);
-//                         }
-//                         else if($rent_check=='false')
-//                         {
-// //                  $para1[$pro_rated_lineno].removeFromParent();
-//                         }
-//                     }
-//                     else
-//                     {
-// //              $para1[$pro_rated_lineno].removeFromParent();
-//                     }
                 }
                 $this->load->model('Eilib/Common_function');
                 $url="https://script.google.com/macros/s/AKfycbyv58HZU2XsR2kbCMWZjNzMWSmOwoE7xsg_fesXktGk4Kj574u1/exec";
@@ -639,6 +622,7 @@ class Invoice_contract extends CI_Model{
             print "An error occurred: " . $ex->getMessage();
         }
         $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
+         return $response;
     }
 //GET INVOICE ID ,CONTRACT ID ,SERIAL NO,INVOIC DATE
     public function CUST_invoice_contractreplacetext()
@@ -670,8 +654,9 @@ class Invoice_contract extends CI_Model{
         }
     }
 //FUNCTION TO CREATE INVOICE
-    public  function CUST_invoice($UserStamp,$service,$unit,$customername,$companyname,$invoiceid,$invoicesno,$invoicedate,$rent,$process,$deposit,$sdate,$edate,$roomtype,$Leaseperiod,$rentcheck,$docowner,$formname,$waived,$custid)
+    public  function CUST_invoice($UserStamp,$service,$unit,$customername,$companyname,$invoiceid,$invoicesno,$invoicedate,$rent,$process,$deposit,$sdate,$edate,$roomtype,$Leaseperiod,$rentcheck,$sendmailid,$docowner,$formname,$waived,$custid)
     {
+        $sum='';
         $invoiceidcode=$invoiceid;
         $Slno=$invoicesno;
         $Sdate=$invoicedate;
@@ -758,6 +743,9 @@ class Invoice_contract extends CI_Model{
         $proratedrent=$this->ProratedCalc->wMonthProratedCalc($check_in_date,$check_out_date,$rent);
         $proratedsmonth=$this->ProratedCalc->sMonthProratedCalc($check_in_date,$rent);
         $proratedemonth=$this->ProratedCalc->eMonthProratedCalc($check_out_date,$rent);
+        $month_calculation=$this->nonproratedmonthcalculation(  $check_in_date,  $check_out_date);
+        $startdate_array=  $month_calculation[0];
+        $enddate_array=  $month_calculation[1];
         if(  $formname=="CREATION" ||   $formname=="RECHECKIN")
         {
             if((  $yearchk>0)||(  $monthschk>0)||((  $monthchk>0)&&(  $daychk>0)))
@@ -768,14 +756,6 @@ class Invoice_contract extends CI_Model{
                     $month_calculation=$this->nonproratedmonthcalculation(  $check_in_date,  $check_out_date);
                     $startdate_array=  $month_calculation[0];
                     $enddate_array=  $month_calculation[1];
-                    $Pror_monthCal_concate_start=$month_calculation[0][0];
-                    $Pror_monthCal_concate_end=$month_calculation[1][0];
-                    for($k=1;$k<count($month_calculation[0]);$k++){
-                        $Pror_monthCal_concate_start.= '^^'.$prorated_monthCal[0][$k];
-                    }
-                    for($k=1;$k<count($month_calculation[1]);$k++){
-                        $Pror_monthCal_concate_end.= '^^'.$prorated_monthCal[1][$k];
-                    }
                     $length=  count($startdate_array);
                 }
                 else{
@@ -783,14 +763,6 @@ class Invoice_contract extends CI_Model{
                     $month_calculation=$this->proratedmonthcalculation($check_in_date,$check_out_date);
                     $startdate_array=$month_calculation[0];
                     $enddate_array=$month_calculation[1];
-                    $Pror_monthCal_concate_start=$month_calculation[0][0];
-                    $Pror_monthCal_concate_end=$month_calculation[1][0];
-                    for($k=1;$k<count($month_calculation[0]);$k++){
-                        $Pror_monthCal_concate_start.= '^^'.$prorated_monthCal[0][$k];
-                    }
-                    for($k=1;$k<count($month_calculation[1]);$k++){
-                        $Pror_monthCal_concate_end.= '^^'.$prorated_monthCal[1][$k];
-                    }
                     $length=count($startdate_array);
                 }
             }
@@ -812,14 +784,6 @@ class Invoice_contract extends CI_Model{
                 $month_calculation=$this->proratedmonthcalculation( $check_in_date, $check_out_date);
                 $startdate_array= $month_calculation[0];
                 $enddate_array= $month_calculation[1];
-                $Pror_monthCal_concate_start=$month_calculation[0][0];
-                $Pror_monthCal_concate_end=$month_calculation[1][0];
-                for($k=1;$k<count($month_calculation[0]);$k++){
-                    $Pror_monthCal_concate_start.= '^^'.$prorated_monthCal[0][$k];
-                }
-                for($k=1;$k<count($month_calculation[1]);$k++){
-                    $Pror_monthCal_concate_end.= '^^'.$prorated_monthCal[1][$k];
-                }
                 $length=count( $startdate_array);
             }
             else if((( $yearchk>0)||( $monthschk>0)||(( $monthchk>0)&&( $daychk>0)))&&( $rent_check=='false'))//greater than a month-rent check false
@@ -828,15 +792,6 @@ class Invoice_contract extends CI_Model{
                 $month_calculation=$this->nonproratedmonthcalculation( $check_in_date, $check_out_date);
                 $startdate_array= $month_calculation[0];
                 $enddate_array= $month_calculation[1];
-                $Pror_monthCal_concate_start=$month_calculation[0][0];
-                $Pror_monthCal_concate_end=$month_calculation[1][0];
-                for($k=1;$k<count($month_calculation[0]);$k++){
-                    $Pror_monthCal_concate_start.= '^^'.$prorated_monthCal[0][$k];
-                }
-                for($k=1;$k<count($month_calculation[1]);$k++){
-                    $Pror_monthCal_concate_end.= '^^'.$prorated_monthCal[1][$k];
-                }
-
                 $length=count($startdate_array);
             }
             else if(((( $yearchk<0)&&( $monthschk<0)&&( $daychk>0)&&( $monthchk<0))||(( $yearchk<0)&&( $monthschk<0)&&( $daychk<0)&&( $monthchk>0)))&&( $rent_check=='true'))//less than or equal to a month
@@ -867,6 +822,81 @@ class Invoice_contract extends CI_Model{
                 }
             }
         }
+        $arrCheckDateAmtConcate="";$singlemonth='';$reminingmonths='';
+        if($proratedrentflag==2)  /////////rent check true greater than month PRORATED
+        {
+            $sumamount=$das+$pc;
+            $reminingmonths=0;
+            for($i=0;$i<$length;$i++)
+            {
+                $startdate=$startdate_array[$i];
+                $enddate=$enddate_array[$i];
+                if(date("d", strtotime($startdate))!=1 && $i==0){$amount=$this->ProratedCalc->sMonthProratedCalc($check_in_date,$A5);}else{$amount=$A5;}
+                if($i==$length-1)
+                {
+                    $date = new DateTime();
+                    $date->setDate(date("Y", strtotime($enddate)),(intval(date("m", strtotime($enddate)))+1),date("d", strtotime($enddate)));
+                    $finaldate=$date->format('Y-m-d');
+                    if(date("d", strtotime($enddate))==date("d", strtotime($finaldate))-1)
+                    {$amount=$A5;}else{$amount=$this->ProratedCalc->eMonthProratedCalc($check_out_date,$A5);}
+                }
+                $checkdate1= date("Y-M-d",strtotime($startdate));
+                $checkdate2= date("Y-M-d",strtotime($enddate));
+                if($i==0)
+                    $arrCheckDateAmtConcate.= $amount.'^^'.$checkdate1.'^^'.$checkdate2;
+                else
+                    $arrCheckDateAmtConcate.= '^~^'.$amount.'^^'.$checkdate1.'^^'.$checkdate2;
+                if($i==0)
+                {
+                    $singlemonth= number_format(floatval($sumamount)+floatval($amount),2,'.','');
+
+                }
+                else
+                {
+                    $reminingmonths=floatval($reminingmonths)+floatval($amount);
+                    $reminingmonths= number_format($reminingmonths,2,'.','');
+                }
+            }
+        }
+        if($proratedrentflag==1)   ////NONPRORATED
+        {
+            $sumamount=$das+$pc;
+            $reminingmonths=0;
+            for($i=0;$i<$length;$i++)
+            {
+                $startdate=$startdate_array[$i];
+                $enddate=$enddate_array[$i];
+                $amount=$A5;
+                if($i==$length-1)
+                {
+                    if(date('Y',strtotime($startdate))==date('Y',strtotime($enddate)) &&date('m',strtotime($startdate))==date('m',strtotime($enddate)))
+                    {
+                        $amount=$this->wMonthProratedCalc($startdate,$enddate,$A5);
+                    }
+                    else if(date('Y',strtotime($startdate))!=date('Y',strtotime($enddate)) ||date('m',strtotime($startdate))!=date('m',strtotime($enddate)))
+                    {
+                        $proratedsmonth=$this->ProratedCalc->sMonthProratedCalc($startdate,$A5);
+                        $proratedemonth=$this->ProratedCalc->eMonthProratedCalc($enddate,$A5);
+                        $amount=number_format(floatval($proratedsmonth)+floatval($proratedemonth),2,'.','');
+                    }
+                }
+                $checkdate1= date("Y-M-d",strtotime($startdate));
+                $checkdate2=date("Y-M-d",strtotime($enddate));
+                if($i==0)
+                    $arrCheckDateAmtConcate.= $amount.'^^'.$checkdate1.'^^'.$checkdate2;
+                else
+                    $arrCheckDateAmtConcate.= '^~^'.$amount.'^^'.$checkdate1.'^^'.$checkdate2;
+                $sum = number_format($sumamount,2,'.','');
+                if($i==0)
+                {
+                    $singlemonth= number_format(floatval($sumamount)+floatval($amount),2,'.','');
+                }
+                else
+                {
+                    $reminingmonths= number_format(floatval($reminingmonths)+floatval($reminingmonths),2,'.','');
+                }
+            }
+        }
         if($formname=="EXTENSION")
         {
             $replaceSum=$sum;
@@ -885,14 +915,15 @@ class Invoice_contract extends CI_Model{
             $companyTemp="company";
         }
         $data = array(
-            'companyTemp'=>$companyTemp, 'replaceSum'=>$replaceSum, 'Pror_monthCal_concate_start'=>$Pror_monthCal_concate_start,'Pror_monthCal_concate_end'=>$Pror_monthCal_concate_end,'todaydat'=>$todaydat,'todaydatestring'=>$todaydatestring,'A3'=>$A3,'A4'=>$A4,'das'=>$das,'pc'=>$pc,'A5'=>$A5,'sum'=>$sum,'cdate1'=>$cdate1,'cdate2'=>$cdate2,'todaysDate'=>$todaysDate,'Slno'=>$Slno,'tenant_fetch' => $tenant_fetch,'length'=>$length,'proratedrentflag'=>$proratedrentflag,
+            'arrCheckDateAmtConcate'=>$arrCheckDateAmtConcate,'singlemonth'=>$singlemonth,'reminingmonths'=>$reminingmonths, 'companyTemp'=>$companyTemp, 'replaceSum'=>$replaceSum, 'todaydat'=>$todaydat,'todaydatestring'=>$todaydatestring,'A3'=>$A3,'A4'=>$A4,'das'=>$das,'pc'=>$pc,'A5'=>$A5,'sum'=>$sum,'cdate1'=>$cdate1,'cdate2'=>$cdate2,'todaysDate'=>$todaysDate,'Slno'=>$Slno,'tenant_fetch' => $tenant_fetch,'length'=>$length,'proratedrentflag'=>$proratedrentflag,
             'nonPror_monthCal'=>$nonPror_monthCal,'flag'=>2,'prorated_monthCal' => $prorated_monthCal, 'proratedrent' => $proratedrent, 'proratedsmonth' => $proratedsmonth,'proratedemonth'=>$proratedemonth,
             'unit' => $unit, 'customername' => $customername
         , 'companyname' =>$company_fetch, 'invoiceid' => $invoiceid,'invoicesno' => $invoicesno, 'invoicedate' => $invoicedate,
             'rent' => $rent, 'process' => $process, 'deposit' => $deposit,'sdate'=>$sdate,'edate'=>$edate,'roomtype'=>$roomtype,
             'Leaseperiod'=>$Leaseperiod,'Leaseperiod'=>$Leaseperiod,'rentcheck'=>$rentcheck,'docowner'=>$docowner,'formname'=>$formname,
             'waived'=>$waived,'custid'=>$custid );
-        $url="https://script.google.com/macros/s/AKfycbyv58HZU2XsR2kbCMWZjNzMWSmOwoE7xsg_fesXktGk4Kj574u1/exec";
+        $url= $this->Common_function->getUrlAccessGasScript();
+//$url="https://script.google.com/macros/s/AKfycbyv58HZU2XsR2kbCMWZjNzMWSmOwoE7xsg_fesXktGk4Kj574u1/exec";
         $ch = curl_init();
         $data=http_build_query($data);
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -918,8 +949,10 @@ class Invoice_contract extends CI_Model{
         try {
             $service->files->patch($response, $file);
         }
-        catch(Exception $e){
-            echo   $e->getMessage();
+        catch(Exception $e) {
+            echo $e->getMessage();
         }
+        $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
+         return $response;
     }
 }
