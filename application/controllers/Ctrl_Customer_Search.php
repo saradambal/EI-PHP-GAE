@@ -99,11 +99,12 @@ Class Ctrl_Customer_Search extends CI_Controller
     }
     public function SearchDataResults()
     {
+        global $UserStamp;
         $this->load->model('CUSTOMER/Mdl_customersearch');
         $searchoption=$_POST['SearchOption'];
         $data1=$_POST['data1'];
         $data2=$_POST['data2'];
-        $Resultset=$this->Mdl_customersearch->getSearchResults($searchoption,$data1,$data2);
+        $Resultset=$this->Mdl_customersearch->getSearchResults($searchoption,$data1,$data2,$UserStamp);
         echo json_encode($Resultset);
     }
     public function SelectCustomerResults()

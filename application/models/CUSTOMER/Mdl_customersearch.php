@@ -110,9 +110,8 @@ class Mdl_customersearch extends CI_Model
         $query = $this->db->get();
         return $query->result();
     }
-    public function getSearchResults($searchoption,$data1,$data2)
+    public function getSearchResults($searchoption,$data1,$data2,$userstamp)
     {
-        $userstamp='kumar.r@ssomens.com';
         if($searchoption==21)
         {
              $temptablequery="CALL SP_CUSTOMER_SEARCH_TEMP_TABLE('$data1',null,'$searchoption','$userstamp',@TABLENAME)";
