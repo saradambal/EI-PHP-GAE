@@ -292,21 +292,28 @@ class Calender  extends CI_Model {
 //FUNCTION TO DELETE CALENDER EVENTS FOR CUSTOMER TERMINATION N EXTENSION
     public function CUST_customerTermcalenderdeletion($calPrimary,$custid,$startdate,$start_time_in,$start_time_out,$enddate,$end_time_in,$end_time_out,$formname)
     {
-        $calId=$this->GetEICalendarId();
-        $optDate= array('timeMax' => $startdate.'T'.$start_time_out.':00+08:00','timeMin' => $startdate.'T'.$start_time_in.':00+08:00');
-        $events = $calPrimary->events->listEvents($calId,$optDate);
-        foreach ($events->getItems() as $event) {
-            $matchSummary=(String)$event->getSummary();
-            if(intval(explode(' ',$event->getDescription())[0])==$custid && preg_match("/CHECKIN/",(String)$matchSummary)==1)
-                $calPrimary->events->delete($calId, $event->getId());
+        try{
+            $calId=$this->GetEICalendarId();
+            $optDate= array('timeMax' => $startdate.'T'.$start_time_out.'.000+08:00','timeMin' => $startdate.'T'.$start_time_in.'.000+08:00');
+            $events = $calPrimary->events->listEvents($calId,$optDate);
+            foreach ($events->getItems() as $event) {
+                $matchSummary=(String)$event->getSummary();
+                if(intval(explode(' ',$event->getDescription())[0])==$custid && preg_match("/CHECKIN/",(String)$matchSummary)==1)
+                    $calPrimary->events->delete($calId, $event->getId());
+            }
+            //CHECKOUT DELETION
+            $optDate= array('timeMax' => $enddate.'T'.$end_time_out.'.000+08:00','timeMin' => $enddate.'T'.$end_time_in.'.000+08:00');
+            $eventsCheckOut = $calPrimary->events->listEvents($calId,$optDate);
+            foreach ($eventsCheckOut->getItems() as $event) {
+                $matchSummary=(String)$event->getSummary();
+                if(intval(explode(' ',$event->getDescription())[0])==$custid && preg_match("/CHECKOUT/",(String)$matchSummary)==1){
+                    $calPrimary->events->delete($calId, $event->getId());}
+            }
+            return 1;
         }
-        //CHECKOUT DELETION
-        $optDate= array('timeMax' => $enddate.'T'.$end_time_out.':00+08:00','timeMin' => $enddate.'T'.$end_time_in.':00+08:00');
-        $eventsCheckOut = $calPrimary->events->listEvents($calId,$optDate);
-        foreach ($eventsCheckOut->getItems() as $event) {
-            $matchSummary=(String)$event->getSummary();
-            if(intval(explode(' ',$event->getDescription())[0])==$custid && preg_match("/CHECKOUT/",(String)$matchSummary)==1){
-                $calPrimary->events->delete($calId, $event->getId());}
+        catch(Exception $e)
+        {
+            return $e->getMessage();
         }
     }
     //FUNCTION TO DELETE EXISTING EVENT N CREATE CURRENT CALENDAR EVENT DTS FOR EXTENSION N TERMINATION

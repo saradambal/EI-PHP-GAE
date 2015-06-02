@@ -2772,7 +2772,7 @@ $(document).ready(function(){
 <div class="container">
 <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
 <div class="title text-center"><h4><b>PERSONAL EXPENSE ENTRY/SEARCH/UPDATE/DELETE</b></h4></div>
-<form id="personalexpense" class="form-horizontal content" method="post" action="<?php echo site_url("Pdfcontroller/pdfexport") ?>" >
+<form id="personalexpense" class="form-horizontal content" method="post" action="<?php echo site_url("Ctrl_Pdf/pdfexport") ?>" >
 
 <div class="panel-body">
 <div style="padding-bottom: 15px">

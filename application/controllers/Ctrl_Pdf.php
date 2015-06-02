@@ -1,7 +1,7 @@
 <?php
 include "GET_USERSTAMP.php";
 $USERSTAMP=$UserStamp;
-class Pdfcontroller extends CI_Controller{
+class Ctrl_Pdf extends CI_Controller{
 
     public function pdfexport()
     {
@@ -27,8 +27,8 @@ class Pdfcontroller extends CI_Controller{
             $PDLY_SEARCH_searchcomments=$this->db->escape_like_str($PDLY_SEARCH_searchcomments);
             $PDLY_SEARCH_invitemcom=$this->db->escape_like_str($PDLY_SEARCH_invitemcom);
             $PDLY_SEARCH_invfromcomt=$this->db->escape_like_str($PDLY_SEARCH_invfromcomt);
-            $this->load->model('Pdf_model');
-            $data=$this->Pdf_model->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
+            $this->load->model('EXPENSE/Mdl_pdf');
+            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
 
         }
         else if(($PDLY_SEARCH_lb_babysearchoptionmatch==52)||($PDLY_SEARCH_lb_babysearchoptionmatch==58)||($PDLY_SEARCH_lb_babysearchoptionmatch==69))
@@ -48,8 +48,8 @@ class Pdfcontroller extends CI_Controller{
             $PDLY_SEARCH_searchcomments=$this->db->escape_like_str($PDLY_SEARCH_searchcomments);
             $PDLY_SEARCH_invitemcom=$this->db->escape_like_str($PDLY_SEARCH_invitemcom);
             $PDLY_SEARCH_invfromcomt=$this->db->escape_like_str($PDLY_SEARCH_invfromcomt);
-            $this->load->model('Pdf_model');
-            $data=$this->Pdf_model->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
+            $this->load->model('EXPENSE/Mdl_pdf');
+            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
 
         }
         else if(($PDLY_SEARCH_lb_babysearchoptionmatch==51)||($PDLY_SEARCH_lb_babysearchoptionmatch==57)||($PDLY_SEARCH_lb_babysearchoptionmatch==68)||($PDLY_SEARCH_lb_babysearchoptionmatch==65))
@@ -64,13 +64,13 @@ class Pdfcontroller extends CI_Controller{
             $PDLY_SEARCH_invitemcom="";
             $PDLY_SEARCH_invfromcomt="";
             $PDLY_SEARCH_babycategory="";
-            $this->load->model('Pdf_model');
+            $this->load->model('EXPENSE/Mdl_pdf');
             $PDLY_SEARCH_startdate=date('Y-m-d',strtotime($PDLY_SEARCH_startdate));
             $PDLY_SEARCH_enddate=date('Y-m-d',strtotime($PDLY_SEARCH_enddate));
             $PDLY_SEARCH_searchcomments=$this->db->escape_like_str($PDLY_SEARCH_searchcomments);
             $PDLY_SEARCH_invitemcom=$this->db->escape_like_str($PDLY_SEARCH_invitemcom);
             $PDLY_SEARCH_invfromcomt=$this->db->escape_like_str($PDLY_SEARCH_invfromcomt);
-            $data=$this->Pdf_model->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
+            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
 
         }
         else if(($PDLY_SEARCH_lb_babysearchoptionmatch==53)||($PDLY_SEARCH_lb_babysearchoptionmatch==59)||($PDLY_SEARCH_lb_babysearchoptionmatch==70)||($PDLY_SEARCH_lb_babysearchoptionmatch==63)||($PDLY_SEARCH_lb_babysearchoptionmatch==66)||($PDLY_SEARCH_lb_babysearchoptionmatch==64))
@@ -85,13 +85,13 @@ class Pdfcontroller extends CI_Controller{
             $PDLY_SEARCH_invitemcom="";
             $PDLY_SEARCH_invfromcomt="";
             $PDLY_SEARCH_babycategory="";
-            $this->load->model('Pdf_model');
+            $this->load->model('EXPENSE/Mdl_pdf');
             $PDLY_SEARCH_startdate=date('Y-m-d',strtotime($PDLY_SEARCH_startdate));
             $PDLY_SEARCH_enddate=date('Y-m-d',strtotime($PDLY_SEARCH_enddate));
             $PDLY_SEARCH_searchcomments=$this->db->escape_like_str($PDLY_SEARCH_searchcomments);
             $PDLY_SEARCH_invitemcom=$this->db->escape_like_str($PDLY_SEARCH_invitemcom);
             $PDLY_SEARCH_invfromcomt=$this->db->escape_like_str($PDLY_SEARCH_invfromcomt);
-            $data=$this->Pdf_model->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
+            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
 
         }
         else if(($PDLY_SEARCH_lb_babysearchoptionmatch==55)||($PDLY_SEARCH_lb_babysearchoptionmatch==61)||($PDLY_SEARCH_lb_babysearchoptionmatch==72))
@@ -106,13 +106,13 @@ class Pdfcontroller extends CI_Controller{
             $PDLY_SEARCH_invitemcom="";
             $PDLY_SEARCH_invfromcomt=$this->input->post('PDLY_SEARCH_tb_searchbyinvfrom');
             $PDLY_SEARCH_babycategory="";
-            $this->load->model('Pdf_model');
+            $this->load->model('EXPENSE/Mdl_pdf');
             $PDLY_SEARCH_startdate=date('Y-m-d',strtotime($PDLY_SEARCH_startdate));
             $PDLY_SEARCH_enddate=date('Y-m-d',strtotime($PDLY_SEARCH_enddate));
             $PDLY_SEARCH_searchcomments=$this->db->escape_like_str($PDLY_SEARCH_searchcomments);
             $PDLY_SEARCH_invitemcom=$this->db->escape_like_str($PDLY_SEARCH_invitemcom);
             $PDLY_SEARCH_invfromcomt=$this->db->escape_like_str($PDLY_SEARCH_invfromcomt);
-            $data=$this->Pdf_model->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
+            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
 
         }
         else if(($PDLY_SEARCH_lb_babysearchoptionmatch==54)||($PDLY_SEARCH_lb_babysearchoptionmatch==60)||($PDLY_SEARCH_lb_babysearchoptionmatch==71))
@@ -127,13 +127,13 @@ class Pdfcontroller extends CI_Controller{
             $PDLY_SEARCH_invitemcom=$this->input->post('PDLY_SEARCH_tb_searchbyinvitem');
             $PDLY_SEARCH_invfromcomt="";
             $PDLY_SEARCH_babycategory="";
-            $this->load->model('Pdf_model');
+            $this->load->model('EXPENSE/Mdl_pdf');
             $PDLY_SEARCH_startdate=date('Y-m-d',strtotime($PDLY_SEARCH_startdate));
             $PDLY_SEARCH_enddate=date('Y-m-d',strtotime($PDLY_SEARCH_enddate));
             $PDLY_SEARCH_searchcomments=$this->db->escape_like_str($PDLY_SEARCH_searchcomments);
             $PDLY_SEARCH_invitemcom=$this->db->escape_like_str($PDLY_SEARCH_invitemcom);
             $PDLY_SEARCH_invfromcomt=$this->db->escape_like_str($PDLY_SEARCH_invfromcomt);
-            $data=$this->Pdf_model->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
+            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
 
         }
         if($PDLY_SEARCH_typelistvalue==36){$pdfFilePath='BABY EXPENSE.pdf';}
@@ -173,8 +173,8 @@ class Pdfcontroller extends CI_Controller{
         $BDLY_SRC_invoiceitem=$this->input->post('BDLY_SRC_invoiceitem');
         $BDLY_SRC_lb_category=$this->input->post('BDLY_SRC_lb_category');
         $pdfheader=$this->input->post('pdfheader');
-        $this->load->model('Pdf_model');
-        $data=$this->Pdf_model->BDLY_SRC_getAnyTypeExpData($USERSTAMP,$timeZoneFormat,$BDLY_SRC_lb_unitno,$BDLY_SRC_lb_invoiceto,$BDLY_SRC_comments,$BDLY_SRC_comments,$BDLY_SRC_tb_fromamnt,$BDLY_SRC_tb_toamnt,$BDLY_SRC_servicedue,$BDLY_SRC_lb_cleanername,$BDLY_SRC_tb_durationamt,$BDLY_SRC_startdate,$BDLY_SRC_enddate,$BDLY_SRC_invoicefrom,$BDLY_SRC_lb_accountno,$BDLY_SRC_lb_cusname,$BDLY_SRC_lb_Digvoiceno,$BDLY_SRC_lb_cardno,$BDLY_SRC_lb_carno,$BDLY_SRC_lb_serviceby,$BDLY_SRC_invoiceitem,$BDLY_SRC_lb_category);
+        $this->load->model('EXPENSE/Mdl_pdf');
+        $data=$this->Mdl_pdf->BDLY_SRC_getAnyTypeExpData($USERSTAMP,$timeZoneFormat,$BDLY_SRC_lb_unitno,$BDLY_SRC_lb_invoiceto,$BDLY_SRC_comments,$BDLY_SRC_comments,$BDLY_SRC_tb_fromamnt,$BDLY_SRC_tb_toamnt,$BDLY_SRC_servicedue,$BDLY_SRC_lb_cleanername,$BDLY_SRC_tb_durationamt,$BDLY_SRC_startdate,$BDLY_SRC_enddate,$BDLY_SRC_invoicefrom,$BDLY_SRC_lb_accountno,$BDLY_SRC_lb_cusname,$BDLY_SRC_lb_Digvoiceno,$BDLY_SRC_lb_cardno,$BDLY_SRC_lb_carno,$BDLY_SRC_lb_serviceby,$BDLY_SRC_invoiceitem,$BDLY_SRC_lb_category);
         $pdf = $this->pdf->load();
         $pdf=new mPDF('utf-8','A4');
         $pdf->SetHTMLHeader('<div style="text-align: center; font-weight: bold;">'.$pdfheader.'</div>', 'O', true);
@@ -194,28 +194,28 @@ class Pdfcontroller extends CI_Controller{
         $BTDTL_SEARCH_parentfunc_flex=$this->input->get('BTDTL_SEARCH_parentfunc_flex');
         if($Expensetype==16)
         {
-            $this->load->model('Pdf_model');
-            $data=$this->Pdf_model->BTDTL_SEARCH_flex_aircon($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat);
+            $this->load->model('EXPENSE/Mdl_pdf');
+            $data=$this->Mdl_pdf->BTDTL_SEARCH_flex_aircon($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat);
         }
         if($Expensetype==17)
         {
-            $this->load->model('Pdf_model');
-            $data=$this->Pdf_model->BTDTL_SEARCH_show_carpark($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat);
+            $this->load->model('EXPENSE/Mdl_pdf');
+            $data=$this->Mdl_pdf->BTDTL_SEARCH_show_carpark($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat);
         }
         if($Expensetype==15)
         {
-            $this->load->model('Pdf_model');
-            $data=$this->Pdf_model->BTDTL_SEARCH_show_digital($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat);
+            $this->load->model('EXPENSE/Mdl_pdf');
+            $data=$this->Mdl_pdf->BTDTL_SEARCH_show_digital($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat);
         }
         if($Expensetype==13)
         {
-            $this->load->model('Pdf_model');
-            $data=$this->Pdf_model->BTDTL_SEARCH_show_electricity($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat);
+            $this->load->model('EXPENSE/Mdl_pdf');
+            $data=$this->Mdl_pdf->BTDTL_SEARCH_show_electricity($searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat);
         }
         if($Expensetype==14)
         {
-            $this->load->model('Pdf_model');
-            $data=$this->Pdf_model->BTDTL_SEARCH_show_starhub($startdate,$searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat);
+            $this->load->model('EXPENSE/Mdl_pdf');
+            $data=$this->Mdl_pdf->BTDTL_SEARCH_show_starhub($startdate,$searchvalue,$BTDTL_SEARCH_lb_searchoptions,$BTDTL_SEARCH_parentfunc_flex,$timeZoneFormat);
         }
         $pdf = $this->pdf->load();
         $pdf=new mPDF('utf-8','A4');

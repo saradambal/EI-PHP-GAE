@@ -2728,7 +2728,7 @@ include "Header.php";
                 else if($('#BTDTL_SEARCH_lb_searchoptions').val()==191)
                     var searchvalue=$('#BTDTL_SEARCH_lb_starhubunitno').val();
             }
-            var pdfurl=document.location.href='<?php echo site_url("Pdfcontroller/pdfexportbizdetailexpense") ?>?Expensetype='+Expensetype+'&BTDTL_SEARCH_lb_searchoptions='+$("#BTDTL_SEARCH_lb_searchoptions").val()+'&searchvalue='+searchvalue+'&startdate='+startdate+'&BTDTL_SEARCH_parentfunc_flex=BTDTL_SEARCH_parentfunc_flex&labelheadername='+$('#BTDTL_SEARCH_div_msg').text();
+            var pdfurl=document.location.href='<?php echo site_url("Ctrl_Pdf/pdfexportbizdetailexpense") ?>?Expensetype='+Expensetype+'&BTDTL_SEARCH_lb_searchoptions='+$("#BTDTL_SEARCH_lb_searchoptions").val()+'&searchvalue='+searchvalue+'&startdate='+startdate+'&BTDTL_SEARCH_parentfunc_flex=BTDTL_SEARCH_parentfunc_flex&labelheadername='+$('#BTDTL_SEARCH_div_msg').text();
         });
     });
 </script>

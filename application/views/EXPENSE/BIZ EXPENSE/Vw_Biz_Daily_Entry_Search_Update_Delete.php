@@ -5540,7 +5540,7 @@ var BDLY_SRC_flag_autocom='';
 <div class="container">
     <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
     <div class="title text-center"><h4><b>BIZ EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE</b></h4></div>
-    <form id="BDLY_INPUT_form_dailyentry" class="form-horizontal content"  method="post" action="<?php echo site_url("Pdfcontroller/pdfexportbizexpense") ?>">
+    <form id="BDLY_INPUT_form_dailyentry" class="form-horizontal content"  method="post" action="<?php echo site_url("Ctrl_Pdf/pdfexportbizexpense") ?>">
         <div class="panel-body">
                     <div style="padding-bottom: 15px">
                         <div class="radio">

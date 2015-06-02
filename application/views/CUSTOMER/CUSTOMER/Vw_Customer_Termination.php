@@ -188,10 +188,11 @@ td, th {
             else
             {
                 $(".preloader").hide();
+                $('#CTERM_div_custid >div').remove();
                 for(var i=0;i<CTERM_Cid.length;i++)
                 {
                     var CTERM_result='<div class="radio"><label id="custid"><input type=radio name="CTERM_radiocustid" id='+CTERM_Cid[i]+' value='+CTERM_Cid[i]+' class="CTERM_class_custid">'+CTERM_custname[0]+" "+CTERM_custname[1]+' '+CTERM_Cid[i]+'</label></div>';
-                    $('#CTERM_div_custid').html('').append(CTERM_result);
+                    $('#CTERM_div_custid').append(CTERM_result);
                 }
                 $('#CTERM_div_custid').show();
             }
@@ -294,15 +295,13 @@ td, th {
                 $.ajax({
                     type: "POST",
                     url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Customer_Termination/CTERM_UpdatePtd",
-                    data:$('#CTERM_form').serialize(),
+                    data:$('#CTERM_form').serialize()+'&Globalrecver='+Globalrecver,
                     success: function(res) {
                         alert(res)
                         $('.preloader').hide();
-//                        var result=JSON.parse(res);
-//                        CTERM_getCustomerdtls_result(result)
+                        CTERM_UpdatePtd_result(res)
                     }
                 });
-//                google.script.run.withFailureHandler(onFailure).withSuccessHandler(CTERM_UpdatePtd_result).CTERM_UpdatePtd(document.getElementById("CTERM_form"));
             }
         });
         //SET VALUES IN FORM
@@ -989,24 +988,22 @@ td, th {
             $.ajax({
                 type: "POST",
                 url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Customer_Termination/CTERM_UpdatePtd",
-                data:$('#CTERM_form').serialize(),
+                data:$('#CTERM_form').serialize()+'&Globalrecver='+Globalrecver,
                 success: function(res) {
                     alert(res)
                     $('.preloader').hide();
-//                        var result=JSON.parse(res);
-//                        CTERM_getCustomerdtls_result(result)
+                        CTERM_UpdatePtd_result(res)
                 }
             });
-//            google.script.run.withFailureHandler(onFailure).withSuccessHandler(CTERM_UpdatePtd_result).CTERM_UpdatePtd(document.getElementById("CTERM_form"));
-        });
+       });
 //FUNCTION TO CALL SAVE FUNCTION RESULT
         function CTERM_UpdatePtd_result(ctermresult)
         {
             var CTERM_radio_termoption =$("input[name='CTERM_radio_termoption']:checked").val()
-            var sucessmsg=CTERM_errmsgs[1];
+            var sucessmsg=CTERM_errmsgs[1].EMC_DATA;
             if(CTERM_radio_termoption=="CTERM_radio_reactivecust")
             {
-                sucessmsg=CTERM_errmsgs[5];
+                sucessmsg=CTERM_errmsgs[5].EMC_DATA;
             }
             if(ctermresult==1)
             {
@@ -1015,18 +1012,28 @@ td, th {
                 $("#CTERM_btn_termbtn").attr("disabled","disabled");
                 $("#CTERM_div_srcbtn").hide();
                 $("#CTERM_div_termform").hide();
-                google.script.run.withFailureHandler(onFailure).withSuccessHandler(CTERM_getCustomerName_result).CTERM_getCustomerName(document.getElementById("CTERM_form"));
-                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER TERMINATION",msgcontent:sucessmsg,position:{top:150,left:500}}});
+                $('.preloader').show();
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Customer_Termination/CTERM_getCustomerName",
+                    data:$('#CTERM_form').serialize(),
+                    success: function(res) {
+                        $('.preloader').hide();
+                        var result=JSON.parse(res);
+                        CTERM_getCustomerName_result(result)
+                    }
+                });
+                show_msgbox("BIZ EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE",sucessmsg,"success",false);
             }
             else if(ctermresult==0)
             {
                 $(".preloader").hide();
-                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER TERMINATION",msgcontent:CTERM_errmsgs[6],position:{top:150,left:500}}});
+                show_msgbox("BIZ EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE",CTERM_errmsgs[6].EMC_DATA,"success",false);
             }
             else
             {
                 $(".preloader").hide();
-                $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER TERMINATION",msgcontent:ctermresult,position:{top:150,left:500}}});
+                show_msgbox("BIZ EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE",ctermresult,"success",false);
             }
         }
     });
@@ -1054,7 +1061,7 @@ td, th {
                                 <option>SELECT</option>
                             </select></div>
                     </div>
-                    <div id="CTERM_div_custid">
+                    <div id="CTERM_div_custid" class="col-lg-offset-2">
 <!--                                <table id="CTERM_tble_custid">-->
 <!--                                </table>-->
                     </div>
@@ -1075,7 +1082,7 @@ td, th {
                           <div class="col-sm-3"><textarea name="CTERM_ta_comments" id="CTERM_ta_comments" class="form-control" maxlength="50"></textarea>
                            </div>
                         </div>
-                        <div class="col-lg-offset-1">
+                        <div>
                             <input type="button" id="CTERM_btn_termbtn" value="TERMINATE" class="maxbtn" disabled>
                         </div>
                 </div>
