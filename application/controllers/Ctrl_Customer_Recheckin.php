@@ -6,7 +6,7 @@ Class Ctrl_Customer_Recheckin extends CI_Controller
 {
     public function Index()
     {
-        $this->load->view('CUSTOMER/FORM_CUSTOMER_RECHECKIN');
+        $this->load->view('CUSTOMER/Vw_Customer_Recheckin');
     }
     public function Customer_Initaildatas()
     {
@@ -44,17 +44,17 @@ Class Ctrl_Customer_Recheckin extends CI_Controller
     public function Recheckin_Customer()
     {
         $unit=$_REQUEST['Unit'];
-        $this->load->model('Customercreation');
-        $customername=$this->Customercreation->getRecheckinCustomer($unit);
+        $this->load->model('CUSTOMER/Mdl_customercreation');
+        $customername=$this->Mdl_customercreation->getRecheckinCustomer($unit);
         echo json_encode($customername);
     }
     public function Recheckin_Customer_PersonalDetails()
     {
         $customerid=$_REQUEST['Customerid'];
         $Recver=$_REQUEST['Recver'];
-        $this->load->model('Customercreation');
-        $CustomerPersonalDetails=$this->Customercreation->getRecheckinCustomer_PersonalDetails($customerid,$Recver);
-        $CustomerEnddate=$this->Customercreation->getRecheckin_Enddates($customerid,$Recver);
+        $this->load->model('CUSTOMER/Mdl_customercreation');
+        $CustomerPersonalDetails=$this->Mdl_customercreation->getRecheckinCustomer_PersonalDetails($customerid,$Recver);
+        $CustomerEnddate=$this->Mdl_customercreation->getRecheckin_Enddates($customerid,$Recver);
         $ReturnValue=array($CustomerPersonalDetails,$CustomerEnddate);
         echo json_encode($ReturnValue);
     }
@@ -67,8 +67,8 @@ Class Ctrl_Customer_Recheckin extends CI_Controller
         $this->load->model('Eilib/Common_function');
         $AllUnit =$this->Common_function->getRecheckinCustomerUnit();
         $Leaseperiod=$this->Common_function->getLeasePeriod($Startdate,$Enddate);
-        $this->load->model('Customercreation');
-        $Create_confirm=$this->Customercreation->Customer_Recheckin_Save($UserStamp,$Leaseperiod);
+        $this->load->model('CUSTOMER/Mdl_customercreation');
+        $Create_confirm=$this->Mdl_customercreation->Customer_Recheckin_Save($UserStamp,$Leaseperiod);
         if($Create_confirm[0]==1)
         {
             $this->load->library('Google');

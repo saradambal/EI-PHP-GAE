@@ -88,14 +88,14 @@
                  url: '/index.php/Ctrl_Customer_Search/CustomerName',
                  success: function(data){
                      var value_array=JSON.parse(data);
-                     var appenddata='<h4 style="color:#498af3;"><u>CUSTOMER NAME SEARCH</u></h4><br>';
-                     appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                     var appenddata='<h4 style="color:#498af3;">CUSTOMER NAME SEARCH</h4><br>';
+                     appenddata+='<div class="row form-group" style="padding-left:20px;">';
                      appenddata+='<div class="col-md-3" ><label>CUSTOMER NAME<span class="labelrequired"><em>*</em></span></label></div>';
                      appenddata+='<div class="col-md-3"><input type=text class="form-control autosize customernameautovalidate" name="CC_SRC_CustomerNameSearch"  id="CC_SRC_CustomerNameSearch"/></div>';
                      appenddata+='<div class="col-md-3"><label id="customernameautocompleteerrormsg" class="errormsg" hidden></label></div>';
                      appenddata+='</div>';
                      appenddata+='<div class="row form-group">';
-                     appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+                     appenddata+='<div class="col-lg-offset-2 col-lg-2">';
                      appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
                      $('#CC_SearchformDiv').html(appenddata);
                      for (var i = 0; i < value_array.length; i++)
@@ -118,14 +118,14 @@
                  url: '/index.php/Ctrl_Customer_Search/CustomerCardNos',
                  success: function(data){
                      var value_array=JSON.parse(data);
-                     var appenddata='<h4 style="color:#498af3;"><u>CARD NUMBER SEARCH</u></h4><br>';
-                     appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                     var appenddata='<h4 style="color:#498af3;">CARD NUMBER SEARCH</h4><br>';
+                     appenddata+='<div class="row form-group" style="padding-left:20px;">';
                      appenddata+='<div class="col-md-3"><label>CARD NUMBER<span class="labelrequired"><em>*</em></span></label></div>';
                      appenddata+='<div class="col-md-3"><input type=text class="form-control customernameautovalidate" name="CC_SRC_CardNoSearch" maxlength="7"  id="CC_SRC_CardNoSearch" style="max-width: 150px;"/></div>';
                      appenddata+='<div class="col-md-3"><label id="customernameautocompleteerrormsg" class="errormsg" hidden></label></div>';
                      appenddata+='</div>';
                      appenddata+='<div class="row form-group">';
-                     appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+                     appenddata+='<div class="col-lg-offset-2 col-lg-2">';
                      appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
                      $('#CC_SearchformDiv').html(appenddata);
                      for (var i = 0; i < value_array.length; i++)
@@ -150,14 +150,14 @@
                  url: '/index.php/Ctrl_Customer_Search/CustomerCompnameName',
                  success: function(data){
                      var value_array=JSON.parse(data);
-                     var appenddata='<h4 style="color:#498af3;"><u>COMPANY NAME SEARCH</u></h4><br>';
-                     appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                     var appenddata='<h4 style="color:#498af3;">COMPANY NAME SEARCH</h4><br>';
+                     appenddata+='<div class="row form-group" style="padding-left:20px;">';
                      appenddata+='<div class="col-md-3"><label>COMPANY NAME<span class="labelrequired"><em>*</em></span></label></div>';
                      appenddata+='<div class="col-md-3"><input type=text class="form-control autosize customernameautovalidate" name="CC_SRC_CompanyNameSearch"  id="CC_SRC_CompanyNameSearch"/></div>';
                      appenddata+='<div class="col-md-3"><label id="customernameautocompleteerrormsg" class="errormsg" hidden></label></div>';
                      appenddata+='</div>';
                      appenddata+='<div class="row form-group">';
-                     appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+                     appenddata+='<div class="col-lg-offset-2 col-lg-2">';
                      appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
                      $('#CC_SearchformDiv').html(appenddata);
                      for (var i = 0; i < value_array.length; i++)
@@ -176,18 +176,18 @@
          }
          else if(searchoption==22)
          {
-             var appenddata='<h4 style="color:#498af3;"><u>DEPOSIT AMOUNT SEARCH</u></h4><br>';
-             appenddata+='<div class="row form-group" style="padding-left:40px;">';
+             var appenddata='<h4 style="color:#498af3;">DEPOSIT AMOUNT SEARCH</h4><br>';
+             appenddata+='<div class="row form-group" style="padding-left:20px;">';
              appenddata+='<div class="col-md-3"><label>FROM AMOUNT<span class="labelrequired"><em>*</em></span></label></div>';
              appenddata+='<div class="col-md-3"><input type=text class="form-control CCRE_amtonlyvalidationmaxdigit AmountValidation" name="CC_SRC_FromAmount"  id="CC_SRC_FromAmount" style="max-width: 100px" placeholder="0.00"/></div>';
              appenddata+='</div>';
-             appenddata+='<div class="row form-group" style="padding-left:40px;">';
+             appenddata+='<div class="row form-group" style="padding-left:20px;">';
              appenddata+='<div class="col-md-3"><label>TO AMOUNT<span class="labelrequired"><em>*</em></span></label></div>';
              appenddata+='<div class="col-md-3"><input type=text class="form-control CCRE_amtonlyvalidationmaxdigit AmountValidation" name="CC_SRC_ToAmount"  id="CC_SRC_ToAmount" style="max-width: 100px" placeholder="0.00"/></div>';
              appenddata+='<div class="col-md-5"><label id="depositamterrormsg" class="errormsg" hidden></label></div>';
              appenddata+='</div>';
              appenddata+='<div class="row form-group">';
-             appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+             appenddata+='<div class="col-lg-offset-2 col-lg-2">';
              appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
              $('#CC_SearchformDiv').html(appenddata);
              $(".CCRE_amtonlyvalidationmaxdigit").doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
@@ -195,18 +195,18 @@
          }
          else if(searchoption==30)
          {
-             var appenddata='<h4 style="color:#498af3;"><u>RENT AMOUNT SEARCH</u></h4><br>';
-             appenddata+='<div class="row form-group" style="padding-left:40px;">';
+             var appenddata='<h4 style="color:#498af3;">RENT AMOUNT SEARCH</h4><br>';
+             appenddata+='<div class="row form-group" style="padding-left:20px;">';
              appenddata+='<div class="col-md-3"><label>FROM AMOUNT<span class="labelrequired"><em>*</em></span></label></div>';
              appenddata+='<div class="col-md-3"><input type=text class="form-control CCRE_amtonlyvalidationmaxdigit AmountValidation" name="CC_SRC_FromAmount"  id="CC_SRC_FromAmount" style="max-width: 100px" placeholder="0.00"/></div>';
              appenddata+='</div>';
-             appenddata+='<div class="row form-group" style="padding-left:40px;">';
+             appenddata+='<div class="row form-group" style="padding-left:20px;">';
              appenddata+='<div class="col-md-3"><label>TO AMOUNT<span class="labelrequired"><em>*</em></span></label></div>';
              appenddata+='<div class="col-md-3"><input type=text class="form-control CCRE_amtonlyvalidationmaxdigit AmountValidation" name="CC_SRC_ToAmount"  id="CC_SRC_ToAmount" style="max-width: 100px" placeholder="0.00"/></div>';
              appenddata+='<div class="col-md-5"><label id="depositamterrormsg" class="errormsg" hidden></label></div>';
              appenddata+='</div>';
              appenddata+='<div class="row form-group">';
-             appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+             appenddata+='<div class="col-lg-offset-2 col-lg-2">';
              appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
              $('#CC_SearchformDiv').html(appenddata);
              $(".CCRE_amtonlyvalidationmaxdigit").doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
@@ -214,13 +214,13 @@
          }
          else if(searchoption==27)
          {
-             var appenddata='<h4 style="color:#498af3;"><u>NATIONALITY SEARCH</u></h4><br>';
-             appenddata+='<div class="row form-group" style="padding-left:40px;">';
+             var appenddata='<h4 style="color:#498af3;">NATIONALITY SEARCH</h4><br>';
+             appenddata+='<div class="row form-group" style="padding-left:20px;">';
              appenddata+='<div class="col-md-3"><label>NATIONALITY<span class="labelrequired"><em>*</em></span></label></div>';
              appenddata+='<div class="col-md-3"><SELECT class="form-control" name="CC_SRC_listsearch"  id="CC_SRC_listsearch" ></SELECT></div>';
              appenddata+='</div>';
              appenddata+='<div class="row form-group">';
-             appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+             appenddata+='<div class="col-lg-offset-2 col-lg-2">';
              appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
              $('#CC_SearchformDiv').html(appenddata);
              var options='<OPTION>SELECT</OPTION>';
@@ -238,13 +238,13 @@
                  url: '/index.php/Ctrl_Customer_Search/AllUnits',
                  success: function(data){
                      var value_array=JSON.parse(data);
-                     var appenddata='<h4 style="color:#498af3;"><u>UNIT NUMBER SEARCH</u></h4><br>';
-                     appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                     var appenddata='<h4 style="color:#498af3;">UNIT NUMBER SEARCH</h4><br>';
+                     appenddata+='<div class="row form-group" style="padding-left:20px;">';
                      appenddata+='<div class="col-md-3"><label>UNIT NUMBER<span class="labelrequired"><em>*</em></span></label></div>';
                      appenddata+='<div class="col-md-3"><SELECT class="form-control" name="CC_SRC_listsearch"  id="CC_SRC_listsearch" style="max-width: 120px"></SELECT></div>';
                      appenddata+='</div>';
                      appenddata+='<div class="row form-group">';
-                     appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+                     appenddata+='<div class="col-lg-offset-2 col-lg-2">';
                      appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
                      $('#CC_SearchformDiv').html(appenddata);
                      var options='<OPTION>SELECT</OPTION>';
@@ -267,13 +267,13 @@
                  url: '/index.php/Ctrl_Customer_Search/AllRoomtype',
                  success: function(data){
                      var value_array=JSON.parse(data);
-                     var appenddata='<h4 style="color:#498af3;"><u>ROOMTYPE SEARCH</u></h4><br>';
-                     appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                     var appenddata='<h4 style="color:#498af3;">ROOMTYPE SEARCH</h4><br>';
+                     appenddata+='<div class="row form-group" style="padding-left:20px;">';
                      appenddata+='<div class="col-md-3"><label>ROOMTYPE<span class="labelrequired"><em>*</em></span></label></div>';
                      appenddata+='<div class="col-md-3"><SELECT class="form-control" name="CC_SRC_listsearch"  id="CC_SRC_listsearch" style="max-width: 170px"></SELECT></div>';
                      appenddata+='</div>';
                      appenddata+='<div class="row form-group">';
-                     appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+                     appenddata+='<div class="col-lg-offset-2 col-lg-2">';
                      appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
                      $('#CC_SearchformDiv').html(appenddata);
                      var options='<OPTION>SELECT</OPTION>';
@@ -296,14 +296,14 @@
                  url: '/index.php/Ctrl_Customer_Search/AllEmails',
                  success: function(data){
                      var value_array=JSON.parse(data);
-                     var appenddata='<h4 style="color:#498af3;"><u>EMAIL ID SEARCH</u></h4><br>';
-                     appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                     var appenddata='<h4 style="color:#498af3;">EMAIL ID SEARCH</h4><br>';
+                     appenddata+='<div class="row form-group" style="padding-left:20px;">';
                      appenddata+='<div class="col-md-3"><label>EMAIL ID<span class="labelrequired"><em>*</em></span></label></div>';
                      appenddata+='<div class="col-md-3"><input type=text class="form-control customernameautovalidate" name="CC_SRC_EmailSearch"  id="CC_SRC_EmailSearch"/></div>';
                      appenddata+='<div class="col-md-3"><label id="customernameautocompleteerrormsg" class="errormsg" hidden></label></div>';
                      appenddata+='</div>';
                      appenddata+='<div class="row form-group">';
-                     appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+                     appenddata+='<div class="col-lg-offset-2 col-lg-2">';
                      appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
                      $('#CC_SearchformDiv').html(appenddata);
                      for (var i = 0; i < value_array.length; i++)
@@ -327,14 +327,14 @@
                  url: '/index.php/Ctrl_Customer_Search/AllEPNumbers',
                  success: function(data){
                      var value_array=JSON.parse(data);
-                     var appenddata='<h4 style="color:#498af3;"><u>EP NUMBER SEARCH</u></h4><br>';
-                     appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                     var appenddata='<h4 style="color:#498af3;">EP NUMBER SEARCH</h4><br>';
+                     appenddata+='<div class="row form-group" style="padding-left:20px;">';
                      appenddata+='<div class="col-md-3"><label>EP NUMBER<span class="labelrequired"><em>*</em></span></label></div>';
                      appenddata+='<div class="col-md-3"><input type=text class="form-control autosize customernameautovalidate" name="CC_SRC_EPnoSearch"  id="CC_SRC_EPnoSearch"/></div>';
                      appenddata+='<div class="col-md-3"><label id="customernameautocompleteerrormsg" class="errormsg" hidden></label></div>';
                      appenddata+='</div>';
                      appenddata+='<div class="row form-group">';
-                     appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+                     appenddata+='<div class="col-lg-offset-2 col-lg-2">';
                      appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
                      $('#CC_SearchformDiv').html(appenddata);
                      for (var i = 0; i < value_array.length; i++)
@@ -358,14 +358,14 @@
                  url: '/index.php/Ctrl_Customer_Search/AllPassPortNumbers',
                  success: function(data){
                      var value_array=JSON.parse(data);
-                     var appenddata='<h4 style="color:#498af3;"><u>PASSPORT NUMBER SEARCH</u></h4><br>';
-                     appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                     var appenddata='<h4 style="color:#498af3;">PASSPORT NUMBER SEARCH</h4><br>';
+                     appenddata+='<div class="row form-group" style="padding-left:20px;">';
                      appenddata+='<div class="col-md-3"><label>PASSPORT NUMBER<span class="labelrequired"><em>*</em></span></label></div>';
                      appenddata+='<div class="col-md-3"><input type=text class="form-control autosize customernameautovalidate" name="CC_SRC_PassportnoSearch"  id="CC_SRC_PassportnoSearch"/></div>';
                      appenddata+='<div class="col-md-3"><label id="customernameautocompleteerrormsg" class="errormsg" hidden></label></div>';
                      appenddata+='</div>';
                      appenddata+='<div class="row form-group">';
-                     appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+                     appenddata+='<div class="col-lg-offset-2 col-lg-2">';
                      appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
                      $('#CC_SearchformDiv').html(appenddata);
                      for (var i = 0; i < value_array.length; i++)
@@ -389,14 +389,14 @@
                  url: '/index.php/Ctrl_Customer_Search/AllMobileNumbers',
                  success: function(data){
                      var value_array=JSON.parse(data);
-                     var appenddata='<h4 style="color:#498af3;"><u>MOBILE NUMBER SEARCH</u></h4><br>';
-                     appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                     var appenddata='<h4 style="color:#498af3;">MOBILE NUMBER SEARCH</h4><br>';
+                     appenddata+='<div class="row form-group" style="padding-left:20px;">';
                      appenddata+='<div class="col-md-3"><label>MOBILE NUMBER<span class="labelrequired"><em>*</em></span></label></div>';
                      appenddata+='<div class="col-md-3"><input type=text class="form-control autosize customernameautovalidate" name="CC_SRC_MobilenoSearch"  id="CC_SRC_MobilenoSearch"/></div>';
                      appenddata+='<div class="col-md-3"><label id="customernameautocompleteerrormsg" class="errormsg" hidden></label></div>';
                      appenddata+='</div>';
                      appenddata+='<div class="row form-group">';
-                     appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+                     appenddata+='<div class="col-lg-offset-2 col-lg-2">';
                      appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
                      $('#CC_SearchformDiv').html(appenddata);
                      for (var i = 0; i < value_array.length; i++)
@@ -420,14 +420,14 @@
                  url: '/index.php/Ctrl_Customer_Search/AllIntMobileNumbers',
                  success: function(data){
                      var value_array=JSON.parse(data);
-                     var appenddata='<h4 style="color:#498af3;"><u>INTL MOBILE NUMBER SEARCH</u></h4><br>';
-                     appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                     var appenddata='<h4 style="color:#498af3;">INTL MOBILE NUMBER SEARCH</h4><br>';
+                     appenddata+='<div class="row form-group" style="padding-left:20px;">';
                      appenddata+='<div class="col-md-3"><label>INTL MOBILE NUMBER<span class="labelrequired"><em>*</em></span></label></div>';
                      appenddata+='<div class="col-md-3"><input type=text class="form-control autosize customernameautovalidate" name="CC_SRC_IntMobilenoSearch"  id="CC_SRC_IntMobilenoSearch"/></div>';
                      appenddata+='<div class="col-md-3"><label id="customernameautocompleteerrormsg" class="errormsg" hidden></label></div>';
                      appenddata+='</div>';
                      appenddata+='<div class="row form-group">';
-                     appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+                     appenddata+='<div class="col-lg-offset-2 col-lg-2">';
                      appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
                      $('#CC_SearchformDiv').html(appenddata);
                      for (var i = 0; i < value_array.length; i++)
@@ -451,14 +451,14 @@
                  url: '/index.php/Ctrl_Customer_Search/AllOfficeNumbers',
                  success: function(data){
                      var value_array=JSON.parse(data);
-                     var appenddata='<h4 style="color:#498af3;"><u>OFFICE NUMBER SEARCH</u></h4><br>';
-                     appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                     var appenddata='<h4 style="color:#498af3;">OFFICE NUMBER SEARCH</h4><br>';
+                     appenddata+='<div class="row form-group" style="padding-left:20px;">';
                      appenddata+='<div class="col-md-3"><label>OFFICE NUMBER<span class="labelrequired"><em>*</em></span></label></div>';
                      appenddata+='<div class="col-md-3"><input type=text class="form-control autosize customernameautovalidate" name="CC_SRC_OfficenoSearch"  id="CC_SRC_OfficenoSearch"/></div>';
                      appenddata+='<div class="col-md-3"><label id="customernameautocompleteerrormsg" class="errormsg" hidden></label></div>';
                      appenddata+='</div>';
                      appenddata+='<div class="row form-group">';
-                     appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+                     appenddata+='<div class="col-lg-offset-2 col-lg-2">';
                      appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
                      $('#CC_SearchformDiv').html(appenddata);
                      for (var i = 0; i < value_array.length; i++)
@@ -482,14 +482,14 @@
                  url: '/index.php/Ctrl_Customer_Search/AllComments',
                  success: function(data){
                      var value_array=JSON.parse(data);
-                     var appenddata='<h4 style="color:#498af3;"><u>COMMENTS SEARCH</u></h4><br>';
-                     appenddata+='<div class="row form-group" style="padding-left:40px;">';
+                     var appenddata='<h4 style="color:#498af3;">COMMENTS SEARCH</h4><br>';
+                     appenddata+='<div class="row form-group" style="padding-left:20px;">';
                      appenddata+='<div class="col-md-3"><label>COMMENTS<span class="labelrequired"><em>*</em></span></label></div>';
                      appenddata+='<div class="col-md-3"><textarea class="form-control  customernameautovalidate" name="CC_SRC_CommentsSearch"  id="CC_SRC_CommentsSearch"></textarea></div>';
                      appenddata+='<div class="col-md-3"><label id="customernameautocompleteerrormsg" class="errormsg" hidden></label></div>';
                      appenddata+='</div>';
                      appenddata+='<div class="row form-group">';
-                     appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+                     appenddata+='<div class="col-lg-offset-2 col-lg-2">';
                      appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
                      $('#CC_SearchformDiv').html(appenddata);
                      for (var i = 0; i < value_array.length; i++)
@@ -508,18 +508,18 @@
          }
          else if(searchoption==23)
          {
-             var appenddata='<h4 style="color:#498af3;"><u>DOB SEARCH</u></h4><br>';
-             appenddata+='<div class="row form-group" style="padding-left:40px;">';
+             var appenddata='<h4 style="color:#498af3;">DOB SEARCH</h4><br>';
+             appenddata+='<div class="row form-group" style="padding-left:20px;">';
              appenddata+='<div class="col-md-3"><label>FROM DATE<span class="labelrequired"><em>*</em></span></label></div>';
              appenddata+='<div class="col-md-3"><input type=text class="form-control dobvalidation" name="CC_SRC_Fromdate"  id="CC_SRC_Fromdate" style="max-width: 150px"/></div>';
              appenddata+='</div>';
-             appenddata+='<div class="row form-group" style="padding-left:40px;">';
+             appenddata+='<div class="row form-group" style="padding-left:20px;">';
              appenddata+='<div class="col-md-3"><label>TO DATE<span class="labelrequired"><em>*</em></span></label></div>';
              appenddata+='<div class="col-md-3"><input type=text class="form-control dobvalidation" name="CC_SRC_Todate"  id="CC_SRC_Todate" style="max-width: 150px"/></div>';
 //             appenddata+='<div class="col-md-5"><label id="depositamterrormsg" class="errormsg" hidden></label></div>';
              appenddata+='</div>';
              appenddata+='<div class="row form-group">';
-             appenddata+='<div class="col-lg-offset-3 col-lg-3">';
+             appenddata+='<div class="col-lg-offset-2 col-lg-2">';
              appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
              $('#CC_SearchformDiv').html(appenddata);
              $('#CC_SRC_Fromdate').datepicker({
@@ -536,13 +536,13 @@
          }
         else if(searchoption==34)
          {
-             var appenddata='<h4 style="color:#498af3;"><u>LEASE PERIOD SEARCH</u></h4><br>';
-             appenddata+='<div class="row form-group" style="padding-left:40px;">';
+             var appenddata='<h4 style="color:#498af3;">LEASE PERIOD SEARCH</h4><br>';
+             appenddata+='<div class="row form-group" style="padding-left:20px;">';
              appenddata+='<div class="col-md-3"><label>LEASE PERIOD<span class="labelrequired"><em>*</em></span></label></div>';
              appenddata+='<div class="col-md-3"><input type="text" class="form-control" name="CC_SRC_Leaseperiod"  id="CC_SRC_Leaseperiod" /></div>';
              appenddata+='</div>';
              appenddata+='<div class="row form-group">';
-             appenddata+='<div class="col-lg-offset-4 col-lg-4">';
+             appenddata+='<div class="col-lg-offset-2 col-lg-2">';
              appenddata+='<input type="button" id="CC_src_btn_search" class="btn" value="SEARCH" disabled></div></div>';
              $('#CC_SearchformDiv').html(appenddata);
              $('#CC_SRC_Leaseperiod').datepicker( {
@@ -868,7 +868,7 @@
              data:data,
              success: function(data){
                  var value_array=JSON.parse(data);
-                 var CustpmerPersonal_Tabledata="<table id='Customer_Personal_Datatable' border=1 cellspacing='0' data-class='table'  class=' srcresult table' style='width:2500px'>";
+                 var CustpmerPersonal_Tabledata="<table id='Customer_Personal_Datatable' border=1 cellspacing='0' data-class='table'  class=' srcresult table' style='width:3000px'>";
                  CustpmerPersonal_Tabledata+="<thead class='headercolor'><tr class='head' style='text-align:center'>";
                  CustpmerPersonal_Tabledata+="<th style='text-align:center;vertical-align: top'>CUSTOMER ID</th>";
                  CustpmerPersonal_Tabledata+="<th style='text-align:center;vertical-align: top'>CUSTOMER FIRSTNAME</th>";

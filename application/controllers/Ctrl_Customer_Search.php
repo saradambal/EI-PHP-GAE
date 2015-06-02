@@ -6,12 +6,12 @@ Class Ctrl_Customer_Search extends CI_Controller
 {
     public function Index()
     {
-        $this->load->view('CUSTOMER/FORM_CUSTOMER_SERACH_UPDATE');
+        $this->load->view('CUSTOMER/VW_Customer_Search_Update');
     }
     public function CC_SRC_InitialDataLoad()
     {
-        $this->load->model('Customersearch');
-        $SearchOption=$this->Customersearch->getSearchOption();
+        $this->load->model('CUSTOMER/Mdl_customersearch');
+        $SearchOption=$this->Mdl_customersearch->getSearchOption();
         $this->load->model('Eilib/Common_function');
         $nationality = $this->Common_function->getNationality();
         $errorlist=$_REQUEST['ErrorList'];
@@ -27,20 +27,20 @@ Class Ctrl_Customer_Search extends CI_Controller
     }
     public function CustomerName()
     {
-        $this->load->model('Customersearch');
-        $Customername=$this->Customersearch->getCustomernames();
+        $this->load->model('CUSTOMER/Mdl_customersearch');
+        $Customername=$this->Mdl_customersearch->getCustomernames();
         echo json_encode($Customername);
     }
     public function CustomerCompnameName()
     {
-        $this->load->model('Customersearch');
-        $Customercompanyname=$this->Customersearch->getCustomerCompanyNames();
+        $this->load->model('CUSTOMER/Mdl_customersearch');
+        $Customercompanyname=$this->Mdl_customersearch->getCustomerCompanyNames();
         echo json_encode($Customercompanyname);
     }
     public function CustomerCardNos()
     {
-        $this->load->model('Customersearch');
-        $CustomerCard=$this->Customersearch->getCustomerCardNos();
+        $this->load->model('CUSTOMER/Mdl_customersearch');
+        $CustomerCard=$this->Mdl_customersearch->getCustomerCardNos();
         echo json_encode($CustomerCard);
     }
     public function AllUnits()
@@ -51,59 +51,59 @@ Class Ctrl_Customer_Search extends CI_Controller
     }
     public function AllRoomtype()
     {
-        $this->load->model('Customersearch');
-        $Roomtype = $this->Customersearch->getAllRoomtypes();
+        $this->load->model('CUSTOMER/Mdl_customersearch');
+        $Roomtype = $this->Mdl_customersearch->getAllRoomtypes();
         echo json_encode($Roomtype);
     }
     public function AllEmails()
     {
-        $this->load->model('Customersearch');
-        $Email = $this->Customersearch->getAllEmail();
+        $this->load->model('CUSTOMER/Mdl_customersearch');
+        $Email = $this->Mdl_customersearch->getAllEmail();
         echo json_encode($Email);
     }
     public function AllEPNumbers()
     {
-        $this->load->model('Customersearch');
-        $Epnumber = $this->Customersearch->getAllEPnumbers();
+        $this->load->model('CUSTOMER/Mdl_customersearch');
+        $Epnumber = $this->Mdl_customersearch->getAllEPnumbers();
         echo json_encode($Epnumber);
     }
     public function AllPassPortNumbers()
     {
-        $this->load->model('Customersearch');
-        $Passport = $this->Customersearch->getAllPassPortnumbers();
+        $this->load->model('CUSTOMER/Mdl_customersearch');
+        $Passport = $this->Mdl_customersearch->getAllPassPortnumbers();
         echo json_encode($Passport);
     }
     public function AllMobileNumbers()
     {
-        $this->load->model('Customersearch');
-        $Mobile = $this->Customersearch->getAllMobileNumbers();
+        $this->load->model('CUSTOMER/Mdl_customersearch');
+        $Mobile = $this->Mdl_customersearch->getAllMobileNumbers();
         echo json_encode($Mobile);
     }
     public function AllIntMobileNumbers()
     {
-        $this->load->model('Customersearch');
-        $IntlMobile = $this->Customersearch->getAllIntlMobileNumbers();
+        $this->load->model('CUSTOMER/Mdl_customersearch');
+        $IntlMobile = $this->Mdl_customersearch->getAllIntlMobileNumbers();
         echo json_encode($IntlMobile);
     }
     public function AllOfficeNumbers()
     {
-        $this->load->model('Customersearch');
-        $OfficeMobile = $this->Customersearch->getAllOfficeNumbers();
+        $this->load->model('CUSTOMER/Mdl_customersearch');
+        $OfficeMobile = $this->Mdl_customersearch->getAllOfficeNumbers();
         echo json_encode($OfficeMobile);
     }
     public function AllComments()
     {
-        $this->load->model('Customersearch');
-        $OfficeMobile = $this->Customersearch->getAllComments();
+        $this->load->model('CUSTOMER/Mdl_customersearch');
+        $OfficeMobile = $this->Mdl_customersearch->getAllComments();
         echo json_encode($OfficeMobile);
     }
     public function SearchDataResults()
     {
-        $this->load->model('Customersearch');
+        $this->load->model('CUSTOMER/Mdl_customersearch');
         $searchoption=$_POST['SearchOption'];
         $data1=$_POST['data1'];
         $data2=$_POST['data2'];
-        $Resultset=$this->Customersearch->getSearchResults($searchoption,$data1,$data2);
+        $Resultset=$this->Mdl_customersearch->getSearchResults($searchoption,$data1,$data2);
         echo json_encode($Resultset);
     }
     public function SelectCustomerResults()
@@ -111,9 +111,9 @@ Class Ctrl_Customer_Search extends CI_Controller
         $customerid=$_POST['customerid'];
         $leaseperiod=$_POST['LP'];
         $unit=$_POST['Unit'];
-        $this->load->model('Customersearch');
-        $RecverDetails=$this->Customersearch->getSearchRecverdetails($unit,$customerid,$leaseperiod);
-        $Resultset=$this->Customersearch->SelectCustomerResults($customerid,$leaseperiod);
+        $this->load->model('CUSTOMER/Mdl_customersearch');
+        $RecverDetails=$this->Mdl_customersearch->getSearchRecverdetails($unit,$customerid,$leaseperiod);
+        $Resultset=$this->Mdl_customersearch->SelectCustomerResults($customerid,$leaseperiod);
         $this->load->model('Eilib/Common_function');
         $RoomType=$this->Common_function->getUnitRoomType($unit);
         $UnitDates=$this->Common_function->getUnit_Start_EndDate($unit);
@@ -140,8 +140,8 @@ Class Ctrl_Customer_Search extends CI_Controller
         $Enddate=$_POST['CCRE_SRC_Enddate'];
         $Leaseperiod=$this->Common_function->getLeasePeriod($Startdate,$Enddate);
         $Quoters=$this->Common_function->quarterCalc(new DateTime(date('Y-m-d',strtotime($Startdate))), new DateTime(date('Y-m-d',strtotime($Enddate))));
-        $this->load->model('Customersearch');
-        $Create_confirm=$this->Customersearch->Customer_Search_Update($UserStamp,$Leaseperiod,$Quoters);
+        $this->load->model('CUSTOMER/Mdl_customersearch');
+        $Create_confirm=$this->Mdl_customersearch->Customer_Search_Update($UserStamp,$Leaseperiod,$Quoters);
         print_r($Create_confirm);
     }
 }

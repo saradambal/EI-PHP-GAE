@@ -6,7 +6,7 @@ Class Ctrl_Customer_Creation extends CI_Controller
 {
     public function Index()
     {
-        $this->load->view('CUSTOMER/FORM_CUSTOMER_CREATION');
+        $this->load->view('CUSTOMER/Vw_Customer_Creation');
     }
     public function Customer_Initaildatas()
     {
@@ -51,8 +51,8 @@ Class Ctrl_Customer_Creation extends CI_Controller
         $Leaseperiod=$this->Common_function->getLeasePeriod($Startdate,$Enddate);
         $Quoters=$this->Common_function->quarterCalc(new DateTime(date('Y-m-d',strtotime($Startdate))), new DateTime(date('Y-m-d',strtotime($Enddate))));
         $service=$this->Common_function->get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
-        $this->load->model('Customercreation');
-        $Create_confirm=$this->Customercreation->Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters,$service);
+        $this->load->model('CUSTOMER/Mdl_customercreation');
+        $Create_confirm=$this->Mdl_customercreation->Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters,$service);
         if($Create_confirm[0]==1)
         {
             $this->load->library('Google');

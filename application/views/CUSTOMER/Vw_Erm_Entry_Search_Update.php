@@ -5,8 +5,8 @@
 <script>
 var ErrorControl ={AmountCompare:'InValid'}
     $(document).ready(function() {
-        //****************Form Option Selection*********************//
         $('.preloader').hide();
+        //****************Form Option Selection*********************//
         $("#ERM_SRC_FromAmount").doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
         $('#ERM_Entry_MovingDate').datepicker({
             dateFormat: "dd-mm-yy",
@@ -53,7 +53,7 @@ var ErrorControl ={AmountCompare:'InValid'}
 
               $.ajax({
                   type: "POST",
-                  url: 'http://localhost/CILocal/index.php/Ctrl_Erm_Forms/ERM_InitialDataLoad',
+                  url: '/index.php/Ctrl_Erm_Forms/ERM_InitialDataLoad',
                   data:{"Formname":'ERM_Entry',"ErrorList":'1,2,3,6,36,382,400'},
                   success: function(data){
                       var value_array=JSON.parse(data);
@@ -87,7 +87,7 @@ var ErrorControl ={AmountCompare:'InValid'}
               $('#ERM_SRC_SearchOption').val('SELECT');
               $.ajax({
                   type: "POST",
-                  url: 'http://localhost/CILocal/index.php/Ctrl_Erm_Forms/ERM_SRC_InitialDataLoad',
+                  url: '/index.php/Ctrl_Erm_Forms/ERM_SRC_InitialDataLoad',
                   data:{"Formname":'ERM_SRC_UPDATE',"ErrorList":'1,2,4,5,6,36,45,170,315,383,384,385,401'},
                   success: function(data){
                       var value_array=JSON.parse(data);
@@ -181,7 +181,7 @@ var ErrorControl ={AmountCompare:'InValid'}
             var FormElements=$('#ERM_Form_Entry').serialize();
             $.ajax({
                 type: "POST",
-                url: "http://localhost/CILocal/index.php/Ctrl_Erm_Forms/ERM_Entry_Save",
+                url: "/index.php/Ctrl_Erm_Forms/ERM_Entry_Save",
                 data:FormElements,
                 success: function(data){
                     var returnflag=JSON.parse(data);
@@ -235,7 +235,7 @@ var ErrorControl ={AmountCompare:'InValid'}
             {
                 $.ajax({
                     type: "POST",
-                    url: 'http://localhost/CILocal/index.php/Ctrl_Erm_Forms/CustomerName',
+                    url: '/index.php/Ctrl_Erm_Forms/CustomerName',
                     success: function(data){
                         var value_array=JSON.parse(data);
                         var appenddata='<BR><h4 style="color:#498af3;">CUSTOMER NAME SEARCH</h4><BR>';
@@ -265,7 +265,7 @@ var ErrorControl ={AmountCompare:'InValid'}
           {
               $.ajax({
                   type: "POST",
-                  url: 'http://localhost/CILocal/index.php/Ctrl_Erm_Forms/CustomerContact',
+                  url: '/index.php/Ctrl_Erm_Forms/CustomerContact',
                   success: function(data){
                       var value_array=JSON.parse(data);
                       var appenddata='<BR><h4 style="color:#498af3;">CONTACT NUMBER SEARCH</h4><BR>';
@@ -298,7 +298,7 @@ var ErrorControl ={AmountCompare:'InValid'}
           {
               $.ajax({
                   type: "POST",
-                  url: 'http://localhost/CILocal/index.php/Ctrl_Erm_Forms/Userstamp',
+                  url: '/index.php/Ctrl_Erm_Forms/Userstamp',
                   success: function(data){
                       var value_array=JSON.parse(data);
 
@@ -552,7 +552,7 @@ var ErrorControl ={AmountCompare:'InValid'}
          $("#ERM_src_btn_search").attr("disabled", "disabled");
          $.ajax({
              type: "POST",
-             url: 'http://localhost/CILocal/index.php/Ctrl_Erm_Forms/ERM_SearchOption',
+             url: '/index.php/Ctrl_Erm_Forms/ERM_SearchOption',
              data:data,
              success: function(data){
                  var value_array=JSON.parse(data);
@@ -612,7 +612,7 @@ var ErrorControl ={AmountCompare:'InValid'}
 //                     "scrollCollapse": true,
 //                     "paging": false
 //                 } );
-                 new $.fn.dataTable.FixedColumns( table );
+//                 new $.fn.dataTable.FixedColumns( table );
                  $("#ERM_src_btn_search").attr("disabled", "disabled");
              },
              error: function(data){
@@ -633,7 +633,7 @@ var ErrorControl ={AmountCompare:'InValid'}
             $(".preloader").show();
             $.ajax({
                 type: "POST",
-                url: "http://localhost/CILocal/index.php/Ctrl_Erm_Forms/ERM_Deletion_Details",
+                url: "/index.php/Ctrl_Erm_Forms/ERM_Deletion_Details",
                 data:{Rowid:deleterowid},
                 success: function(data){
                     $('.preloader').hide();
@@ -785,7 +785,7 @@ var ErrorControl ={AmountCompare:'InValid'}
             var data={RowId:selectedrowid,Name:customername,Rent:Rent,Movingdate:movingdate,Minstay:minimumstay,Occupation:occupation,Nation:Nationality,Guests:guests,Age:age,Contactno:Contactno,Emailid:Emailid,Comments:comments}
             $.ajax({
                 type: "POST",
-                url: "http://localhost/CILocal/index.php/Ctrl_Erm_Forms/ERM_Updation_Details",
+                url: "/index.php/Ctrl_Erm_Forms/ERM_Updation_Details",
                 data:data,
                 success: function(msg){
                     var value_array=JSON.parse(msg);

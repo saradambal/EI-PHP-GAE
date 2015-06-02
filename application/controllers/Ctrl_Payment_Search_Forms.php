@@ -1,12 +1,12 @@
 <?php
 error_reporting(0);
 include 'GET_USERSTAMP.php';
-$$UserStamp=$UserStamp;
+$UserStamp=$UserStamp;
 Class Ctrl_Payment_Search_Forms extends CI_Controller
 {
     public function Index()
     {
-        $this->load->view('FINANCE/Form_Payment_Search_Upadte');
+        $this->load->view('FINANCE/Vw_Payment_Search_Upadte');
     }
     public function InitialDataLoad()
     {

@@ -44,6 +44,7 @@
             url: '/index.php/Ctrl_Payment_Terminated_Customer_Forms/PaymentInitialDatas',
             data:{"ErrorList":'2,3,92,248,309'},
             success: function(data){
+                alert(data);
                 $('.preloader').hide();
                 var value_array=JSON.parse(data);
                 allunitdetails=value_array[0];

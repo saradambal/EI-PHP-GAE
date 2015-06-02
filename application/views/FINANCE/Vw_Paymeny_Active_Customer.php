@@ -5,8 +5,8 @@
 <script>
     $(document).ready(function() {
         $('#spacewidth').height('0%');
-        $('.preloader').hide();
-        var t=$('#Finance_Entry_Table').DataTable();
+        var t=$('#Finance_Entry_Table').DataTable({
+        });
         var ActiveUnits;
         var Paymenttype;
         var ErrorMsg;
@@ -18,6 +18,7 @@
             url: '/index.php/Ctrl_Payment_Active_Customer/PaymentInitialDatas',
             data:{ErrorList:'2,3,92,248,309'},
             success: function(data){
+                $('.preloader').hide();
                 var valuearray=JSON.parse(data);
                 ActiveUnits=valuearray[0];
                 Paymenttype=valuearray[1];
@@ -48,15 +49,15 @@
             counter=counter+1;
             t.row.add( [
                 '<a href="#" class="removebutton"><span style="max-width:40px !important;max-height:40px !important;color:red;text-align:center" class="glyphicon glyphicon-trash"></span></a><input type="text" class="form-control" hidden style="max-width:50px" id=vlaidation_'+counter+'>',
-                '<SELECT class="form-control UnitChange Btn_validation"  name="Unit[]" id=Unitid_'+counter+'><OPTION>SELECT</OPTION></SELECT>',
-                '<SELECT class="form-control CustomernameChange Btn_validation" disabled name="Customer[]" id=Customerid_'+counter+'><OPTION>SELECT</OPTION></SELECT><div id=multiplecustomerdiv_'+counter+'></div>',
-                '<SELECT class="form-control LPChange Btn_validation" disabled name="LeasePeriod[]" id=Leaseperiodid_'+counter+'><OPTION>SELECT</OPTION></SELECT><input type="text" class="form-control" hidden style="max-width:50px" id=TempCustomerid_'+counter+'>',
-                '<SELECT class="form-control LPChange Btn_validation" name="Payment[]" id=Paymentid_'+counter+'><OPTION>SELECT</OPTION></SELECT>',
-                '<input type="text" class="form-control amtonly Btn_validation" name="Amount[]" id=Amountid_'+counter+'>',
-                '<input type="checkbox" class="form-control Btn_validation" name="Amountflag[]" id=Amountflag_'+counter+'>',
-                '<input type="text" class="form-control datepickperiod Btn_validation" name="ForPeriod[]" id=Forperiodid_'+counter+'>',
-                '<input type="text" class="form-control datepickpaiddate Btn_validation" name="PaidDate[]" id=Paiddate_'+counter+'>',
-                '<textarea class="form-control autogrowcomments Btn_validation" name="Comments[]" id=Comments_'+counter+'></textarea>'
+                '<SELECT class="form-control UnitChange Btn_validation" style="width:120px" name="Unit[]" id=Unitid_'+counter+'><OPTION>SELECT</OPTION></SELECT>',
+                '<SELECT class="form-control CustomernameChange Btn_validation" disabled style="width:250px" name="Customer[]" id=Customerid_'+counter+'><OPTION>SELECT</OPTION></SELECT><div id=multiplecustomerdiv_'+counter+'></div>',
+                '<SELECT class="form-control LPChange Btn_validation" disabled name="LeasePeriod[]" style="width:120px" id=Leaseperiodid_'+counter+'><OPTION>SELECT</OPTION></SELECT><input type="text" class="form-control" hidden style="max-width:50px" id=TempCustomerid_'+counter+'>',
+                '<SELECT class="form-control LPChange Btn_validation" name="Payment[]" style="width:150px" id=Paymentid_'+counter+'><OPTION>SELECT</OPTION></SELECT>',
+                '<input type="text" class="form-control amtonly Btn_validation" name="Amount[]" style="width:120px" id=Amountid_'+counter+'>',
+                '<input type="checkbox" class="form-control Btn_validation" name="Amountflag[]" style="width:100px" id=Amountflag_'+counter+'>',
+                '<input type="text" class="form-control datepickperiod Btn_validation" name="ForPeriod[]" style="width:150px" id=Forperiodid_'+counter+'>',
+                '<input type="text" class="form-control datepickpaiddate Btn_validation" name="PaidDate[]" style="width:100px" id=Paiddate_'+counter+'>',
+                '<textarea class="form-control autogrowcomments Btn_validation" name="Comments[]" style="width:200px" id=Comments_'+counter+'></textarea>'
             ] ).draw();
             $('.autogrowcomments').autogrow({onInitialize: true});
             $(".amtonly").doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
@@ -243,7 +244,7 @@
                             var recverdateperiod=data.CLP_STARTDATE+' --- '+enddate;
                             LpDetailsDate.push(data.CLP_STARTDATE+'/'+enddate);
                             LP.push(recver);
-                            options += '<option title="LP" value="' + data.CED_REC_VER + '">' + data.CED_REC_VER + '</option>';
+                            options += '<option title="'+recverdateperiod+'" value="' + data.CED_REC_VER + '">' + data.CED_REC_VER + '</option>';
                         }
                         $('#Leaseperiodid_'+rowid).html(options);
                         if(value_array.length!=0)

@@ -889,7 +889,7 @@ $(document).ready(function() {
             }
         }
         var option='SAVE';
-        xmlhttp.open("POST","/index.php/Ctrl_Customer_Creation/CustomerCreationSave",true);
+        xmlhttp.open("POST","http://localhost/CILocal/index.php/Ctrl_Customer_Creation/CustomerCreationSave",true);
         xmlhttp.send(new FormData(FormElements));
     });
     $(document).on('change blur','.Customernamechange',function(){

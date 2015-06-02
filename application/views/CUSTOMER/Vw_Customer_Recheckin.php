@@ -27,7 +27,6 @@ $(document).ready(function() {
         url: '/index.php/Ctrl_Customer_Recheckin/Customer_Initaildatas',
         data:{"Formname":'CustomerCreation',"ErrorList":'1,2,6,33,34,35,36,37,321,324,339,342,343,344,345,346,347,348,400,443,444,458,459,460,461'},
         success: function(data){
-            $('.preloader').hide();
             var value_array=JSON.parse(data);
             timearray=value_array[5];
             errormsg=value_array[4];

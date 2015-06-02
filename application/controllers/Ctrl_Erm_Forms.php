@@ -3,12 +3,13 @@ error_reporting(0);
 include 'GET_USERSTAMP.php';
 require_once 'google/appengine/api/mail/Message.php';
 use google\appengine\api\mail\Message;
-$$UserStamp=$UserStamp;
+$UserStamp=$UserStamp;
+$timeZoneFormat=$timeZoneFormat;
 Class Ctrl_Erm_Forms extends CI_Controller
 {
     public function Index()
     {
-        $this->load->view('CUSTOMER/FORM_ERM_SEARCH_UPDATE');
+        $this->load->view('CUSTOMER/Vw_Erm_Entry_Search_Update');
     }
     public function ERM_InitialDataLoad()
     {
@@ -29,8 +30,8 @@ Class Ctrl_Erm_Forms extends CI_Controller
         $Emailtemplate=$this->Common_function->getProfileEmailId('ERM');
         $splitMailid=explode('@',$Emailtemplate[0]);
         $username=strtoupper($splitMailid[0]);
-        $this->load->model('Ermmodel');
-        $Create_confirm=$this->Ermmodel->ERM_EntrySave($UserStamp,$username);
+        $this->load->model('CUSTOMER/Mdl_erm');
+        $Create_confirm=$this->Mdl_erm->ERM_EntrySave($UserStamp,$username);
         $mydate=getdate(date("U"));
         $sysdate="$mydate[month] $mydate[mday], $mydate[year]";
         $emailsubject="NEW ERM LEED -".$sysdate;
@@ -38,7 +39,7 @@ Class Ctrl_Erm_Forms extends CI_Controller
         {
             $message1 = new Message();
             $message1->setSender($displayname.'<'.$UserStamp.'>');
-            $message1->setSender($UserStamp);
+//            $message1->setSender($UserStamp);
             $message1->addTo($Emailtemplate[0]);
             $message1->addCc($Emailtemplate[1]);
             $message1->setSubject($emailsubject);
@@ -49,8 +50,8 @@ Class Ctrl_Erm_Forms extends CI_Controller
     }
     public function ERM_SRC_InitialDataLoad()
     {
-        $this->load->model('Ermmodel');
-        $SearchOption=$this->Ermmodel->getSearchOption();
+        $this->load->model('CUSTOMER/Mdl_erm');
+        $SearchOption=$this->Mdl_erm->getSearchOption();
         $this->load->model('Common');
         $nationality = $this->Common->getNationality();
         $errorlist=$_REQUEST['ErrorList'];
@@ -61,36 +62,35 @@ Class Ctrl_Erm_Forms extends CI_Controller
     }
     public function ERM_Entry_Update()
     {
-        $this->load->model('Ermmodel');
-        $Create_confirm=$this->Ermmodel->ERM_EntrySave();
+        $this->load->model('CUSTOMER/Mdl_erm');
+        $Create_confirm=$this->Mdl_erm->ERM_EntrySave();
         echo json_encode($Create_confirm);
     }
     public function CustomerName()
     {
-        $this->load->model('Ermmodel');
-        $Customername=$this->Ermmodel->getCustomernames();
+        $this->load->model('CUSTOMER/Mdl_erm');
+        $Customername=$this->Mdl_erm->getCustomernames();
         echo json_encode($Customername);
     }
     public function CustomerContact()
     {
-        $this->load->model('Ermmodel');
-        $Contactno=$this->Ermmodel->getCustomerContact();
+        $this->load->model('CUSTOMER/Mdl_erm');
+        $Contactno=$this->Mdl_erm->getCustomerContact();
         echo json_encode($Contactno);
     }
     public function Userstamp()
     {
-        $this->load->model('Ermmodel');
-        $UserStamp=$this->Ermmodel->getUserstamp();
+        $this->load->model('CUSTOMER/Mdl_erm');
+        $UserStamp=$this->Mdl_erm->getUserstamp();
         echo json_encode($UserStamp);
     }
     public function ERM_SearchOption()
     {
-        global $timeZoneFormat;
         $Option=$_POST['Option'];
         $Data1=$_POST['Data1'];
         $Data2=$_POST['Data2'];
-        $this->load->model('Ermmodel');
-        $UserStamp=$this->Ermmodel->getAllDatas($Option,$Data1,$Data2,$timeZoneFormat);
+        $this->load->model('CUSTOMER/Mdl_erm');
+        $UserStamp=$this->Mdl_erm->getAllDatas($Option,$Data1,$Data2);
         echo json_encode($UserStamp);
     }
     public function ERM_Deletion_Details()
@@ -105,6 +105,7 @@ Class Ctrl_Erm_Forms extends CI_Controller
     {
         global $UserStamp;
         global $timeZoneFormat;
+        $this->load->model('CUSTOMER/Mdl_erm');
         $Rowid=$_POST['RowId'];
         $Name=$_POST['Name'];
         $Rent=$_POST['Rent'];
@@ -122,8 +123,7 @@ Class Ctrl_Erm_Forms extends CI_Controller
         $Emailtemplate=$this->Common_function->getProfileEmailId('ERM');
         $splitMailid=explode('@',$Emailtemplate[0]);
         $username=strtoupper($splitMailid[0]);
-        $this->load->model('Ermmodel');
-        $Create_confirm=$this->Ermmodel->ERM_Update_Record($Rowid,$Name,$Rent,$Movedate,$Min_stay,$Occupation,$Nation,$Guests,$age,$Contactno,$Emailid,$Comments,$UserStamp,$timeZoneFormat,$username);
+        $Create_confirm=$this->Mdl_erm->ERM_Update_Record($Rowid,$Name,$Rent,$Movedate,$Min_stay,$Occupation,$Nation,$Guests,$age,$Contactno,$Emailid,$Comments,$UserStamp,$timeZoneFormat,$username);
         $Returnvalues=array($Create_confirm[0],$Create_confirm[1],$Create_confirm[2]);
         $message=$Create_confirm[3];
         $mydate=getdate(date("U"));
@@ -133,7 +133,6 @@ Class Ctrl_Erm_Forms extends CI_Controller
         {
             $message1 = new Message();
             $message1->setSender($displayname.'<'.$UserStamp.'>');
-            $message1->setSender($UserStamp);
             $message1->addTo($Emailtemplate[0]);
             $message1->addCc($Emailtemplate[1]);
             $message1->setSubject($emailsubject);
