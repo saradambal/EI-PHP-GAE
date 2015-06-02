@@ -767,7 +767,7 @@ return ("'+00:00','+08:00'");
     {
         $this->db->select("URC_DATA");
         $this->db->from('USER_RIGHTS_CONFIGURATION');
-        $this->db->where('URC_ID IN(16,17)');
+        $this->db->where('URC_ID IN(14,15)');
         foreach ($this->db->get()->result_array() as $key=>$val)
         {
             $result[]=$val['URC_DATA'];
