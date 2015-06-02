@@ -1,10 +1,10 @@
 <?php
-class ERROR_PAGE_CONTROLLER extends CI_Controller{
+class Ctrl_Error_Page extends CI_Controller{
 
     public function index()
     {
 //        $this->load->helper('form');
 //        $this->load->view('FORM_MENU');
-       $this->load->view('ERROR_PAGE');
+       $this->load->view('Vw_Error_Page');
     }
 }

@@ -267,7 +267,6 @@ $(document).ready(function() {
             success: function(data) {
                 var flag="EMAILINSERT_FLAG";
                 var result_value=JSON.parse(data.final_array[0].EMAILINSERT_FLAG);//retdata.final_array[0];
-               alert(result_value)
                 if(result_value==1)
                 {
                     //MESSAGE BOX FOR SAVED

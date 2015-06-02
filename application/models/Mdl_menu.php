@@ -1,5 +1,6 @@
 <?php
-class Db_menu extends CI_Model{
+class Mdl_menu extends CI_Model{
+
     public function fetch_data($USERSTAMP){
         global  $USERSTAMP;
         $this->db->distinct();
@@ -9,7 +10,7 @@ class Db_menu extends CI_Model{
         $this->db->where("ULD_LOGINID='$USERSTAMP' and UA.ULD_ID=ULD.ULD_ID and UA.RC_ID=UMP.RC_ID and MP.MP_ID=UMP.MP_ID");
         $query = $this->db->get();
         $URSC_Main_menu_array=array();
-$i=0;
+     $i=0;
         foreach ($query->result_array() as $row)
         {
             $URSC_Main_menu_array[]=$row["MP_MNAME"];
@@ -50,21 +51,23 @@ $i=0;
                 $URSC_sub_sub_menu_data_array[]=$URSC_sub_sub_menu_row_data;
                $j++;
                 }
-
             $URSC_sub_menu_array[]=$URSC_sub_menu_row;
-
             $i++;
-
-
         }
+
+      //LOADING LOGO AND CALENDER
+        $this->load->model("Eilib/Common_function");
+        $logocalender=$this->Common_function->getLogoCalendar();
+//        print_r($logocalender);
+//        exit;
+
         if(count($URSC_Main_menu_array)!=0){
-            $final_values=array($URSC_Main_menu_array, $URSC_sub_menu_array,$URSC_sub_sub_menu_data_array,$URSC_script_flag,$URSRC_filename,$USERSTAMP);    // $final = array($URSC_sub_menu_array,$URSC_sub_sub_menu_array,$URSC_sub_sub_menu_data_array);
+            $final_values=array($URSC_Main_menu_array, $URSC_sub_menu_array,$URSC_sub_sub_menu_data_array,$URSC_script_flag,$URSRC_filename,$USERSTAMP,$logocalender);    // $final = array($URSC_sub_menu_array,$URSC_sub_sub_menu_array,$URSC_sub_sub_menu_data_array);
         }
         else{
             $final_values=array($URSC_Main_menu_array,$USERSTAMP);
         }
 return json_encode($final_values);
 }
-
 }
 

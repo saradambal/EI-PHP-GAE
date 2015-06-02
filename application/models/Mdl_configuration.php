@@ -1,5 +1,5 @@
 <?php
-class Db_configuration_configuration_entry extends CI_Model{
+class Mdl_configuration extends CI_Model{
     //FUNCTION FOR GETTING MODEL NAME
     Public function getscriptname($CONFIG_ENTRY_searchby)
     {
@@ -63,11 +63,11 @@ class Db_configuration_configuration_entry extends CI_Model{
         if($type==42){
         $CONF_ENTRY_tb_subtype_dd=$_POST['CONF_ENTRY_tb_subtype_dd'];
         $CONF_ENTRY_tb_Datadd=$_POST['CONF_ENTRY_tb_Datadd'];
-       $insertquery = "INSERT INTO DEPOSIT_DEDUCTION_CONFIGURATION(ULD_ID,CGN_ID,DDC_DATA,DDC_SUB_DATA) VALUES((SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP'),'$type','$CONF_ENTRY_tb_subtype_dd','$CONF_ENTRY_tb_Datadd')";
+       $insertquery = "INSERT INTO DEPOSIT_DEDUCTION_CONFIGURATION(ULD_ID,CGN_ID,DDC_DATA,DDC_SUB_DATA) VALUES((SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP'),'$type','$CONF_ENTRY_tb_Datadd','$CONF_ENTRY_tb_subtype_dd')";
         }
         else{
             $data=$_POST['CONFIG_ENTRY_tb_data'];
-       $CONF_ENTRY_twodimen_details = $this->Db_configuration_configuration_entry->CONF_ENTRY_twodimdata($module) ;
+       $CONF_ENTRY_twodimen_details = $this->Mdl_configuration->CONF_ENTRY_twodimdata($module) ;
         $insertquery = "INSERT INTO ".$CONF_ENTRY_twodimen_details[1]."(CGN_ID,".$CONF_ENTRY_twodimen_details[2].",ULD_ID) VALUES(".$type.",'".$data."',(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='".$USERSTAMP."'))";
         }
         $this->db->query($insertquery);
@@ -92,24 +92,41 @@ class Db_configuration_configuration_entry extends CI_Model{
     //FUNCTION FOR FLEX TABLE
     public function config_flexdata($USERSTAMP,$module,$type){
         global  $USERSTAMP;
-        $CONF_ENTRY_twodimen_details = $this->Db_configuration_configuration_entry->CONF_ENTRY_twodimflexdata($module) ;
-     if($module!=14){
-        $flex_tble_query =$this->db->query("SELECT ". $CONF_ENTRY_twodimen_details[2]. "  FROM ". $CONF_ENTRY_twodimen_details[0]. " DT,CONFIGURATION C,CONFIGURATION_PROFILE CP,USER_LOGIN_DETAILS ULD WHERE  ULD.ULD_ID=DT.ULD_ID AND CP.CNP_ID='$module' AND DT.CGN_ID=C.CGN_ID AND C.CGN_TYPE= '$type'  ORDER BY DT. ". $CONF_ENTRY_twodimen_details[1]. " ASC ");
-       }
-      else if($module==8){
-            $flex_tble_query =$this->db->query("SELECT DDC.DDC_ID,DDC.DDC_DATA,DDC.DDC_SUB_DATA AS SUBTYPE,ULD.ULD_LOGINID,DDC.DDC_INITIALIZE_FLAG,DATE_FORMAT(CONVERT_TZ(DDC.DDC_TIMESTAMP,'+00:00','+05:30'), '%d-%m-%Y %T') AS DDC_TIMESTAMP FROM DEPOSIT_DEDUCTION_CONFIGURATION DDC,CONFIGURATION C,CONFIGURATION_PROFILE CP ,USER_LOGIN_DETAILS ULD WHERE ULD.ULD_ID=DDC.ULD_ID AND CP.CNP_ID='$module' AND DDC.CGN_ID=C.CGN_ID AND C.CGN_TYPE='$type' ORDER BY DDC.DDC_DATA ASC ");
+     if($module==8){
+            $flex_tble_query =$this->db->query("SELECT DDC.DDC_ID AS ID,DDC.DDC_DATA AS DATA,DDC.DDC_SUB_DATA AS SUBTYPE,ULD.ULD_LOGINID,DDC.DDC_INITIALIZE_FLAG AS INIFLAG,DATE_FORMAT(CONVERT_TZ(DDC.DDC_TIMESTAMP,'+00:00','+05:30'), '%d-%m-%Y %T') AS DDC_TIMESTAMP FROM DEPOSIT_DEDUCTION_CONFIGURATION DDC,CONFIGURATION C,CONFIGURATION_PROFILE CP ,USER_LOGIN_DETAILS ULD WHERE ULD.ULD_ID=DDC.ULD_ID AND CP.CNP_ID='$module' AND DDC.CGN_ID=C.CGN_ID AND C.CGN_TYPE='$type' ORDER BY DDC.DDC_DATA ASC ");
         }
+     else if($module==14){
+         $CONF_ENTRY_twodimen_details = $this->Mdl_configuration->CONF_ENTRY_twodimflexdata($module) ;
+         $flex_tble_query =$this->db->query("SELECT ". $CONF_ENTRY_twodimen_details[2]. "  FROM ". $CONF_ENTRY_twodimen_details[0]. " DT,CONFIGURATION C,CONFIGURATION_PROFILE CP WHERE  CP.CNP_ID='$module' AND DT.CGN_ID=C.CGN_ID AND C.CGN_TYPE= '$type'  ORDER BY DT. ". $CONF_ENTRY_twodimen_details[1]. " ASC ");
+     }
      else{
-            $flex_tble_query =$this->db->query("SELECT ". $CONF_ENTRY_twodimen_details[2]. "  FROM ". $CONF_ENTRY_twodimen_details[0]. " DT,CONFIGURATION C,CONFIGURATION_PROFILE CP WHERE  CP.CNP_ID='$module' AND DT.CGN_ID=C.CGN_ID AND C.CGN_TYPE= '$type'  ORDER BY DT. ". $CONF_ENTRY_twodimen_details[1]. " ASC ");
+                $CONF_ENTRY_twodimen_details = $this->Mdl_configuration->CONF_ENTRY_twodimflexdata($module) ;
+         $flex_tble_query =$this->db->query("SELECT ". $CONF_ENTRY_twodimen_details[2]. "  FROM ". $CONF_ENTRY_twodimen_details[0]. " DT,CONFIGURATION C,CONFIGURATION_PROFILE CP,USER_LOGIN_DETAILS ULD WHERE  ULD.ULD_ID=DT.ULD_ID AND CP.CNP_ID='$module' AND DT.CGN_ID=C.CGN_ID AND C.CGN_TYPE= '$type'  ORDER BY DT. ". $CONF_ENTRY_twodimen_details[1]. " ASC ");
         }
         return $flex_tble_query->result();
     }
     // FUNCTION FOR UPDATE PART
-    public  function dataupdate($USERSTAMP,$rowid,$module,$type,$data)
+    public  function dataupdate($USERSTAMP,$rowid,$module,$type,$data,$CONFIG_SEARCH_subdata,$subdatamount_value)
     {
         global  $USERSTAMP;
-        $CONFIG_SRCH_UPD_arr = $this->Db_configuration_configuration_entry->CONF_ENTRY_twodimdata($module) ;
-        $updatequery = "UPDATE ".$CONFIG_SRCH_UPD_arr[1]." SET ".$CONFIG_SRCH_UPD_arr[2]."= '$data',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE ".$CONFIG_SRCH_UPD_arr[0]."=".$rowid;
+        if($module==42)
+        {
+            $updatequery = "UPDATE DEPOSIT_DEDUCTION_CONFIGURATION SET DDC_DATA='$subdatamount_value',DDC_SUB_DATA='$data',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE DDC_ID='$rowid'";
+        }
+        else if($module==14){
+            $CONFIG_SRCH_UPD_arr = $this->Mdl_configuration->CONF_ENTRY_twodimdata($module) ;
+//            echo "UPDATE ".$CONFIG_SRCH_UPD_arr[1]." SET ".$CONFIG_SRCH_UPD_arr[2]."= '$data',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE ".$CONFIG_SRCH_UPD_arr[0]."=".$rowid;
+//            exit;
+            $updatequery = "UPDATE ".$CONFIG_SRCH_UPD_arr[1]." SET ".$CONFIG_SRCH_UPD_arr[2]."= '$data',URC_USERSTAMP='$USERSTAMP' WHERE ".$CONFIG_SRCH_UPD_arr[0]."=".$rowid;
+        }
+        else{
+        $CONFIG_SRCH_UPD_arr = $this->Mdl_configuration->CONF_ENTRY_twodimdata($module) ;
+//        echo "UPDATE ".$CONFIG_SRCH_UPD_arr[1]." SET ".$CONFIG_SRCH_UPD_arr[2]."= '$data',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE ".$CONFIG_SRCH_UPD_arr[0]."=".$rowid;
+//            exit;
+            $updatequery = "UPDATE ".$CONFIG_SRCH_UPD_arr[1]." SET ".$CONFIG_SRCH_UPD_arr[2]."= '$data',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE ".$CONFIG_SRCH_UPD_arr[0]."=".$rowid;
+        }
+//        echo $updatequery;
+//        exit;
         $this->db->query($updatequery);
         if ($this->db->affected_rows() > 0) {
             return true;
@@ -120,7 +137,7 @@ class Db_configuration_configuration_entry extends CI_Model{
     }
     public function deleteoption($USERSTAMP,$rowid,$module,$type,$data)
     {
-        $tableid = $this->Db_configuration_configuration_entry->CONF_ENTRY_twodimdata($module) ;
+        $tableid = $this->Mdl_configuration->CONF_ENTRY_twodimdata($module) ;
         $rowid=$rowid;
         $deletestmt = "CALL SP_CONFIG_CHECK_TRANSACTION(".$tableid[3].",$rowid,@DELETION_FLAG)";
         $this->db->query($deletestmt);
@@ -130,10 +147,16 @@ class Db_configuration_configuration_entry extends CI_Model{
         return $successflag;
     }
     //FUNCTION FOR ALREADY EXIT
-    public function data_name_exists($module,$type,$data)
+    public function data_name_exists($module,$type,$data,$subdatamount_value)
     {
-        $CONFIG_ENTRY_arr_config = $this->Db_configuration_configuration_entry->CONF_ENTRY_twodimdata($module) ;
+        if($type==42)
+        {
+            $checkquery= "SELECT DDC_SUB_DATA FROM DEPOSIT_DEDUCTION_CONFIGURATION WHERE DDC_SUB_DATA='$subdatamount_value'";
+        }
+        else{
+        $CONFIG_ENTRY_arr_config = $this->Mdl_configuration->CONF_ENTRY_twodimdata($module) ;
         $checkquery= "SELECT ".$CONFIG_ENTRY_arr_config[2]." FROM ".$CONFIG_ENTRY_arr_config[1]." CCN WHERE CCN.CGN_ID=(SELECT C.CGN_ID FROM CONFIGURATION C WHERE C.CGN_ID='$type') AND ".$CONFIG_ENTRY_arr_config[2]."='$data'";
+        }
         $this->db->query($checkquery);
         if ($this->db->affected_rows() > 0) {
             return 1;
@@ -158,16 +181,22 @@ class Db_configuration_configuration_entry extends CI_Model{
     public function DeleteRecord($USERSTAMP,$rowid,$module,$type,$data)
     {
         global  $USERSTAMP;
-        $CONFIG_SRCH_UPD_arr_delete_data = $this->Db_configuration_configuration_entry->CONF_ENTRY_twodimdata($module) ;
+        $CONFIG_SRCH_UPD_arr_delete_data = $this->Mdl_configuration->CONF_ENTRY_twodimdata($module) ;
         $this->load->model('Eilib/Common_function');
         $deleteflag=$this->Common_function->DeleteRecord(".$CONFIG_SRCH_UPD_arr_delete_data[3].",$rowid,$USERSTAMP);
         return $deleteflag;
     }
     //FUNCTION FOR ALREADY EXIT
-    public function data_updname_exists($module,$type,$data)
+    public function data_updname_exists($module,$type,$data,$CONFIG_SEARCH_subtype)
     {
-        $CONFIG_ENTRY_arr_config = $this->Db_configuration_configuration_entry->CONF_ENTRY_twodimdata($module) ;
+        if($type==42)
+        {
+        $checkquery= "SELECT DDC_SUB_DATA FROM DEPOSIT_DEDUCTION_CONFIGURATION WHERE DDC_SUB_DATA='$CONFIG_SEARCH_subtype'";
+        }
+        else{
+        $CONFIG_ENTRY_arr_config = $this->Mdl_configuration->CONF_ENTRY_twodimdata($module) ;
         $checkquery= "SELECT ".$CONFIG_ENTRY_arr_config[2]." FROM ".$CONFIG_ENTRY_arr_config[1]." CCN WHERE CCN.CGN_ID=(SELECT C.CGN_ID FROM CONFIGURATION C WHERE C.CGN_ID='$type') AND ".$CONFIG_ENTRY_arr_config[2]."='$data'";
+        }
         $this->db->query($checkquery);
         if ($this->db->affected_rows() > 0) {
             return 1;

@@ -1,5 +1,5 @@
 <?php
-include 'Header.php';
+include 'HEADER.php';
 ?>
 <html>
 <head>

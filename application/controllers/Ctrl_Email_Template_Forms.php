@@ -5,7 +5,7 @@ class Ctrl_Email_Template_Forms extends CI_Controller{
     //FUNCTION FOR INDEX FILE
     public function index()
     {
-        $this->load->view('Configuration_email_template_search_update_view.php');
+        $this->load->view('CONFIGURATION/Configuration_email_template_search_update_view.php');
     }
     //FUNCTION FOR SCRIPT LOADING
     public function ET_SRC_UPD_DEL_script_name(){

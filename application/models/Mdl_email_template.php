@@ -1,5 +1,5 @@
 <?php
-class Configuration_email_template_search_update_model extends CI_Model{
+class Mdl_email_template extends CI_Model{
     //FUNCTION FOR GETTING SCRIPT NAME
     Public function getscriptname()
     {

@@ -1,12 +1,13 @@
 <?php
 include "GET_USERSTAMP.php";
 $USERSTAMP=$UserStamp;
-class MENU_CONTROLLER extends CI_Controller{
+//echo $USERSTAMP;
+class Ctrl_Menu extends CI_Controller{
 
     public function index()
     {
         $this->load->helper('form');
-        $this->load->view('FORM_MENU.php');
+        $this->load->view('Vw_Menu');
     }
     public function Initaildatas()
     {
@@ -19,8 +20,8 @@ class MENU_CONTROLLER extends CI_Controller{
     public function fetchdata()
     {
         global $USERSTAMP;
-        $this->load->model('Db_menu');
-        $menu_data=$this->Db_menu->fetch_data($USERSTAMP);
+        $this->load->model('Mdl_menu');
+        $menu_data=$this->Mdl_menu->fetch_data($USERSTAMP);
         echo $menu_data;
     }
 }

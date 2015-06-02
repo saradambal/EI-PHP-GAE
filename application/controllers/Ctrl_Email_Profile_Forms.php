@@ -5,7 +5,7 @@ class Ctrl_Email_Profile_Forms extends CI_Controller{
     //FUNCTION FOR INDEX FILE
     public function index()
     {
-        $this->load->view('Vw_email_profile_forms.php');
+        $this->load->view('CONFIGURATION/Vw_email_profile_forms.php');
     }
     public function EMAIL_ENTRY_script_name(){
         $this->load->model('Mdl_email_profile_forms');
