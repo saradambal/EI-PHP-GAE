@@ -753,6 +753,7 @@ public  function getUrlAccessGasScript()
 //FUNCTION TO GET THE CLIENT,TOKEN ID
 public  function getCalendarIdCilentIdService()
 {
+    $result=array();
     $this->db->select("URC_DATA");
     $this->db->from('USER_RIGHTS_CONFIGURATION');
     $this->db->where('URC_ID IN(8,9,10,11,12,13,16,17)');
@@ -765,6 +766,7 @@ public  function getCalendarIdCilentIdService()
 //FUNCTION TO LOGO AND CALENDAR
 public  function getLogoCalendar()
 {
+    $result=array();
     $this->db->select("URC_DATA");
     $this->db->from('USER_RIGHTS_CONFIGURATION');
     $this->db->where('URC_ID IN(14,15)');
