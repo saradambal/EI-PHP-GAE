@@ -17,14 +17,14 @@ class Ctrl_Unit_Creation_Search_Update extends CI_Controller{
     }
     public function Initialdata(){
         $flag= $this->input->post('flag');
-        $this->load->model('Mdl_unit_creation_search_update');
+        $this->load->model('UNIT/Mdl_unit_creation_search_update');
         $query=$this->Mdl_unit_creation_search_update->Initial_data($flag);
         echo json_encode($query);
     }
     public function Check_existinginput(){
         $source= $this->input->post('source');
         $chkinput= $this->input->post('chkinput');
-        $this->load->model('Mdl_unit_creation_search_update');
+        $this->load->model('UNIT/Mdl_unit_creation_search_update');
         $query=$this->Mdl_unit_creation_search_update->Check_existing_input($source,$chkinput);
         echo json_encode($query);
     }
@@ -36,14 +36,14 @@ class Ctrl_Unit_Creation_Search_Update extends CI_Controller{
         $UC_newstamptype = $this->input->post('UC_tb_newstamptype');
         $UC_oldroomtype = $this->input->post('UC_lb_roomtype');
         $UC_oldstamptype = $this->input->post('UC_lb_stamptype');
-        $this->load->model('Mdl_unit_creation_search_update');
+        $this->load->model('UNIT/Mdl_unit_creation_search_update');
         $query=$this->Mdl_unit_creation_search_update->Unit_saveprocess($UC_nonei,$UC_newroomtype,$UC_newstamptype,$UC_oldroomtype,$UC_oldstamptype,$USERSTAMP,$calndr);
         echo json_encode($query);
     }
 
     //--------------------------------------------UNIT SEARCH AND UPDATE FUNCTIONS---------------------------------------------//
     public function USU_Initialdata(){
-        $this->load->model('Mdl_unit_creation_search_update');
+        $this->load->model('UNIT/Mdl_unit_creation_search_update');
         $query=$this->Mdl_unit_creation_search_update->Usu_initial_data();
         echo json_encode($query);
     }
@@ -51,7 +51,7 @@ class Ctrl_Unit_Creation_Search_Update extends CI_Controller{
         $option = $this->input->post('option');
         $USU_parentfunc_load = $this->input->post('USU_parentfunc_load');
         $USU_not_load_lb = $this->input->post('USU_not_load_lb');
-        $this->load->model('Mdl_unit_creation_search_update');
+        $this->load->model('UNIT/Mdl_unit_creation_search_update');
         $resultquery=$this->Mdl_unit_creation_search_update->Usu_searchby_option($option,$USU_parentfunc_load,$USU_not_load_lb);
         echo json_encode($resultquery);
     }
@@ -61,7 +61,7 @@ class Ctrl_Unit_Creation_Search_Update extends CI_Controller{
         $typeofcard = $this->input->post('typeofcard');
         $flag_card_unitno = $this->input->post('flag_card_unitno');
         $USU_parent_func = $this->input->post('USU_parent_func');
-        $this->load->model('Mdl_unit_creation_search_update');
+        $this->load->model('UNIT/Mdl_unit_creation_search_update');
         $resultquery=$this->Mdl_unit_creation_search_update->USU_already_exists($inventory_unitno,$typeofcard,$flag_card_unitno,$USU_parent_func,$USERSTAMP);
         echo json_encode($resultquery);
     }
@@ -86,13 +86,13 @@ class Ctrl_Unit_Creation_Search_Update extends CI_Controller{
         elseif($USU_roomtype!='SELECT' && $USU_roomtype!='' && $USU_roomtype!='null'){
             $USU_all_searchby=$USU_roomtype;
         }
-        $this->load->model('Mdl_unit_creation_search_update');
+        $this->load->model('UNIT/Mdl_unit_creation_search_update');
         $resultquery=$this->Mdl_unit_creation_search_update->Usu_flext_table($USU_unit_searchby,$USU_dutyamt_fromamt,$USU_dutyamt_toamt,$USU_payment_frmamt,$USU_payment_toamt,$USU_frmdate,$USU_enddate,$USU_all_searchby,$USU_accesscard,$USU_parent_updation,$timeZoneFrmt,$USERSTAMP);
         echo json_encode($resultquery);
     }
     public function USU_roomstamp_unitno(){
         $USU_unitno=$this->input->post("unitstamp_unitno");
-        $this->load->model('Mdl_unit_creation_search_update');
+        $this->load->model('UNIT/Mdl_unit_creation_search_update');
         $resquery=$this->Mdl_unit_creation_search_update->USU_roomstampunitno($USU_unitno);
         echo json_encode($resquery);
     }
@@ -159,7 +159,7 @@ class Ctrl_Unit_Creation_Search_Update extends CI_Controller{
         elseif($USU_roomtype!='SELECT' && $USU_roomtype!=''){
             $USU_all_searchby=$USU_roomtype;
         }
-        $this->load->model('Mdl_unit_creation_search_update');
+        $this->load->model('UNIT/Mdl_unit_creation_search_update');
         $resltquery=$this->Mdl_unit_creation_search_update->USU_funcupdate($USU_upd_selectoption_unit,$USU_upd_unitid_stampid,$USU_upd_startdate_update
             ,$USU_upd_unitno,$USU_upd_enddate_update,$USU_upd_unitdeposit,$USU_upd_obsolete,$USU_upd_unitpayment,$USU_upd_accnoid,$USU_upd_accname
             ,$USU_upd_bankcodeid,$USU_upd_branchcode,$USU_upd_nonei,$USU_upd_bankaddr,$USU_upd_comments,$USU_upd_roomtype,$USU_update_stamptype
@@ -192,7 +192,7 @@ class Ctrl_Unit_Creation_Search_Update extends CI_Controller{
             $USU_all_searchby=$USU_roomtype;
         }
         $pdfresult='';
-        $this->load->model('Mdl_unit_creation_search_update');
+        $this->load->model('UNIT/Mdl_unit_creation_search_update');
         $pdfresult=$this->Mdl_unit_creation_search_update->Usu_flext_table_pdf($USU_unit_searchby,$USU_dutyamt_fromamt,$USU_dutyamt_toamt,$USU_payment_frmamt,$USU_payment_toamt,$USU_frmdate,$USU_enddate,$USU_all_searchby,$USU_accesscard,$USU_parent_updation,$timeZoneFrmt,$USERSTAMP);
         $pdfheader='';
         if($USU_unit_searchby==1){$pdfheader='DETAILS FOR THE INVENTORY CARD: '.$USU_accesscard;}

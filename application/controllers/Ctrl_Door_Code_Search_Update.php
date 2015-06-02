@@ -7,7 +7,7 @@ class Ctrl_Door_Code_Search_Update extends CI_Controller{
         $this->load->view('UNIT/Vw_Door_Code_Search_Update');
     }
     public function Initialdata(){
-        $this->load->model('Mdl_door_code_search_update');
+        $this->load->model('UNIT/Mdl_door_code_search_update');
         $query=$this->Mdl_door_code_search_update->Initial_data();
         echo json_encode($query);
     }
@@ -16,7 +16,7 @@ class Ctrl_Door_Code_Search_Update extends CI_Controller{
         global $timeZoneFrmt;
         $unitnumber=$this->input->post("DCSU_unitnumber");
         $flag=$this->input->post("DCSU_flag");
-        $this->load->model('Mdl_door_code_search_update');
+        $this->load->model('UNIT/Mdl_door_code_search_update');
         $logindetails=$this->Mdl_door_code_search_update->DCSU_login_details($unitnumber,$flag,$timeZoneFrmt);
         echo json_encode($logindetails);
     }
@@ -28,7 +28,7 @@ class Ctrl_Door_Code_Search_Update extends CI_Controller{
         $doorcode=$this->input->post("DCSU_doorcode");
         $weblogin=$this->input->post("DCSU_weblogin");
         $webpass=$this->input->post("DCSU_webpass");
-        $this->load->model('Mdl_door_code_search_update');
+        $this->load->model('UNIT/Mdl_door_code_search_update');
         $loginrs=$this->Mdl_door_code_search_update->DCSU_update_Doorcode($loginid,$unitnumber,$doorcode,$weblogin,$webpass,$USERSTAMP,$timeZoneFrmt);
         echo json_encode($loginrs);
     }

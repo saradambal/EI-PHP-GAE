@@ -3,14 +3,14 @@ include 'GET_USERSTAMP.php';
 $USERSTAMP=$UserStamp;
 class Ctrl_Access_Card_Assign extends CI_Controller{
     public function index(){
-        $this->load->view('CUSTOMER/Vw_Access_Card_Assign');
+        $this->load->view('CUSTOMER/ACCESS CARD/Vw_Access_Card_Assign');
     }
     public function Initialdata(){
         $errorlist= $this->input->post('ErrorList');
         $this->load->model('Eilib/Common_function');
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
 
-        $this->load->model('Mdl_access_card_assign');
+        $this->load->model('CUSTOMER/ACCESS CARD/Mdl_access_card_assign');
         $query=$this->Mdl_access_card_assign->Initial_data($ErrorMessage);
         echo json_encode($query);
     }
@@ -19,7 +19,7 @@ class Ctrl_Access_Card_Assign extends CI_Controller{
         $CA_recver= $this->input->post('CA_recver');
         $CA_unit= $this->input->post('CA_unit');
         $CA_custid= $this->input->post('CA_cust_id');
-        $this->load->model('Mdl_access_card_assign');
+        $this->load->model('CUSTOMER/ACCESS CARD/Mdl_access_card_assign');
         $query=$this->Mdl_access_card_assign->Customer_details($CA_recver,$CA_unit,$CA_custid,$USERSTAMP);
         echo json_encode($query);
     }
@@ -39,7 +39,7 @@ class Ctrl_Access_Card_Assign extends CI_Controller{
         $CA_cardclick = $this->input->post('CA_selectcard');
         $CA_card_no = $this->input->post('CA_tb_cardno');
         $CA_namelist = $this->input->post('CA_selectnamelist1');
-        $this->load->model('Mdl_access_card_assign');
+        $this->load->model('CUSTOMER/ACCESS CARD/Mdl_access_card_assign');
         $query=$this->Mdl_access_card_assign->Cardassign_save($CA_custid,$CA_recver,$CA_comment,$CA_unitno,$CA_fname,$CA_lname,$CA_card_value,$CA_startdate,$CA_enddate,$CA_cardclick,$CA_card_no,$CA_namelist,$USERSTAMP);
         echo $query;
     }

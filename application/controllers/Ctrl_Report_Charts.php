@@ -10,13 +10,13 @@ class Ctrl_Report_Charts extends CI_Controller{
         $this->load->model('Eilib/Common_function');
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
 
-        $this->load->model('Mdl_report_charts');
+        $this->load->model('REPORT/Mdl_report_charts');
         $query=$this->Mdl_report_charts->Initial_data($ErrorMessage);
         echo json_encode($query);
     }
     public function Subchartdata(){
         $nameval=$this->input->post('nameval');
-        $this->load->model('Mdl_report_charts');
+        $this->load->model('REPORT/Mdl_report_charts');
         $query=$this->Mdl_report_charts->Subchart_data($nameval);
         echo json_encode($query);
     }
@@ -27,7 +27,7 @@ class Ctrl_Report_Charts extends CI_Controller{
         $todate=$this->input->post('todate');
         $srch_data=$this->input->post('srch_data');
         $flag=$this->input->post('flag');
-        $this->load->model('Mdl_report_charts');
+        $this->load->model('REPORT/Mdl_report_charts');
         $query=$this->Mdl_report_charts->Expense_input_data($unitno,$fromdate,$todate,$srch_data,$flag,$USERSTAMP);
         echo json_encode($query);
     }

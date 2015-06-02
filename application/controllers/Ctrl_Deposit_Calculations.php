@@ -5,11 +5,11 @@ $USERSTAMP=$UserStamp;
 $timeZoneFrmt=$timeZoneFormat;
 class Ctrl_Deposit_Calculations extends CI_Controller{
     public function index(){
-        $this->load->view('FINANCE/Vw_Deposit_Calculations');
+        $this->load->view('FINANCE/FINANCE/Vw_Deposit_Calculations');
     }
     public function Initialdata(){
         global $USERSTAMP;
-        $this->load->model('Mdl_deposit_calculations');
+        $this->load->model('FINANCE/FINANCE/Mdl_deposit_calculations');
         $query=$this->Mdl_deposit_calculations->Initial_data($USERSTAMP);
         echo json_encode($query);
     }
@@ -17,7 +17,7 @@ class Ctrl_Deposit_Calculations extends CI_Controller{
         $custid=$this->input->post("custid");
         $custname=$this->input->post("custname");
         $unitno=$this->input->post("unitno");
-        $this->load->model('Mdl_deposit_calculations');
+        $this->load->model('FINANCE/FINANCE/Mdl_deposit_calculations');
         $datequery=$this->Mdl_deposit_calculations->DDC_load_datebox($custid,$custname,$unitno);
         echo json_encode($datequery);
     }
@@ -41,7 +41,7 @@ class Ctrl_Deposit_Calculations extends CI_Controller{
         $DDC_recverlgth=$this->input->post("DDC_tb_hiderecverlength");
         $DDC_recdate=$this->input->post("DDC_tb_recdate");
         $service=$this->Call_service();
-        $this->load->model('Mdl_deposit_calculations');
+        $this->load->model('FINANCE/FINANCE/Mdl_deposit_calculations');
         $calcquery=$this->Mdl_deposit_calculations->DDC_depcal_submit($unit_value,$name,$chkbox,$radio,$startdate,$enddate,$dep_custid,$DDC_recverlgth,$DDC_recdate,$USERSTAMP,$service);
         echo json_encode($calcquery);
     }
