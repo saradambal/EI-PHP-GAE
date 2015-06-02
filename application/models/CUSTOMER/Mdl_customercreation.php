@@ -2,136 +2,170 @@
 error_reporting(0);
 class Mdl_customercreation extends CI_Model
 {
-        public function Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters,$service)
+        public function Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters,$service,$cal)
         {
-            $FirstName=$_POST['CCRE_FirstName'];
-            $Lastname=$_POST['CCRE_LastName'];
-            $CompanyName=$_POST['CCRE_CompanyName'];
-            $CompanyAddress=$_POST['CCRE_CompanyAddress'];
-            $CompanyPostalCode=$_POST['CCRE_CompanyPostalCode'];
-            $Emailid=$_POST['CCRE_Emailid'];
-            $Mobile=$_POST['CCRE_Mobile'];
-            $IntlMobile=$_POST['CCRE_IntlMobile'];
-            $Officeno=$_POST['CCRE_Officeno'];
-            $DOB=$_POST['CCRE_DOB'];
-            $Nationality=$_POST['CCRE_Nationality'];
-            $PassportNo=$_POST['CCRE_PassportNo'];
-            $PassportDate=$_POST['CCRE_PassportDate'];
-            $EpNo=$_POST['CCRE_EpNo'];
-            $EPDate=$_POST['CCRE_EPDate'];
-            $Uint=$_POST['CCRE_UnitNo'];
-            $RoomType=$_POST['CCRE_RoomType'];
-            $Startdate=$_POST['CCRE_Startdate'];
-            $S_starttime=$_POST['CCRE_SDStarttime'];
-            $S_endtime=$_POST['CCRE_SDEndtime'];
-            $Enddate=$_POST['CCRE_Enddate'];
-            $E_starttime=$_POST['CCRE_EDStarttime'];
-            $E_endtime=$_POST['CCRE_EDEndtime'];
-            $NoticePeriod=$_POST['CCRE_NoticePeriod'];
-            $NoticePeriodDate=$_POST['CCRE_NoticePeriodDate'];
-            $Quaterlyfee=$_POST['CCRE_Quaterlyfee'];
-            $Fixedaircon_fee=$_POST['CCRE_Fixedaircon_fee'];
-            $ElectricitycapFee=$_POST['CCRE_ElectricitycapFee'];
-            $Curtain_DrycleanFee=$_POST['CCRE_Curtain_DrycleanFee'];
-            $CheckOutCleanFee=$_POST['CCRE_CheckOutCleanFee'];
-            $DepositFee=$_POST['CCRE_DepositFee'];
-            $Rent=$_POST['CCRE_Rent'];
-            $ProcessingFee=$_POST['CCRE_ProcessingFee'];
-            $Comments=$this->db->escape_like_str($_POST['CCRE_Comments']);
-            $CardArray=$_POST['temptex'];
-            $Option=$_POST['AccessCard'];
-            $waived=$_POST['CCRE_process_waived'];
-            if($waived=='on'){$processwaived='X';}else{$processwaived='';}
-            $prorated=$_POST['CCRE_Rent_Prorated'];
-            if($prorated=='on'){$Prorated='X';}else{$Prorated='';}
-            $Name=$FirstName.' '.$Lastname;
-            if($Option=='Cardnumber')
-            {
-                $cardlist='';
-                for($i=0;$i<count($CardArray);$i++)
-                {
-                    if($CardArray[$i]!='')
-                    {
-                        if($cardlist=='')
-                        {
-                            $cardlist=$CardArray[$i];
-                        }
-                        else{
-                            $cardlist=$cardlist.','.$CardArray[$i];
+            try {
+                $FirstName = $_POST['CCRE_FirstName'];
+                $Lastname = $_POST['CCRE_LastName'];
+                $CompanyName = $_POST['CCRE_CompanyName'];
+                $CompanyAddress = $_POST['CCRE_CompanyAddress'];
+                $CompanyPostalCode = $_POST['CCRE_CompanyPostalCode'];
+                $Emailid = $_POST['CCRE_Emailid'];
+                $Mobile = $_POST['CCRE_Mobile'];
+                $IntlMobile = $_POST['CCRE_IntlMobile'];
+                $Officeno = $_POST['CCRE_Officeno'];
+                $DOB = $_POST['CCRE_DOB'];
+                $Nationality = $_POST['CCRE_Nationality'];
+                $PassportNo = $_POST['CCRE_PassportNo'];
+                $PassportDate = $_POST['CCRE_PassportDate'];
+                $EpNo = $_POST['CCRE_EpNo'];
+                $EPDate = $_POST['CCRE_EPDate'];
+                $Uint = $_POST['CCRE_UnitNo'];
+                $RoomType = $_POST['CCRE_RoomType'];
+                $Startdate = $_POST['CCRE_Startdate'];
+                $S_starttime = $_POST['CCRE_SDStarttime'];
+                $S_endtime = $_POST['CCRE_SDEndtime'];
+                $Enddate = $_POST['CCRE_Enddate'];
+                $E_starttime = $_POST['CCRE_EDStarttime'];
+                $E_endtime = $_POST['CCRE_EDEndtime'];
+                $NoticePeriod = $_POST['CCRE_NoticePeriod'];
+                $NoticePeriodDate = $_POST['CCRE_NoticePeriodDate'];
+                $Quaterlyfee = $_POST['CCRE_Quaterlyfee'];
+                $Fixedaircon_fee = $_POST['CCRE_Fixedaircon_fee'];
+                $ElectricitycapFee = $_POST['CCRE_ElectricitycapFee'];
+                $Curtain_DrycleanFee = $_POST['CCRE_Curtain_DrycleanFee'];
+                $CheckOutCleanFee = $_POST['CCRE_CheckOutCleanFee'];
+                $DepositFee = $_POST['CCRE_DepositFee'];
+                $Rent = $_POST['CCRE_Rent'];
+                $ProcessingFee = $_POST['CCRE_ProcessingFee'];
+                $Comments = $this->db->escape_like_str($_POST['CCRE_Comments']);
+                $CardArray = $_POST['temptex'];
+                $Option = $_POST['AccessCard'];
+                $waived = $_POST['CCRE_process_waived'];
+                if ($waived == 'on') {
+                    $processwaived = 'X';
+                } else {
+                    $processwaived = 'false';
+                }
+                if ($waived == 'on') {
+                    $process_waived = 'true';
+                } else {
+                    $process_waived = '';
+                }
+                $prorated = $_POST['CCRE_Rent_Prorated'];
+                if ($prorated == 'on') {
+                    $Prorated = 'X';
+                } else {
+                    $Prorated = '';
+                }
+                if ($prorated == 'on') {
+                    $Rent_Prorated = 'true';
+                } else {
+                    $Rent_Prorated = 'false';
+                }
+                $Name = $FirstName . ' ' . $Lastname;
+                $Emailid = $_POST['CCRE_Emailid'];
+                $CCoption = $_POST['CCRE_Option'];
+                $Sendmailid = $_POST['CCRE_MailList'];
+                if ($Option == 'Cardnumber') {
+                    $cardlist = '';
+                    for ($i = 0; $i < count($CardArray); $i++) {
+                        if ($CardArray[$i] != '') {
+                            if ($cardlist == '') {
+                                $cardlist = $CardArray[$i];
+                            } else {
+                                $cardlist = $cardlist . ',' . $CardArray[$i];
+                            }
                         }
                     }
+                    $cardnames = explode(',', $cardlist);
+                    $counting = count($cardnames);
+                    $cardno = '';
+                    $accesscard = '';
+                    for ($k = 0; $k < $counting; $k++) {
+                        $cardnamessplit = explode('/', $cardnames[$k]);
+                        if ($cardnamessplit[1] == $Name) {
+                            if ($accesscard == '') {
+                                $accesscard = $cardnamessplit[0] . ', ';
+                                $cardno = $cardnamessplit[0];
+
+                            } else {
+                                $accesscard = $accesscard . ',' . $cardnamessplit[0] . ', ';
+                                $cardno = $cardno . ',' . $cardnamessplit[0];
+                            }
+                        } else {
+                            if ($accesscard == '') {
+                                $accesscard = $cardnamessplit[0] . ',X';
+                                $cardno = $cardnamessplit[0];
+                            } else {
+                                $accesscard = $accesscard . ',' . $cardnamessplit[0] . ',X';
+                                $cardno = $cardno . ',' . $cardnamessplit[0];
+                            }
+                        }
+                    }
+                } else {
+                    $cardno = '';
+                    $accesscard = '';
                 }
-             $cardnames=explode(',',$cardlist);
-             $counting=count($cardnames);
-             $cardno='';
-             $accesscard='';
-             for($k=0;$k<$counting;$k++)
-             {
-               $cardnamessplit=explode('/',$cardnames[$k]);
-                if($cardnamessplit[1]==$Name)
-                 {
-                     if($accesscard=='')
-                     {
-                         $accesscard=$cardnamessplit[0].', ';
-                         $cardno=$cardnamessplit[0];
+                $CCRE_quators = $Quoters;
+                $StartDate = date('Y-m-d', strtotime($Startdate));
+                $EndDate = date('Y-m-d', strtotime($Enddate));
+                $CallQuery = "CALL SP_CUSTOMER_CREATION_INSERT('$FirstName','$Lastname','$CompanyName','$CompanyAddress','$CompanyPostalCode','$Officeno',$Uint,'$RoomType','$S_starttime','$S_endtime','$E_starttime','$E_endtime','$Leaseperiod',$CCRE_quators,'$processwaived','$Prorated','$NoticePeriod','$NoticePeriodDate',$Rent,'$DepositFee','$ProcessingFee','$Fixedaircon_fee','$Quaterlyfee','$ElectricitycapFee','$CheckOutCleanFee','$Curtain_DrycleanFee','$cardno','$StartDate','$UserStamp','$StartDate','$EndDate','$accesscard','$Nationality','$Mobile','$IntlMobile','$Emailid','$PassportNo','$PassportDate','$DOB','$EpNo','$EPDate','$Comments',@CUSTOMER_CREATION_TEMPTBLNAME,@CUSTOMER_SUCCESSFLAG)";
+                $this->db->query($CallQuery);
+                $outparm_query = 'SELECT @CUSTOMER_CREATION_TEMPTBLNAME AS TEMP_TABLE';
+                $outparm_result = $this->db->query($outparm_query);
+                $temptable = $outparm_result->row()->TEMP_TABLE;
+                $this->db->query('DROP TABLE IF EXISTS ' . $temptable);
+                $Confirm_query = 'SELECT @CUSTOMER_SUCCESSFLAG AS CONFIRM';
+                $Confirm_result = $this->db->query($Confirm_query);
+                $Confirm_Meessage = $Confirm_result->row()->CONFIRM;
+                $Customerid_query = 'SELECT CUSTOMER_ID FROM CUSTOMER ORDER BY CUSTOMER_ID DESC LIMIT 1';
+                $Customer_result = $this->db->query($Customerid_query);
+                $Customerid = $Customer_result->row()->CUSTOMER_ID;
+                $filetempname = $_FILES['CC_fileupload']['tmp_name'];
+                $filename = $_FILES['CC_fileupload']['name'];
+                $filename = $Uint . '-' . $Customerid . '-' . $FirstName . ' ' . $Lastname;
+                $mimetype = 'application/pdf';
+                if ($filetempname != '')
+                {
+                    $this->insertFile($service, $filename, 'PersonalDetails', '0B1AhtyM5U79zREp5QkpiYmphODg', $mimetype, $filetempname);
+                }
+                if ($Confirm_Meessage==1)
+                {
+                    $this->load->model('Eilib/Calender');
+                    $this->Calender->CUST_customercalendercreation($cal, $Customerid, $StartDate, $S_starttime, $S_endtime, $EndDate, $E_starttime, $E_endtime, $FirstName, $Lastname, $Mobile, $IntlMobile, $Officeno, $Emailid, $Uint, $RoomType, '');
+                    if ($CCoption == 4 || $CCoption == 5 || $CCoption == 6) {
+                        $this->load->model('Eilib/Common_function');
+                        $Invoiceandcontractid = $this->Common_function->CUST_invoice_contractreplacetext();
+                        $Docowner = $this->Common_function->CUST_documentowner($UserStamp);
+                        $this->load->model('Eilib/Invoice_contract');
+                        if ($CCoption == 4)
+                        {
+                            $InvoiceId = $this->Invoice_contract->CUST_invoice($UserStamp, $service, $Uint, $Name, $CompanyName, $Invoiceandcontractid[9], $Invoiceandcontractid[0], $Invoiceandcontractid[1], $Rent, $ProcessingFee, $DepositFee, $Startdate, $Enddate, $RoomType, $Leaseperiod, $Rent_Prorated, $Sendmailid, $Docowner, 'CREATION', $process_waived, $Customerid);
+                            return $InvoiceId;
+                        }
+                        else if ($CCoption == 5)
+                        {
+                            $ContractId = $this->Invoice_contract->CUST_contract($service, $Uint, $Startdate, $Enddate, $CompanyName, $FirstName . ' ' . $Lastname, $NoticePeriod, $PassportNo, $PassportDate, $EpNo, $EPDate, $NoticePeriodDate, $Leaseperiod, $cardno, $Rent, $Quaterlyfee, $Fixedaircon_fee, $ElectricitycapFee, $Curtain_DrycleanFee, $CheckOutCleanFee, $ProcessingFee, $DepositFee, $process_waived, $RoomType, $Rent_Prorated, 'CREATION', $Sendmailid, $Docowner);
+                        }
+                        else if ($CCoption == '6')
+                        {
+                            $InvoiceId = $this->Invoice_contract->CUST_invoice($UserStamp, $service, $Uint, $FirstName . ' ' . $Lastname, $CompanyName, $Invoiceandcontractid[9], $Invoiceandcontractid[0], $Invoiceandcontractid[1], $Rent, $ProcessingFee, $DepositFee, $Startdate, $Enddate, $RoomType, $Leaseperiod, $Rent_Prorated, $Sendmailid, $Docowner, 'CREATION', $process_waived, $Customerid);
+                            $ContractId = $this->Invoice_contract->CUST_contract($service, $Uint, $Startdate, $Enddate, $CompanyName, $FirstName . ' ' . $Lastname, $NoticePeriod, $PassportNo, $PassportDate, $EpNo, $EPDate, $NoticePeriodDate, $Leaseperiod, $cardno, $Rent, $Quaterlyfee, $Fixedaircon_fee, $ElectricitycapFee, $Curtain_DrycleanFee, $CheckOutCleanFee, $ProcessingFee, $DepositFee, $process_waived, $RoomType, $Rent_Prorated, 'CREATION', $Sendmailid, $Docowner);
+                        }
+                    }
+                    return $Confirm_Meessage;
+                }
+                else
+                {
+                    return $Confirm_Meessage;
+                }
+            }
+            catch (Exception $e)
+            {
+                return $e->getMessage();
 
-                     }
-                     else
-                     {
-                         $accesscard=$accesscard.','.$cardnamessplit[0].', ';
-                         $cardno=$cardno.','.$cardnamessplit[0];
-                     }
-                 }
-                 else
-                 {
-                     if($accesscard=='')
-                     {
-                         $accesscard=$cardnamessplit[0].',X';
-                         $cardno=$cardnamessplit[0];
-                     }
-                     else
-                     {
-                         $accesscard=$accesscard.','.$cardnamessplit[0].',X';
-                         $cardno=$cardno.','.$cardnamessplit[0];
-                     }
-                 }
-             }
             }
-            else
-            {
-                $cardno='';
-                $accesscard='';
-            }
-            $CCRE_quators=$Quoters;
-            $StartDate=date('Y-m-d',strtotime($Startdate));
-            $EndDate=date('Y-m-d',strtotime($Enddate));
-            $CallQuery="CALL SP_CUSTOMER_CREATION_INSERT('$FirstName','$Lastname','$CompanyName','$CompanyAddress','$CompanyPostalCode','$Officeno',$Uint,'$RoomType','$S_starttime','$S_endtime','$E_starttime','$E_endtime','$Leaseperiod',$CCRE_quators,'$processwaived','$Prorated','$NoticePeriod','$NoticePeriodDate',$Rent,'$DepositFee','$ProcessingFee','$Fixedaircon_fee','$Quaterlyfee','$ElectricitycapFee','$CheckOutCleanFee','$Curtain_DrycleanFee','$cardno','$StartDate','$UserStamp','$StartDate','$EndDate','$accesscard','$Nationality','$Mobile','$IntlMobile','$Emailid','$PassportNo','$PassportDate','$DOB','$EpNo','$EPDate','$Comments',@CUSTOMER_CREATION_TEMPTBLNAME,@CUSTOMER_SUCCESSFLAG)";
-            $this->db->query($CallQuery);
-            $outparm_query = 'SELECT @CUSTOMER_CREATION_TEMPTBLNAME AS TEMP_TABLE';
-            $outparm_result = $this->db->query($outparm_query);
-            $temptable=$outparm_result->row()->TEMP_TABLE;
-            $this->db->query('DROP TABLE IF EXISTS '.$temptable);
-            $Confirm_query = 'SELECT @CUSTOMER_SUCCESSFLAG AS CONFIRM';
-            $Confirm_result = $this->db->query($Confirm_query);
-            $Confirm_Meessage=$Confirm_result->row()->CONFIRM;
-            $Customerid_query = 'SELECT CUSTOMER_ID FROM CUSTOMER ORDER BY CUSTOMER_ID DESC LIMIT 1';
-            $Customer_result = $this->db->query($Customerid_query);
-            $Customerid=$Customer_result->row()->CUSTOMER_ID;
-            $filetempname=$_FILES['CC_fileupload']['tmp_name'];
-            $filename=$_FILES['CC_fileupload']['name'];
-            $filename=$Uint.'-'.$Customerid.'-'.$FirstName.' '.$Lastname;
-            $mimetype='application/pdf';
-            $this->insertFile($service,$filename,'PersonalDetails','0B1AhtyM5U79zREp5QkpiYmphODg',$mimetype,$filetempname);
-            if($Confirm_Meessage)
-            {
-               $return_data=array($Confirm_Meessage,$Customerid,$StartDate,$S_starttime,$S_endtime,$EndDate,$E_starttime,$E_endtime,$FirstName,$Lastname,$Mobile,$IntlMobile,$Officeno,$Emailid,$Uint,$RoomType);
-               return $return_data;
-            }
-            else
-            {
-               return $Confirm_Meessage;
-            }
-
         }
    public function insertFile($service, $title, $description, $parentId,$mimeType,$uploadfilename)
     {

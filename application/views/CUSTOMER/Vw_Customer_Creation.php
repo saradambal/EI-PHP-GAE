@@ -5,16 +5,16 @@
 <script>
 $(document).ready(function() {
     //****************FORM VALIDATION CLASSES***********************//
-    $(".autosize").doValidation({rule:'alphabets',prop:{whitespace:true,autosize:true}});
-    $('#CCRE_Emailid').doValidation({rule:'email',prop:{uppercase:false,autosize:true}});
-    $(".compautosize").doValidation({rule:'general',prop:{autosize:true}});
-    $(".CCRE_numonlyvalidation").doValidation({rule:'numbersonly'});
-    $(".CCRE_amtonlyvalidation").doValidation({rule:'numbersonly',prop:{realpart:3,imaginary:2}});
-    $(".CCRE_amtonlyvalidationmaxdigit").doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
-    $(".CCRE_processamtonlyvalidationmaxdigit").doValidation({rule:'numbersonly',prop:{realpart:4,imaginary:2}});
-    $(".alphanumonly").doValidation({rule:'alphanumeric'});
-    $("#CCRE_IntlMobile").doValidation({rule:'numbersonly',prop:{realpart:15,leadzero:true}});
-    $("#CCRE_CompanyPostalCode").doValidation({rule:'numbersonly',prop:{realpart:6,leadzero:true}});
+    $(".autosize").doValidation({rule: 'alphabets', prop: {whitespace: true, autosize: true}});
+    $('#CCRE_Emailid').doValidation({rule: 'email', prop: {uppercase: false, autosize: true}});
+    $(".compautosize").doValidation({rule: 'general', prop: {autosize: true}});
+    $(".CCRE_numonlyvalidation").doValidation({rule: 'numbersonly'});
+    $(".CCRE_amtonlyvalidation").doValidation({rule: 'numbersonly', prop: {realpart: 3, imaginary: 2}});
+    $(".CCRE_amtonlyvalidationmaxdigit").doValidation({rule: 'numbersonly', prop: {realpart: 5, imaginary: 2}});
+    $(".CCRE_processamtonlyvalidationmaxdigit").doValidation({rule: 'numbersonly', prop: {realpart: 4, imaginary: 2}});
+    $(".alphanumonly").doValidation({rule: 'alphanumeric'});
+    $("#CCRE_IntlMobile").doValidation({rule: 'numbersonly', prop: {realpart: 15, leadzero: true}});
+    $("#CCRE_CompanyPostalCode").doValidation({rule: 'numbersonly', prop: {realpart: 6, leadzero: true}});
     $('.autogrowcomments').autogrow({onInitialize: true});
     //*************INITIAL FORM HIDDEN FIELDS******************************//
     $("#CCRE_Quarterly_fee").hide().val('');
@@ -25,28 +25,31 @@ $(document).ready(function() {
     $.ajax({
         type: "POST",
         url: "/index.php/Ctrl_Customer_Creation/Customer_Initaildatas",
-        data:{"Formname":'CustomerCreation',"ErrorList":'1,2,6,33,34,35,36,37,321,324,339,342,343,344,345,346,347,348,400,443,444,458,459,460,461'},
-        success: function(data){
+        data: {
+            "Formname": 'CustomerCreation',
+            "ErrorList": '1,2,6,33,34,35,36,37,321,324,339,342,343,344,345,346,347,348,400,443,444,458,459,460,461'
+        },
+        success: function (data) {
             $('.preloader').hide();
-            var value_array=JSON.parse(data);
-            timearray=value_array[5];
-            errormsg=value_array[4];
-            var prorated=value_array[6];
-            $('#CCRE_FirstName').prop('title',errormsg[0].EMC_DATA)
-            $('#CCRE_LastName').prop('title',errormsg[0].EMC_DATA)
-            $('#CCRE_CompanyPostalCode').prop('title',errormsg[1].EMC_DATA);
-            $('#CCRE_IntlMobile').prop('title',errormsg[1].EMC_DATA);
-            $('#CCRE_Mobile').prop('title',errormsg[1].EMC_DATA);
-            $('#CCRE_Officeno').prop('title',errormsg[1].EMC_DATA);
-            $('#CCRE_NoticePeriod').prop('title',errormsg[1].EMC_DATA);
-            $('#CCRE_Quarterly_fee').prop('title',errormsg[1].EMC_DATA);
-            $('#CCRE_Fixedaircon_fee').prop('title',errormsg[1].EMC_DATA);
-            $('#CCRE_ElectricitycapFee').prop('title',errormsg[1].EMC_DATA);
-            $('#CCRE_Curtain_DrycleanFee').prop('title',errormsg[1].EMC_DATA);
-            $('#CCRE_CheckOutCleanFee').prop('title',errormsg[1].EMC_DATA);
-            $('#CCRE_DepositFee').prop('title',errormsg[1].EMC_DATA);
-            $('#CCRE_ProcessingFee').prop('title',errormsg[1].EMC_DATA);
-            $('#CCRE_Rent').prop('title',errormsg[1].EMC_DATA);
+            var value_array = JSON.parse(data);
+            timearray = value_array[5];
+            errormsg = value_array[4];
+            var prorated = value_array[6];
+            $('#CCRE_FirstName').prop('title', errormsg[0].EMC_DATA)
+            $('#CCRE_LastName').prop('title', errormsg[0].EMC_DATA)
+            $('#CCRE_CompanyPostalCode').prop('title', errormsg[1].EMC_DATA);
+            $('#CCRE_IntlMobile').prop('title', errormsg[1].EMC_DATA);
+            $('#CCRE_Mobile').prop('title', errormsg[1].EMC_DATA);
+            $('#CCRE_Officeno').prop('title', errormsg[1].EMC_DATA);
+            $('#CCRE_NoticePeriod').prop('title', errormsg[1].EMC_DATA);
+            $('#CCRE_Quarterly_fee').prop('title', errormsg[1].EMC_DATA);
+            $('#CCRE_Fixedaircon_fee').prop('title', errormsg[1].EMC_DATA);
+            $('#CCRE_ElectricitycapFee').prop('title', errormsg[1].EMC_DATA);
+            $('#CCRE_Curtain_DrycleanFee').prop('title', errormsg[1].EMC_DATA);
+            $('#CCRE_CheckOutCleanFee').prop('title', errormsg[1].EMC_DATA);
+            $('#CCRE_DepositFee').prop('title', errormsg[1].EMC_DATA);
+            $('#CCRE_ProcessingFee').prop('title', errormsg[1].EMC_DATA);
+            $('#CCRE_Rent').prop('title', errormsg[1].EMC_DATA);
             $('#CCRE_lbl_emailiderrormsg').text(errormsg[6].EMC_DATA);
             $('#CCRE_lbl_mobileerrormsg').text(errormsg[10].EMC_DATA)
             $('#CCRE_lbl_intlmobileerrormsg').text(errormsg[10].EMC_DATA)
@@ -64,185 +67,333 @@ $(document).ready(function() {
             $('#CCRE_lbl_epnodateerrormsg').text(errormsg[20].EMC_DATA);
             $('#CCRE_lbl_passportdateerrormsg').text(errormsg[24].EMC_DATA);
             $('#CCRE_lbl_ep_dateerrormsg').text(errormsg[23].EMC_DATA);
-            for(var i=0;i<value_array[0].length;i++)
-            {
-                var data=value_array[0][i];
+            for (var i = 0; i < value_array[0].length; i++) {
+                var data = value_array[0][i];
                 $('#CCRE_UnitNo').append($('<option>').text(data.UNIT_NO).attr('value', data.UNIT_NO));
             }
-            for(var i=0;i<value_array[1].length;i++)
-            {
-                var data=value_array[1][i];
+            for (var i = 0; i < value_array[1].length; i++) {
+                var data = value_array[1][i];
                 $('#CCRE_Nationality').append($('<option>').text(data.NC_DATA).attr('value', data.NC_DATA));
             }
-            for(var i=0;i<value_array[2].length;i++)
-            {
-                var data=value_array[2][i];
+            for (var i = 0; i < value_array[2].length; i++) {
+                var data = value_array[2][i];
                 $('#CCRE_MailList').append($('<option>').text(data.EL_EMAIL_ID).attr('value', data.EL_EMAIL_ID));
             }
-            for(var i=0;i<value_array[3].length;i++)
-            {
-                var data=value_array[3][i];
+            for (var i = 0; i < value_array[3].length; i++) {
+                var data = value_array[3][i];
                 $('#CCRE_Option').append($('<option>').text(data.CCN_DATA).attr('value', data.CCN_ID));
             }
-            for(var i=0;i<value_array[5].length-1;i++)
-            {
-                var data=value_array[5][i];
+            for (var i = 0; i < value_array[5].length - 1; i++) {
+                var data = value_array[5][i];
                 $('#CCRE_SDStarttime').append($('<option>').text(data.TIME).attr('value', data.TIME));
                 $('#CCRE_EDStarttime').append($('<option>').text(data.TIME).attr('value', data.TIME));
             }
             $('.preloader').hide();
         },
-        error: function(data){
-            alert('error in getting'+JSON.stringify(data));
+        error: function (data) {
+            alert('error in getting' + JSON.stringify(data));
         }
     });
     //BUTTON VALIDATION
 
     /***************************CUSTOMER FORM SUBMIT BUTTON VALIDATION*******************************/
-    function FormnewDateFormat(inputdate)
-    {
+    function FormnewDateFormat(inputdate) {
         var string = inputdate.split("-");
-        var newdate=new Date(string[2],string[1]-1,string[0])
+        var newdate = new Date(string[2], string[1] - 1, string[0])
         return newdate;
     }
-    $(document).on('change blur','#CCRE_Form_CustomerCreation',function(){
+
+    $(document).on('change blur', '#CCRE_Form_CustomerCreation', function () {
         /******POSATAL CODE************/
-        var postalcode=$('#CCRE_CompanyPostalCode').val();
-        if(postalcode!=""){if(postalcode.length>=5){var postalflag=1;$('#CCRE_lbl_postalerrormsg').hide();$('#CCRE_CompanyPostalCode').removeClass('invalid');}else{postalflag=0;$('#CCRE_lbl_postalerrormsg').show();$('#CCRE_CompanyPostalCode').addClass('invalid');}}else{$('#CCRE_lbl_postalerrormsg').hide();postalflag=1;$('#CCRE_CompanyPostalCode').removeClass('invalid');}
+        var postalcode = $('#CCRE_CompanyPostalCode').val();
+        if (postalcode != "") {
+            if (postalcode.length >= 5) {
+                var postalflag = 1;
+                $('#CCRE_lbl_postalerrormsg').hide();
+                $('#CCRE_CompanyPostalCode').removeClass('invalid');
+            } else {
+                postalflag = 0;
+                $('#CCRE_lbl_postalerrormsg').show();
+                $('#CCRE_CompanyPostalCode').addClass('invalid');
+            }
+        } else {
+            $('#CCRE_lbl_postalerrormsg').hide();
+            postalflag = 1;
+            $('#CCRE_CompanyPostalCode').removeClass('invalid');
+        }
         /******MOBILE NO************/
-        var mobileno=$('#CCRE_Mobile').val();
-        if(mobileno!=""){if(mobileno.length>=6){var mobileflag=1;$('#CCRE_lbl_mobileerrormsg').hide();$('#CCRE_Mobile').removeClass('invalid');}else{mobileflag=0;$('#CCRE_lbl_mobileerrormsg').show();$('#CCRE_Mobile').addClass('invalid');}}else{$('#CCRE_lbl_mobileerrormsg').hide();mobileflag=1;$('#CCRE_Mobile').removeClass('invalid');}
+        var mobileno = $('#CCRE_Mobile').val();
+        if (mobileno != "") {
+            if (mobileno.length >= 6) {
+                var mobileflag = 1;
+                $('#CCRE_lbl_mobileerrormsg').hide();
+                $('#CCRE_Mobile').removeClass('invalid');
+            } else {
+                mobileflag = 0;
+                $('#CCRE_lbl_mobileerrormsg').show();
+                $('#CCRE_Mobile').addClass('invalid');
+            }
+        } else {
+            $('#CCRE_lbl_mobileerrormsg').hide();
+            mobileflag = 1;
+            $('#CCRE_Mobile').removeClass('invalid');
+        }
         /******INTL MOBILE NO************/
-        var intlmobileno=$('#CCRE_IntlMobile').val();
-        if(intlmobileno!=""){if(intlmobileno.length>=6){var intlmobileflag=1;$('#CCRE_lbl_intlmobileerrormsg').hide();$('#CCRE_IntlMobile').removeClass('invalid');}else{intlmobileflag=0;$('#CCRE_lbl_intlmobileerrormsg').show();$('#CCRE_IntlMobile').addClass('invalid');}}else{$('#CCRE_lbl_intlmobileerrormsg').hide();intlmobileflag=1;$('#CCRE_IntlMobile').removeClass('invalid');};
+        var intlmobileno = $('#CCRE_IntlMobile').val();
+        if (intlmobileno != "") {
+            if (intlmobileno.length >= 6) {
+                var intlmobileflag = 1;
+                $('#CCRE_lbl_intlmobileerrormsg').hide();
+                $('#CCRE_IntlMobile').removeClass('invalid');
+            } else {
+                intlmobileflag = 0;
+                $('#CCRE_lbl_intlmobileerrormsg').show();
+                $('#CCRE_IntlMobile').addClass('invalid');
+            }
+        } else {
+            $('#CCRE_lbl_intlmobileerrormsg').hide();
+            intlmobileflag = 1;
+            $('#CCRE_IntlMobile').removeClass('invalid');
+        }
+        ;
         /******OFFICE NO************/
-        var officeno=$('#CCRE_Officeno').val();
-        if(officeno!=""){if(officeno.length>=6){var officenoflag=1;$('#CCRE_lbl_officeerrormsg').hide();$('#CCRE_Officeno').removeClass('invalid');}else{officenoflag=0;$('#CCRE_lbl_officeerrormsg').show();$('#CCRE_Officeno').addClass('invalid');}}else{$('#CCRE_lbl_officeerrormsg').hide();officenoflag=1;$('#CCRE_Officeno').removeClass('invalid');}
+        var officeno = $('#CCRE_Officeno').val();
+        if (officeno != "") {
+            if (officeno.length >= 6) {
+                var officenoflag = 1;
+                $('#CCRE_lbl_officeerrormsg').hide();
+                $('#CCRE_Officeno').removeClass('invalid');
+            } else {
+                officenoflag = 0;
+                $('#CCRE_lbl_officeerrormsg').show();
+                $('#CCRE_Officeno').addClass('invalid');
+            }
+        } else {
+            $('#CCRE_lbl_officeerrormsg').hide();
+            officenoflag = 1;
+            $('#CCRE_Officeno').removeClass('invalid');
+        }
         /******PASSPORT NO************/
-        var passportno=$('#CCRE_PassportNo').val();
-        if(passportno!=""){if(passportno.length>=6){var passportnoflag=1;$('#CCRE_lbl_passporterrormsg').hide();$('#CCRE_PassportNo').removeClass('invalid');$('#CCRE_PassportNo').val($("#CCRE_PassportNo").val().toUpperCase());}else{passportnoflag=0;$('#CCRE_lbl_passporterrormsg').show();$('#CCRE_PassportNo').addClass('invalid');}}else{$('#CCRE_lbl_passporterrormsg').hide();passportnoflag=1;$('#CCRE_PassportNo').removeClass('invalid');}
+        var passportno = $('#CCRE_PassportNo').val();
+        if (passportno != "") {
+            if (passportno.length >= 6) {
+                var passportnoflag = 1;
+                $('#CCRE_lbl_passporterrormsg').hide();
+                $('#CCRE_PassportNo').removeClass('invalid');
+                $('#CCRE_PassportNo').val($("#CCRE_PassportNo").val().toUpperCase());
+            } else {
+                passportnoflag = 0;
+                $('#CCRE_lbl_passporterrormsg').show();
+                $('#CCRE_PassportNo').addClass('invalid');
+            }
+        } else {
+            $('#CCRE_lbl_passporterrormsg').hide();
+            passportnoflag = 1;
+            $('#CCRE_PassportNo').removeClass('invalid');
+        }
         /******EP NO************/
-        var epno=$('#CCRE_EpNo').val();
-        if(epno!=""){if(epno.length>=6){var epnoflag=1;$('#CCRE_lbl_epnoerrormsg').hide();$('#CCRE_EpNo').removeClass('invalid');$('#CCRE_EpNo').val($("#CCRE_EpNo").val().toUpperCase())}else{epnoflag=0;$('#CCRE_lbl_epnoerrormsg').show();$('#CCRE_EpNo').addClass('invalid');}}else{$('#CCRE_lbl_epnoerrormsg').hide();$('#CCRE_EpNo').removeClass('invalid');epnoflag=1;}
+        var epno = $('#CCRE_EpNo').val();
+        if (epno != "") {
+            if (epno.length >= 6) {
+                var epnoflag = 1;
+                $('#CCRE_lbl_epnoerrormsg').hide();
+                $('#CCRE_EpNo').removeClass('invalid');
+                $('#CCRE_EpNo').val($("#CCRE_EpNo").val().toUpperCase())
+            } else {
+                epnoflag = 0;
+                $('#CCRE_lbl_epnoerrormsg').show();
+                $('#CCRE_EpNo').addClass('invalid');
+            }
+        } else {
+            $('#CCRE_lbl_epnoerrormsg').hide();
+            $('#CCRE_EpNo').removeClass('invalid');
+            epnoflag = 1;
+        }
         /******DEPOSIT ************/
-        var deposit=$('#CCRE_DepositFee').val();
-        if(deposit!=""){var depositamount=deposit.split('.');if(depositamount[0].length>=3){var depositflag=1;$('#CCRE_lbl_depositerrormsg').hide();$('#CCRE_DepositFee').removeClass('invalid');}else{depositflag=0;$('#CCRE_lbl_depositerrormsg').show();$('#CCRE_DepositFee').addClass('invalid');}}else{$('#CCRE_lbl_depositerrormsg').hide();depositflag=1;$('#CCRE_DepositFee').removeClass('invalid');}
+        var deposit = $('#CCRE_DepositFee').val();
+        if (deposit != "") {
+            var depositamount = deposit.split('.');
+            if (depositamount[0].length >= 3) {
+                var depositflag = 1;
+                $('#CCRE_lbl_depositerrormsg').hide();
+                $('#CCRE_DepositFee').removeClass('invalid');
+            } else {
+                depositflag = 0;
+                $('#CCRE_lbl_depositerrormsg').show();
+                $('#CCRE_DepositFee').addClass('invalid');
+            }
+        } else {
+            $('#CCRE_lbl_depositerrormsg').hide();
+            depositflag = 1;
+            $('#CCRE_DepositFee').removeClass('invalid');
+        }
         /******PROCESS************/
-        var process=$('#CCRE_ProcessingFee').val();
-        if(process!=""){var processamount=process.split('.');if(processamount[0].length>=3){var processflag=1;$('#CCRE_lbl_processerrormsg').hide();$('#CCRE_ProcessingFee').removeClass('invalid');}else{processflag=0;$('#CCRE_lbl_processerrormsg').show();$('#CCRE_ProcessingFee').addClass('invalid');}}else{$('#CCRE_lbl_processerrormsg').hide();$('#CCRE_ProcessingFee').removeClass('invalid');processflag=1;}
+        var process = $('#CCRE_ProcessingFee').val();
+        if (process != "") {
+            var processamount = process.split('.');
+            if (processamount[0].length >= 3) {
+                var processflag = 1;
+                $('#CCRE_lbl_processerrormsg').hide();
+                $('#CCRE_ProcessingFee').removeClass('invalid');
+            } else {
+                processflag = 0;
+                $('#CCRE_lbl_processerrormsg').show();
+                $('#CCRE_ProcessingFee').addClass('invalid');
+            }
+        } else {
+            $('#CCRE_lbl_processerrormsg').hide();
+            $('#CCRE_ProcessingFee').removeClass('invalid');
+            processflag = 1;
+        }
         /******RENT************/
-        var rent=$('#CCRE_Rent').val();
-        if(rent!=""){var rentamount=rent.split('.');if(rentamount[0].length>=3){var rentflag=1;$('#CCRE_lbl_renterrormsg').hide();$('#CCRE_Rent').removeClass('invalid');}else{rentflag=0;$('#CCRE_lbl_renterrormsg').show();$('#CCRE_Rent').addClass('invalid');}}else{$('#CCRE_lbl_renterrormsg').hide();$('#CCRE_Rent').removeClass('invalid');rentflag=1;}
+        var rent = $('#CCRE_Rent').val();
+        if (rent != "") {
+            var rentamount = rent.split('.');
+            if (rentamount[0].length >= 3) {
+                var rentflag = 1;
+                $('#CCRE_lbl_renterrormsg').hide();
+                $('#CCRE_Rent').removeClass('invalid');
+            } else {
+                rentflag = 0;
+                $('#CCRE_lbl_renterrormsg').show();
+                $('#CCRE_Rent').addClass('invalid');
+            }
+        } else {
+            $('#CCRE_lbl_renterrormsg').hide();
+            $('#CCRE_Rent').removeClass('invalid');
+            rentflag = 1;
+        }
         /******ELECTRICITY CAP************/
-        var electricity=$('#CCRE_ElectricitycapFee').val();
-        if(electricity!=""){var electamount=electricity.split('.');if(electamount[0].length>=2){var electflag=1;$('#CCRE_lbl_electcaperrormsg').hide();$('#CCRE_ElectricitycapFee').removeClass('invalid');}else{electflag=0;$('#CCRE_lbl_electcaperrormsg').show();$('#CCRE_ElectricitycapFee').addClass('invalid');}}else{$('#CCRE_lbl_electcaperrormsg').hide();$('#CCRE_ElectricitycapFee').removeClass('invalid');electflag=1}
-        if($('#CCRE_PassportDate').val()=="" && $('#CCRE_PassportNo').val()=="") { var passportflag=1;$('#CCRE_lbl_passporterrormsg').hide();$('#CCRE_PassportNo').removeClass('invalid'); } else { if($('#CCRE_PassportDate').val()!="" && $('#CCRE_PassportNo').val()==""){passportflag=0;$('#CCRE_lbl_passporterrormsg').show();$('#CCRE_PassportNo').addClass('invalid');} else {passportflag=1;$('#CCRE_lbl_passporterrormsg').hide();$('#CCRE_PassportNo').removeClass('invalid');} }
-        if($('#CCRE_EPDate').val()=="" && $('#CCRE_EpNo').val()=="") { var epflag=1;$('#CCRE_lbl_epnodateerrormsg').hide();$('#CCRE_EpNo').removeClass('invalid') } else { if($('#CCRE_EPDate').val()!="" && $('#CCRE_EpNo').val()==""){epflag=0;$('#CCRE_lbl_epnodateerrormsg').show();$('#CCRE_EpNo').addClass('invalid');} else {epflag=1;$('#CCRE_lbl_epnodateerrormsg').hide();$('#CCRE_EpNo').removeClass('invalid')} }
-        var CCRE_emailid=$("#CCRE_Emailid").val();
-        var CCRE_atpos=CCRE_emailid.indexOf("@");
-        var CCRE_dotpos=CCRE_emailid.lastIndexOf(".");
-        if(CCRE_emailid.length>0)
-        {
-            if ((/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(CCRE_emailid) || "" == CCRE_emailid)&&(CCRE_atpos-1!=CCRE_emailid.indexOf(".")))
-            {
+        var electricity = $('#CCRE_ElectricitycapFee').val();
+        if (electricity != "") {
+            var electamount = electricity.split('.');
+            if (electamount[0].length >= 2) {
+                var electflag = 1;
+                $('#CCRE_lbl_electcaperrormsg').hide();
+                $('#CCRE_ElectricitycapFee').removeClass('invalid');
+            } else {
+                electflag = 0;
+                $('#CCRE_lbl_electcaperrormsg').show();
+                $('#CCRE_ElectricitycapFee').addClass('invalid');
+            }
+        } else {
+            $('#CCRE_lbl_electcaperrormsg').hide();
+            $('#CCRE_ElectricitycapFee').removeClass('invalid');
+            electflag = 1
+        }
+        if ($('#CCRE_PassportDate').val() == "" && $('#CCRE_PassportNo').val() == "") {
+            var passportflag = 1;
+            $('#CCRE_lbl_passporterrormsg').hide();
+            $('#CCRE_PassportNo').removeClass('invalid');
+        } else {
+            if ($('#CCRE_PassportDate').val() != "" && $('#CCRE_PassportNo').val() == "") {
+                passportflag = 0;
+                $('#CCRE_lbl_passporterrormsg').show();
+                $('#CCRE_PassportNo').addClass('invalid');
+            } else {
+                passportflag = 1;
+                $('#CCRE_lbl_passporterrormsg').hide();
+                $('#CCRE_PassportNo').removeClass('invalid');
+            }
+        }
+        if ($('#CCRE_EPDate').val() == "" && $('#CCRE_EpNo').val() == "") {
+            var epflag = 1;
+            $('#CCRE_lbl_epnodateerrormsg').hide();
+            $('#CCRE_EpNo').removeClass('invalid')
+        } else {
+            if ($('#CCRE_EPDate').val() != "" && $('#CCRE_EpNo').val() == "") {
+                epflag = 0;
+                $('#CCRE_lbl_epnodateerrormsg').show();
+                $('#CCRE_EpNo').addClass('invalid');
+            } else {
+                epflag = 1;
+                $('#CCRE_lbl_epnodateerrormsg').hide();
+                $('#CCRE_EpNo').removeClass('invalid')
+            }
+        }
+        var CCRE_emailid = $("#CCRE_Emailid").val();
+        var CCRE_atpos = CCRE_emailid.indexOf("@");
+        var CCRE_dotpos = CCRE_emailid.lastIndexOf(".");
+        if (CCRE_emailid.length > 0) {
+            if ((/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(CCRE_emailid) || "" == CCRE_emailid) && (CCRE_atpos - 1 != CCRE_emailid.indexOf("."))) {
                 $('#CCRE_lbl_emailiderrormsg').hide();
-                var CCRE_emailchk="valid";
+                var CCRE_emailchk = "valid";
                 $('#CCRE_Emailid').removeClass('invalid');
                 $('#CCRE_Emailid').val(CCRE_emailid.toLowerCase());
             }
-            else
-            {
+            else {
                 $('#CCRE_lbl_emailiderrormsg').show();
-                CCRE_emailchk="invalid"
+                CCRE_emailchk = "invalid"
                 $('#CCRE_Emailid').addClass('invalid');
             }
         }
-        else
-        {
-            CCRE_emailchk="invalid"
+        else {
+            CCRE_emailchk = "invalid"
             $('#CCRE_Emailid').removeClass('invalid');
             $('#CCRE_lbl_emailiderrormsg').hide();
         }
-        var pp_date=$('#CCRE_PassportDate').val();
-        var end_date=$("#CCRE_Enddate").val();
-        var ep_date=$('#CCRE_EPDate').val();
-        if(pp_date!="" && end_date!="")
-        {
-            var newpp_date=FormnewDateFormat(pp_date);
-            var newend_date=FormnewDateFormat(end_date);
-            if(newpp_date>newend_date)
-            {
-                var ppdateflag=1;
+        var pp_date = $('#CCRE_PassportDate').val();
+        var end_date = $("#CCRE_Enddate").val();
+        var ep_date = $('#CCRE_EPDate').val();
+        if (pp_date != "" && end_date != "") {
+            var newpp_date = FormnewDateFormat(pp_date);
+            var newend_date = FormnewDateFormat(end_date);
+            if (newpp_date > newend_date) {
+                var ppdateflag = 1;
                 $('#CCRE_lbl_passportdateerrormsg').hide();
             }
-            else
-            {
-                ppdateflag=0;
+            else {
+                ppdateflag = 0;
                 $('#CCRE_lbl_passportdateerrormsg').show();
             }
         }
-        else
-        {
-            ppdateflag=1;
+        else {
+            ppdateflag = 1;
             $('#CCRE_lbl_passportdateerrormsg').hide();
         }
-        if(ep_date!="" && end_date!="")
-        {
-            var newep_date=FormnewDateFormat(ep_date);
-            var newend_date=FormnewDateFormat(end_date);
-            if(newep_date>newend_date)
-            {
-                var epdateflag=1;
+        if (ep_date != "" && end_date != "") {
+            var newep_date = FormnewDateFormat(ep_date);
+            var newend_date = FormnewDateFormat(end_date);
+            if (newep_date > newend_date) {
+                var epdateflag = 1;
                 $('#CCRE_lbl_ep_dateerrormsg').hide();
             }
-            else
-            {
-                epdateflag=0;
+            else {
+                epdateflag = 0;
                 $('#CCRE_lbl_ep_dateerrormsg').show();
             }
         }
-        else
-        {
-            epdateflag=1;
+        else {
+            epdateflag = 1;
             $('#CCRE_lbl_ep_dateerrormsg').hide();
         }
-        if($("#CCRE_FirstName").val()!=""&& $("#CCRE_LastName").val()!=""&&$("#CCRE_Emailid").val()!=""&&$("#CCRE_Nationality").val()!="SELECT"&&$("#CCRE_SDStarttime").val()!="Select"&& $('#CCRE_EDEndtime').val()!='Select' &&
-            $("#CCRE_UnitNo").val()!="SELECT"&& $("#CCRE_RoomType").val()!="SELECT"&&$("#CCRE_EDStarttime").val()!="Select"&& $("#CCRE_Option").val()!="SELECT"&& $("#CCRE_MailList").val()!="SELECT"
-            && $("#CCRE_Rent").val()!=""&& $("#CCRE_Startdate").val()!=""&& $("#CCRE_Enddate").val()!="" &&(CCRE_emailchk=="valid")  && mobileflag==1 && intlmobileflag==1 && officenoflag==1&& passportnoflag==1 && epnoflag==1 && processflag==1&& depositflag==1 && rentflag==1 && postalflag==1 &&electflag==1 && passportflag==1 && epflag==1 && ppdateflag==1 && epdateflag==1)
-        {
-            if(($("input[name='AccessCard']:checked").val()=='Null')||(($("input[name='AccessCard']:checked").val()=='Cardnumber')&&($("input[name='checkbox']:checked").val()!="")&&($("input[name='checkbox']:checked").val()!=undefined)))
-            {
-                if($("input[name='AccessCard']:checked").val()=='Cardnumber')
-                {
-                    var CCRE_cardflag=0;
-                    for(var card=0;card<CCRE_cardArray.length;card++)
-                    {
-                        if($('#CCRE_cb_cardlistselect'+card).val()==$("#CCRE_FirstName").val()+" "+$("#CCRE_LastName").val())
-                        {
-                            CCRE_cardflag=1;
+        if ($("#CCRE_FirstName").val() != "" && $("#CCRE_LastName").val() != "" && $("#CCRE_Emailid").val() != "" && $("#CCRE_Nationality").val() != "SELECT" && $("#CCRE_SDStarttime").val() != "Select" && $('#CCRE_EDEndtime').val() != 'Select' &&
+            $("#CCRE_UnitNo").val() != "SELECT" && $("#CCRE_RoomType").val() != "SELECT" && $("#CCRE_EDStarttime").val() != "Select" && $("#CCRE_Option").val() != "SELECT" && $("#CCRE_MailList").val() != "SELECT"
+            && $("#CCRE_Rent").val() != "" && $("#CCRE_Startdate").val() != "" && $("#CCRE_Enddate").val() != "" && (CCRE_emailchk == "valid") && mobileflag == 1 && intlmobileflag == 1 && officenoflag == 1 && passportnoflag == 1 && epnoflag == 1 && processflag == 1 && depositflag == 1 && rentflag == 1 && postalflag == 1 && electflag == 1 && passportflag == 1 && epflag == 1 && ppdateflag == 1 && epdateflag == 1) {
+            if (($("input[name='AccessCard']:checked").val() == 'Null') || (($("input[name='AccessCard']:checked").val() == 'Cardnumber') && ($("input[name='checkbox']:checked").val() != "") && ($("input[name='checkbox']:checked").val() != undefined))) {
+                if ($("input[name='AccessCard']:checked").val() == 'Cardnumber') {
+                    var CCRE_cardflag = 0;
+                    for (var card = 0; card < CCRE_cardArray.length; card++) {
+                        if ($('#CCRE_cb_cardlistselect' + card).val() == $("#CCRE_FirstName").val() + " " + $("#CCRE_LastName").val()) {
+                            CCRE_cardflag = 1;
                         }
-                        else
-                        {
+                        else {
                             $("#CCRE_btn_savebutton").attr("disabled", "disabled");
                         }
                     }
-                    if(CCRE_cardflag==1)
-                    {
+                    if (CCRE_cardflag == 1) {
                         $("#CCRE_btn_savebutton").removeAttr("disabled");
                     }
                 }
-                else
-                {
+                else {
                     $("#CCRE_btn_savebutton").removeAttr("disabled");
                 }
             }
-            else
-            {
+            else {
                 $("#CCRE_btn_savebutton").attr("disabled", "disabled");
             }
         }
-        else
-        {
+        else {
             $("#CCRE_btn_savebutton").attr("disabled", "disabled");
         }
     });
@@ -252,91 +403,82 @@ $(document).ready(function() {
     var CCRE_d = new Date();
     var CCRE_year = CCRE_d.getFullYear() - 18;
     CCRE_d.setFullYear(CCRE_year);
-    $('#CCRE_DOB').datepicker({dateFormat: 'dd-mm-yy',
+    $('#CCRE_DOB').datepicker({
+        dateFormat: 'dd-mm-yy',
         changeYear: true,
         changeMonth: true,
         yearRange: '1920:' + CCRE_year + '',
         defaultDate: CCRE_d
     });
-    $('#CCRE_DOB').blur(function()
-    {
+    $('#CCRE_DOB').blur(function () {
     });
 
     //************ROOM TYPE LISTBOX LOADING*****************//
-    var unitstart_end_date=[];
-    $(document).on('change','.Unitchange',function(){
-        var Unit=$('#CCRE_UnitNo').val();
+    var unitstart_end_date = [];
+    $(document).on('change', '.Unitchange', function () {
+        var Unit = $('#CCRE_UnitNo').val();
         $('#CardNumbersdiv').hide();
         $('#CCRE_Roomtype_error').text('');
-        $('#CCRE_Cardnumber').prop('checked',false);
-        $('#CCRE_Nullcard').prop('checked',false);
-        if(Unit!='SELECT')
-        {
+        $('#CCRE_Cardnumber').prop('checked', false);
+        $('#CCRE_Nullcard').prop('checked', false);
+        if (Unit != 'SELECT') {
             $('.preloader').show();
             $.ajax({
                 type: "POST",
                 url: "/index.php/Ctrl_Customer_Creation/CustomerRoomTypeLoad",
-                data:{"Unit":Unit},
-                success: function(data){
-                    var value_array=JSON.parse(data);
-                    if(value_array[0].length!=0)
-                    {
-                        var options ='<option value="">SELECT</option>';
-                        for (var i = 0; i < value_array[0].length; i++)
-                        {
-                            var data=value_array[0][i];
+                data: {"Unit": Unit},
+                success: function (data) {
+                    var value_array = JSON.parse(data);
+                    if (value_array[0].length != 0) {
+                        var options = '<option value="">SELECT</option>';
+                        for (var i = 0; i < value_array[0].length; i++) {
+                            var data = value_array[0][i];
                             options += '<option value="' + data.URTD_ROOM_TYPE + '">' + data.URTD_ROOM_TYPE + '</option>';
                         }
                         $('#CCRE_RoomType').html(options);
                         $('#RoomtypeDiv').show();
                         $('#AccessCardDiv').show();
                     }
-                    else
-                    {
-                        var CCRE_message=errormsg[3].EMC_DATA.replace("[UNIT NO]",Unit);
+                    else {
+                        var CCRE_message = errormsg[3].EMC_DATA.replace("[UNIT NO]", Unit);
                         $('#CCRE_Roomtype_error').text(CCRE_message);
                         $('#CCRE_Roomtype_error').show();
                         $('#RoomtypeDiv').hide();
                         $('#AccessCardDiv').hide();
                     }
 
-                    for (var i = 0; i < value_array[1].length; i++)
-                    {
-                        var data=value_array[1][i];
-                        var unitstartdate=data.UD_START_DATE;
-                        var unit_startdate=DB_dateCalculation(unitstartdate);
-                        var startdateperiod=value_array[2][0].CCN_DATA;
-                        var customerstartdate=DB_beforedateCalculation(startdateperiod);
-                        var unitenddate=data.UD_END_DATE;
-                        var unit_enddate=DB_dateCalculation(unitenddate);
-                        if(customerstartdate>unit_startdate)
-                        {
-                            $('#CCRE_Startdate').datepicker("option","minDate",customerstartdate);
-                            $('#CCRE_Startdate').datepicker("option","maxDate",unit_enddate);
-                            $('#CCRE_Enddate').datepicker("option","maxDate",unit_enddate);
+                    for (var i = 0; i < value_array[1].length; i++) {
+                        var data = value_array[1][i];
+                        var unitstartdate = data.UD_START_DATE;
+                        var unit_startdate = DB_dateCalculation(unitstartdate);
+                        var startdateperiod = value_array[2][0].CCN_DATA;
+                        var customerstartdate = DB_beforedateCalculation(startdateperiod);
+                        var unitenddate = data.UD_END_DATE;
+                        var unit_enddate = DB_dateCalculation(unitenddate);
+                        if (customerstartdate > unit_startdate) {
+                            $('#CCRE_Startdate').datepicker("option", "minDate", customerstartdate);
+                            $('#CCRE_Startdate').datepicker("option", "maxDate", unit_enddate);
+                            $('#CCRE_Enddate').datepicker("option", "maxDate", unit_enddate);
                         }
-                        else
-                        {
-                            $('#CCRE_Startdate').datepicker("option","minDate",unit_startdate);
-                            $('#CCRE_Startdate').datepicker("option","maxDate",unit_enddate);
-                            $('#CCRE_Enddate').datepicker("option","maxDate",unit_enddate);
+                        else {
+                            $('#CCRE_Startdate').datepicker("option", "minDate", unit_startdate);
+                            $('#CCRE_Startdate').datepicker("option", "maxDate", unit_enddate);
+                            $('#CCRE_Enddate').datepicker("option", "maxDate", unit_enddate);
                         }
                     }
                     $('.preloader').hide();
                 },
-                error: function(data){
-                    alert('error in getting'+JSON.stringify(data));
+                error: function (data) {
+                    alert('error in getting' + JSON.stringify(data));
                     $('.preloader').hide();
                 }
             });
         }
-        else
-        {
+        else {
             AccesscarddivClear();
         }
     });
-    function AccesscarddivClear()
-    {
+    function AccesscarddivClear() {
         $('#startdatediv').hide();
         $('#CusromerEnddate').hide();
         $('#RoomtypeDiv').hide();
@@ -347,42 +489,38 @@ $(document).ready(function() {
         $('#startdatetotime').hide();
         $('#endatedateto').hide();
     }
-    function DB_dateCalculation(inputdate)
-    {
-      var inputdate=inputdate.split('-');
-      var newunitstartdate=new Date(inputdate[0],inputdate[1]-1,inputdate[2]);
+
+    function DB_dateCalculation(inputdate) {
+        var inputdate = inputdate.split('-');
+        var newunitstartdate = new Date(inputdate[0], inputdate[1] - 1, inputdate[2]);
         return newunitstartdate;
     }
-    function DB_beforedateCalculation(startdateperiod)
-    {
-        var inputdate=new Date();
-        var newunitstartdate=new Date(inputdate.getFullYear(),inputdate.getMonth()-parseInt(startdateperiod),inputdate.getDate());
+
+    function DB_beforedateCalculation(startdateperiod) {
+        var inputdate = new Date();
+        var newunitstartdate = new Date(inputdate.getFullYear(), inputdate.getMonth() - parseInt(startdateperiod), inputdate.getDate());
         return newunitstartdate;
     }
-    $(document).on('change','#CCRE_Startdate',function(){
-     if($('#CCRE_Startdate').val()!="")
-     {
-        $('#startdatediv').show();
-        $('#CusromerEnddate').show();
-     }
-        else
-     {
-       $('#startdatediv').hide();
-       $('#CusromerEnddate').hide();
-     }
+
+    $(document).on('change', '#CCRE_Startdate', function () {
+        if ($('#CCRE_Startdate').val() != "") {
+            $('#startdatediv').show();
+//            $('#CusromerEnddate').show();
+        }
+        else {
+            $('#startdatediv').hide();
+//            $('#CusromerEnddate').hide();
+        }
     });
-    $(function ()
-    {
+    $(function () {
         $("#radio").buttonset();
         $("input[name='Aircon']").on("change", function () {
             var CCRE_radio_name = $("input[name='Aircon']:checked").val();
-            if(CCRE_radio_name=='QuarterlyFee')
-            {
+            if (CCRE_radio_name == 'QuarterlyFee') {
                 $("#CCRE_Quarterly_fee").show().val('');
                 $("#CCRE_Fixedaircon_fee").hide().val('');
             }
-            if(CCRE_radio_name=='FixedAircon')
-            {
+            if (CCRE_radio_name == 'FixedAircon') {
                 $("#CCRE_Quarterly_fee").hide().val('');
                 $("#CCRE_Fixedaircon_fee").show().val('');
             }
@@ -402,298 +540,265 @@ $(document).ready(function() {
             changeMonth: true
         });
     /**********************ENDDATE VALIDATION***********************************/
-    $(document).on('change','.startdatevalidate',function(){
+    $(document).on('change', '.startdatevalidate', function () {
         $("#CCRE_NoticePeriodDate").removeAttr("disabled");
-        var startdate=$('#CCRE_Startdate').val();
-        var currentdate=Form_dateCalculation(startdate)
-        if(new Date()<=currentdate){
+        var startdate = $('#CCRE_Startdate').val();
+        var currentdate = Form_dateCalculation(startdate)
+        if (new Date() <= currentdate) {
             var date1 = $('#CCRE_Startdate').datepicker('getDate');
-            var date = new Date( Date.parse( date1 ) );
+            var date = new Date(Date.parse(date1));
             date.setDate(date.getDate() + 1);
             var newDate = date.toDateString();
-            newDate = new Date( Date.parse( newDate ));
-            $('#CCRE_Enddate').datepicker("option","minDate",newDate);
+            newDate = new Date(Date.parse(newDate));
+            $('#CCRE_Enddate').datepicker("option", "minDate", newDate);
         }
-        else
-        {
+        else {
             var CCRE_date1 = new Date();
-            var CCRE_day=CCRE_date1.getDate();
-            CCRE_date1.setDate( CCRE_day + 1 );
+            var CCRE_day = CCRE_date1.getDate();
+            CCRE_date1.setDate(CCRE_day + 1);
             var newDate = CCRE_date1.toDateString();
-            newDate = new Date( Date.parse( newDate ));
-            $('#CCRE_Enddate').datepicker("option","minDate",newDate);
+            newDate = new Date(Date.parse(newDate));
+            $('#CCRE_Enddate').datepicker("option", "minDate", newDate);
         }
     });
-    function Form_dateCalculation(inputdate)
-    {
-        var inputdate=inputdate.split('-');
-        var newunitstartdate=new Date(inputdate[2],inputdate[1]-1,inputdate[0]);
+    function Form_dateCalculation(inputdate) {
+        var inputdate = inputdate.split('-');
+        var newunitstartdate = new Date(inputdate[2], inputdate[1] - 1, inputdate[0]);
         return newunitstartdate;
     }
+
     /******************************SET PASSPORTDATE,EPDATE,NOTICEDATE DATEPICKER********************************/
-    $( "#datepicker" ).datepicker({dateFormat: 'dd-mm-yy',changeYear: true,changeMonth: true});
-    $( "#CCRE_PassportDate" ).datepicker({dateFormat: 'dd-mm-yy',changeYear: true,changeMonth: true});
-    $( "#CCRE_EPDate" ).datepicker({dateFormat: 'dd-mm-yy',changeYear: true,changeMonth: true});
-    $( "#CCRE_NoticePeriodDate" ).datepicker({dateFormat: 'dd-mm-yy',changeYear: true,changeMonth: true});
+    $("#datepicker").datepicker({dateFormat: 'dd-mm-yy', changeYear: true, changeMonth: true});
+    $("#CCRE_PassportDate").datepicker({dateFormat: 'dd-mm-yy', changeYear: true, changeMonth: true});
+    $("#CCRE_EPDate").datepicker({dateFormat: 'dd-mm-yy', changeYear: true, changeMonth: true});
+    $("#CCRE_NoticePeriodDate").datepicker({dateFormat: 'dd-mm-yy', changeYear: true, changeMonth: true});
     var CCRE_date1 = new Date();
-    var CCRE_day=CCRE_date1.getDate();
-    CCRE_date1.setDate( CCRE_day + 1 );
+    var CCRE_day = CCRE_date1.getDate();
+    CCRE_date1.setDate(CCRE_day + 1);
     var newDate = CCRE_date1.toDateString();
-    newDate = new Date( Date.parse( newDate ));
-    $('#CCRE_PassportDate').datepicker("option","minDate",newDate);
+    newDate = new Date(Date.parse(newDate));
+    $('#CCRE_PassportDate').datepicker("option", "minDate", newDate);
     var passCCRE_d = new Date();
-    var CCRE_passyear = passCCRE_d.getFullYear()+10;
-    var pass_changedmonth=new Date(passCCRE_d.setFullYear(CCRE_passyear));
-    $('#CCRE_PassportDate').datepicker("option","maxDate",pass_changedmonth);
-    $('#CCRE_EPDate').datepicker("option","minDate",newDate);
+    var CCRE_passyear = passCCRE_d.getFullYear() + 10;
+    var pass_changedmonth = new Date(passCCRE_d.setFullYear(CCRE_passyear));
+    $('#CCRE_PassportDate').datepicker("option", "maxDate", pass_changedmonth);
+    $('#CCRE_EPDate').datepicker("option", "minDate", newDate);
     var epCCRE_d = new Date();
-    var CCRE_epyear = epCCRE_d.getFullYear()+3;
-    var ep_changedmonth=new Date(epCCRE_d.setFullYear(CCRE_epyear));
-    $('#CCRE_EPDate').datepicker("option","maxDate",ep_changedmonth);
+    var CCRE_epyear = epCCRE_d.getFullYear() + 3;
+    var ep_changedmonth = new Date(epCCRE_d.setFullYear(CCRE_epyear));
+    $('#CCRE_EPDate').datepicker("option", "maxDate", ep_changedmonth);
 
     //***********NOTICE PERIOD VALIDATION**********************//
-    $(document).on('change','.noticedate',function(){
+    $(document).on('change', '.noticedate', function () {
         var CCRE_date1 = $('#CCRE_Startdate').val();
         var CCRE_date2 = $('#CCRE_Enddate').val();
-        if(CCRE_date2!="")
-        {
-            var checkindate=CCRE_date1.split('-');
-            var newnoticemindate=new Date(checkindate[2],checkindate[1]-parseInt(1),parseInt(checkindate[0])+1);
-            var checkoutdate=CCRE_date2.split('-');
-            var newnoticemaxdate=new Date(checkoutdate[2],checkoutdate[1]-parseInt(1),checkoutdate[0]-parseInt(1));
-            if(newnoticemindate>new Date())
-            {
-                $('#CCRE_NoticePeriodDate').datepicker("option","maxDate",newnoticemaxdate);
-                $('#CCRE_NoticePeriodDate').datepicker("option","minDate",newnoticemindate);
-             }
-            else
-             {
-                 $('#CCRE_NoticePeriodDate').datepicker("option","maxDate",newnoticemaxdate);
-                 var newnoticestartdate=new Date();
-                 var day=newnoticestartdate.getDate()+1;
-                 var newnoticemindate=new Date(newnoticestartdate.getFullYear(),newnoticestartdate.getMonth(),day);
-                 $('#CCRE_NoticePeriodDate').datepicker("option","minDate",newnoticemindate);
-             }
+        if (CCRE_date2 != "") {
+            var checkindate = CCRE_date1.split('-');
+            var newnoticemindate = new Date(checkindate[2], checkindate[1] - parseInt(1), parseInt(checkindate[0]) + 1);
+            var checkoutdate = CCRE_date2.split('-');
+            var newnoticemaxdate = new Date(checkoutdate[2], checkoutdate[1] - parseInt(1), checkoutdate[0] - parseInt(1));
+            if (newnoticemindate > new Date()) {
+                $('#CCRE_NoticePeriodDate').datepicker("option", "maxDate", newnoticemaxdate);
+                $('#CCRE_NoticePeriodDate').datepicker("option", "minDate", newnoticemindate);
+            }
+            else {
+                $('#CCRE_NoticePeriodDate').datepicker("option", "maxDate", newnoticemaxdate);
+                var newnoticestartdate = new Date();
+                var day = newnoticestartdate.getDate() + 1;
+                var newnoticemindate = new Date(newnoticestartdate.getFullYear(), newnoticestartdate.getMonth(), day);
+                $('#CCRE_NoticePeriodDate').datepicker("option", "minDate", newnoticemindate);
+            }
         }
     });
-    $(document).on('change','.CardNumbers',function(){
-    var CCRE_CardOptionname = $("input[name='AccessCard']:checked").val();
-        var firstname=$('#CCRE_FirstName').val();
-        var lastname=$('#CCRE_LastName').val();
-        if(firstname!="" && lastname!="")
-        {
-         if(CCRE_CardOptionname=='Cardnumber')
-          {
-              $('.preloader').show();
-              var Unit=$('#CCRE_UnitNo').val();
-              $.ajax({
-                  type: "POST",
-                  url: "/index.php/Ctrl_Customer_Creation/UnitCardNumbers",
-                  data:{"Unit":Unit},
-                  success: function(data){
-                      var value_array=JSON.parse(data);
-                      var cardnolblval=[];
-                      var cardnoresult=[];
-                      if(value_array.length!=0)
-                      {
-                          for(var i=0;i<value_array.length;i++)
-                          {
-                              cardnoresult.push(value_array[i].UASD_ACCESS_CARD);
-                              if(i<=3)
-                              {
-                                  if(i==0)
-                                  {
-                                      cardnolblval.push(firstname+" "+lastname);
-                                  }
-                                  else
-                                  {
-                                      cardnolblval.push("GUEST "+i);
-                                  }
-                              }
-                          }
-                          cardnoresult=[cardnoresult,cardnolblval];
-                          CCRE_cardhandleMessageResponse(cardnoresult);
-                      }
-                      else
-                      {
-                          $('#CCRE_Cardnumber').prop('checked', false);
-                          $('#CCRE_Nullcard').prop('checked', false);
-                          var errormessage=errormsg[4].EMC_DATA;
-                          var appenddata='';
-                          appenddata+='<div class="row form-group">';
-                          appenddata+='<div class="col-md-3">';
-                          appenddata+='</div>';
-                          appenddata+='<div class="col-md-6" style="padding-left: 50px;"><label style="color:red;" class="errormsg">'+errormessage+'</label></div>';
-                          $('#CardNumbersdiv').html(appenddata);
-                          $('#CardNumbersdiv').show();
-                      }
-                      $('.preloader').hide();
-                  },
-                  error: function(data){
-                      alert('error in getting'+JSON.stringify(data));
-                      $('.preloader').hide();
-                  }
-              });
-           $('#CardNumbersdiv').show();
-          }
-         else
-          {
-              var appenddata='';
-              $('#CardNumbersdiv').append(appenddata);
-              $('#CardNumbersdiv').hide();
-              $('#CCRE_lbl_error').text('');
-          }
+    $(document).on('change', '.CardNumbers', function () {
+        var CCRE_CardOptionname = $("input[name='AccessCard']:checked").val();
+        var firstname = $('#CCRE_FirstName').val();
+        var lastname = $('#CCRE_LastName').val();
+        if (firstname != "" && lastname != "") {
+            if (CCRE_CardOptionname == 'Cardnumber') {
+                $('.preloader').show();
+                var Unit = $('#CCRE_UnitNo').val();
+                $.ajax({
+                    type: "POST",
+                    url: "/index.php/Ctrl_Customer_Creation/UnitCardNumbers",
+                    data: {"Unit": Unit},
+                    success: function (data) {
+                        var value_array = JSON.parse(data);
+                        var cardnolblval = [];
+                        var cardnoresult = [];
+                        if (value_array.length != 0) {
+                            for (var i = 0; i < value_array.length; i++) {
+                                cardnoresult.push(value_array[i].UASD_ACCESS_CARD);
+                                if (i <= 3) {
+                                    if (i == 0) {
+                                        cardnolblval.push(firstname + " " + lastname);
+                                    }
+                                    else {
+                                        cardnolblval.push("GUEST " + i);
+                                    }
+                                }
+                            }
+                            cardnoresult = [cardnoresult, cardnolblval];
+                            CCRE_cardhandleMessageResponse(cardnoresult);
+                        }
+                        else {
+                            $('#CCRE_Cardnumber').prop('checked', false);
+                            $('#CCRE_Nullcard').prop('checked', false);
+                            var errormessage = errormsg[4].EMC_DATA;
+                            var appenddata = '';
+                            appenddata += '<div class="row form-group">';
+                            appenddata += '<div class="col-md-3">';
+                            appenddata += '</div>';
+                            appenddata += '<div class="col-md-6" style="padding-left: 50px;"><label style="color:red;" class="errormsg">' + errormessage + '</label></div>';
+                            $('#CardNumbersdiv').html(appenddata);
+                            $('#CardNumbersdiv').show();
+                        }
+                        $('.preloader').hide();
+                    },
+                    error: function (data) {
+                        alert('error in getting' + JSON.stringify(data));
+                        $('.preloader').hide();
+                    }
+                });
+                $('#CardNumbersdiv').show();
+            }
+            else {
+                var appenddata = '';
+                $('#CardNumbersdiv').append(appenddata);
+                $('#CardNumbersdiv').hide();
+                $('#CCRE_lbl_error').text('');
+            }
         }
-        else
-        {
+        else {
             $('#CCRE_Cardnumber').prop('checked', false);
             $('#CCRE_Nullcard').prop('checked', false);
-            var appenddata='';
-            appenddata+='<div class="row form-group">';
-            appenddata+='<div class="col-md-3">';
-            appenddata+='</div>';
-            appenddata+='<div class="col-md-4" style="padding-left: 50px;"><label style="color:red;">ENTER THE CUSTOMER NAME</label></div>';
+            var appenddata = '';
+            appenddata += '<div class="row form-group">';
+            appenddata += '<div class="col-md-3">';
+            appenddata += '</div>';
+            appenddata += '<div class="col-md-4" style="padding-left: 50px;"><label style="color:red;">ENTER THE CUSTOMER NAME</label></div>';
             $('#CardNumbersdiv').html(appenddata);
             $('#CardNumbersdiv').show();
         }
     });
-    var CCRE_cardArray= [];
-    var CCRE_cardslbl_array=[];
-    var accesscard_array=[];
-    function CCRE_cardhandleMessageResponse(card)
-    {
-        accesscard_array=card;
-        CCRE_cardArray=card[0];
-        CCRE_cardslbl_array=card[1];
-        var appenddata='';
-        if(CCRE_cardArray.length!=0)
-        {
-            for (var i=0;i<CCRE_cardArray.length;i++)
-            {
-            var listid='CCRE_cb_cardlistselect'+i;
-            appenddata+='<div class="row form-group">';
-            appenddata+='<div class="col-md-3">';
-            appenddata+='</div>';
-            appenddata+='<div class="col-md-2" style="padding-left: 50px;">';
-            appenddata+='<input type="checkbox"  value='+CCRE_cardArray[i]+' id="CCRE_cb_cardnumberarray'+i+'" name="checkbox" class="CCRE_showlist" />'+CCRE_cardArray[i];
-            appenddata+='</div>';
-            appenddata+='<div class="col-md-3">';
-            appenddata+='<SELECT class="form-control CCRE_showlist"  name="CCRE_cb_cardlistselect"  value="Cardnumber" id='+listid+'><OPTION>SELECT</OPTION></SELECT>';
-            appenddata+='</div>';
-            appenddata+='<div class="col-md-3">';
-            appenddata+='<input type="text" id="CCRE_lb_cardlisttext'+i+'" name="temptex[]" >';
-            appenddata+='</div>';
-            appenddata+='</div>';
+    var CCRE_cardArray = [];
+    var CCRE_cardslbl_array = [];
+    var accesscard_array = [];
+
+    function CCRE_cardhandleMessageResponse(card) {
+        accesscard_array = card;
+        CCRE_cardArray = card[0];
+        CCRE_cardslbl_array = card[1];
+        var appenddata = '';
+        if (CCRE_cardArray.length != 0) {
+            for (var i = 0; i < CCRE_cardArray.length; i++) {
+                var listid = 'CCRE_cb_cardlistselect' + i;
+                appenddata += '<div class="row form-group">';
+                appenddata += '<div class="col-md-3">';
+                appenddata += '</div>';
+                appenddata += '<div class="col-md-2" style="padding-left: 50px;">';
+                appenddata += '<input type="checkbox"  value=' + CCRE_cardArray[i] + ' id="CCRE_cb_cardnumberarray' + i + '" name="checkbox" class="CCRE_showlist" />' + CCRE_cardArray[i];
+                appenddata += '</div>';
+                appenddata += '<div class="col-md-3">';
+                appenddata += '<SELECT class="form-control CCRE_showlist"  name="CCRE_cb_cardlistselect"  value="Cardnumber" id=' + listid + '><OPTION>SELECT</OPTION></SELECT>';
+                appenddata += '</div>';
+                appenddata += '<div class="col-md-3">';
+                appenddata += '<input type="text" id="CCRE_lb_cardlisttext' + i + '" name="temptex[]" >';
+                appenddata += '</div>';
+                appenddata += '</div>';
             }
             $('#CardNumbersdiv').html(appenddata);
-            for (var k=0;k<CCRE_cardArray.length;k++)
-            {
-            $('#CCRE_cb_cardlistselect'+k).hide();
-            $('#CCRE_lb_cardlisttext'+k).hide();
+            for (var k = 0; k < CCRE_cardArray.length; k++) {
+                $('#CCRE_cb_cardlistselect' + k).hide();
+                $('#CCRE_lb_cardlisttext' + k).hide();
             }
             $('#CardNumbersdiv').show();
-            for(var i=0;i<CCRE_cardArray.length;i++){
-                var CCRE_options ='<option >SELECT</option>'
-                for(var j=0;j<CCRE_cardslbl_array.length;j++)
-                {
+            for (var i = 0; i < CCRE_cardArray.length; i++) {
+                var CCRE_options = '<option >SELECT</option>'
+                for (var j = 0; j < CCRE_cardslbl_array.length; j++) {
                     CCRE_options += '<option value="' + CCRE_cardslbl_array[j] + '">' + CCRE_cardslbl_array[j] + '</option>';
                 }
-                $('#CCRE_cb_cardlistselect-'+i).html(CCRE_options);
-                $('#CCRE_cb_cardlistselect-'+i).hide();
+                $('#CCRE_cb_cardlistselect-' + i).html(CCRE_options);
+                $('#CCRE_cb_cardlistselect-' + i).hide();
 
             }
         }
     }
 
     /***************************************FUNCTION FOR CARD SELECTIONS***********************************************/
-    $(document).on('change','.CCRE_showlist',function(){
+    $(document).on('change', '.CCRE_showlist', function () {
 //        $(".preloader").show();
-        $('#CCRE_btn_savebutton').attr("disabled","disabled");
-        var CCRE_cardlist=[];
-        var f=0;var count=0;var ll=0;
-        var CCRE_cc_cardarray_length=CCRE_cardArray.length;
-        for(var i=0;i<CCRE_cc_cardarray_length;i++)
-        {
-            var CCRE_cc_check=$('#CCRE_cb_cardnumberarray'+i).is(":checked");
-            if(CCRE_cc_check==true)
-            {
-                $('#CCRE_cb_cardlistselect'+i).removeAttr("disabled");
-                var CCRE_selectcardno=$('#CCRE_cb_cardnumberarray'+i).val();
-                var CCRE_card_cardlist_box=$('#CCRE_cb_cardlistselect'+i).val();
-                if(CCRE_card_cardlist_box!="SELECT"){
-                    $('#CCRE_cb_cardlistselect'+i).attr("disabled","disabled");
-                    $('#CCRE_lb_cardlisttext'+i).val(CCRE_selectcardno+'/'+CCRE_card_cardlist_box);
+        $('#CCRE_btn_savebutton').attr("disabled", "disabled");
+        var CCRE_cardlist = [];
+        var f = 0;
+        var count = 0;
+        var ll = 0;
+        var CCRE_cc_cardarray_length = CCRE_cardArray.length;
+        for (var i = 0; i < CCRE_cc_cardarray_length; i++) {
+            var CCRE_cc_check = $('#CCRE_cb_cardnumberarray' + i).is(":checked");
+            if (CCRE_cc_check == true) {
+                $('#CCRE_cb_cardlistselect' + i).removeAttr("disabled");
+                var CCRE_selectcardno = $('#CCRE_cb_cardnumberarray' + i).val();
+                var CCRE_card_cardlist_box = $('#CCRE_cb_cardlistselect' + i).val();
+                if (CCRE_card_cardlist_box != "SELECT") {
+                    $('#CCRE_cb_cardlistselect' + i).attr("disabled", "disabled");
+                    $('#CCRE_lb_cardlisttext' + i).val(CCRE_selectcardno + '/' + CCRE_card_cardlist_box);
                     CCRE_cardlist.push(CCRE_card_cardlist_box);
                 }
-                else
-                {
+                else {
                     ll++;
                 }
                 count++;
             }
         }
-        var n1=[];
+        var n1 = [];
 //difference between two arrays
-        var n1=CCRE_card_diffArray(CCRE_cardslbl_array,CCRE_cardlist);
-        for(var j=0;j<CCRE_cc_cardarray_length;j++)
-        {
-            var CCRE_cc_check=$('#CCRE_cb_cardnumberarray'+j).is(":checked");
-            var CCRE_card_cardlist_box=$('#CCRE_cb_cardlistselect'+j).val();
-            if(CCRE_card_cardlist_box=="SELECT")
-            {
-                $('#CCRE_cb_cardlistselect'+j).empty();
-                var CCRE_options ='<option >SELECT</option>'
-                for(var l=0;l<n1.length;l++)
-                {
+        var n1 = CCRE_card_diffArray(CCRE_cardslbl_array, CCRE_cardlist);
+        for (var j = 0; j < CCRE_cc_cardarray_length; j++) {
+            var CCRE_cc_check = $('#CCRE_cb_cardnumberarray' + j).is(":checked");
+            var CCRE_card_cardlist_box = $('#CCRE_cb_cardlistselect' + j).val();
+            if (CCRE_card_cardlist_box == "SELECT") {
+                $('#CCRE_cb_cardlistselect' + j).empty();
+                var CCRE_options = '<option >SELECT</option>'
+                for (var l = 0; l < n1.length; l++) {
                     CCRE_options += '<option value="' + n1[l] + '">' + n1[l] + '</option>';
                 }
-                $('#CCRE_cb_cardlistselect'+j).html(CCRE_options);
+                $('#CCRE_cb_cardlistselect' + j).html(CCRE_options);
 
-                $('#CCRE_cb_cardlistselect'+j).attr("enabled","enabled")
+                $('#CCRE_cb_cardlistselect' + j).attr("enabled", "enabled")
             }
-            if(CCRE_cc_check==true)
-            {
-                $('#CCRE_cb_cardlistselect'+j).show();
-                $('#CCRE_cb_cardlistselect'+j).attr("enabled","enabled")
+            if (CCRE_cc_check == true) {
+                $('#CCRE_cb_cardlistselect' + j).show();
+                $('#CCRE_cb_cardlistselect' + j).attr("enabled", "enabled")
             }
-            else
-            {
-                $('#CCRE_cb_cardlistselect'+j)[0].selectedIndex = 0;
-                $('#CCRE_lb_cardlisttext'+j).val('');
-                $('#CCRE_cb_cardlistselect'+j).hide();}
+            else {
+                $('#CCRE_cb_cardlistselect' + j)[0].selectedIndex = 0;
+                $('#CCRE_lb_cardlisttext' + j).val('');
+                $('#CCRE_cb_cardlistselect' + j).hide();
+            }
         }
-        if(count==4)
-        {
-            for(var i=0;i<CCRE_cc_cardarray_length;i++)
-            {
-                var CCRE_cc_check=$('#CCRE_cb_cardnumberarray'+i).is(":checked");
-                if(CCRE_cc_check==false)
-                {
-                    $('#CCRE_cb_cardnumberarray'+i).attr("disabled","disabled");
+        if (count == 4) {
+            for (var i = 0; i < CCRE_cc_cardarray_length; i++) {
+                var CCRE_cc_check = $('#CCRE_cb_cardnumberarray' + i).is(":checked");
+                if (CCRE_cc_check == false) {
+                    $('#CCRE_cb_cardnumberarray' + i).attr("disabled", "disabled");
                 }
             }
         }
-        else
-        {
-            if(ll==0)
-            {
-                for(var i=0;i<CCRE_cc_cardarray_length;i++)
-                {
-                    var CCRE_cc_check=$('#CCRE_cb_cardnumberarray'+i).is(":checked");
-                    if(CCRE_cc_check==false)
-                    {
-                        $('#CCRE_cb_cardnumberarray'+i).removeAttr("disabled","disabled");
+        else {
+            if (ll == 0) {
+                for (var i = 0; i < CCRE_cc_cardarray_length; i++) {
+                    var CCRE_cc_check = $('#CCRE_cb_cardnumberarray' + i).is(":checked");
+                    if (CCRE_cc_check == false) {
+                        $('#CCRE_cb_cardnumberarray' + i).removeAttr("disabled", "disabled");
                     }
                 }
             }
-            else
-            {
-                for(var y=0;y<CCRE_cc_cardarray_length;y++)
-                {
-                    var CCRE_cc_check=$('#CCRE_cb_cardnumberarray'+y).is(":checked");
-                    if(CCRE_cc_check==false)
-                    {
-                        $('#CCRE_cb_cardnumberarray'+y).attr("disabled","disabled");
+            else {
+                for (var y = 0; y < CCRE_cc_cardarray_length; y++) {
+                    var CCRE_cc_check = $('#CCRE_cb_cardnumberarray' + y).is(":checked");
+                    if (CCRE_cc_check == false) {
+                        $('#CCRE_cb_cardnumberarray' + y).attr("disabled", "disabled");
                     }
                 }
             }
@@ -701,211 +806,187 @@ $(document).ready(function() {
         CCRE_submit_validate(accesscard_array)
 //        $(".preloader").hide();
     });
-    function CCRE_submit_validate(card)
-    {
-        var CCRE_fname=$('#CCRE_FirstName').val();
-        var CCRE_lname=$('#CCRE_LastName').val();
-        var CCRE_cardArray=[];
-        var CCRE_g_array=[];
-        CCRE_cardArray=card[0];
-        CCRE_g_array=card[1]
-        var CCRE_cararray_length=CCRE_cardArray.length;
-        var CCRE_gcardlen=CCRE_g_array.length;
-        var CCRE_printarray=[];
-        var CCRE_false_flag=0;
-        var CCRE_true_flag=0;
-        var CCRE_flag=0;var CCRE_flag1=0;var CCRE_flag2=0;var CCRE_flag3=0;
-        for(var k=0;k<CCRE_cararray_length;k++)
-        {
-            var CCRE_access_card= $('#CCRE_cb_cardnumberarray'+k).is(":checked");
-            if(CCRE_access_card==true)
-            {
+    function CCRE_submit_validate(card) {
+        var CCRE_fname = $('#CCRE_FirstName').val();
+        var CCRE_lname = $('#CCRE_LastName').val();
+        var CCRE_cardArray = [];
+        var CCRE_g_array = [];
+        CCRE_cardArray = card[0];
+        CCRE_g_array = card[1]
+        var CCRE_cararray_length = CCRE_cardArray.length;
+        var CCRE_gcardlen = CCRE_g_array.length;
+        var CCRE_printarray = [];
+        var CCRE_false_flag = 0;
+        var CCRE_true_flag = 0;
+        var CCRE_flag = 0;
+        var CCRE_flag1 = 0;
+        var CCRE_flag2 = 0;
+        var CCRE_flag3 = 0;
+        for (var k = 0; k < CCRE_cararray_length; k++) {
+            var CCRE_access_card = $('#CCRE_cb_cardnumberarray' + k).is(":checked");
+            if (CCRE_access_card == true) {
                 CCRE_true_flag++;
             }
-            else
-            {
+            else {
                 CCRE_false_flag++;
             }
         }
-        if(CCRE_true_flag==0||CCRE_lname=="")
-        {
-            $('#CCRE_btn_savebutton').attr("disabled","disabled");
+        if (CCRE_true_flag == 0 || CCRE_lname == "") {
+            $('#CCRE_btn_savebutton').attr("disabled", "disabled");
             $('#CCRE_lbl_error').hide();
         }
-        else
-        {
+        else {
             $('#CCRE_lbl_error').hide();
-            if($("#CCRE_Rent").val()!="" &&$("#CCRE_Startdate").val()!=""  && $("#CCRE_Enddate").val()!="" && $("#CCRE_Nationality").val()!="SELECT" &&$("#CCRE_SDStarttime").val()!="Select"&& $("#CCRE_Option").val()!="SELECT"&& $("#CCRE_MailList").val()!="SELECT")
-            {
+            if ($("#CCRE_Rent").val() != "" && $("#CCRE_Startdate").val() != "" && $("#CCRE_Enddate").val() != "" && $("#CCRE_Nationality").val() != "SELECT" && $("#CCRE_SDStarttime").val() != "Select" && $("#CCRE_Option").val() != "SELECT" && $("#CCRE_MailList").val() != "SELECT") {
                 $('#CCRE_btn_savebutton').removeAttr('disabled');
             }
-            var CCRE_custname="";
-            if(CCRE_fname!=""&&CCRE_lname!="")
-            {
-                CCRE_custname=(CCRE_fname+" "+CCRE_lname);
+            var CCRE_custname = "";
+            if (CCRE_fname != "" && CCRE_lname != "") {
+                CCRE_custname = (CCRE_fname + " " + CCRE_lname);
             }
-            if(CCRE_cararray_length>0)
-            {
-                for(var i=0;i<CCRE_cararray_length;i++)
-                {
-                    var CCRE_card_cardlist_box=$('#CCRE_cb_cardlistselect'+i).val();
-                    if(CCRE_card_cardlist_box=="SELECT"){CCRE_flag3=1;}
-                    var CCRE_cc_check=$('#CCRE_cb_cardnumberarray'+i).is(":checked");
-                    if(CCRE_cc_check==true)
-                    {
-                        CCRE_flag1=1;
-                        if(CCRE_custname!="")
-                        {
-                            if(CCRE_card_cardlist_box.match(CCRE_custname))
-                            {
-                                CCRE_flag=1;
+            if (CCRE_cararray_length > 0) {
+                for (var i = 0; i < CCRE_cararray_length; i++) {
+                    var CCRE_card_cardlist_box = $('#CCRE_cb_cardlistselect' + i).val();
+                    if (CCRE_card_cardlist_box == "SELECT") {
+                        CCRE_flag3 = 1;
+                    }
+                    var CCRE_cc_check = $('#CCRE_cb_cardnumberarray' + i).is(":checked");
+                    if (CCRE_cc_check == true) {
+                        CCRE_flag1 = 1;
+                        if (CCRE_custname != "") {
+                            if (CCRE_card_cardlist_box.match(CCRE_custname)) {
+                                CCRE_flag = 1;
                             }
                         }
-                        if(CCRE_card_cardlist_box=="SELECT")
-                        {
-                            CCRE_flag2=1;
+                        if (CCRE_card_cardlist_box == "SELECT") {
+                            CCRE_flag2 = 1;
                         }
                     }
                 }
-                if(CCRE_flag1==1)
-                {
-                    if(CCRE_flag==0)
-                    {
-                        $('#CCRE_btn_savebutton').attr("disabled","disabled");
+                if (CCRE_flag1 == 1) {
+                    if (CCRE_flag == 0) {
+                        $('#CCRE_btn_savebutton').attr("disabled", "disabled");
                         $('#CCRE_lbl_error').text(errormsg[5].EMC_DATA)
                         $('#CCRE_lbl_error').show();
                     }
-                    else
-                    {
+                    else {
                         $('#CCRE_lbl_error').text("");
                     }
-                    if(CCRE_flag2==1){
-                        $('#CCRE_btn_savebutton').attr("disabled","disabled");
+                    if (CCRE_flag2 == 1) {
+                        $('#CCRE_btn_savebutton').attr("disabled", "disabled");
                     }
                 }
-                else
-                {
+                else {
                     $('#CCRE_lbl_error').text("");
                 }
-                if(CCRE_flag1!=1)
-                {
-                    $('#CCRE_btn_savebutton').attr("disabled","disabled");
+                if (CCRE_flag1 != 1) {
+                    $('#CCRE_btn_savebutton').attr("disabled", "disabled");
                 }
             }
         }
     }
+
     function CCRE_card_diffArray(a, b) {
         var seen = [], diff = [];
-        for ( var i = 0; i < b.length; i++)
+        for (var i = 0; i < b.length; i++)
             seen[b[i]] = true;
-        for ( var i = 0; i < a.length; i++)
+        for (var i = 0; i < a.length; i++)
             if (!seen[a[i]])
                 diff.push(a[i]);
         return diff;
     }
-    $(document).on('change','#CCRE_ProcessingFee',function(){
-      if($('#CCRE_ProcessingFee').val()=="")
-      {
-          $('input:checkbox[name=CCRE_process_waived]').attr("checked",false);
-          $('input:checkbox[name=CCRE_process_waived]').attr("disabled",'disabled');
-      }
-        else
-      {
-          $('input:checkbox[name=CCRE_process_waived]').removeAttr("disabled");
-      }
-    });
-    $(document).on('change','#CCRE_SDStarttime',function(){
-     var fromtime=$('#CCRE_SDStarttime').val();
-        if(fromtime!='Select')
-        {
-         var CCRE_timelist=totimecalculation(fromtime);
-         $('#CCRE_SDEndtime').html(CCRE_timelist);
-         $('#startdatetotime').show();
+
+    $(document).on('change', '#CCRE_ProcessingFee', function () {
+        if ($('#CCRE_ProcessingFee').val() == "") {
+            $('input:checkbox[name=CCRE_process_waived]').attr("checked", false);
+            $('input:checkbox[name=CCRE_process_waived]').attr("disabled", 'disabled');
         }
-        else
-        {
+        else {
+            $('input:checkbox[name=CCRE_process_waived]').removeAttr("disabled");
+        }
+    });
+    $(document).on('change', '#CCRE_SDStarttime', function () {
+        var fromtime = $('#CCRE_SDStarttime').val();
+        if (fromtime != 'Select') {
+            var CCRE_timelist = totimecalculation(fromtime);
+            $('#CCRE_SDEndtime').html(CCRE_timelist);
+            $('#startdatetotime').show();
+        }
+        else {
             $('#startdatetotime').hide();
         }
     });
-    $(document).on('change','#CCRE_EDStarttime',function(){
-        var fromtime=$('#CCRE_EDStarttime').val();
-        if(fromtime!='Select')
-        {
-            var CCRE_timelist=totimecalculation(fromtime);
+    $(document).on('change', '#CCRE_EDStarttime', function () {
+        var fromtime = $('#CCRE_EDStarttime').val();
+        if (fromtime != 'Select') {
+            var CCRE_timelist = totimecalculation(fromtime);
             $('#CCRE_EDEndtime').html(CCRE_timelist);
+            $('#CCRE_EDEndtime').show();
             $('#endatedateto').show();
         }
-        else
-        {
+        else {
             $('#endatedateto').hide();
         }
     });
-    function totimecalculation(starttime)
-    {
-        for(var i=0;i<timearray.length;i++)
-        {
-            if(starttime==timearray[i].TIME)
-            {
-                var endtime_status=i;
+    function totimecalculation(starttime) {
+        for (var i = 0; i < timearray.length; i++) {
+            if (starttime == timearray[i].TIME) {
+                var endtime_status = i;
                 break;
             }
         }
 //        var CCRE_timelist='<option>Select</option>';
-        if(starttime!='23:30')
-        {
-            var location=endtime_status+1;
+        if (starttime != '23:30') {
+            var location = endtime_status + 1;
             var CCRE_timelist;
-            for(var i=location;i<timearray.length;i++)
-            {
-                var data=timearray[i];
+            for (var i = location; i < timearray.length; i++) {
+                var data = timearray[i];
                 CCRE_timelist += '<option value="' + data.TIME + '">' + data.TIME + '</option>';
             }
         }
-        else
-        {
+        else {
             CCRE_timelist += '<option value="23:59">23:59</option>';
         }
         return CCRE_timelist;
     }
-    $('#CCRE_btn_savebutton').on('click',function(){
+
+    $('#CCRE_btn_savebutton').on('click', function () {
         $('.preloader').show();
         var FormElements = document.getElementById("CCRE_Form_CustomerCreation");
-        var xmlhttp=new XMLHttpRequest();
-        xmlhttp.onreadystatechange=function() {
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                alert(xmlhttp.responseText)
                 var msg_alert = JSON.parse(xmlhttp.responseText);
                 $('.preloader').hide();
-                if(msg_alert==1)
-                {
+                if (msg_alert == 1) {
                     $('.preloader').hide();
-                    show_msgbox("CUSTOMER CREATION",errormsg[7].EMC_DATA,"success",false);
+                    show_msgbox("CUSTOMER CREATION", errormsg[7].EMC_DATA, "success", false);
                     Reset();
                 }
-                else
-                {
+                else {
                     $('.preloader').hide();
-                    show_msgbox("CUSTOMER CREATION",msg_alert,"success",false);
+                    show_msgbox("CUSTOMER CREATION", msg_alert, "success", false);
                 }
             }
         }
-        var option='SAVE';
-        xmlhttp.open("POST","http://localhost/CILocal/index.php/Ctrl_Customer_Creation/CustomerCreationSave",true);
+        var option = 'SAVE';
+        xmlhttp.open("POST", "/index.php/Ctrl_Customer_Creation/CustomerCreationSave", true);
         xmlhttp.send(new FormData(FormElements));
     });
-    $(document).on('change blur','.Customernamechange',function(){
-        var appenddata='';
+    $(document).on('change blur', '.Customernamechange', function () {
+        var appenddata = '';
         $('#CardNumbersdiv').append(appenddata);
         $('#CardNumbersdiv').hide();
         $('#CCRE_Cardnumber').prop('checked', false);
         $('#CCRE_Nullcard').prop('checked', false);
     });
-    $('#CustomerCreation_Reset').on('click',function(){
+    $('#CustomerCreation_Reset').on('click', function () {
         Reset();
     });
-    function Reset()
-    {
+    function Reset() {
         AccesscarddivClear();
-        var appenddata='';
+        var appenddata = '';
         $('#AccessCardDiv').hide();
         $('#CardNumbersdiv').append(appenddata);
         $('#CardNumbersdiv').hide();
@@ -941,54 +1022,65 @@ $(document).ready(function() {
         $('#CCRE_ElectricitycapFee').removeClass('invalid');
         $('#CCRE_ProcessingFee').removeClass('invalid');
         $('#CCRE_Rent').removeClass('invalid');
+        $('input:checkbox[name=CCRE_process_waived]').attr("checked", false);
+        $('input:checkbox[name=CCRE_lbl_waived]').attr("checked", false);
     }
-    $(document).on('change','.proratedcheck',function(){
-      var startdate=$('#CCRE_Startdate').val();
-      var enddate=$('#CCRE_Enddate').val();
-      var Rent=$('#CCRE_Rent').val();
-        if(startdate!='' && enddate!='' && Rent!='')
-        {
+
+    $(document).on('change', '.proratedcheck', function () {
+        var startdate = $('#CCRE_Startdate').val();
+        var enddate = $('#CCRE_Enddate').val();
+        var Rent = $('#CCRE_Rent').val();
+        if (startdate != '' && enddate != '' && Rent != '') {
             $.ajax({
                 type: "POST",
                 url: "/index.php/Ctrl_Customer_Creation/Prorated_check",
-                data:{SD:startdate,ED:enddate},
-                success: function(data){
-                    if(data!='true')
-                    {
-                        $('input:checkbox[name=CCRE_Rent_Prorated]').attr('checked',false);
-                        $('input:checkbox[name=CCRE_Rent_Prorated]').attr("disabled",'disabled');
+                data: {SD: startdate, ED: enddate},
+                success: function (data) {
+                    if (data != 'true') {
+                        $('input:checkbox[name=CCRE_Rent_Prorated]').attr('checked', false);
+                        $('input:checkbox[name=CCRE_Rent_Prorated]').attr("disabled", 'disabled');
                     }
-                    else
-                    {
-                        $('input:checkbox[name=CCRE_Rent_Prorated]').attr('checked',true);
+                    else {
+                        $('input:checkbox[name=CCRE_Rent_Prorated]').attr('checked', true);
                         $('input:checkbox[name=CCRE_Rent_Prorated]').removeAttr("disabled");
                     }
                     $('.preloader').hide();
                 },
-                error: function(data){
-                    alert('error in getting'+JSON.stringify(data));
+                error: function (data) {
+                    alert('error in getting' + JSON.stringify(data));
                 }
             });
         }
-        else
-        {
-            $('input:checkbox[name=CCRE_Rent_Prorated]').attr('checked',false);
-            $('input:checkbox[name=CCRE_Rent_Prorated]').attr("disabled",'disabled');
+        else {
+            $('input:checkbox[name=CCRE_Rent_Prorated]').attr('checked', false);
+            $('input:checkbox[name=CCRE_Rent_Prorated]').attr("disabled", 'disabled');
         }
     });
-    $(document).on('change','.fileextensionchk',function(){
+    $(document).on('change', '.fileextensionchk', function () {
         var filename = $('#CC_fileupload').val();
         var valid_extensions = /(\.pdf)$/i;
-        if(valid_extensions.test(filename))
-        {
+        if (valid_extensions.test(filename)) {
         }
-        else
-        {
-            show_msgbox("CUSTOMER CREATION",'UPLOAD ONLY PDF FILES',"success",false);
+        else {
+            show_msgbox("CUSTOMER CREATION", 'UPLOAD ONLY PDF FILES', "success", false);
             $('#CC_fileupload').val('');
         }
     });
-    
+    $(document).on('change','.Datepickerhide',function(){
+        if ($('#CCRE_SDStarttime').val() != "Select") {
+            $('#CusromerEnddate').show();
+            $('#CCRE_EDStarttime').val('Select');
+            $('#CCRE_Enddate').val('');
+            $('#CCRE_EDEndtime').hide();
+
+        }
+        else {
+            $('#CusromerEnddate').hide();
+            $('#CCRE_EDStarttime').val('Select');
+            $('#CCRE_Enddate').val('');
+            $('#CCRE_EDEndtime').hide();
+        }
+     });
  });
 </script>
 <body>
@@ -1186,7 +1278,7 @@ $(document).ready(function() {
                             <label>FROM</label>
                         </div>
                         <div class="col-md-2">
-                            <SELECT class="form-control totimevalidation" name="CCRE_SDStarttime"  style="max-width:100px;" id="CCRE_SDStarttime">
+                            <SELECT class="form-control totimevalidation Datepickerhide" name="CCRE_SDStarttime"  style="max-width:100px;" id="CCRE_SDStarttime">
                               <OPTION>Select</OPTION>
                             </SELECT>
                         </div>
@@ -1239,7 +1331,7 @@ $(document).ready(function() {
                         <label>NOTICE PERIOD</label>
                     </div>
                     <div class="col-md-3">
-                        <input class="form-control" name="CCRE_NoticePeriod" maxlength="1" style="max-width:70px;" id="CCRE_NoticePeriod" placeholder="No"/>
+                        <input class="form-control" name="CCRE_NoticePeriod" maxlength="1" style="max-width:70px;" id="CCRE_NoticePeriod" placeholder="NP"/>
                     </div>
                 </div>
                 <div class="row form-group">
@@ -1317,8 +1409,9 @@ $(document).ready(function() {
                                 <input class="form-control CCRE_amtonlyvalidationmaxdigit proratedcheck" name="CCRE_Rent" maxlength="7"  style="max-width:100px;" id="CCRE_Rent" placeholder="0.00">
                             </div>
                             <div class="col-md-1">
-                                <input id="CCRE_Rent_Prorated" type="checkbox" name="CCRE_Rent_Prorated"><label id="CCRE_lbl_prorated"></label>
+                                <input id="CCRE_Rent_Prorated" type="checkbox" name="CCRE_Rent_Prorated">
                             </div>
+                            <div class="col-md-1"><label id="CCRE_lbl_prorated"></label></div>
                             <div class="col-md-7"><label id="CCRE_lbl_renterrormsg" class="errormsg" hidden></label></div>
                         </div>
                     </div>
@@ -1334,9 +1427,10 @@ $(document).ready(function() {
                                 <input class="form-control CCRE_processamtonlyvalidationmaxdigit" name="CCRE_ProcessingFee"  style="max-width:100px;" id="CCRE_ProcessingFee" placeholder="0.00">
                             </div>
                             <div class="col-md-1">
-                                <input type="checkbox" name="CCRE_process_waived" id="CCRE_process_waived" disabled> <label style="vertical-align: middle" id="CCRE_lbl_waived"></label>
+                                <input type="checkbox" name="CCRE_process_waived" id="CCRE_process_waived" disabled>
                             </div>
-                            <div class="col-md-7"><label id="CCRE_lbl_processerrormsg" class="errormsg" hidden></label></div>
+                            <div class="col-md-1"><label style="vertical-align: middle" id="CCRE_lbl_waived"></label></div>
+                            <div class="col-md-6"><label id="CCRE_lbl_processerrormsg" class="errormsg" hidden></label></div>
                         </div>
                     </div>
 

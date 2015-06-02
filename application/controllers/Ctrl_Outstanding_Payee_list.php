@@ -22,19 +22,34 @@ Class Ctrl_Outstanding_Payee_list extends CI_Controller
         try
         {
             global $UserStamp;
+            $Emailid=$_POST['FIN_OPL_lb_mailid'];
+            $Forperiod=$_POST['FIN_OPL_db_period'];
+            $this->load->model('Eilib/Common_function');
+            $EmailDisplayname = $this->Common_function->Get_MailDisplayName('OUTSTANDING_PAYEES');
             $this->load->model('FINANCE/Mdl_opllistmodel');
             $confirm_message=$this->Mdl_opllistmodel->OPL_list_creation($UserStamp);
-//            $name="OPL";
-//            $form='kumar.r@ssomens.com';
-//            $loginid='kumar.r@ssomens.com';
-//            $message1 = new Message();
-//            $message1->setSender($name.'<'.$form.'>');
-//            $message1->addTo($loginid);
-//            $message1->addCc($cclist);
-//            $message1->setSubject($confirm_message[0]);
-//            $message1->setHtmlBody($confirm_message[1]);
-//            $message1->send();
-            echo json_encode($confirm_message);
+            if($confirm_message[4]=='OPL_list')
+            {
+                if ($confirm_message[3] == 1) {
+                    $mailsub = $confirm_message[0];
+                    $mailbody = $confirm_message[1];
+                } else {
+                    $mailsub = $confirm_message[0];
+                    $mailbody = "THERE IS NO OUTSTANDING PAYEES FOR <MONTH-YEAR>";
+                    $mailbody = str_replace("<MONTH-YEAR>", $Forperiod, $mailbody);
+                }
+                $message1 = new Message();
+                $message1->setSender($EmailDisplayname . '<' . $UserStamp . '>');
+                $message1->addTo($Emailid);
+                $message1->setSubject($mailsub);
+                $message1->setHtmlBody($mailbody);
+                $message1->send();
+                echo json_encode('1');
+            }
+            else
+            {
+               echo json_encode($confirm_message);
+            }
         }
         catch (\InvalidArgumentException $e)
         {

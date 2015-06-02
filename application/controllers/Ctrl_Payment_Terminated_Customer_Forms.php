@@ -1,6 +1,6 @@
 <?php
 include 'GET_USERSTAMP.php';
-$$UserStamp=$UserStamp;
+$UserStamp=$UserStamp;
 Class Ctrl_Payment_Terminated_Customer_Forms extends CI_Controller
 {
     public function Index()

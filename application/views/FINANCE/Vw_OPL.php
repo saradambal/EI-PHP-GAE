@@ -90,8 +90,10 @@
                 url: "/index.php/Ctrl_Outstanding_Payee_list/FIN_OPL_opllist",
                 data:FormElements,
                 success: function(data){
+                    alert(data)
                     $('.preloader').hide();
                     var returnvalue=JSON.parse(data);
+                    $('section').html(returnvalue);
                     if(returnvalue==1)
                     {
                         show_msgbox("OUTSTANDING PAYEES LIST",'EMAIL SENT WITH THE CURRENT OUTSTANDING PAYEES LIST',"success",false);
