@@ -12,7 +12,7 @@ class Ctrl_Customer_Cancel extends CI_Controller {
 
     public function index(){
 
-        $this->load->view('CUSTOMER/Vw_Customer_Cancel');
+        $this->load->view('CUSTOMER/CUSTOMER/Vw_Customer_Cancel');
     }
     public function Get_cal_service(){
         $this->load->library('Google');
@@ -24,13 +24,13 @@ class Ctrl_Customer_Cancel extends CI_Controller {
     }
     public  function CCAN_getcustomer(){
 
-        $this->load->model('Mdl_customer_cancel');
+        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_cancel');
         $final_value=$this->Mdl_customer_cancel->CCAN_getcustomer();
         echo json_encode($final_value);
     }
     public function CCAN_getcustomer_details(){
 
-        $this->load->model('Mdl_customer_cancel');
+        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_cancel');
         $final_value=$this->Mdl_customer_cancel->CCAN_getcustomer_details($this->input->post('CCAN_select_type'));
         echo json_encode($final_value);
     }
@@ -40,7 +40,7 @@ class Ctrl_Customer_Cancel extends CI_Controller {
         $cusid=$this->input->post('cust_id');
         $type= $this->input->post('CCAN_select_type');
         $recver= $this->input->post('CCAN_name_recver');
-        $this->load->model('Mdl_customer_cancel');
+        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_cancel');
         $final_value=$this->Mdl_customer_cancel->CCAN_get_customervalues($cusid,$type,$recver,$UserStamp);
         echo json_encode($final_value);
 
@@ -56,7 +56,7 @@ class Ctrl_Customer_Cancel extends CI_Controller {
         $CCAN_tb_lastname=$this->input->post('CCAN_tb_lastname');
         $CCAN_ta_comments=$this->input->post('CCAN_ta_comments');
         $cal_service=$this->Get_cal_service();
-        $this->load->model('Mdl_customer_cancel');
+        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_cancel');
         $final_value=$this->Mdl_customer_cancel->CCAN_cancel($UserStamp,$custid,$recver,$CCAN_unitnumber,$CCAN_tb_firstname,$CCAN_tb_lastname,$CCAN_ta_comments,$cal_service);
         echo json_encode($final_value);
 
@@ -74,7 +74,7 @@ class Ctrl_Customer_Cancel extends CI_Controller {
         $CCAN_tb_lastname=$this->input->post('CCAN_tb_lastname');
         $CCAN_ta_comments=$this->input->post('CCAN_ta_comments');
         $CCAN_tb_roomtype=$this->input->post('CCAN_tb_roomtype');
-        $this->load->model('Mdl_customer_cancel');
+        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_cancel');
         $final_value=$this->Mdl_customer_cancel->CCAN_uncancel($UserStamp,$custid,$recver,$CCAN_unitnumber,$CCAN_tb_firstname,$CCAN_tb_lastname,$CCAN_ta_comments,$cal_service,$CCAN_tb_roomtype);
         echo json_encode($final_value);
     }

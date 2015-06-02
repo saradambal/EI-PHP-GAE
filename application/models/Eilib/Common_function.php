@@ -452,30 +452,30 @@ $result[]=$val['TYPE'];
 return $result;
 }
 //FUNCTION TO GET INVENTORY CARD NOS
-public function CUST_getunitCardNo_FirstLast($unit,$firstname,$lastname)
-{
-$this->db->select("UASD.UASD_ACCESS_CARD AS CARD");
-$this->db->from('UNIT_ACCESS_STAMP_DETAILS UASD,UNIT U');
-$this->db->where('U.UNIT_ID=UASD.UNIT_ID AND U.UNIT_NO='.$unit.'AND UASD.UASD_ACCESS_INVENTORY IS NOT NULL AND UASD.UASD_ACCESS_CARD IS NOT NULL');
-$this->db->order_by("UASD.UASD_ACCESS_CARD", "ASC");
-$resultCardNo=array();$resultCardLabel=array();
-foreach ($this->db->get()->result_array() as $key=>$val)
-{
-$resultCardNo[]=$val['CARD'];
-if($key<=3)
-{
-if($key==0)
-{
-$resultCardLabel[]=$firstname." ".$lastname;
-}
-else
-{
-$resultCardLabel[]="GUEST ".$key;
-}
-}
-}
-return array($resultCardNo,$resultCardLabel);
-}
+    public function CUST_getunitCardNo_FirstLast($unit,$firstname,$lastname)
+    {
+        $this->db->select("UASD.UASD_ACCESS_CARD AS CARD");
+        $this->db->from('UNIT_ACCESS_STAMP_DETAILS UASD,UNIT U');
+        $this->db->where('U.UNIT_ID=UASD.UNIT_ID AND U.UNIT_NO="'.$unit.'" AND UASD.UASD_ACCESS_INVENTORY IS NOT NULL AND UASD.UASD_ACCESS_CARD IS NOT NULL');
+        $this->db->order_by("UASD.UASD_ACCESS_CARD", "ASC");
+        $resultCardNo=array();$resultCardLabel=array();
+        foreach ($this->db->get()->result_array() as $key=>$val)
+        {
+            $resultCardNo[]=$val['CARD'];
+            if($key<=3)
+            {
+                if($key==0)
+                {
+                    $resultCardLabel[]=$firstname." ".$lastname;
+                }
+                else
+                {
+                    $resultCardLabel[]="GUEST ".$key;
+                }
+            }
+        }
+        return array($resultCardNo,$resultCardLabel);
+    }
 //FUNCTION TO GET CALENDAR TO TIME
 public function CUST_CalTotime($endtime)
 {
