@@ -10,7 +10,7 @@
 //VER 5.5-SD:03/06/2015 ED:03/06/2015,CHANGED FILE NAME
 //VER 0.01-SD:14/05/2015 ED:14/02/2015,COMPLETED PRORATED CALCULATION
 //*******************************************************************************************************//
-class ProratedCalc extends CI_Model {
+class Mdl_eilib_prorated_calc extends CI_Model {
 //FUNCTION TO GET PRORATED AMOUNT USING CHECK IN DATE
 public function sMonthProratedCalc($check_in_date,$rentPerMonth)
 {

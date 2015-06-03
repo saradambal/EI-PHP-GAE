@@ -9,7 +9,7 @@
 //DONE BY:SARADAMBAL
 //VER 5.5-SD:03/06/2015 ED:03/06/2015,COMPLETED QUARTERCALCULATION
 //*******************************************************************************************************//
-class Mdl_eilib_quarter_calc {
+class Mdl_eilib_quarter_calc extends CI_Model {
 public function quarterCalc(DateTime $startdate,DateTime $enddate)
 {
     $getbyquartcalcUserProperty = "";

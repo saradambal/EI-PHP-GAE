@@ -13,7 +13,7 @@
 include "./application/controllers/GET_USERSTAMP.php";
 //require_once 'google/appengine/api/mail/Message.php';
 //use \google\appengine\api\mail\Message;
-class Invoice_contract extends CI_Model{
+class Mdl_eilib_invoice_contract extends CI_Model{
 //COMMON FUNCTION TO CREATE CALENDAR ID
 public function createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
 //create start event

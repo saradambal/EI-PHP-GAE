@@ -10,7 +10,7 @@
 //VER 5.5-SD:03/06/2015 ED:03/06/2015,CHANGED FILE NAME
 //VER 0.01-SD:14/05/2015 ED:20/02/2015,COMPLETED CALENDER CALCULATION
 //*******************************************************************************************************//
-class Calender  extends CI_Model {
+class Mdl_eilib_calender  extends CI_Model {
     //TIME CONVERSION
     public function CalenderTime_Convertion($startdate,$startdate_starttime,$startdate_endtime){
         $splitStart=explode(':',$startdate_starttime);

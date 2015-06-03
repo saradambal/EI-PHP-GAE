@@ -4,7 +4,7 @@
 //VER 5.5-SD:03/06/2015 ED:03/06/2015,CHANGED FILE NAME
 //VER 0.01-SD:12/05/2015 ED:12/02/2015,COMPLETED CURRENCY TO WORD
 //*******************************************************************************************************//
-class currencyToWord extends CI_Model {
+class Mdl_eilib_currency_to_word extends CI_Model {
     public function test($amt){
         $amtSplit=explode('.',$amt);
         $dollar= $this->toText($amtSplit[0]);

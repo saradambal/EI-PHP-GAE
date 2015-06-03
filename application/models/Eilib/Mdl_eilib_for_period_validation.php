@@ -10,7 +10,7 @@
 //VER 5.5-SD:03/06/2015 ED:03/06/2015,CHANGED FILE NAME
 //VER 0.01-SD:13/05/2015 ED:13/02/2015,COMPLETED FOR PERIOD VALIDATION
 //*******************************************************************************************************//
-class ForPeriodValidation extends CI_Model {
+class Mdl_eilib_for_period_validation extends CI_Model {
 //PAYMENT FORPERIOD TERMINATED CUSTOMER VALIDATION
 public  function Payment_forperiod_TermCustvalidation($unit,$customer)
 {
