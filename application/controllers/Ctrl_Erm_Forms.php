@@ -13,7 +13,7 @@ Class Ctrl_Erm_Forms extends CI_Controller
     }
     public function ERM_InitialDataLoad()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $formname=$_REQUEST['Formname'];
         $errorlist=$_REQUEST['ErrorList'];
         $nationality = $this->Common_function->getNationality();
@@ -25,7 +25,7 @@ Class Ctrl_Erm_Forms extends CI_Controller
     public function ERM_Entry_Save()
     {
         global $UserStamp;
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $displayname=$this->Common_function->Get_MailDisplayName('ERM');
         $Emailtemplate=$this->Common_function->getProfileEmailId('ERM');
         $splitMailid=explode('@',$Emailtemplate[0]);
@@ -96,7 +96,7 @@ Class Ctrl_Erm_Forms extends CI_Controller
     public function ERM_Deletion_Details()
     {
         global $UserStamp;
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $Rowid=$_POST['Rowid'];
         $Create_confirm=$this->Common_function->DeleteRecord(80,$Rowid,$UserStamp);
         print_r($Create_confirm);
@@ -118,7 +118,7 @@ Class Ctrl_Erm_Forms extends CI_Controller
         $Contactno=$_POST['Contactno'];
         $Emailid=$_POST['Emailid'];
         $Comments=$_POST['Comments'];
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $displayname=$this->Common_function->Get_MailDisplayName('ERM');
         $Emailtemplate=$this->Common_function->getProfileEmailId('ERM');
         $splitMailid=explode('@',$Emailtemplate[0]);

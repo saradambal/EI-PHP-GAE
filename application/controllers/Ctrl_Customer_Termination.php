@@ -42,7 +42,7 @@ Class Ctrl_Customer_Termination extends CI_Controller
         $Globalrecver=$this->input->post('Globalrecver');
         $this->load->library('Google');
         global $ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token;
-        $this->load->model('Eilib/Calender');
+        $this->load->model('EILIB/Calender');
         // FUNCTION TO CALL AND GET THE CALENDAR SERVICE
         $cal= $this->Calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
         $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_termination');

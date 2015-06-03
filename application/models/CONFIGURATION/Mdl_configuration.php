@@ -182,7 +182,7 @@ class Mdl_configuration extends CI_Model{
     {
         global  $USERSTAMP;
         $CONFIG_SRCH_UPD_arr_delete_data = $this->Mdl_configuration->CONF_ENTRY_twodimdata($module) ;
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $deleteflag=$this->Common_function->DeleteRecord(".$CONFIG_SRCH_UPD_arr_delete_data[3].",$rowid,$USERSTAMP);
         return $deleteflag;
     }

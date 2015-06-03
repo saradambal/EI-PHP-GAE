@@ -18,7 +18,7 @@ class Mdl_customer_cancel extends CI_Model {
           $CCAN_cust_values='false';
         }
         $CCAN_select_err_msg='44,90,248,328,330,401,458';
-        $this->load->model("Eilib/Common_function");
+        $this->load->model("EILIB/Common_function");
         $CCAN_errorAarray=$this->Common_function->getErrorMessageList($CCAN_select_err_msg);
         $CCAN_initial_values_array=array();
         $CCAN_initial_values=(object)['CCAN_error_msg'=>$CCAN_errorAarray,'CCAN_cust_values'=>$CCAN_cust_values];
@@ -152,7 +152,7 @@ class Mdl_customer_cancel extends CI_Model {
   public function CCAN_cancel($UserStamp,$custid,$recver,$CCAN_unitnumber,$CCAN_tb_firstname,$CCAN_tb_lastname,$CCAN_ta_comments,$cal_service){
       try{
           $cal_flag='';
-          $this->load->model('Eilib/Calender');
+          $this->load->model('EILIB/Calender');
           $CCAN_unit_value=$CCAN_unitnumber;
           $CCAN_firstname = $CCAN_tb_firstname;
           $CCAN_lastname  = $CCAN_tb_lastname;
@@ -234,8 +234,8 @@ class Mdl_customer_cancel extends CI_Model {
             $recver_array=array();
             $cancel_date_array=array();
             $unit_no_array=array();
-            $this->load->model('Eilib/Common_function');
-            $this->load->model('Eilib/Calender');
+            $this->load->model('EILIB/Common_function');
+            $this->load->model('EILIB/Calender');
             foreach($CCAN_custeventrs->result_array() as $row){
                $CCAN_checkin_date = $row["CLP_STARTDATE"];
                $CCAN_checkout_date = $row["CLP_ENDDATE"];
@@ -272,7 +272,7 @@ class Mdl_customer_cancel extends CI_Model {
                  $type='UNCANCEL';
                  $cancel_date_array=array();
                  $unit_no_array=array();
-                 $this->load->model('Eilib/Calender');
+                 $this->load->model('EILIB/Calender');
                  foreach($CCAN_custeventrs->result_array() as $row){
                     $count++;
                     $CCAN_checkin_date = $row["CLP_STARTDATE"];

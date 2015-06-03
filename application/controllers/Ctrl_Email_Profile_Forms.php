@@ -32,7 +32,7 @@ class Ctrl_Email_Profile_Forms extends CI_Controller{
     //FUNCTION FOR ERR MSGS
     public function Initaildatas()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $formname=$_REQUEST['Formname'];
         $errorlist=$_REQUEST['ErrorList'];
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);

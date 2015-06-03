@@ -17,7 +17,7 @@ class Ctrl_Customer_Cancel extends CI_Controller {
     public function Get_cal_service(){
         $this->load->library('Google');
         global $ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token;
-        $this->load->model('Eilib/Calender');
+        $this->load->model('EILIB/Calender');
         // FUNCTION TO CALL AND GET THE CALENDAR SERVICE
         $cal= $this->Calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
         return $cal;

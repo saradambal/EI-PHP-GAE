@@ -24,7 +24,7 @@ class Ctrl_Deposit_Calculations extends CI_Controller{
     public function Call_service(){
         $this->load->library('Google');
         global $ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token;
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         // FUNCTION TO CALL AND GET SERVICE
         $service= $this->Common_function->get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
         return $service;

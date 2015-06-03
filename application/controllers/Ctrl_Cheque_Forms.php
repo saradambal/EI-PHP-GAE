@@ -11,7 +11,7 @@ Class Ctrl_Cheque_Forms extends CI_Controller
     }
     public function Cheque_Entry_InitialDataLoad()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $formname=$_REQUEST['Formname'];
         $errorlist=$_REQUEST['ErrorList'];
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
@@ -26,7 +26,7 @@ Class Ctrl_Cheque_Forms extends CI_Controller
     }
     public  function Cheque_Search_InitialDataLoad()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $errorlist=$_REQUEST['ErrorList'];
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
         $this->load->model('OCBC/Mdl_chequemodel');

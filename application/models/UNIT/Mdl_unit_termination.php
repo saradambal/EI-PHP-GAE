@@ -9,7 +9,7 @@ class Mdl_unit_termination extends CI_Model{
         foreach($query1->result_array() as $row){
             $result1[]=$row['UNIT_NO'];
         }
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $ErrorMessage= $this->Common_function->getErrorMessageList('15,31,32,324');
         $UT_result=(object)["UT_errormsg"=>$ErrorMessage,"UT_unitno"=>$result1];
         return $UT_result;

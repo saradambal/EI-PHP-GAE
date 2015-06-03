@@ -12,7 +12,7 @@ class Mdl_site_maintenance extends  CI_Model{
     //TREE VIEW
 public  function  USR_SITE_getintialvalue(){
 
-    $this->load->model('Eilib/Common_function');
+    $this->load->model('EILIB/Common_function');
     $USR_SITE_errmsg=$this->Common_function->getErrorMessageList('397,398');
     $this->db->select('MP_ID');
     $this->db->from('MENU_PROFILE');

@@ -18,7 +18,7 @@ Class Ctrl_CSV extends CI_Controller
     {
         $this->load->library('Google');
         global $ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token;
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $service = $this->Common_function->get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
         $this->load->model('Csvmodel');
         $CSV_Records=$this->Csvmodel->getCSVfileRecords($service);

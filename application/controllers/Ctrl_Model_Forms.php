@@ -11,7 +11,7 @@ class Ctrl_Model_Forms extends CI_Controller
     public function Model_initialdatas()
     {
         global $timeZoneFormat;
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $errorlist=$_REQUEST['ErrorList'];
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
         $Allmodels=$this->Common_function->getBankTransferModels();
@@ -29,7 +29,7 @@ class Ctrl_Model_Forms extends CI_Controller
         $Option=$_POST['Option'];
         $this->load->model('OCBC/Mdl_banktt_model');
         $Confirmmessage=$this->Mdl_banktt_model->ModelnameUpdation($UserStamp,$modelname,$Rowid,$Option);
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $Allmodels=$this->Common_function->getBankTransferModels();
         $this->load->model('OCBC/Mdl_banktt_model');
         $Allmodelsdetails=$this->Mdl_banktt_model->getAllModels_Details($timeZoneFormat);
@@ -46,7 +46,7 @@ class Ctrl_Model_Forms extends CI_Controller
         if($Confirm_message!='UPDATED')
         {
             $Allmodels=$this->Mdl_banktt_model->getAllModels_Details($timeZoneFormat);
-            $this->load->model('Eilib/Common_function');
+            $this->load->model('EILIB/Common_function');
             $Create_confirm=$this->Common_function->DeleteRecord(73,$Rowid,$UserStamp);
         }
         else

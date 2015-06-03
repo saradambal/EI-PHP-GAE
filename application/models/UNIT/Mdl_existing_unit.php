@@ -1,7 +1,7 @@
 <?php
 class Mdl_existing_unit extends CI_Model{
     public function Initial_data($EU_unitno,$EU_flag_unitno_err_roomstamp){
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $EU_TB_roombox=[];
         $EU_TB_stampbox=[];
         $EU_arr_nonactive=[];
@@ -37,7 +37,7 @@ class Mdl_existing_unit extends CI_Model{
         return [$EU_result];
     }
     public function EU_already_exists($EU_alreadyexist,$EU_source){
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $EU_flag=[];
         if($EU_source=="EU_tb_accesscard"){
             $EU_flag=$this->Common_function->Check_ExistsCard($EU_alreadyexist);

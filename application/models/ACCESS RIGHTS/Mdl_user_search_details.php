@@ -13,7 +13,7 @@ class Mdl_user_search_details extends  CI_Model{
 //        $timeZoneFormat="'+00:00','+08:00'";
 
         $errormessages=array();
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
 
         $URD_SRC_errorarray=$this->Common_function->getErrorMessageList('355');
 //FETCHING USER LOGIN DETAILS RECORDS

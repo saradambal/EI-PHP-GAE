@@ -132,13 +132,13 @@ class Mdl_customercreation extends CI_Model
                 }
                 if ($Confirm_Meessage==1)
                 {
-                    $this->load->model('Eilib/Calender');
+                    $this->load->model('EILIB/Calender');
                     $this->Calender->CUST_customercalendercreation($cal, $Customerid, $StartDate, $S_starttime, $S_endtime, $EndDate, $E_starttime, $E_endtime, $FirstName, $Lastname, $Mobile, $IntlMobile, $Officeno, $Emailid, $Uint, $RoomType, '');
                     if ($CCoption == 4 || $CCoption == 5 || $CCoption == 6) {
-                        $this->load->model('Eilib/Common_function');
+                        $this->load->model('EILIB/Common_function');
                         $Invoiceandcontractid = $this->Common_function->CUST_invoice_contractreplacetext();
                         $Docowner = $this->Common_function->CUST_documentowner($UserStamp);
-                        $this->load->model('Eilib/Invoice_contract');
+                        $this->load->model('EILIB/Invoice_contract');
                         if ($CCoption == 4)
                         {
                             $InvoiceId = $this->Invoice_contract->CUST_invoice($UserStamp, $service, $Uint, $Name, $CompanyName, $Invoiceandcontractid[9], $Invoiceandcontractid[0], $Invoiceandcontractid[1], $Rent, $ProcessingFee, $DepositFee, $Startdate, $Enddate, $RoomType, $Leaseperiod, $Rent_Prorated, $Sendmailid, $Docowner, 'CREATION', $process_waived, $Customerid);

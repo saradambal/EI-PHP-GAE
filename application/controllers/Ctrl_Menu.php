@@ -11,7 +11,7 @@ class Ctrl_Menu extends CI_Controller{
     }
     public function Initaildatas()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $formname=$_REQUEST['Formname'];
         $errorlist=$_REQUEST['ErrorList'];
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);

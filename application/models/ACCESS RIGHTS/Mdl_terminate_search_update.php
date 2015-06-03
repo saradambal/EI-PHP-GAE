@@ -21,7 +21,7 @@ class Mdl_terminate_search_update  extends CI_Model{
         if($row>0){
             $URT_SRC_data_uld_tble=true;
         }
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $URT_SRC_errormsg_query = "349,350,351,352,353,354,355,401,454,455,458,465";
         $URT_SRC_errorarray=$this->Common_function->getErrorMessageList($URT_SRC_errormsg_query);
         if(($URT_SRC_source=='URT_SRC_radio_loginterminate')||($URT_SRC_source=='URT_SRC_radio_rejoin')){
@@ -158,7 +158,7 @@ class Mdl_terminate_search_update  extends CI_Model{
 
       if($URT_SRC_sucess_flag==1)
       {
-          $this->load->model('Eilib/Common_function');
+          $this->load->model('EILIB/Common_function');
           /*---------------------------------UNSHARE THE FILE & FOLDER---------------------------------------------*/
           $URSRC_sharedocflag=$this->Common_function->URSRC_unshareDocuments("",$URT_SRC_emailid,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
           if($URSRC_sharedocflag==1){
@@ -261,7 +261,7 @@ function URT_SRC_func_rejoin($URT_SRC_upd_emailid,$URT_SRC_upd_rejoindate,$URT_S
     $URT_SRC_flag_lgncreinsert=$URT_SRC_flag_rejoincrers->row()->REJOIN_FLAG;
     $URT_SRC_temptable=$URT_SRC_flag_rejoincrers->row()->TEMPTABLE;
         if($URT_SRC_flag_lgncreinsert==1){
-            $this->load->model('Eilib/Common_function');
+            $this->load->model('EILIB/Common_function');
             $URSRC_sharedocflag= $this->Common_function->URSRC_shareDocuments($URT_SRC_upd_customrole,$URT_SRC_upd_emailid,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
             if($URSRC_sharedocflag==1){
 //          URSRC_sharesiteflag=URSRC_addViewer(URSRC_conn,URSRC_loginid)

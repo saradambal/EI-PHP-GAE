@@ -12,7 +12,7 @@ class Mdl_customer_expiry_list extends CI_Model{
     public function CEXP_get_initial_values(){
         $CEXP_errorAarray=array();
         $CEXP_select_err_msg="80,81,82,83,84,85,86,87,88,89,282,256";
-        $this->load->model("Eilib/Common_function");
+        $this->load->model("EILIB/Common_function");
         $CEXP_errorAarray=$this->Common_function->getErrorMessageList($CEXP_select_err_msg);
         $this->db->select();
         $this->db->from('CUSTOMER');

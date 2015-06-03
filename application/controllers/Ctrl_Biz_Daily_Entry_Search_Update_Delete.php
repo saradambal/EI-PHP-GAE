@@ -9,7 +9,7 @@ class Ctrl_Biz_Daily_Entry_Search_Update_Delete extends CI_Controller{
     }
     public function initialvalues()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $errorlist=$_REQUEST['ErrorList'];
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
         $this->load->database();
@@ -58,7 +58,7 @@ class Ctrl_Biz_Daily_Entry_Search_Update_Delete extends CI_Controller{
     {
         $BDLY_INPUT_unitno=$this->input->post('BDLY_INPUT_unitno');
         $this->load->database();
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $data=$this->Common_function->GetUnitSdEdInvdate($BDLY_INPUT_unitno);
         echo json_encode($data);
     }

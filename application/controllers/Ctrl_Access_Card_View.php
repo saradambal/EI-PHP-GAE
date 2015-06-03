@@ -7,7 +7,7 @@ class Ctrl_Access_Card_View extends CI_Controller{
     }
     public function Initialdata(){
         $errorlist= $this->input->post('ErrorList');
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
 
         $this->load->model('CUSTOMER/ACCESS CARD/Mdl_access_card_view');

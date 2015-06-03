@@ -651,7 +651,7 @@ class Mdl_staff_daily_entry_search_update_delete extends CI_Model{
         $STDLY_SEARCH_typelist=$_POST['STDLY_SEARCH_typelist'];
         $STDLY_SEARCH_srchoption=$_POST['STDLY_SEARCH_srchoption'];
         global  $USERSTAMP;
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
 
         if($STDLY_SEARCH_typelist==39){
         $deleteflag=$this->Common_function->DeleteRecord(44,$rowid,$USERSTAMP);

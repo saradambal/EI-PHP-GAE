@@ -4,7 +4,7 @@ class Mdl_customer_termination extends CI_Model{
     public function CTERM_getErrMsgCalTime($USERSTAMP)
     {
     $CEXTN_timearray=[];
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $CEXTN_timearray=$this->Common_function->CUST_getCalendarTime();
         $CTERM_errarray =[];
         $CTERM_errmsgids='42,43,47,97,329,356,401,458';
@@ -262,7 +262,7 @@ class Mdl_customer_termination extends CI_Model{
         $CTERM_hidden_finalcards=$_POST['CTERM_hidden_finalcards'];
         try
         {
-            $this->load->model('Eilib/Common_function');
+            $this->load->model('EILIB/Common_function');
             $CTERM_UserStampId=$this->Common_function->getUserStampId($USERSTAMP);
             $CTERM_tddate=$this->Common_function->gettimezone24HRS();
             if($CTERM_radio_termoption=="CTERM_radio_reactivecust")
@@ -598,7 +598,7 @@ class Mdl_customer_termination extends CI_Model{
                     }
                     if(strtotime($CTERM_edate)>strtotime($CTERM_sdate))
                     {
-                        $this->load->model('Eilib/Common_function');
+                        $this->load->model('EILIB/Common_function');
                         $CTERM_quators=$this->Common_function->quarterCalc($CTERM_sdate,$CTERM_edate);
                         $CTERM_Leaseperiod=$this->Common_function->getLeasePeriod($CTERM_sdate,$CTERM_edate);
                     }
@@ -617,7 +617,7 @@ class Mdl_customer_termination extends CI_Model{
                         $CTERM_rvlpqrts.=",&".$CTERM_prevrvdtls[$l]['recver'].",&".$CTERM_Leaseperiod.",&".$CTERM_quators;
                     }
                 }
-                $this->load->model('Eilib/Common_function');
+                $this->load->model('EILIB/Common_function');
                 //CALCULATE LP N QUARTERS END
                 //cal calendar event function if cust is ptd
                 if($CTERM_customerptd!="")
@@ -631,7 +631,7 @@ class Mdl_customer_termination extends CI_Model{
             $CTERM_updateflag_query="SELECT @TERMRESULT_FLAG as TERMRESULT_FLAG";
             $CTERM_updateflag_rs=$this->db->query($CTERM_updateflag_query);
             $CTERM_updateflag=$CTERM_updateflag_rs->row()->TERMRESULT_FLAG;
-            $this->load->model('Eilib/Calender');
+            $this->load->model('EILIB/Calender');
             if($CTERM_updateflag==1&&($CTERM_radio_termoption=="CTERM_radio_activecust"))
             {
                 if($CTERM_customerptd!="")

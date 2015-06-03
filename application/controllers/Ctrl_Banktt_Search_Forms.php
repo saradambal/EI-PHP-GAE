@@ -14,7 +14,7 @@ class Ctrl_Banktt_Search_Forms extends CI_Controller
         $Searchoption=$this->Mdl_banktt_entry->Banktt_Search_Option();
         $unit = $this->Mdl_banktt_entry->Banktt_Unit();
         $modelnames=$this->Mdl_banktt_entry->get_ModelNames();
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $errorlist=$_REQUEST['ErrorList'];
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
         $values=array($Searchoption,$ErrorMessage,$unit,$modelnames);

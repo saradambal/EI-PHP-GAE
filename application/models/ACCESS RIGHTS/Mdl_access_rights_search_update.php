@@ -78,7 +78,7 @@ class Mdl_access_rights_search_update extends CI_Model{
         foreach($query->result_array() as $row){
             $URSRC_logindetails_array[]=$row['ULD_LOGINID'];
         }
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $ErrorMessage= $this->Common_function->getErrorMessageList('36,354,360,361,362,363,364,365,366,367,370,371,372,373,374,376,401,454,455,458,465');
         $URSRC_initial_values=(object)['URSRC_userrights'=>$URSRC_userrights_array,'URSRC_role_array'=>$URSRC_role_array,'URSRC_loginid_array'=>$URSRC_logindetails_array,'URSRC_errorAarray'=>$ErrorMessage,'URSRC_basicroles_array'=>$URSRC_basicroles_array,'URSRC_basicrole'=>$URSRC_basicrole,'URSRC_basicrole_profile_array'=>$URSRC_basicrole_profile_array,'UserStamp'=>$UserStamp];
         return $URSRC_initial_values;

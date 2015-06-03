@@ -45,7 +45,7 @@ class Mdl_report_report extends CI_Model {
         //        REP_report_name_stmt.close();
         //EMAIL ID
         $REP_emailid_array=array();
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $REP_emailid_array= $this->Common_function->getProfileEmailId('REPORT');
         //        $REP_emailid_array=eilib.getProfileEmailId(REP_conn,"REPORT")
         //RETRIEVE MESSAGE FOR REPORT RECORD FROM ERROR TABLE

@@ -1,7 +1,7 @@
 <?php
 class Mdl_extract_deposit_pdf extends CI_Model{
     public function Initial_data(){
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $ErrorMessage= $this->Common_function->getErrorMessageList('263,264,265,266,267,268,269,270,271,282,381,449,452,459,468');
         $srtemailarray= $this->Common_function->getProfileEmailId('DD');
         $DDE_month_array =[];

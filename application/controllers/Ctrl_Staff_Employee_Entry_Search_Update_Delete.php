@@ -9,7 +9,7 @@ class Ctrl_Staff_Employee_Entry_Search_Update_Delete extends CI_Controller{
     }
     //FUNCTION FOR INITIAL DATA
     public function Initialdata(){
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $errorlist= $this->input->post('ErrorList');
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
         $this->load->model('EXPENSE/STAFF/Mdl_staff_employee_entry_search_update_delete');

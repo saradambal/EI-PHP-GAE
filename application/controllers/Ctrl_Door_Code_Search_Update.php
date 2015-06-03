@@ -35,7 +35,7 @@ class Ctrl_Door_Code_Search_Update extends CI_Controller{
     public function DCSU_ExistsDoorcode(){
         $DCSU_doorcode=$this->input->post("val");
         $DCSU_flag_doorCodeLogin=$this->input->post("flag");
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $DCSU_arr=$this->Common_function->Check_ExistsDoorcodeLogin($DCSU_doorcode, $DCSU_flag_doorCodeLogin);
         echo json_encode($DCSU_arr);
     }

@@ -9,7 +9,7 @@ class Ctrl_Customer_Extension extends CI_Controller{
     }
     public function CEXTN_getCommonvalues()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_extension');
         $formname=$_POST['Formname'];
         $errorlist=$_POST['ErrorList'];

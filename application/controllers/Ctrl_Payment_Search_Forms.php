@@ -10,7 +10,7 @@ Class Ctrl_Payment_Search_Forms extends CI_Controller
     }
     public function InitialDataLoad()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $unit = $this->Common_function->getAllUnits();
         $paymenttype=$this->Common_function->getPaymenttype();
         $errorlist=$_REQUEST['ErrorList'];
@@ -63,7 +63,7 @@ Class Ctrl_Payment_Search_Forms extends CI_Controller
     public function PaymentsDetails()
     {
         global $UserStamp;
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $Rowid=$_POST['Rowid'];
         $Create_confirm=$this->Common_function->DeleteRecord(18,$Rowid,$UserStamp);
         print_r($Create_confirm);

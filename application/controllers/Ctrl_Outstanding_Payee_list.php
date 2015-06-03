@@ -10,7 +10,7 @@ Class Ctrl_Outstanding_Payee_list extends CI_Controller
     }
     public function ProfileEmailId($formname)
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $Emaillist = $this->Common_function->getProfileEmailId('OPL&ACTIVE CC');
         $errorlist=$_REQUEST['ErrorList'];
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
@@ -24,7 +24,7 @@ Class Ctrl_Outstanding_Payee_list extends CI_Controller
             global $UserStamp;
             $Emailid=$_POST['FIN_OPL_lb_mailid'];
             $Forperiod=$_POST['FIN_OPL_db_period'];
-            $this->load->model('Eilib/Common_function');
+            $this->load->model('EILIB/Common_function');
             $EmailDisplayname = $this->Common_function->Get_MailDisplayName('OUTSTANDING_PAYEES');
             $this->load->model('FINANCE/Mdl_opllistmodel');
             $confirm_message=$this->Mdl_opllistmodel->OPL_list_creation($UserStamp);

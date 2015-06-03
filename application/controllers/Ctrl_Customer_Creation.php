@@ -11,7 +11,7 @@ Class Ctrl_Customer_Creation extends CI_Controller
     }
     public function Customer_Initaildatas()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $formname=$_REQUEST['Formname'];
         $errorlist=$_REQUEST['ErrorList'];
         $unit = $this->Common_function->getAllActiveUnits();
@@ -26,7 +26,7 @@ Class Ctrl_Customer_Creation extends CI_Controller
     }
     public function CustomerRoomTypeLoad()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $unit=$_REQUEST['Unit'];
         $RoomType=$this->Common_function->getUnitRoomType($unit);
         $UnitDates=$this->Common_function->getUnit_Start_EndDate($unit);
@@ -36,7 +36,7 @@ Class Ctrl_Customer_Creation extends CI_Controller
     }
     public function UnitCardNumbers()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $unit=$_REQUEST['Unit'];
         $CardNumbers=$this->Common_function->CUST_getunitCardNo($unit);
         echo json_encode($CardNumbers);
@@ -48,12 +48,12 @@ Class Ctrl_Customer_Creation extends CI_Controller
         $this->load->library('Google');
         $Startdate=$_POST['CCRE_Startdate'];
         $Enddate=$_POST['CCRE_Enddate'];
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $Leaseperiod=$this->Common_function->getLeasePeriod($Startdate,$Enddate);
         $Quoters=0.31;//$this->Common_function->quarterCalc(date('Y-m-d',strtotime($Startdate)), date('Y-m-d',strtotime($Enddate)));
         $service=$this->Common_function->get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
         $this->load->library('Google');
-        $this->load->model('Eilib/Calender');
+        $this->load->model('EILIB/Calender');
         $cal= $this->Calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
         $this->load->model('CUSTOMER/Mdl_customercreation');
         $Create_confirm=$this->Mdl_customercreation->Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters,$service,$cal);
@@ -64,7 +64,7 @@ Class Ctrl_Customer_Creation extends CI_Controller
     {
         $Startdate=$_POST['SD'];
         $Enddate=$_POST['ED'];
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $Prorated=$this->Common_function->CUST_chkProrated($Startdate,$Enddate);
         echo $Prorated;
     }

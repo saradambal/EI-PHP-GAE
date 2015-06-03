@@ -9,7 +9,7 @@ Class Ctrl_Payment_Active_Customer extends CI_Controller
     }
     public function PaymentInitialDatas()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $unit = $this->Common_function->getAllActiveUnits();
         $paymenttype=$this->Common_function->getPaymenttype();
         $errorlist=$_REQUEST['ErrorList'];
@@ -19,14 +19,14 @@ Class Ctrl_Payment_Active_Customer extends CI_Controller
     }
     public function ActiveCustomer()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $unit=$_POST['UNIT'];
         $Customer = $this->Common_function->getActive_Customer($unit);
         echo json_encode($Customer);
     }
     public function ActiveCustomerLeasePeriod()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $unit=$_POST['UNIT'];
         $customer=$_POST['CUSTOMERID'];
         $Customer = $this->Common_function->getActive_Customer_LP($unit,$customer);
@@ -34,7 +34,7 @@ Class Ctrl_Payment_Active_Customer extends CI_Controller
     }
     public function ActiveCustomerLeasePeriodDates()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $unit=$_POST['UNIT'];
         $customer=$_POST['CUSTOMERID'];
         $Recever=$_POST['RECVER'];

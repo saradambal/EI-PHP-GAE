@@ -6,7 +6,7 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
     $BDTL_INPUT_biz_expense_type_array = [];
     $BDTL_INPUT_bizexp_invoiceto_array = [];
     $BDTL_INPUT_arr_aircon=[];
-    $this->load->model('Eilib/Common_function');
+    $this->load->model('EILIB/Common_function');
     $BDTL_INPUT_biz_detail_error_array=$this->Common_function->GetErrorMessageList('1,2,103,105,238,248,400,458');
     $BDTL_INPUT_check_unitflag=false;
     $this->db->select("UNIT_ID");
@@ -68,7 +68,7 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
     //FUNCTION TO GET UNIT SDATE AND EDATE
     public function BDTL_INPUT_get_SDate_EDate($BDTL_INPUT_unitno)
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $BDTL_INPUT_getDate=$this->Common_function->GetUnitSdEdate($BDTL_INPUT_unitno);
       return  $BDTL_INPUT_getDate;
     }
@@ -76,7 +76,7 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
     public function BDTL_INPUT_airconservicedby_check($BDTL_INPUT_alreadyexists)
     {
       $BDTL_INPUT_airconservicedby_array = [];
-      $this->load->model('Eilib/Common_function');
+      $this->load->model('EILIB/Common_function');
       $BDTL_INPUT_flag=$this->Common_function->Check_ExistsAirconservicedby($BDTL_INPUT_alreadyexists);
       return $BDTL_INPUT_flag;
    }
@@ -290,8 +290,8 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
         $BDTL_INPUT_insert_starhub =$this->db->query("INSERT INTO EXPENSE_DETAIL_STARHUB(UNIT_ID,ECN_ID,EDSH_REC_VER,EDSH_ACCOUNT_NO,EDSH_APPL_DATE,EDSH_CABLE_START_DATE,EDSH_CABLE_END_DATE,EDSH_INTERNET_START_DATE,EDSH_INTERNET_END_DATE,EDSH_SSID,EDSH_PWD,EDSH_CABLE_BOX_SERIAL_NO,EDSH_MODEM_SERIAL_NO,EDSH_BASIC_GROUP,EDSH_ADDTNL_CH,EDSH_COMMENTS,ULD_ID) VALUES('$BDTL_INPUT_unitno',$BDTL_INPUT_starhub_invoiceto,'1','$BDTL_INPUT_starhub_acctno',$BDTL_INPUT_starhub_appldate,$BDTL_INPUT_starhub_cable_startdate,$BDTL_INPUT_starhub_cable_enddate,$BDTL_INPUT_starhub_internet_startdate,$BDTL_INPUT_starhub_internet_enddate,$BDTL_INPUT_starhub_ssid,$BDTL_INPUT_starhub_pwd,$BDTL_INPUT_starhub_cable_serialno,$BDTL_INPUT_starhub_modem_serialno,$BDTL_INPUT_starhub_basicgroup,$BDTL_INPUT_starhub_addtnlch,$BDTL_INPUT_starhub_comments,(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP'))");
 
         /*-------------------------------CREATING CALENDAR EVENT FUNCTION FOR STARHUB------------------------*/
-          $this->load->model('Eilib/Common_function');
-          $this->load->model('Eilib/Calender');
+          $this->load->model('EILIB/Common_function');
+          $this->load->model('EILIB/Calender');
           $BDTL_INPUT_sh_arr=$this->Common_function->getStarHubUnitCalTime();
           $BDTL_INPUT_sh_starttime=$BDTL_INPUT_sh_arr[0]['ECN_DATA'];
           $BDTL_INPUT_sh_endtime=$BDTL_INPUT_sh_arr[1]['ECN_DATA'];
@@ -342,7 +342,7 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
             $BTDTL_SEARCH_expense_type_array[]=$BTDTL_SEARCH_expensetypes_object;
             }
         }
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $BTDTL_SEARCH_errormsg_array=$this->Common_function->GetErrorMessageList('1,2,224,174,18,176,236,184,180,182,179,185,197,199,195,191,201,200,203,202,178,193,189,187,292,293,294,295,296,297,298,299,300,301,302,303,304,305,306,107,106,170,175,177,181,183,186,188,190,192,194,196,198,103,315,204,205,206,207,208,335,369,401,458');
         $BTDTL_SEARCH_notable_flag=false;
         $BTDTL_SEARCH_notable_select = "SELECT UNIT_ID FROM EXPENSE_DETAIL_STARHUB UNION SELECT UNIT_ID FROM  EXPENSE_DETAIL_ELECTRICITY UNION SELECT UNIT_ID FROM EXPENSE_DETAIL_DIGITAL_VOICE UNION SELECT UNIT_ID FROM EXPENSE_DETAIL_AIRCON_SERVICE UNION SELECT UNIT_ID FROM EXPENSE_DETAIL_CARPARK";
@@ -1181,8 +1181,8 @@ Class Mdl_biz_detail_entry_search_update_delete extends CI_Model {
 //        {
 //            $BTDTL_SEARCH_sh_starttime=$BTDTL_SEARCH_starhubid[0];
 //            $BTDTL_SEARCH_sh_endtime=$BTDTL_SEARCH_starhubid[1];
-//            $this->load->model('Eilib/Common_function');
-//            $this->load->model('Eilib/Calender');
+//            $this->load->model('EILIB/Common_function');
+//            $this->load->model('EILIB/Calender');
 //            if(($BTDTL_SEARCH_cablesdate!='')&&($BTDTL_SEARCH_cableedate!='')&&($BTDTL_SEARCH_cablesdate!=null)&&($BTDTL_SEARCH_cableedate!=null)){
 //                $this->Calender->StarHubUnit_DeleteCalEvent($calid,$BTDTL_SEARCH_cablesdate,$BTDTL_SEARCH_sh_starttime,$BTDTL_SEARCH_sh_endtime,$BTDTL_SEARCH_cableedate,$BTDTL_SEARCH_sh_starttime,$BTDTL_SEARCH_sh_endtime,'STARHUB',$unitno,$acctno,'CABLE START DATE','CABLE END DATE','','');
 //            }

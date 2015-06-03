@@ -10,7 +10,7 @@ Class Ctrl_Payment_Terminated_Customer_Forms extends CI_Controller
     public function PaymentInitialDatas()
     {
         global $UserStamp;
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $paymenttype=$this->Common_function->getPaymenttype();
         $errorlist=$_REQUEST['ErrorList'];
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);

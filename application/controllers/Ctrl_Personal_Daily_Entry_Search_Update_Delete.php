@@ -10,7 +10,7 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
 // fetch data
     public function commondata()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $errorlist=$_REQUEST['ErrorList'];
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
         $this->load->database();
@@ -59,7 +59,7 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
     public function srchupdatecommondata()
     {
         $this->load->database();
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $errorlist=$_REQUEST['ErrorList'];
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
         $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');

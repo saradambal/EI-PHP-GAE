@@ -72,7 +72,7 @@ class Mdl_email_profile_forms extends CI_Model{
     public function DeleteRecord($USERSTAMP,$rowid)
     {
         global  $USERSTAMP;
-          $this->load->model('Eilib/Common_function');
+          $this->load->model('EILIB/Common_function');
           $deleteflag=$this->Common_function->DeleteRecord(22,$rowid,$USERSTAMP);
           return $deleteflag;
     }

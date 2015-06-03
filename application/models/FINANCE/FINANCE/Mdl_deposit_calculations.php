@@ -2,7 +2,7 @@
 class Mdl_deposit_calculations extends CI_Model{
     // GET THE UNIT  FOR LOAD IN THE  FORM
     public function Initial_data($UserStamp){
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $ErrorMessage= $this->Common_function->getErrorMessageList('248,251,252,253,254,255,256,257,258,259,260,261,262,271,380,449,450,451,459,468');
         $DDC_all_array =[];
         $DDC_unit_array =[];
@@ -257,8 +257,8 @@ class Mdl_deposit_calculations extends CI_Model{
                 }
                 return ['DDC_flag_nosheet',$DDC_ssname_oldyear];
             }
-            $this->load->model('Eilib/Invoice_contract');
-            $this->load->model('Eilib/common_function');
+            $this->load->model('EILIB/Invoice_contract');
+            $this->load->model('EILIB/common_function');
             $parentId=$this->Invoice_contract->getTemplatesFolderId();
             $DDC_newspread_ssid=$this->insertFile($service, $DDC_ssname_currentyear, 'DD Calculation', $parentId);
             $this->db->query("UPDATE FILE_PROFILE SET FP_FILE_ID='".$DDC_newspread_ssid."' WHERE FP_ID=1");

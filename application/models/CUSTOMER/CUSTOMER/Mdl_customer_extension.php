@@ -255,7 +255,7 @@ class Mdl_Customer_Extension extends CI_Model{
         $this->db->query($drop_query);
 //    eilib.DropTempTable(CEXTN_cdtlscon, CExtntblname);
     $CEXTN_diffunittno=array();
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
     $CEXTN_unitdate=$this->Common_function->GetUnitSdEdate($CEXTN_unitno);//call function to get unit start n end date
      $CEXTN_unitsdate=$CEXTN_unitdate['unitsdate'];//get unit start date
     $CEXTN_unitedate=$CEXTN_unitdate['unitedate'];//get unit end date
@@ -288,7 +288,7 @@ class Mdl_Customer_Extension extends CI_Model{
     //FUNCTION TO GET ROOM TYPE FOR SAME UNIT
     function CEXTN_getRoomType($CEXTN_unitno,$CEXTN_roomtype){
         $CEXTN_roomtypearray =array();
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $CEXTN_roomtypearray=$this->Common_function->CUST_getRoomType($CEXTN_unitno,$CEXTN_roomtype);
         $unitdate=$this->Common_function->GetUnitSdEdate($CEXTN_unitno);//call function to get unit start n end date
         $CEXTN_unitsdate=$unitdate['unitsdate'];//get unit start date
@@ -300,14 +300,14 @@ class Mdl_Customer_Extension extends CI_Model{
     function CEXTN_getdiffunitCardNo($CEXTN_unit,$CEXTN_firstname,$CEXTN_lastname){
 
         $CEXTN_cardnoresult=array();
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $CEXTN_cardnoresult=$this->Common_function->CUST_getunitCardNo_FirstLast($CEXTN_unit,$CEXTN_firstname,$CEXTN_lastname);
         return $CEXTN_cardnoresult;
   }
     //FUNCTION TO CHK PRORATED OR NOT
     function CEXTN_chkProrated($CEXTN_db_chkindate,$CEXTN_db_chkoutdate){
         $CEXTN_chkproflag="";
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $CEXTN_chkproflag=$this->Common_function->CUST_chkProrated($CEXTN_db_chkindate,$CEXTN_db_chkoutdate);
         return $CEXTN_chkproflag;
   }

@@ -12,7 +12,7 @@ Class Ctrl_Customer_Search extends CI_Controller
     {
         $this->load->model('CUSTOMER/Mdl_customersearch');
         $SearchOption=$this->Mdl_customersearch->getSearchOption();
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $nationality = $this->Common_function->getNationality();
         $errorlist=$_REQUEST['ErrorList'];
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
@@ -45,7 +45,7 @@ Class Ctrl_Customer_Search extends CI_Controller
     }
     public function AllUnits()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $units = $this->Common_function->getAllUnits();
         echo json_encode($units);
     }
@@ -115,7 +115,7 @@ Class Ctrl_Customer_Search extends CI_Controller
         $this->load->model('CUSTOMER/Mdl_customersearch');
         $RecverDetails=$this->Mdl_customersearch->getSearchRecverdetails($unit,$customerid,$leaseperiod);
         $Resultset=$this->Mdl_customersearch->SelectCustomerResults($customerid,$leaseperiod);
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $RoomType=$this->Common_function->getUnitRoomType($unit);
         $UnitDates=$this->Common_function->getUnit_Start_EndDate($unit);
         $unit = $this->Common_function->getAllActiveUnits();
@@ -125,7 +125,7 @@ Class Ctrl_Customer_Search extends CI_Controller
     }
     public function CustomerRoomTypeLoad()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $unit=$_REQUEST['Unit'];
         $RoomType=$this->Common_function->getUnitRoomType($unit);
         $UnitDates=$this->Common_function->getUnit_Start_EndDate($unit);
@@ -136,7 +136,7 @@ Class Ctrl_Customer_Search extends CI_Controller
     public function CustomerDetailsUpdate()
     {
         global $UserStamp;
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $Startdate=$_POST['CCRE_SRC_Startdate'];
         $Enddate=$_POST['CCRE_SRC_Enddate'];
         $Leaseperiod=$this->Common_function->getLeasePeriod($Startdate,$Enddate);

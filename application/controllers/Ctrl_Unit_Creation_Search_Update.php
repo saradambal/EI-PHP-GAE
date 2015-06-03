@@ -10,7 +10,7 @@ class Ctrl_Unit_Creation_Search_Update extends CI_Controller{
     public function Cal_service(){
         $this->load->library('Google');
         global $ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token;
-        $this->load->model('Eilib/Calender');
+        $this->load->model('EILIB/Calender');
         // FUNCTION TO CALL AND GET THE CALENDAR SERVICE
         $cal= $this->Calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
         return $cal;

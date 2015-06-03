@@ -10,7 +10,7 @@ Class Ctrl_Customer_Recheckin extends CI_Controller
     }
     public function Customer_Initaildatas()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $formname=$_REQUEST['Formname'];
         $errorlist=$_REQUEST['ErrorList'];
         $unit = $this->Common_function->getAllActiveUnits();
@@ -26,7 +26,7 @@ Class Ctrl_Customer_Recheckin extends CI_Controller
     }
     public function CustomerRoomTypeLoad()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $unit=$_REQUEST['Unit'];
         $RoomType=$this->Common_function->getUnitRoomType($unit);
         $UnitDates=$this->Common_function->getUnit_Start_EndDate($unit);
@@ -36,7 +36,7 @@ Class Ctrl_Customer_Recheckin extends CI_Controller
     }
     public function UnitCardNumbers()
     {
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $unit=$_REQUEST['Unit'];
         $CardNumbers=$this->Common_function->CUST_getunitCardNo($unit);
         echo json_encode($CardNumbers);
@@ -64,7 +64,7 @@ Class Ctrl_Customer_Recheckin extends CI_Controller
         global $ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token;
         $Startdate=$_POST['CCRE_Startdate'];
         $Enddate=$_POST['CCRE_Enddate'];
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $AllUnit =$this->Common_function->getRecheckinCustomerUnit();
         $Leaseperiod=$this->Common_function->getLeasePeriod($Startdate,$Enddate);
         $this->load->model('CUSTOMER/Mdl_customercreation');
@@ -72,7 +72,7 @@ Class Ctrl_Customer_Recheckin extends CI_Controller
         if($Create_confirm[0]==1)
         {
             $this->load->library('Google');
-            $this->load->model('Eilib/Calender');
+            $this->load->model('EILIB/Calender');
             $cal= $this->Calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
             $this->Calender->CUST_customercalendercreation($cal,$Create_confirm[1],$Create_confirm[2],$Create_confirm[3],$Create_confirm[4],$Create_confirm[5],$Create_confirm[6],$Create_confirm[7],$Create_confirm[8],$Create_confirm[9],$Create_confirm[10],$Create_confirm[11],$Create_confirm[12],$Create_confirm[13],$Create_confirm[14],$Create_confirm[15],'');
             $message=$Create_confirm[0];

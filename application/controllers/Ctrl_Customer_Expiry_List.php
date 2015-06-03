@@ -34,7 +34,7 @@ class Ctrl_Customer_Expiry_List extends CI_Controller {
         $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_expiry_list');
         $final_value=$this->Mdl_customer_expiry_list->CWEXP_get_customerdetails($CWEXP_weekBefore,$CWEXP_email_id,$UserStamp,$timeZoneFormat);
         if($final_value[0]==1) {
-            $this->load->model('Eilib/Common_function');
+            $this->load->model('EILIB/Common_function');
             $displayname = $this->Common_function->Get_MailDisplayName('CUSTOMER_EXPIRY');
             $message1 = new Message();
             $message1->setSender($displayname.'<'.$UserStamp.'>');

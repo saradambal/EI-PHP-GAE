@@ -540,7 +540,7 @@ Class Mdl_personal_daily_entry_search_update_delete extends CI_Model {
     {
         $PDLY_SEARCH_twodimen=array(36=>['EXPENSE_BABY',66],37=>['EXPENSE_PERSONAL',64],35=>['EXPENSE_CAR',65],38=>['EXPENSE_CAR_LOAN',67]);
         $tableid=$PDLY_SEARCH_twodimen[$PDLY_SEARCH_lb_typelistvalue][1];
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $deleteflag=$this->Common_function->DeleteRecord($tableid,$PDLY_rowid,$USERSTAMP);
         return $deleteflag;
     }

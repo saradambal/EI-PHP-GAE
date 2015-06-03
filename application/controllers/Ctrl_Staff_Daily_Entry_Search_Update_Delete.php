@@ -6,7 +6,7 @@ class Ctrl_Staff_Daily_Entry_Search_Update_Delete extends CI_Controller{
         $this->load->view('EXPENSE/STAFF/Vw_Staff_Daily_Entry_Search_Update_Delete');
     }
     public function Initialdata(){
-        $this->load->model('Eilib/Common_function');
+        $this->load->model('EILIB/Common_function');
         $errorlist= $this->input->post('ErrorList');
         $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
 

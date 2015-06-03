@@ -56,7 +56,7 @@ class Mdl_menu extends CI_Model{
         }
 
       //LOADING LOGO AND CALENDER
-        $this->load->model("Eilib/Common_function");
+        $this->load->model("EILIB/Common_function");
         $logocalender=$this->Common_function->getLogoCalendar();
 //        print_r($logocalender);
 //        exit;
