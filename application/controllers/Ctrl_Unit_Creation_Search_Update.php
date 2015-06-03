@@ -10,9 +10,9 @@ class Ctrl_Unit_Creation_Search_Update extends CI_Controller{
     public function Cal_service(){
         $this->load->library('Google');
         global $ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token;
-        $this->load->model('EILIB/Calender');
+        $this->load->model('EILIB/Mdl_eilib_calender');
         // FUNCTION TO CALL AND GET THE CALENDAR SERVICE
-        $cal= $this->Calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+        $cal= $this->Mdl_eilib_calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
         return $cal;
     }
     public function Initialdata(){
@@ -134,7 +134,6 @@ class Ctrl_Unit_Creation_Search_Update extends CI_Controller{
         $USU_upd_typeofcard = $USU_form_values['USU_typeofCard'];
         $USU_cb_inventory=$USU_form_values['USU_cb_inventory'];
         $USU_cb_lost=$USU_form_values['USU_cb_lost'];
-
         $USU_all_searchby='';
         $USU_unit_searchby = $USU_obj_flex['USU_lb_searchby'];
         $USU_dutyamt_fromamt = $USU_obj_flex['USU_tb_dutyamt_fromamt'];

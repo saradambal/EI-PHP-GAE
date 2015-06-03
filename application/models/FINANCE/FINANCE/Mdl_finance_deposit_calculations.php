@@ -1,9 +1,9 @@
 <?php
-class Mdl_deposit_calculations extends CI_Model{
+class Mdl_finance_deposit_calculations extends CI_Model{
     // GET THE UNIT  FOR LOAD IN THE  FORM
     public function Initial_data($UserStamp){
-        $this->load->model('EILIB/Common_function');
-        $ErrorMessage= $this->Common_function->getErrorMessageList('248,251,252,253,254,255,256,257,258,259,260,261,262,271,380,449,450,451,459,468');
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $ErrorMessage= $this->Mdl_eilib_common_function->getErrorMessageList('248,251,252,253,254,255,256,257,258,259,260,261,262,271,380,449,450,451,459,468');
         $DDC_all_array =[];
         $DDC_unit_array =[];
         $DDC_sp_unitcustomer = "CALL SP_DD_GET_UNIT_CUSTNAME('".$UserStamp."',@TEMP_DD_DYNAMICTBLE)";
@@ -135,7 +135,7 @@ class Mdl_deposit_calculations extends CI_Model{
     public function Func_curl($data){
         $url="https://script.google.com/macros/s/AKfycbzmlgt77SgxpUjRgRWbp5ksUEInKUeTaWV_TPJKut-rsmDuI9ng/exec";
         $ch = curl_init();
-        $data=http_build_query($data);
+        $data=urldecode(http_build_query($data));
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -624,7 +624,6 @@ class Mdl_deposit_calculations extends CI_Model{
             //CHECK ABOUT THE ELECTRICITY AMOUNT//
             $DDC_cap ='';
             $DDC_cap_flag =1;
-            $DDC_sheet_range='';
             for($C=0;$C<count($DDC_electrcap);$C++){
                 if($C==0){
                     $DDC_chk_cap=$DDC_electrcap[$C]->value;
@@ -641,8 +640,12 @@ class Mdl_deposit_calculations extends CI_Model{
                 $DDC_cap='';
             }
             //SET THE ELECTRICITY VALUES IN THE SHEET//
-            $DDC_electrcap=uasort($DDC_electrcap, 'compare');
-            $DDC_cap_rec=[];
+            $caps='';$modifies='';
+            $maininvdate='';
+            $mainelecamt='';
+            $mainelecdivamt='';
+//            $DDC_electrcap=uasort($DDC_electrcap,array($this, 'compare'));
+            $DDC_cap_rec='';
             $DDC_cap_rec=$DDC_electrcap[0]->key;
             for($c=0;$c<count($DDC_electrcap);$c++){
                 $cap='$'.$DDC_electrcap[$c]->value.' CAP  LP :'.$DDC_electrcap[$c]->key;
@@ -659,7 +662,6 @@ class Mdl_deposit_calculations extends CI_Model{
                         $DDC_cap_rec=$DDC_electrcap[$c]->key;
                     }
                 }
-                $caps='';$modifies='';
                 if($c==0){
                     $caps=$cap;
                     $modifies=$modify;
@@ -668,6 +670,33 @@ class Mdl_deposit_calculations extends CI_Model{
                     $caps=$caps.'^^'.$cap;
                     $modifies=$modifies.'^^'.$modify;
                 }
+                $invdate='';
+                $elecamt='';
+                $elecdivamt='';
+                for($j=0;$j<count($DDC_invoicedate);$j++){
+                    if($DDC_electrcap[$c]->key==$DDC_invoicedate[$j]->key){
+                        if($j==0){
+                            $invdate=$DDC_invoicedate[$j]->value;
+                            $elecamt=$DDC_eleamount[$j];
+                            $elecdivamt=$DDC_eledivamount[$j];
+                        }
+                        else{
+                            $invdate=$invdate.'^^'.$DDC_invoicedate[$j]->value;
+                            $elecamt=$elecamt.'^^'.$DDC_eleamount[$j];
+                            $elecdivamt=$elecdivamt.'^^'.$DDC_eledivamount[$j];
+                        }
+                    }
+                }
+                if($c==0){
+                    $maininvdate=$invdate;
+                    $mainelecamt=$elecamt;
+                    $mainelecdivamt=$elecdivamt;
+                }
+                else{
+                    $maininvdate=$maininvdate.'^~^'.$invdate;
+                    $mainelecamt=$mainelecamt.'^~^'.$elecamt;
+                    $mainelecdivamt=$mainelecdivamt.'^~^'.$elecdivamt;
+                }
             }
 
             $data2=array('ssflag'=>3,'DDC_currentfile_id'=>$DDC_currentfile_id,'DDC_currentmonth'=>$DDC_currentmonth,'unit_value'=>$unit_value,'name'=>$name,
@@ -675,7 +704,8 @@ class Mdl_deposit_calculations extends CI_Model{
                 'selectedrecverlength'=>$selectedrecverlength,'DDC_recverarray'=>$DDC_recverarray,'dep_value'=>$dep_value,'depcomment'=>$depcomment,
                 'rentalcase'=>$rentalcase,'DDC_proratedunpaid'=>$DDC_proratedunpaid,'DDC_pay_unpaiddate'=>$DDC_pay_unpaiddate,'lastcarddate'=>$lastcarddate,
                 'DDC_cardcount'=>$DDC_cardcount,'DDC_cardamount'=>$DDC_cardamount,'DDC_cap'=>$DDC_cap,'DDC_no_ofdivision'=>$DDC_no_ofdivision,
-                'caps'=>$caps,'modifies'=>$modifies);
+                'caps'=>$caps,'modifies'=>$modifies,'maininvdate'=>$maininvdate,'mainelecamt'=>$mainelecamt,'mainelecdivamt'=>$mainelecdivamt,
+                'DDC_electrcap'=>count($DDC_electrcap),'DDC_invoicedate'=>count($DDC_invoicedate),'DDC_cap_flag'=>$DDC_cap_flag);
             $ssreangtemp=array();
             $ssreangtemp=$this->Func_curl($data2);
             return $ssreangtemp;
@@ -684,13 +714,17 @@ class Mdl_deposit_calculations extends CI_Model{
                 return [0,1];
             }
         }
+
+
+
+
     }
     // Comparison function
     function compare($a, $b) {
-        if ($a == $b) {
+        if ($a->value == $b->value) {
             return 0;
         }
-        return ($a < $b) ? -1 : 1;
+        return ($a->value < $b->value) ? -1 : 1;
     }
 
 }

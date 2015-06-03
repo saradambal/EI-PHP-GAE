@@ -1,9 +1,9 @@
 <?php
-class Mdl_extract_deposit_pdf extends CI_Model{
+class Mdl_finance_extract_deposit_pdf extends CI_Model{
     public function Initial_data(){
-        $this->load->model('EILIB/Common_function');
-        $ErrorMessage= $this->Common_function->getErrorMessageList('263,264,265,266,267,268,269,270,271,282,381,449,452,459,468');
-        $srtemailarray= $this->Common_function->getProfileEmailId('DD');
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $ErrorMessage= $this->Mdl_eilib_common_function->getErrorMessageList('263,264,265,266,267,268,269,270,271,282,381,449,452,459,468');
+        $srtemailarray= $this->Mdl_eilib_common_function->getProfileEmailId('DD');
         $DDE_month_array =[];
         $DDE_month_exequery ="SELECT DDC_DATA FROM DEPOSIT_DEDUCTION_CONFIGURATION WHERE CGN_ID=30";
         $DDE_errormsg_rs = $this->db->query($DDE_month_exequery);

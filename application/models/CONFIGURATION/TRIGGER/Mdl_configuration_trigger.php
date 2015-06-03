@@ -3,7 +3,7 @@ error_reporting(0);
 class Mdl_configuration_trigger extends CI_Model {
     public function getCSVfileRecords($service)
     {
-        set_time_limit(0);
+//        set_time_limit(0);
         $this->db->select("OCN_DATA");
         $this->db->from('OCBC_CONFIGURATION');
         $this->db->where('CGN_ID=29');

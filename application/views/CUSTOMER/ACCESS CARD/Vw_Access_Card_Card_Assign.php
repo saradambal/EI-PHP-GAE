@@ -17,7 +17,7 @@ require_once "Header.php";
             $('#CA_btn_resetbutton').hide();
             $.ajax({
                 type:'POST',
-                url:"<?php echo site_url('Ctrl_Access_Card_Assign/Initialdata'); ?>",
+                url:"<?php echo site_url('Ctrl_Access_Card_Card_Assign/Initialdata'); ?>",
                 data:{'ErrorList':'256,34,41,40,91,401,448'},
                 success: function(data){
                     var value_array=JSON.parse(data);
@@ -391,7 +391,7 @@ require_once "Header.php";
                     var CA_unit=$('#CA_lb_unitno').val();
                     $.ajax({
                         type:'POST',
-                        url:"<?php echo site_url('Ctrl_Access_Card_Assign/Customerdetails'); ?>",
+                        url:"<?php echo site_url('Ctrl_Access_Card_Card_Assign/Customerdetails'); ?>",
                         data:{'CA_recver':CA_recver,'CA_unit':CA_unit,'CA_cust_id':CA_cust_id},
                         success: function(data){
                             var value_array=JSON.parse(data);
@@ -802,7 +802,7 @@ require_once "Header.php";
                 var formelement=$('#cardassign_form').serialize();
                 $.ajax({
                     type:'POST',
-                    url:"<?php echo site_url('Ctrl_Access_Card_Assign/Cardassignsave'); ?>",
+                    url:"<?php echo site_url('Ctrl_Access_Card_Card_Assign/Cardassignsave'); ?>",
                     data:formelement+"&CA_cust_id="+CA_cust_id,
                     success: function(flag){
                         CA_clear(flag);

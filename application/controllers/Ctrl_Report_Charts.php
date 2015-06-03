@@ -7,8 +7,8 @@ class Ctrl_Report_Charts extends CI_Controller{
     }
     public function Initialdata(){
         $errorlist= $this->input->post('ErrorList');
-        $this->load->model('EILIB/Common_function');
-        $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $ErrorMessage= $this->Mdl_eilib_common_function->getErrorMessageList($errorlist);
 
         $this->load->model('REPORT/Mdl_report_charts');
         $query=$this->Mdl_report_charts->Initial_data($ErrorMessage);

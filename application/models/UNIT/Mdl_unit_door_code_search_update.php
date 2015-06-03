@@ -1,9 +1,9 @@
 <?php
-class Mdl_door_code_search_update extends CI_Model{
+class Mdl_unit_door_code_search_update extends CI_Model{
     public function Initial_data(){
-        $this->load->model('EILIB/Common_function');
-        $ErrorMessage= $this->Common_function->getErrorMessageList('2,18,22,324,396,401,463,464,466,467');
-        $result1=$this->Common_function->GetActiveUnit();
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $ErrorMessage= $this->Mdl_eilib_common_function->getErrorMessageList('2,18,22,324,396,401,463,464,466,467');
+        $result1=$this->Mdl_eilib_common_function->GetActiveUnit();
         $UT_result=(object)["DCSU_errorarray"=>$ErrorMessage,"DCSU_unitno"=>$result1];
         return $UT_result;
     }

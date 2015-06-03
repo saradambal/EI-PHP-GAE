@@ -24,7 +24,7 @@ require_once "Header.php";
         // initial data
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('Ctrl_Door_Code_Search_Update/Initialdata'); ?>",
+                url: "<?php echo site_url('Ctrl_Unit_Door_Code_Search_Update/Initialdata'); ?>",
                 success: function(data) {
                     var initial_values=JSON.parse(data);
                     DCSU_unitno_errSuccess(initial_values);
@@ -65,7 +65,7 @@ require_once "Header.php";
                     var DCSU_flag='DCSU_flex';
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Door_Code_Search_Update/DCSU_logindetails'); ?>",
+                        url: "<?php echo site_url('Ctrl_Unit_Door_Code_Search_Update/DCSU_logindetails'); ?>",
                         data: {'DCSU_unitnumber':DCSU_unitnumber,'DCSU_flag':DCSU_flag},
                         success: function(doordata) {
                             var door_values=JSON.parse(doordata);
@@ -204,7 +204,7 @@ require_once "Header.php";
             function callExistsDoorcode(values,flag){
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Door_Code_Search_Update/DCSU_ExistsDoorcode'); ?>",
+                    url: "<?php echo site_url('Ctrl_Unit_Door_Code_Search_Update/DCSU_ExistsDoorcode'); ?>",
                     data: {'val':values,'flag':flag},
                     success: function(exitstdata) {
                         var exitst_data=JSON.parse(exitstdata);
@@ -269,7 +269,7 @@ require_once "Header.php";
             function DCSU_update_Doorcode(DCSU_unitnumber,DCSU_doorcode,DCSU_weblogin,DCSU_webpass){
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Door_Code_Search_Update/DCSU_updateDoorcode'); ?>",
+                    url: "<?php echo site_url('Ctrl_Unit_Door_Code_Search_Update/DCSU_updateDoorcode'); ?>",
                     data: {'DCSU_login_id':DCSU_login_id,'DCSU_unitnumber':DCSU_unitnumber,'DCSU_doorcode':DCSU_doorcode,'DCSU_weblogin':DCSU_weblogin,'DCSU_webpass':DCSU_webpass},
                     success: function(data){
                         $(".preloader").hide();

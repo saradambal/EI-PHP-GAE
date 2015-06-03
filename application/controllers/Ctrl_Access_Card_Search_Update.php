@@ -7,8 +7,8 @@ class Ctrl_Access_Card_Search_Update extends CI_Controller{
     }
     public function Initialdata(){
         $errorlist= $this->input->post('ErrorList');
-        $this->load->model('EILIB/Common_function');
-        $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $ErrorMessage= $this->Mdl_eilib_common_function->getErrorMessageList($errorlist);
 
         $this->load->model('CUSTOMER/ACCESS CARD/Mdl_access_card_search_update');
         $query=$this->Mdl_access_card_search_update->Initial_data($ErrorMessage);

@@ -1,15 +1,15 @@
 <?php
-class Mdl_existing_unit extends CI_Model{
+class Mdl_unit_existing_unit extends CI_Model{
     public function Initial_data($EU_unitno,$EU_flag_unitno_err_roomstamp){
-        $this->load->model('EILIB/Common_function');
+        $this->load->model('EILIB/Mdl_eilib_common_function');
         $EU_TB_roombox=[];
         $EU_TB_stampbox=[];
         $EU_arr_nonactive=[];
         $ErrorMessage='';
         $EU_unitnoarr='';
         if($EU_flag_unitno_err_roomstamp=='EU_flag_unitno_errormsg'){
-            $ErrorMessage= $this->Common_function->getErrorMessageList('2,8,10,3,14,30,308,316,324,399,401,463,464,466,467');
-            $EU_unitnoarr=$this->Common_function->GetActiveUnit();
+            $ErrorMessage= $this->Mdl_eilib_common_function->getErrorMessageList('2,8,10,3,14,30,308,316,324,399,401,463,464,466,467');
+            $EU_unitnoarr=$this->Mdl_eilib_common_function->GetActiveUnit();
             $EU_select_nonactive = "SELECT * FROM VW_NON_ACTIVE_UNIT ORDER BY UNIT_NO ASC";
             $EU_rs_nonactive = $this->db->query($EU_select_nonactive);
             foreach($EU_rs_nonactive->result_array() as $row)
@@ -37,24 +37,24 @@ class Mdl_existing_unit extends CI_Model{
         return [$EU_result];
     }
     public function EU_already_exists($EU_alreadyexist,$EU_source){
-        $this->load->model('EILIB/Common_function');
+        $this->load->model('EILIB/Mdl_eilib_common_function');
         $EU_flag=[];
         if($EU_source=="EU_tb_accesscard"){
-            $EU_flag=$this->Common_function->Check_ExistsCard($EU_alreadyexist);
+            $EU_flag=$this->Mdl_eilib_common_function->Check_ExistsCard($EU_alreadyexist);
         }
         else if($EU_source=="EU_tb_newroomtype"){
           $UC_chkroomtype='';
           $UC_chkroomtype=$this->db->escape_like_str($EU_alreadyexist);
-          $EU_flag=$this->Common_function->Check_ExistsRmType($UC_chkroomtype);
+          $EU_flag=$this->Mdl_eilib_common_function->Check_ExistsRmType($UC_chkroomtype);
         }
         else if($EU_source=="EU_tb_newstamptype"){
             $UC_chkstamptype='';
             $UC_chkstamptype=$this->db->escape_like_str($EU_alreadyexist);
-            $EU_flag=$this->Common_function->Check_ExistsStampduty($UC_chkstamptype);
+            $EU_flag=$this->Mdl_eilib_common_function->Check_ExistsStampduty($UC_chkstamptype);
         }
         else if(($EU_source=="UNIT_tb_doorcode")||($EU_source=="UNIT_tb_weblogin")){
             $EU_flag[0]=1;
-            $EU_flag=$this->Common_function->Check_ExistsDoorcodeLogin($EU_alreadyexist,$EU_source);
+            $EU_flag=$this->Mdl_eilib_common_function->Check_ExistsDoorcodeLogin($EU_alreadyexist,$EU_source);
         }
         return $EU_flag;
     }

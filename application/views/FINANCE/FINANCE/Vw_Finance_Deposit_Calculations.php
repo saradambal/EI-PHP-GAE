@@ -23,7 +23,7 @@ require_once "Header.php";
         // initial data
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('Ctrl_Deposit_Calculations/Initialdata'); ?>",
+                url: "<?php echo site_url('Ctrl_Finance_Deposit_Calculations/Initialdata'); ?>",
                 success: function(data) {
                     var initial_values=JSON.parse(data);
                     DDC_loadunitlistbox(initial_values);
@@ -52,11 +52,12 @@ require_once "Header.php";
                 var formelement=$('#DD_calculationform').serialize();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Deposit_Calculations/DDC_Dep_Cal_submit'); ?>",
+                    url: "<?php echo site_url('Ctrl_Finance_Deposit_Calculations/DDC_Dep_Cal_submit'); ?>",
                     data: formelement,
                     success: function(calcdata) {
+                        alert(calcdata)
                         var calc_values=JSON.parse(calcdata);
-                        DDC_conformationmsg(calc_values);
+//                        DDC_conformationmsg(calc_values);
                     },
                     error:function(data){
                         var errordata=(JSON.stringify(data));
@@ -305,7 +306,7 @@ require_once "Header.php";
                     var custid=idarray[0].split('-');
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Deposit_Calculations/DDC_loaddatebox'); ?>",
+                        url: "<?php echo site_url('Ctrl_Finance_Deposit_Calculations/DDC_loaddatebox'); ?>",
                         data: {'custid':custid[1],'custname':$('#DDC_lb_customerselect').val(),'unitno':$('#DDC_lb_unitselect').val()},
                         success: function(dateval) {
                             var datevalues=JSON.parse(dateval);
@@ -333,7 +334,7 @@ require_once "Header.php";
                 $('#DDC_recvertable').hide();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Deposit_Calculations/DDC_loaddatebox'); ?>",
+                    url: "<?php echo site_url('Ctrl_Finance_Deposit_Calculations/DDC_loaddatebox'); ?>",
                     data: {'custid':id,'custname':DDC_name,'unitno':DDC_unitno},
                     success: function(dateval) {
                         var datevalues=JSON.parse(dateval);
