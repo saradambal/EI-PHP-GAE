@@ -5,6 +5,6 @@ class Welcome extends CI_Controller {
 
 	public function index()
 	{
-		$this->load->view('FORM_MENU');
+		$this->load->view('ACCESS RIGHTS/Vw_Menu');
 	}
 }

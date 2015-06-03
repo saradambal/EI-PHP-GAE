@@ -43,6 +43,8 @@ include "Header.php";
         //FAILURE FUNCTION END
         //DOCUMENT READY FUNCTION START
         $(document).ready(function(){
+            $(".preloader").hide();
+            $('#spacewidth').height('0%');
             $.ajax({
               type:'post',
               url:"<?php echo base_url();?>"+"index.php/Ctrl_Report_Report/REP_getdomain_err",

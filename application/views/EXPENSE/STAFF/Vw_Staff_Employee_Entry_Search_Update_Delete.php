@@ -320,7 +320,7 @@ include 'Header.php';
                 }
             });
             //CLASS USED FOR TREE VIEW//
-            $(document).on("click",'.exp,.collapse', function (){
+            $(document).on("click",'.exp,.collapse1', function (){
                 var id=$(this).attr("id")
                 var btnid=id.split("_");
                 var menu_btnid=btnid[1]

@@ -7,20 +7,20 @@ class Ctrl_Menu extends CI_Controller{
     public function index()
     {
         $this->load->helper('form');
-        $this->load->view('Vw_Menu');
+        $this->load->view('ACCESS RIGHTS/Vw_Menu');
     }
     public function Initaildatas()
     {
-        $this->load->model('Common');
+        $this->load->model('Eilib/Common_function');
         $formname=$_REQUEST['Formname'];
         $errorlist=$_REQUEST['ErrorList'];
-        $ErrorMessage= $this->Common->getErrorMessageList($errorlist);
+        $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
         echo json_encode($ErrorMessage);
     }
     public function fetchdata()
     {
         global $USERSTAMP;
-        $this->load->model('Mdl_menu');
+        $this->load->model('ACCESS RIGHTS/Mdl_menu');
         $menu_data=$this->Mdl_menu->fetch_data($USERSTAMP);
         echo $menu_data;
     }

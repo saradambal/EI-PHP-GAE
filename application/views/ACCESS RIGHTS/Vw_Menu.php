@@ -44,7 +44,6 @@ function updateClock ( )
             success: function(data){
                 $("#calendarTitle").text('');
                 value_err_array=JSON.parse(data);
-                alert(value_err_array[0].EMC_DATA)
             },
             error: function(data){
                 alert('error in getting'+JSON.stringify(data));
@@ -63,7 +62,6 @@ function updateClock ( )
             if(Page_url!='Ctrl_Error_Page'){
                 $(".preloader").show();
                 $('#menu_frame').load("<?php echo site_url(); ?>" + "/"+Page_url+"/index");
-<!--               window.location.href="--><?php //echo site_url(); ?><!--" + "/"+Page_url+"/index";-->
             }
             else
             {
@@ -81,18 +79,11 @@ function updateClock ( )
             type: "POST",
             'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Menu/fetchdata",
             success: function(data){
-//                alert(JSON.stringify(data))
                 var value_array=JSON.parse(data);
                 all_menu_array= value_array;
                 userstamp=all_menu_array[1];
-//                alert(all_menu_array[6][0] +'alert')
                 LOGO=all_menu_array[6][0];
                 iframe=all_menu_array[6][1];
-//                alert(value_err_array[0].EMC_DATA)
-//                LOGO='images/customLogo.gif'//all_menu_array[6].DATA;
-//                iframe='https://www.google.com/calendar/embed?showTitle=0;src=ssomens.com_sf0vt1s2tultotlshpcsiob75o@group.calendar.google.com&ctz=Asia/Calcutta'
-//                alert(LOGO)
-//                $('#logo').val(LOGO)
                 $('img').each(function() {
                     $(this).attr('src', LOGO + $(this).attr('src'));
                 });
@@ -198,9 +189,7 @@ function updateClock ( )
 </head>
 <body>
 <div style="background-color: #EEF8Fb;height:20%">
-<!--    <table><tr><td><img src="images/customLogo.gif" /></td>-->
     <table><tr><td><img id="img" src=""/></td>
-<!--    <td><h1><b>EXPATS INTEGRATED CRM - DEV</b></h1></td>-->
         </tr></table>
 </div>
 <div>
@@ -210,15 +199,9 @@ function updateClock ( )
     </tr>
 </table>
 </div>
-<!--<iframe src="https://www.google.com/calendar/embed?showTitle=0;src=ssomens.com_sf0vt1s2tultotlshpcsiob75o@group.calendar.google.com&ctz=Asia/Calcutta" style="border: 0" width="1370" height="680" frameborder="0" scrolling="no"></iframe>-->
-<!--<iframe src="https://www.google.com/calendar/embed?src=ssomens.com_i2vsha8v0iib4p28m9990ukl38%40group.calendar.google.com&ctz=Asia/Calcutta" style="border: 0" width="800" height="600" frameborder="0" scrolling="no"></iframe>-->
 <iframe src="" style="border: 0" width="1350" height="600" frameborder="0" scrolling="no"></iframe>
 <div class="wrapper">
-
-<!--    <div  id="confrmmaskpanel" class="preloader MaskPanel" hidden></div>-->
-<!--    <div  id="mainmaskpanel" class="preloader MaskPanel" hidden><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif"  /></div></div></div>-->
     <div class="preloader"><span class="Centerer"></span><img class="preloaderimg"/> </div>
-
     <nav class="navbar navbar-default" id="menu_nav">
             <div class="navbar-header">
                 <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
