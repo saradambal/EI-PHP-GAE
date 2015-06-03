@@ -7,38 +7,38 @@ Class Ctrl_Customer_Creation extends CI_Controller
 {
     public function Index()
     {
-        $this->load->view('CUSTOMER/Vw_Customer_Creation');
+        $this->load->view('CUSTOMER/CUSTOMER/Vw_Customer_Creation');
     }
     public function Customer_Initaildatas()
     {
-        $this->load->model('EILIB/Common_function');
+        $this->load->model('EILIB/Mdl_eilib_common_function');
         $formname=$_REQUEST['Formname'];
         $errorlist=$_REQUEST['ErrorList'];
-        $unit = $this->Common_function->getAllActiveUnits();
-        $nationality = $this->Common_function->getNationality();
-        $EmailList= $this->Common_function->getEmailId($formname);
-        $Option= $this->Common_function->getOption();
-        $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
-        $Timelist=$this->Common_function->getTimeList();
-        $proratedlabel=$this->Common_function->CUST_getProratedWaivedValue();
+        $unit = $this->Mdl_eilib_common_function->getAllActiveUnits();
+        $nationality = $this->Mdl_eilib_common_function->getNationality();
+        $EmailList= $this->Mdl_eilib_common_function->getEmailId($formname);
+        $Option= $this->Mdl_eilib_common_function->getOption();
+        $ErrorMessage= $this->Mdl_eilib_common_function->getErrorMessageList($errorlist);
+        $Timelist=$this->Mdl_eilib_common_function->getTimeList();
+        $proratedlabel=$this->Mdl_eilib_common_function->CUST_getProratedWaivedValue();
         $Values=array($unit,$nationality,$EmailList,$Option,$ErrorMessage,$Timelist,$proratedlabel);
         echo json_encode($Values);
     }
     public function CustomerRoomTypeLoad()
     {
-        $this->load->model('EILIB/Common_function');
+        $this->load->model('EILIB/Mdl_eilib_common_function');
         $unit=$_REQUEST['Unit'];
-        $RoomType=$this->Common_function->getUnitRoomType($unit);
-        $UnitDates=$this->Common_function->getUnit_Start_EndDate($unit);
-        $CustomerStartDate=$this->Common_function->getCustomerStartDate();
+        $RoomType=$this->Mdl_eilib_common_function->getUnitRoomType($unit);
+        $UnitDates=$this->Mdl_eilib_common_function->getUnit_Start_EndDate($unit);
+        $CustomerStartDate=$this->Mdl_eilib_common_function->getCustomerStartDate();
         $Values=array($RoomType,$UnitDates,$CustomerStartDate);
         echo json_encode($Values);
     }
     public function UnitCardNumbers()
     {
-        $this->load->model('EILIB/Common_function');
+        $this->load->model('EILIB/Mdl_eilib_common_function');
         $unit=$_REQUEST['Unit'];
-        $CardNumbers=$this->Common_function->CUST_getunitCardNo($unit);
+        $CardNumbers=$this->Mdl_eilib_common_function->CUST_getunitCardNo($unit);
         echo json_encode($CardNumbers);
     }
     public function CustomerCreationSave()
@@ -48,15 +48,15 @@ Class Ctrl_Customer_Creation extends CI_Controller
         $this->load->library('Google');
         $Startdate=$_POST['CCRE_Startdate'];
         $Enddate=$_POST['CCRE_Enddate'];
-        $this->load->model('EILIB/Common_function');
-        $Leaseperiod=$this->Common_function->getLeasePeriod($Startdate,$Enddate);
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $Leaseperiod=$this->Mdl_eilib_common_function->getLeasePeriod($Startdate,$Enddate);
         $Quoters=0.31;//$this->Common_function->quarterCalc(date('Y-m-d',strtotime($Startdate)), date('Y-m-d',strtotime($Enddate)));
-        $service=$this->Common_function->get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+        $service=$this->Mdl_eilib_common_function->get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
         $this->load->library('Google');
-        $this->load->model('EILIB/Calender');
-        $cal= $this->Calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
-        $this->load->model('CUSTOMER/Mdl_customercreation');
-        $Create_confirm=$this->Mdl_customercreation->Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters,$service,$cal);
+        $this->load->model('EILIB/Mdl_eilib_calender');
+        $cal= $this->Mdl_eilib_calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_creation');
+        $Create_confirm=$this->Mdl_customer_creation->Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters,$service,$cal);
         print_r($Create_confirm);
     }
 
@@ -64,8 +64,8 @@ Class Ctrl_Customer_Creation extends CI_Controller
     {
         $Startdate=$_POST['SD'];
         $Enddate=$_POST['ED'];
-        $this->load->model('EILIB/Common_function');
-        $Prorated=$this->Common_function->CUST_chkProrated($Startdate,$Enddate);
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $Prorated=$this->Mdl_eilib_common_function->CUST_chkProrated($Startdate,$Enddate);
         echo $Prorated;
     }
 
