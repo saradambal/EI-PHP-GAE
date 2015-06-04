@@ -847,7 +847,7 @@ try{
         }
     }
     $URSRC_all_fileid_array=array_values(array_unique($URSRC_all_fileid_array));
-    $service=$this->get_service();
+    $service=$this->get_service_document();
     for($i=0;$i<count($URSRC_all_fileid_array);$i++){
 //            $file_type=$this->get_MIME_type($service,$URSRC_all_fileid_array[$i]);//DriveApp.getFileById(URSRC_all_fileid_array[i]).getMimeType();
         $Folder_editor1=$this->URSRC_GetAllEditors($service,$URSRC_all_fileid_array[$i]);
@@ -939,7 +939,7 @@ try{
             $URSRC_fileid_array[]=($row["FP_FOLDER_ID"]);
         }
     }
-    $service=$this->get_service();
+    $service=$this->get_service_document();
     for($i=0;$i<count($URSRC_fileid_array);$i++)
     {
         $Folder_editor1=$this->URSRC_GetAllEditors($service,$URSRC_fileid_array[$i]);

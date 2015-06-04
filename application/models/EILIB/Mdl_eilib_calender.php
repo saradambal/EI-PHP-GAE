@@ -25,7 +25,7 @@ class Mdl_eilib_calender  extends CI_Model {
         return array($start,$end);
     }
 //COMMON FUNCTION TO CREATE CALENDAR ID
-    public function createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
+    public function createCalendarService(){
         $this->load->model('Eilib/Mdl_eilib_common_function');
         $arrClientId= $this->Mdl_eilib_common_function->getCalendarIdCilentIdService();
         $drive = new Google_Client();
