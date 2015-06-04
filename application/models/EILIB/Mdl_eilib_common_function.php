@@ -7,7 +7,7 @@
 */
 //******************************************COMMON FUNCTION********************************************//
 //DONE BY:SARADAMBAL
-//VER 5.8 -SD:04/06/2015 ED:04/06/2015,ADDED FUNCTION TO GET USERSTAMP
+//VER 5.8 -SD:04/06/2015 ED:04/06/2015,ADDED FUNCTION TO GET USERSTAMP AND REMOVED PARAMS FOR SERVICE DOCUMENT
 //VER 5.5-SD:03/06/2015 ED:03/06/2015,REMOVED QUARTER CALCULATION
 //VER 0.02-SD:02/06/2015 ED:02/06/2015,GET THE LOGO & CALENDAR IMAGE PATH AND THEN GET THE SERVICE ID
 //VER 0.01-SD:08/05/2015 ED:09/05/2015,COMPLETED COMMON FUNCTION
@@ -847,7 +847,7 @@ try{
         }
     }
     $URSRC_all_fileid_array=array_values(array_unique($URSRC_all_fileid_array));
-    $service=$this->get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+    $service=$this->get_service();
     for($i=0;$i<count($URSRC_all_fileid_array);$i++){
 //            $file_type=$this->get_MIME_type($service,$URSRC_all_fileid_array[$i]);//DriveApp.getFileById(URSRC_all_fileid_array[i]).getMimeType();
         $Folder_editor1=$this->URSRC_GetAllEditors($service,$URSRC_all_fileid_array[$i]);
@@ -939,7 +939,7 @@ try{
             $URSRC_fileid_array[]=($row["FP_FOLDER_ID"]);
         }
     }
-    $service=$this->get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+    $service=$this->get_service();
     for($i=0;$i<count($URSRC_fileid_array);$i++)
     {
         $Folder_editor1=$this->URSRC_GetAllEditors($service,$URSRC_fileid_array[$i]);
@@ -957,20 +957,21 @@ catch(Exception $e){
 }
 return $URSRC_sharedocflag;
 }
-public function get_service($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
-$drive = new Google_Client();
-$drive->setClientId($ClientId);
-$drive->setClientSecret($ClientSecret);
-$drive->setRedirectUri($RedirectUri);
-$drive->setScopes(array($DriveScopes,$CalenderScopes));
-$drive->setAccessType('online');
-$authUrl = $drive->createAuthUrl();
-$refresh_token= $Refresh_Token;
-$drive->refreshToken($refresh_token);
-$service = new Google_Service_Drive($drive);
-return $service;
-}
-
+//FUNCTION TO GET THE DOCUMENT SERVICE
+    public function get_service_document(){
+        $ClientId=  $this->getCalendarIdCilentIdService();
+        $drive = new Google_Client();
+        $drive->setClientId($ClientId[0]);
+        $drive->setClientSecret($ClientId[1]);
+        $drive->setRedirectUri($ClientId[2]);
+        $drive->setScopes(array($ClientId[3],$ClientId[4]));
+        $drive->setAccessType('online');
+        $authUrl = $drive->createAuthUrl();
+        $refresh_token= $ClientId[5];
+        $drive->refreshToken($refresh_token);
+        $service = new Google_Service_Drive($drive);
+        return $service;
+    }
 public function URSRC_GetAllEditors($service,$fileid){
 
 try {
@@ -1044,8 +1045,8 @@ return $emp_uploadfilenamelist;
 }
 //FUNCTION TO SHARE/UNSHARE CALENDAR
 function USRC_shareUnSharecalender($URSRC_loginid,$role,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
-$this->load->model('EILIB/Calender');
-$calendarId=$this->Calender->GetEICalendarId();
+$this->load->model('EILIB/Mdl_eilib_calender');
+$calendarId=$this->Mdl_eilib_calender->GetEICalendarId();
 try{
     $cal = $this->Calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
     $rule = new Google_Service_Calendar_AclRule();

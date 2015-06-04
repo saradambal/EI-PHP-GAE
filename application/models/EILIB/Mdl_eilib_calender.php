@@ -7,6 +7,7 @@
  */
 //******************************************CALENDER********************************************//
 //DONE BY:SARADAMBAL
+//VER 5.8 -SD:04/06/2015 ED:04/06/2015,CHANGED FUNCTION FOR GETTING CAL SERVICE
 //VER 5.5-SD:03/06/2015 ED:03/06/2015,CHANGED FILE NAME
 //VER 0.01-SD:14/05/2015 ED:20/02/2015,COMPLETED CALENDER CALCULATION
 //*******************************************************************************************************//
@@ -25,14 +26,16 @@ class Mdl_eilib_calender  extends CI_Model {
     }
 //COMMON FUNCTION TO CREATE CALENDAR ID
     public function createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
+        $this->load->model('Eilib/Mdl_eilib_common_function');
+        $arrClientId= $this->Mdl_eilib_common_function->getCalendarIdCilentIdService();
         $drive = new Google_Client();
-        $drive->setClientId($ClientId);
-        $drive->setClientSecret($ClientSecret);
-        $drive->setRedirectUri($RedirectUri);
-        $drive->setScopes(array($DriveScopes,$CalenderScopes));
+        $drive->setClientId($arrClientId[0]);
+        $drive->setClientSecret($arrClientId[1]);
+        $drive->setRedirectUri($arrClientId[2]);
+        $drive->setScopes(array($arrClientId[3],$arrClientId[4]));
         $drive->setAccessType('online');
         $authUrl = $drive->createAuthUrl();
-        $refresh_token= $Refresh_Token;
+        $refresh_token= $arrClientId[5];
         $drive->refreshToken($refresh_token);
         $cal = new Google_Service_Calendar($drive);
         return $cal;
