@@ -55,7 +55,6 @@ require_once "Header.php";
                     url: "<?php echo site_url('Ctrl_Finance_Deposit_Calculations/DDC_Dep_Cal_submit'); ?>",
                     data: formelement,
                     success: function(calcdata) {
-                        alert(calcdata)
                         var calc_values=JSON.parse(calcdata);
 //                        DDC_conformationmsg(calc_values);
                     },

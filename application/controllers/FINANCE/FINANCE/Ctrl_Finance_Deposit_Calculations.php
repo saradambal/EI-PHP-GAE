@@ -1,8 +1,4 @@
 <?php
-include 'GET_USERSTAMP.php';
-include 'GET_CONFIG.php';
-$USERSTAMP=$UserStamp;
-$timeZoneFrmt=$timeZoneFormat;
 class Ctrl_Finance_Deposit_Calculations extends CI_Controller{
     public function index(){
         $this->load->view('FINANCE/FINANCE/Vw_Finance_Deposit_Calculations');

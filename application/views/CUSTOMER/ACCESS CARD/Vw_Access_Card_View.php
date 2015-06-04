@@ -17,6 +17,7 @@ require_once "Header.php";
     <script type="text/javascript">
     // document ready function
         $(document).ready(function(){
+            var ctrl_cardview_url="<?php echo site_url('CUSTOMER/ACCESSCARD/Ctrl_Access_Card_View'); ?>";
         // initial data
             $('#spacewidth').height('0%');
             var CV_errorAarray=[];
@@ -26,12 +27,16 @@ require_once "Header.php";
             var custnameid='';
             $.ajax({
                 type:'POST',
-                url:"<?php echo site_url('Ctrl_Access_Card_View/Initialdata'); ?>",
+                url:ctrl_cardview_url+'/Initialdata',
                 data:{'ErrorList':'51,47,18,96,97,98,248,327,249,369'},
                 success: function(data){
                     var value_array=JSON.parse(data);
                     CV_load_initial_values(value_array);
                     CV_customername_autocompleteresult(value_array[4]);
+                },
+                error:function(data){
+                    var errordata=(JSON.stringify(data));
+                    show_msgbox("VIEW ALL CARD",errordata,'error',false);
                 }
             });
         // FUNCTION TO LOAD INITIAL VALUES
@@ -171,12 +176,16 @@ require_once "Header.php";
                     $('#CV_tble_id > div').remove();
                     $.ajax({
                         type:'POST',
-                        url:"<?php echo site_url('Ctrl_Access_Card_View/Cardnodetails'); ?>",
+                        url:ctrl_cardview_url+'/Cardnodetails',
                         data:{'unitno':'','cardno':'','option':$(this).val()},
                         success: function(alldata){
                             var allvalue_array=JSON.parse(alldata);
                             CV_loadcardno_details(allvalue_array);
                             $("html, body").animate({ scrollTop: 1000 }, "slow");
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("VIEW ALL CARD",errordata,'error',false);
                         }
                     });
                 }
@@ -213,12 +222,16 @@ require_once "Header.php";
                         $(".preloader").show();
                         $.ajax({
                             type:'POST',
-                            url:"<?php echo site_url('Ctrl_Access_Card_View/Cardnodetails'); ?>",
+                            url:ctrl_cardview_url+'/Cardnodetails',
                             data:{'unitno':CV_unitno,'cardno':CV_cardno,'option':CV_searchoption},
                             success: function(carddata){
                                 var cardvalue_array=JSON.parse(carddata);
                                 CV_loadcardno_details(cardvalue_array);
                                 $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                            },
+                            error:function(data){
+                                var errordata=(JSON.stringify(data));
+                                show_msgbox("VIEW ALL CARD",errordata,'error',false);
                             }
                         });
                     }
@@ -232,11 +245,15 @@ require_once "Header.php";
                     $(".preloader").show();
                     $.ajax({
                         type:'POST',
-                        url:"<?php echo site_url('Ctrl_Access_Card_View/Customerid'); ?>",
+                        url:ctrl_cardview_url+'/Customerid',
                         data:{'CV_name':CV_name},
                         success: function(custdata){
                             var custvalue_array=JSON.parse(custdata);
                             CV_CustId(custvalue_array);
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("VIEW ALL CARD",errordata,'error',false);
                         }
                     });
                     $('#CV_div_htmltable').hide();
@@ -268,12 +285,16 @@ require_once "Header.php";
                     custnameid=CV_custarray[0];
                     $.ajax({
                         type:'POST',
-                        url:"<?php echo site_url('Ctrl_Access_Card_View/Customervalues'); ?>",
+                        url:ctrl_cardview_url+'/Customervalues',
                         data:{'CV_cid':CV_custarray[0]},
                         success: function(custdetaildata){
                             var custdetail_array=JSON.parse(custdetaildata);
                             CV_load_customerdetails(custdetail_array);
                             $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("VIEW ALL CARD",errordata,'error',false);
                         }
                     });
                     $('#CV_tble_id > div').remove();
@@ -292,12 +313,16 @@ require_once "Header.php";
                 //HANDLER TO GET CUSTOMER DETAIL'S
                 $.ajax({
                     type:'POST',
-                    url:"<?php echo site_url('Ctrl_Access_Card_View/Customervalues'); ?>",
+                    url:ctrl_cardview_url+'/Customervalues',
                     data:{'CV_cid':CV_customer_id},
                     success: function(custdetaildata){
                         var custdetail_array=JSON.parse(custdetaildata);
                         CV_load_customerdetails(custdetail_array);
                         $("html, body").animate({ scrollTop: $(document).height() }, "slow");
+                    },
+                    error:function(data){
+                        var errordata=(JSON.stringify(data));
+                        show_msgbox("VIEW ALL CARD",errordata,'error',false);
                     }
                 });
             });

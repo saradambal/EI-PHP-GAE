@@ -6,6 +6,7 @@ require_once "Header.php";
     <script type="text/javascript">
         // document ready function
         $(document).ready(function(){
+            var ctrl_cardreplace_url="<?php echo site_url('CUSTOMER/ACCESSCARD/Ctrl_Access_Card_Replace'); ?>";
         // initial data
             $('textarea').autogrow({onInitialize: true});
             $('#spacewidth').height('0%');
@@ -17,11 +18,15 @@ require_once "Header.php";
             var CR_comment;
             $.ajax({
                 type:'POST',
-                url:"<?php echo site_url('Ctrl_Access_Card_Replace/Initialdata'); ?>",
+                url:ctrl_cardreplace_url+'/Initialdata',
                 data:{'ErrorList':'100,99,28,401'},
                 success: function(data){
                     var value_array=JSON.parse(data);
                     CR_load_initial_values(value_array);
+                },
+                error:function(data){
+                    var errordata=(JSON.stringify(data));
+                    show_msgbox("REPLACE OF ACCESS CARD",errordata,'error',false);
                 }
             });
             function unique(a) {
@@ -77,11 +82,15 @@ require_once "Header.php";
                     $('#CR_custid > div').remove();
                     $.ajax({
                         type:'POST',
-                        url:"<?php echo site_url('Ctrl_Access_Card_Replace/Avialablecard'); ?>",
+                        url:ctrl_cardreplace_url+'/Avialablecard',
                         data:{'unitno':CR_unit},
                         success: function(carddata){
                             var card_array=JSON.parse(carddata);
                             CR_avialablecard(card_array);
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("REPLACE OF ACCESS CARD",errordata,'error',false);
                         }
                     });
                 }
@@ -299,11 +308,15 @@ require_once "Header.php";
                 var formelement=$('#cardreplace_form').serialize();
                 $.ajax({
                     type:'POST',
-                    url:"<?php echo site_url('Ctrl_Access_Card_Replace/Replacecardsave'); ?>",
+                    url:ctrl_cardreplace_url+'/Replacecardsave',
                     data:formelement,
                     success: function(CR_respons){
                         var card_array=JSON.parse(CR_respons);
                         CR_clear(card_array);
+                    },
+                    error:function(data){
+                        var errordata=(JSON.stringify(data));
+                        show_msgbox("REPLACE OF ACCESS CARD",errordata,'error',false);
                     }
                 });
             });

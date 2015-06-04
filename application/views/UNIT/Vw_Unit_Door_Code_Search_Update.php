@@ -11,6 +11,7 @@ require_once "Header.php";
     <script type="text/javascript">
     // document ready function
         $(document).ready(function(){
+            var ctrl_unitdoorcode_url="<?php echo site_url('UNIT/Ctrl_Unit_Door_Code_Search_Update'); ?>";
             var DCSU_doorcode_val='';
             var DCSU_weblogin_val='';
             var DCSU_webpass_val='';
@@ -24,7 +25,7 @@ require_once "Header.php";
         // initial data
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('Ctrl_Unit_Door_Code_Search_Update/Initialdata'); ?>",
+                url: ctrl_unitdoorcode_url+'/Initialdata',
                 success: function(data) {
                     var initial_values=JSON.parse(data);
                     DCSU_unitno_errSuccess(initial_values);
@@ -65,7 +66,7 @@ require_once "Header.php";
                     var DCSU_flag='DCSU_flex';
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Door_Code_Search_Update/DCSU_logindetails'); ?>",
+                        url: ctrl_unitdoorcode_url+'/DCSU_logindetails',
                         data: {'DCSU_unitnumber':DCSU_unitnumber,'DCSU_flag':DCSU_flag},
                         success: function(doordata) {
                             var door_values=JSON.parse(doordata);
@@ -204,7 +205,7 @@ require_once "Header.php";
             function callExistsDoorcode(values,flag){
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Unit_Door_Code_Search_Update/DCSU_ExistsDoorcode'); ?>",
+                    url: ctrl_unitdoorcode_url+'/DCSU_ExistsDoorcode',
                     data: {'val':values,'flag':flag},
                     success: function(exitstdata) {
                         var exitst_data=JSON.parse(exitstdata);
@@ -269,7 +270,7 @@ require_once "Header.php";
             function DCSU_update_Doorcode(DCSU_unitnumber,DCSU_doorcode,DCSU_weblogin,DCSU_webpass){
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Unit_Door_Code_Search_Update/DCSU_updateDoorcode'); ?>",
+                    url: ctrl_unitdoorcode_url+'/DCSU_updateDoorcode',
                     data: {'DCSU_login_id':DCSU_login_id,'DCSU_unitnumber':DCSU_unitnumber,'DCSU_doorcode':DCSU_doorcode,'DCSU_weblogin':DCSU_weblogin,'DCSU_webpass':DCSU_webpass},
                     success: function(data){
                         $(".preloader").hide();

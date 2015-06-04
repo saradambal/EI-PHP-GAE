@@ -21,6 +21,7 @@ require_once "Header.php";
     // document ready function
     var ErrorControl ={AmountCompare:'InValid'};
     $(document).ready(function(){
+        var ctrl_unitcreate_url="<?php echo site_url('UNIT/Ctrl_Unit_Creation_Search_Update'); ?>";
         // initial data
             $('.preloader').hide();
             $('#spacewidth').height('0%');
@@ -76,7 +77,7 @@ require_once "Header.php";
                     $('.preloader').show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/Initialdata'); ?>",
+                        url: ctrl_unitcreate_url+'/Initialdata',
                         data:{'flag':'UC_flag_notcreation'},
                         success: function(data) {
                             var initial_values=JSON.parse(data);
@@ -94,7 +95,7 @@ require_once "Header.php";
                     $('.preloader').show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/USU_Initialdata'); ?>",
+                        url: ctrl_unitcreate_url+'/USU_Initialdata',
                         success: function(usudata) {
                             var usuinitial_values=JSON.parse(usudata);
                             USU_success(usuinitial_values);
@@ -198,7 +199,7 @@ require_once "Header.php";
                     var unitno=$('#UC_tb_unitno').val();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/Check_existinginput'); ?>",
+                        url: ctrl_unitcreate_url+'/Check_existinginput',
                         data:{'source':UC_source,'chkinput':unitno},
                         success: function(unitdata) {
                             var unit_values=JSON.parse(unitdata);
@@ -252,7 +253,7 @@ require_once "Header.php";
                     var accesscardno=$('#UC_tb_accesscard').val();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/Check_existinginput'); ?>",
+                        url: ctrl_unitcreate_url+'/Check_existinginput',
                         data:{'source':UC_source,'chkinput':accesscardno},
                         success: function(carddata){
                             var card_values=JSON.parse(carddata);
@@ -316,7 +317,7 @@ require_once "Header.php";
                     UC_flag_room='true';
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/Initialdata'); ?>",
+                        url: ctrl_unitcreate_url+'/Initialdata',
                         data:{'flag':'UC_flag_roomtype'},
                         success: function(data) {
                             var initial_values=JSON.parse(data);
@@ -353,7 +354,7 @@ require_once "Header.php";
                     UC_flag_stamp='true';
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/Initialdata'); ?>",
+                        url: ctrl_unitcreate_url+'/Initialdata',
                         data:{'flag':'UC_flag_stamptype'},
                         success: function(data) {
                             var initial_values=JSON.parse(data);
@@ -391,7 +392,7 @@ require_once "Header.php";
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/Check_existinginput'); ?>",
+                        url: ctrl_unitcreate_url+'/Check_existinginput',
                         data:{'source':UC_source,'chkinput':UC_newroom},
                         success: function(roomdata){
                             var room_values=JSON.parse(roomdata);
@@ -439,7 +440,7 @@ require_once "Header.php";
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/Check_existinginput'); ?>",
+                        url: ctrl_unitcreate_url+'/Check_existinginput',
                         data:{'source':UC_source,'chkinput':UC_newstamp},
                         success: function(stampdata){
                             var stamp_values=JSON.parse(stampdata);
@@ -506,7 +507,7 @@ require_once "Header.php";
                 $("#UC_btn_submit").attr("disabled", "disabled");
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/Check_existinginput'); ?>",
+                    url: ctrl_unitcreate_url+'/Check_existinginput',
                     data:{'source':UC_attrid,'chkinput':UC_value},
                     success: function(doorlogindata){
                         var door_logindata=JSON.parse(doorlogindata);
@@ -571,7 +572,7 @@ require_once "Header.php";
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/Initialdata'); ?>",
+                        url: ctrl_unitcreate_url+'/Initialdata',
                         data:{'flag':'UC_flag_notcreation'},
                         success: function(data) {
                             var initial_values=JSON.parse(data);
@@ -597,7 +598,7 @@ require_once "Header.php";
                 var formelement=$('#unit_createupdate_form').serialize();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/Unitsaveprocess'); ?>",
+                    url: ctrl_unitcreate_url+'/Unitsaveprocess',
                     data: formelement,
                     success: function(savedata) {
                         var initial_values=JSON.parse(savedata);
@@ -666,7 +667,7 @@ require_once "Header.php";
                         var formelement=$('#unit_createupdate_form').serialize();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/USU_flexttable'); ?>",
+                            url: ctrl_unitcreate_url+'/USU_flexttable',
                             data: formelement,
                             success: function(flexdata) {
                                 var flxsarray=JSON.parse(flexdata);
@@ -683,7 +684,7 @@ require_once "Header.php";
                     {
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/USU_Searchbyoption'); ?>",
+                            url: ctrl_unitcreate_url+'/USU_Searchbyoption',
                             data: {'option':USU_unit_optionfetch,'USU_parentfunc_load':'USU_parentfunc_load','USU_not_load_lb':'USU_not_load_lb'},
                             success: function(data) {
                                 var valuesarray=JSON.parse(data);
@@ -851,7 +852,7 @@ require_once "Header.php";
                         $(".preloader").show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/USU_flexttable'); ?>",
+                            url: ctrl_unitcreate_url+'/USU_flexttable',
                             data: formelement,
                             success: function(flexdata) {
                                 var flxsarray=JSON.parse(flexdata);
@@ -877,7 +878,7 @@ require_once "Header.php";
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/USU_AlreadyExists'); ?>",
+                        url: ctrl_unitcreate_url+'/USU_AlreadyExists',
                         data: {'inventory_unitno':$('#USU_lb_unitno').val(),'typeofcard':$('#USU_lb_typeofcard').val(),'flag_card_unitno':'USU_flag_check_cardunitno','USU_parent_func':''},
                         success: function(existdata) {
                             var exist_data=JSON.parse(existdata);
@@ -903,7 +904,7 @@ require_once "Header.php";
                     var formelement=$('#unit_createupdate_form').serialize();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/USU_flexttable'); ?>",
+                        url: ctrl_unitcreate_url+'/USU_flexttable',
                         data: formelement,
                         success: function(flexdata) {
                             var flxsarray=JSON.parse(flexdata);
@@ -937,7 +938,7 @@ require_once "Header.php";
                 var formelement=$('#unit_createupdate_form').serialize();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/USU_flexttable'); ?>",
+                    url: ctrl_unitcreate_url+'/USU_flexttable',
                     data: formelement,
                     success: function(flexdata) {
                         var flxsarray=JSON.parse(flexdata);
@@ -1256,7 +1257,7 @@ require_once "Header.php";
                         $(".preloader").show();//CHECKING UNIT NO IF TRANSACTION IS THERE
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/USU_AlreadyExists'); ?>",
+                            url: ctrl_unitcreate_url+'/USU_AlreadyExists',
                             data: {'inventory_unitno':$('#USU_tb_unitno').val(),'typeofcard':'','flag_card_unitno':'USU_flag_transac_check_unitno','USU_parent_func':''},
                             success: function(existdata) {
                                 var exist_data=JSON.parse(existdata);
@@ -1360,7 +1361,7 @@ require_once "Header.php";
                         $("#USU_div_updateform").hide();//LOAD STAMPTYPE,LOAD ROOMTYPE
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/USU_roomstamp_unitno'); ?>",
+                            url: ctrl_unitcreate_url+'/USU_roomstamp_unitno',
                             data: {'unitstamp_unitno':$("#USU_tb_accunitno").val()},
                             success: function(roomstampdata) {
                                 var roomstamp_data=JSON.parse(roomstampdata);
@@ -1439,7 +1440,7 @@ require_once "Header.php";
                         $("#USU_div_updateform").show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/USU_AlreadyExists'); ?>",
+                            url: ctrl_unitcreate_url+'/USU_AlreadyExists',
                             data: {'inventory_unitno':USU_obj_rowvalue.USU_tr_second,'typeofcard':'','flag_card_unitno':'USU_transac_check_accesscard','USU_parent_func':''},
                             success: function(existdata) {
                                 var exist_data=JSON.parse(existdata);
@@ -1519,7 +1520,7 @@ require_once "Header.php";
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/USU_AlreadyExists'); ?>",
+                        url: ctrl_unitcreate_url+'/USU_AlreadyExists',
                         data: {'inventory_unitno':USU_roomstamptype_val,'typeofcard':'','flag_card_unitno':USU_parentfunc_already,'USU_parent_func':''},
                         success: function(existdata) {
                             var exist_data=JSON.parse(existdata);
@@ -1723,7 +1724,7 @@ require_once "Header.php";
                     USU_flag_access=1;
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/USU_AlreadyExists'); ?>",
+                        url: ctrl_unitcreate_url+'/USU_AlreadyExists',
                         data: {'inventory_unitno':$("#USU_tb_access").val(),'typeofcard':'','flag_card_unitno':'USU_flag_check_accesscard','USU_parent_func':''},
                         success: function(existdata) {
                             var exist_data=JSON.parse(existdata);
@@ -1743,7 +1744,7 @@ require_once "Header.php";
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/USU_AlreadyExists'); ?>",
+                        url: ctrl_unitcreate_url+'/USU_AlreadyExists',
                         data: {'inventory_unitno':USU_obj_rowvalue.USU_tr_second,'typeofcard':'','flag_card_unitno':'USU_transac_check_roomtype','USU_parent_func':''},
                         success: function(existdata) {
                             var exist_data=JSON.parse(existdata);
@@ -1863,7 +1864,7 @@ require_once "Header.php";
                 var USU_obj_formvalues={"USU_lb_selectoption_unit":$('#USU_lb_searchby').val(),"USU_radio_flex":editrowid,"USU_db_startdate_update":USU_dbstartdateupdate,"USU_tb_unitno":USU_tbunitno,"USU_db_enddate_update":USU_dbenddateupdate,"USU_tb_unitdeposit":USU_tbunitdeposit,"USU_hidden_obsolete":USU_cb_obsolete,"USU_tb_unitreltal":USU_tbunitreltal,"USU_tb_accnoid":USU_tbaccnoid,"USU_tb_accname":USU_tbaccname,"USU_tb_bankcodeid":USU_tbbankcodeid,"USU_tb_branchcode":USU_tbbranchcode,"USU_cb_nonei":USU_cb_nonei,"USU_tb_bankaddr":USU_tbbankaddr,"USU_tb_sep_roomtype":USU_tbseproomtype,"USU_tb_sep_stamptype":USU_tbsepstamptype,"USU_ta_comments":USU_tacomments,"USU_tb_accunitno":USU_tbaccunitno,"USU_lb_stamptype":USU_lbstamptype,"USU_lb_roomtype":USU_lbroomtype,"USU_tb_stampamt":USU_tbstampamt,"USU_db_stampdate":USU_dbstampdate,"USU_tb_access":USU_tbaccess,"USU_ta_accesscomment":USU_taaccesscomment,"USU_cb_lost":USU_cb_lost,"USU_cb_inventory":USU_cb_inventory,"USU_typeofCard":$('#USU_lb_typeofcard').val()};
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Unit_Creation_Search_Update/USU_func_update'); ?>",
+                    url: ctrl_unitcreate_url+'/USU_func_update',
                     data: {'USU_obj_formvalues':USU_obj_formvalues,'USU_obj_rowvalue':USU_obj_rowvalue,'USU_obj_flex':USU_obj_flex},
                     success: function(successdata) {
                         var success_data=JSON.parse(successdata);

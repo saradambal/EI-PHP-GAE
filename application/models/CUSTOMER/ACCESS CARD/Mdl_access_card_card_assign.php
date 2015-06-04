@@ -303,28 +303,6 @@ class Mdl_access_card_card_assign extends CI_Model{
             else{
                 $new_card_array=$new_array;
             }
-//            $new_card=[];
-//            $j=0;
-//            for($i=0; $i<=count($new_card_array)-1;$i++)
-//            {
-//                if(array_search($new_card_array[$i],$old_card_array)=='')
-//                {
-//                    $new_card[$j]=$new_card_array[$i];
-//                    $j++;
-//                }
-//                $newvalues = $new_card;
-//            }
-//            $old_card=[];
-//            $oldvalues=[];
-//            for($i=0; $i<=count($old_card_array)-1;$i++)
-//            {
-//                if(array_search($old_card_array[$i],$new_card_array)=='')
-//                {
-//                    $old_card[$j]=$old_card_array[$i];
-//                    $j++;
-//                }
-//                $oldvalues = $old_card;
-//            }
         }
         if($CA_comment!=''){
             $CA_comment=$this->db->escape_like_str($CA_comment);

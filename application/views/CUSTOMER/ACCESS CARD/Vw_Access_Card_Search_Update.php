@@ -6,6 +6,7 @@ require_once "Header.php";
     <script type="text/javascript">
         // document ready function
         $(document).ready(function(){
+            var ctrl_cardupdate_url="<?php echo site_url('CUSTOMER/ACCESSCARD/Ctrl_Access_Card_Search_Update'); ?>";
         // initial data
             $('textarea').autogrow({onInitialize: true});
             $('#spacewidth').height('0%');
@@ -15,11 +16,15 @@ require_once "Header.php";
             var CSU_cust_id;
             $.ajax({
                 type:'POST',
-                url:"<?php echo site_url('Ctrl_Access_Card_Search_Update/Initialdata'); ?>",
+                url:ctrl_cardupdate_url+'/Initialdata',
                 data:{'ErrorList':'94,95,401'},
                 success: function(data){
                     var value_array=JSON.parse(data);
                     CSU_load_initial_values(value_array);
+                },
+                error:function(data){
+                    var errordata=(JSON.stringify(data));
+                    show_msgbox("ACCESS CARD SEARCH AND UPDATE",errordata,'error',false);
                 }
             });
             function unique(a) {
@@ -282,11 +287,15 @@ require_once "Header.php";
                 var formelement=$('#card_search_update_form').serialize();
                 $.ajax({
                     type:'POST',
-                    url:"<?php echo site_url('Ctrl_Access_Card_Search_Update/Accesscardupdate'); ?>",
+                    url:ctrl_cardupdate_url+'/Accesscardupdate',
                     data:formelement,
                     success: function(return_flag){
                         var flag_array=JSON.parse(return_flag);
                         CSU_clear(flag_array);
+                    },
+                    error:function(data){
+                        var errordata=(JSON.stringify(data));
+                        show_msgbox("ACCESS CARD SEARCH AND UPDATE",errordata,'error',false);
                     }
                 });
             });

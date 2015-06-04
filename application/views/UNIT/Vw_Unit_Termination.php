@@ -6,6 +6,7 @@ require_once "Header.php";
     <script type="text/javascript">
     // document ready function
         $(document).ready(function(){
+            var ctrl_unittermination_url="<?php echo site_url('UNIT/Ctrl_Unit_Termination'); ?>";
             var UT_errorarray =[];
             var UT_types_array= [];
             $('#spacewidth').height('0%');
@@ -14,7 +15,7 @@ require_once "Header.php";
         // initial data
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('Ctrl_Unit_Termination/Initialdata'); ?>",
+                url: ctrl_unittermination_url+'/Initialdata',
                 success: function(data) {
                     var initial_values=JSON.parse(data);
                     UT_refreshSuccess(initial_values);
@@ -58,7 +59,7 @@ require_once "Header.php";
                     $("#UT_btn_terminate").attr("disabled", "disabled");
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Termination/UT_unitdetails'); ?>",
+                        url: ctrl_unittermination_url+'/UT_unitdetails',
                         data: {'UT_unitnumber':UT_unitnumber,'UT_flag_select':'UT_flag_select'},
                         success: function(unitdata) {
                             var unitdata_values=JSON.parse(unitdata);
@@ -100,7 +101,7 @@ require_once "Header.php";
                 var UT_unitnumber=$('#UT_lb_unitnumber').val();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Unit_Termination/UT_unitdetails'); ?>",
+                    url: ctrl_unittermination_url+'/UT_unitdetails',
                     data: {'UT_unitnumber':UT_unitnumber,'UT_flag_select':'UT_flag_check','UT_comments':$('#UT_ta_comments').val()},
                     success: function(unitvaldata){
                         var data_values=JSON.parse(unitvaldata);

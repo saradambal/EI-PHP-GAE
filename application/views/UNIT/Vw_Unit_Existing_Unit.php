@@ -17,6 +17,7 @@ require_once "Header.php";
     <script type="text/javascript">
     // document ready function
         $(document).ready(function(){
+            var ctrl_existingunit_url="<?php echo site_url('UNIT/Ctrl_Unit_Existing_Unit'); ?>";
             var EU_room_arr=[];
             var EU_errorMsg_array=[];
             var EU_stamp=[];
@@ -35,7 +36,7 @@ require_once "Header.php";
         // initial data
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('Ctrl_Unit_Existing_Unit/Initialdata'); ?>",
+                url: ctrl_existingunit_url+'/Initialdata',
                 data: {'EU_unitno':EU_unitno,'flag':'EU_flag_unitno_errormsg'},
                 success: function(data) {
                     var initial_values=JSON.parse(data);
@@ -162,7 +163,7 @@ require_once "Header.php";
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Existing_Unit/Initialdata'); ?>",
+                        url: ctrl_existingunit_url+'/Initialdata',
                         data: {'EU_unitno':EU_unitno,'flag':'EU_flag_roomtype'},
                         success: function(rmstampdata) {
                             var res_values=JSON.parse(rmstampdata);
@@ -196,7 +197,7 @@ require_once "Header.php";
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Existing_Unit/EU_Alreadyexists'); ?>",
+                        url: ctrl_existingunit_url+'/EU_Alreadyexists',
                         data: {'EU_input':EU_newroom,'EU_source':EU_source},
                         success: function(roomdata) {
                             var room_values=JSON.parse(roomdata);
@@ -226,7 +227,7 @@ require_once "Header.php";
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Existing_Unit/Initialdata'); ?>",
+                        url: ctrl_existingunit_url+'/Initialdata',
                         data: {'EU_unitno':EU_unitno,'flag':'EU_flag_stamptype'},
                         success: function(rmstampdata) {
                             var res_values=JSON.parse(rmstampdata);
@@ -260,7 +261,7 @@ require_once "Header.php";
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Existing_Unit/EU_Alreadyexists'); ?>",
+                        url: ctrl_existingunit_url+'/EU_Alreadyexists',
                         data: {'EU_input':EU_newstamp,'EU_source':EU_source},
                         success: function(stampdata) {
                             var stamp_values=JSON.parse(stampdata);
@@ -348,7 +349,7 @@ require_once "Header.php";
                         $(".preloader").show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo site_url('Ctrl_Unit_Existing_Unit/EU_login_acct_others'); ?>",
+                            url: ctrl_existingunit_url+'/EU_login_acct_others',
                             data: {'lbunitno':$("#EU_lb_unitnumber").val(),'radioflag':'EU_radio_others'},
                             success: function(accdata) {
                                 var accdata_values=JSON.parse(accdata);
@@ -403,7 +404,7 @@ require_once "Header.php";
                     $("#EU_div_errmsgacct").text('').hide();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Existing_Unit/EU_login_acct_others'); ?>",
+                        url: ctrl_existingunit_url+'/EU_login_acct_others',
                         data: {'lbunitno':EU_unitnumber,'radioflag':EU_source},
                         success: function(logdata) {
                             var logdata_values=JSON.parse(logdata);
@@ -425,7 +426,7 @@ require_once "Header.php";
                     $("#EU_div_errmsgacct").text('').hide();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Existing_Unit/EU_login_acct_others'); ?>",
+                        url: ctrl_existingunit_url+'/EU_login_acct_others',
                         data: {'lbunitno':EU_unitnumber,'radioflag':EU_source},
                         success: function(accdata) {
                             var accdata_values=JSON.parse(accdata);
@@ -443,7 +444,7 @@ require_once "Header.php";
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Existing_Unit/EU_login_acct_others'); ?>",
+                        url: ctrl_existingunit_url+'/EU_login_acct_others',
                         data: {'lbunitno':EU_unitnumber,'radioflag':EU_source},
                         success: function(resdata) {
                             var resdata_values=JSON.parse(resdata);
@@ -580,7 +581,7 @@ require_once "Header.php";
                 var formelement=$('#EU_form_existingUnit').serialize();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Unit_Existing_Unit/EU_updateForm'); ?>",
+                    url: ctrl_existingunit_url+'/EU_updateForm',
                     data: formelement,
                     success: function(savedata) {
                         var saved_values=JSON.parse(savedata);
@@ -624,7 +625,7 @@ require_once "Header.php";
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Existing_Unit/EU_Alreadyexists'); ?>",
+                        url: ctrl_existingunit_url+'/EU_Alreadyexists',
                         data: {'EU_input':EU_access,'EU_source':EU_source},
                         success: function(existdata) {
                             var exists_values=JSON.parse(existdata);
@@ -738,7 +739,7 @@ require_once "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Unit_Existing_Unit/EU_Alreadyexists'); ?>",
+                    url: ctrl_existingunit_url+'/EU_Alreadyexists',
                     data: {'EU_input':UCRE_value,'EU_source':UCRE_attrid},
                     success: function(existdata) {
                         var exists_values=JSON.parse(existdata);
@@ -806,7 +807,7 @@ require_once "Header.php";
                     var EU_unitno=$('#EU_lb_unitnumber').val();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Unit_Existing_Unit/Initialdata'); ?>",
+                        url: ctrl_existingunit_url+'/Initialdata',
                         data: {'EU_unitno':EU_unitno,'flag':'EU_flag_roomstamp'},
                         success: function(resetdata) {
                             var reset_values=JSON.parse(resetdata);

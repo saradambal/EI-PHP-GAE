@@ -6,6 +6,7 @@ require_once "Header.php";
     <script type="text/javascript">
         // document ready function
         $(document).ready(function(){
+            var ctrl_cardassign_url="<?php echo site_url('CUSTOMER/ACCESSCARD/Ctrl_Access_Card_Card_Assign'); ?>";
             $('textarea').autogrow({onInitialize: true});
         // initial data
             $('#spacewidth').height('0%');
@@ -17,7 +18,7 @@ require_once "Header.php";
             $('#CA_btn_resetbutton').hide();
             $.ajax({
                 type:'POST',
-                url:"<?php echo site_url('Ctrl_Access_Card_Card_Assign/Initialdata'); ?>",
+                url: ctrl_cardassign_url+'/Initialdata',
                 data:{'ErrorList':'256,34,41,40,91,401,448'},
                 success: function(data){
                     var value_array=JSON.parse(data);
@@ -44,6 +45,10 @@ require_once "Header.php";
                         $('#CA_lb_unitno').html(CA_unitno_options);
                     }
                     $('#CA_lb_unitno').show();
+                },
+                error:function(data){
+                    var errordata=(JSON.stringify(data));
+                    show_msgbox("CARD ASSIGN",errordata,'error',false);
                 }
             });
             function unique(a) {
@@ -391,13 +396,17 @@ require_once "Header.php";
                     var CA_unit=$('#CA_lb_unitno').val();
                     $.ajax({
                         type:'POST',
-                        url:"<?php echo site_url('Ctrl_Access_Card_Card_Assign/Customerdetails'); ?>",
+                        url:ctrl_cardassign_url+'/Customerdetails',
                         data:{'CA_recver':CA_recver,'CA_unit':CA_unit,'CA_cust_id':CA_cust_id},
                         success: function(data){
                             var value_array=JSON.parse(data);
                             CA_load_customerdetails(value_array);
+                        },
+                        error:function(data){
+                            var errordata=(JSON.stringify(data));
+                            show_msgbox("CARD ASSIGN",errordata,'error',false);
                         }
-                    })
+                    });
                 }
             });
         // FUNCTION TO CONVERT DATE FORMAT
@@ -802,10 +811,14 @@ require_once "Header.php";
                 var formelement=$('#cardassign_form').serialize();
                 $.ajax({
                     type:'POST',
-                    url:"<?php echo site_url('Ctrl_Access_Card_Card_Assign/Cardassignsave'); ?>",
+                    url:ctrl_cardassign_url+'/Cardassignsave',
                     data:formelement+"&CA_cust_id="+CA_cust_id,
                     success: function(flag){
                         CA_clear(flag);
+                    },
+                    error:function(data){
+                        var errordata=(JSON.stringify(data));
+                        show_msgbox("CARD ASSIGN",errordata,'error',false);
                     }
                 });
             });

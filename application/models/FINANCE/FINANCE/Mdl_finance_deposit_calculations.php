@@ -336,6 +336,11 @@ class Mdl_finance_deposit_calculations extends CI_Model{
             $DDC_sumofquater=[];
             $DDC_quatertotal='';
             $DDC_fixedaircon='';
+            $DDC_electsubtotal='';
+            $DDC_airconsubtotal='';
+            $DDC_unitsubtotal='';
+            $DDC_totalallsubtl='';
+            $DDC_tefundtotal='';
             if($flag=="")
             {
                 $DDC_calltemptable="SELECT * FROM ".$DDC_temptble_name;
@@ -514,7 +519,7 @@ class Mdl_finance_deposit_calculations extends CI_Model{
                         $DDC_fixedaircon=(object)['value'=>$row["DDAIRCON"],'key'=>$row["DDRECVER"]];
                     }
                     else{
-                        $DDC_aircon[]=((object)['valueDiff'=>$row["DDAIRCON"],'value'=>$row["DDAIRCONQ"],'key'=>$row["DDRECVER"],'quater'=>$row["DDQUATERS"]]);
+                        $DDC_aircon[]=(object)['valueDiff'=>$row["DDAIRCON"],'value'=>$row["DDAIRCONQ"],'key'=>$row["DDRECVER"],'quater'=>$row["DDQUATERS"]];
                     }
                 }
                 if($row["DDCHECKOUTCLEAN"]!=null)
@@ -562,8 +567,8 @@ class Mdl_finance_deposit_calculations extends CI_Model{
                 $DDC_enddatearrary=$DDC_enddatearrary[count($DDC_enddatearrary)-1];
             }
             else{
-                $DDC_startdatearrary=$DDC_startdatearrary[$i];
-                $DDC_enddatearrary=$DDC_enddatearrary[$i];
+                $DDC_startdatearrary=$DDC_startdatearrary[0];
+                $DDC_enddatearrary=$DDC_enddatearrary[count($DDC_enddatearrary)-1];
             }
             if($DDC_recverlgth==$selectedrecverlength)
             {
@@ -624,6 +629,7 @@ class Mdl_finance_deposit_calculations extends CI_Model{
             //CHECK ABOUT THE ELECTRICITY AMOUNT//
             $DDC_cap ='';
             $DDC_cap_flag =1;
+            $DDC_chk_cap='';
             for($C=0;$C<count($DDC_electrcap);$C++){
                 if($C==0){
                     $DDC_chk_cap=$DDC_electrcap[$C]->value;
@@ -698,26 +704,125 @@ class Mdl_finance_deposit_calculations extends CI_Model{
                     $mainelecdivamt=$mainelecdivamt.'^~^'.$elecdivamt;
                 }
             }
-
+            //SET THE AIRCON FEE//
+            $fixedaircon='';
+            if($DDC_fixedaircon!=''){
+                $fixedaircon=$DDC_fixedaircon->value;
+            }
+            $lpquaterval='';$quaterval='';$totalval='';$airquarter='';$airperquater ='';$airvaldiff ='';
+            if(count($DDC_sumofquater)!=0 && count($DDC_sumofquater)<count($DDC_aircon)){
+//                $DDC_sumofquater=uasort($DDC_sumofquater,array($this, 'compare'));
+                for($a=0;$a<count($DDC_sumofquater);$a++){
+                    $chat=1;$Quaterlp='';$LP='';
+                    for($b=0;$b<count($DDC_aircon);$b++){
+                        if(intval($DDC_sumofquater[$a]->value)==intval($DDC_aircon[$b]->value)){
+                            if($chat==1){
+                                $LP =$DDC_aircon[$b]->key;
+                                $Quaterlp ='Quater for LP'.$DDC_aircon[$b]->key.' :'.$DDC_aircon[$b]->quater;
+                            }
+                            else{
+                                $LP .=','.$DDC_aircon[$b]->key;
+                                $Quaterlp .='+ LP'.$DDC_aircon[$b]->key.' :'.$DDC_aircon[$b]->quater;
+                            }
+                            $chat ++;
+                        }
+                    }
+                    if($chat==2){
+                        $Quaterlp=str_replace($Quaterlp,'Quater',$Quaterlp);
+                    }
+                    if($a==0){
+                        $lpquaterval='LP '. $LP .': $'.$DDC_sumofquater[$a]->value.' Per Quater';
+                        $quaterval='$'.$DDC_sumofquater[$a]->value.' *'.$DDC_sumofquater[$a]->quater.' ('.$Quaterlp.')';
+                        $totalval=$DDC_sumofquater[$a]->total;
+                    }
+                    else{
+                        $lpquaterval=$lpquaterval.'^^'.'LP '. $LP .': $'.$DDC_sumofquater[$a]->value.' Per Quater';
+                        $quaterval=$quaterval.'^^'.'$'.$DDC_sumofquater[$a]->value.' *'.$DDC_sumofquater[$a]->quater.' ('.$Quaterlp.')';
+                        $totalval=$totalval.'^^'.$DDC_sumofquater[$a]->total;
+                    }
+                }
+            }
+            else{
+                for($l=0; $l<count($DDC_aircon);$l++){
+                    if($flag=='X'){
+                        $DDC_lp_rec='';
+                    }
+                    else{
+                        $DDC_lp_rec='- LP:'.$DDC_aircon[$l]->key;
+                    }
+                    if($l==0){
+                        $airquarter=$DDC_quaters[$l]->value.' Quarters';
+                        $airperquater ='$'.$DDC_airconquater[$l]->value.' Per Quarter '.$DDC_lp_rec;
+                        $airvaldiff = $DDC_aircon[$l]->valueDiff;
+                    }
+                    else{
+                        $airquarter=$airquarter.'^^'.$DDC_quaters[$l]->value.' Quarters';
+                        $airperquater=$airperquater.'^^'.'$'.$DDC_airconquater[$l]->value.' Per Quarter '.$DDC_lp_rec;
+                        $airvaldiff=$airvaldiff.'^^'.$DDC_aircon[$l]->valueDiff;
+                    }
+                }
+            }
+            $DDC_maintenancelength=count($DDC_unitinvoicedate);
+            $unitinvoiceitem='';
+            $unitinvoicedate='';
+            $unitamount='';
+            $unitdivamount='';
+            for ($u=0;$u<intval($DDC_maintenancelength);$u++)
+            {
+                if($u==0){
+                    $unitinvoiceitem=$DDC_unitinvoiceitem[$u];
+                    $unitinvoicedate=$DDC_unitinvoicedate[$u];
+                    $unitamount=$DDC_unitamount[$u];
+                    $unitdivamount=$DDC_unitdivamount[$u];
+                }
+                else{
+                    $unitinvoiceitem=$unitinvoiceitem.'^^'.$DDC_unitinvoiceitem[$u];
+                    $unitinvoicedate=$unitinvoicedate.'^^'.$DDC_unitinvoicedate[$u];
+                    $unitamount=$unitamount.'^^'.$DDC_unitamount[$u];
+                    $unitdivamount=$unitdivamount.'^^'.$DDC_unitdivamount[$u];
+                }
+            }
+            $checkout_clean='';$drycleaning='';$chargtype='';$chargamount='';
+            if($DDC_checkoutclean!=''){
+                $checkout_clean=$DDC_checkoutclean->value;
+            }
+            if($DDC_dryclean!=''){
+                $drycleaning=$DDC_dryclean->value;
+            }
+            $DDC_chargelength=count($DDC_chargamount);
+            for($c=0;$c<intval($DDC_chargelength);$c++)
+            {
+                if($c==0){
+                    $chargtype=$DDC_chargtype[$c];
+                    $chargamount=$DDC_chargamount[$c];
+                }
+                else{
+                    $chargtype=$chargtype.'^^'.$DDC_chargtype[$c];
+                    $chargamount=$chargamount.'^^'.$DDC_chargamount[$c];
+                }
+            }
             $data2=array('ssflag'=>3,'DDC_currentfile_id'=>$DDC_currentfile_id,'DDC_currentmonth'=>$DDC_currentmonth,'unit_value'=>$unit_value,'name'=>$name,
                 'flag'=>$flag,'DDC_startdatearrary'=>$DDC_startdatearrary,'DDC_enddatearrary'=>$DDC_enddatearrary,'DDC_recverlgth'=>$DDC_recverlgth,
                 'selectedrecverlength'=>$selectedrecverlength,'DDC_recverarray'=>$DDC_recverarray,'dep_value'=>$dep_value,'depcomment'=>$depcomment,
                 'rentalcase'=>$rentalcase,'DDC_proratedunpaid'=>$DDC_proratedunpaid,'DDC_pay_unpaiddate'=>$DDC_pay_unpaiddate,'lastcarddate'=>$lastcarddate,
                 'DDC_cardcount'=>$DDC_cardcount,'DDC_cardamount'=>$DDC_cardamount,'DDC_cap'=>$DDC_cap,'DDC_no_ofdivision'=>$DDC_no_ofdivision,
                 'caps'=>$caps,'modifies'=>$modifies,'maininvdate'=>$maininvdate,'mainelecamt'=>$mainelecamt,'mainelecdivamt'=>$mainelecdivamt,
-                'DDC_electrcap'=>count($DDC_electrcap),'DDC_invoicedate'=>count($DDC_invoicedate),'DDC_cap_flag'=>$DDC_cap_flag);
+                'DDC_electrcap'=>count($DDC_electrcap),'DDC_invoicedate'=>count($DDC_invoicedate),'DDC_cap_flag'=>$DDC_cap_flag,'DDC_electsubtotal'=>$DDC_electsubtotal,
+                'fixedaircon'=>$fixedaircon,'lpquaterval'=>$lpquaterval,'quaterval'=>$quaterval,'totalval'=>$totalval,'DDC_sumofquater'=>count($DDC_sumofquater),
+                'DDC_aircon'=>count($DDC_aircon),'airquarter'=>$airquarter,'airperquater'=>$airperquater,'airvaldiff'=>$airvaldiff,'DDC_airconsubtotal'=>$DDC_airconsubtotal,
+                'unitinvoiceitem'=>$unitinvoiceitem,'unitinvoicedate'=>$unitinvoicedate,'unitamount'=>$unitamount,'unitdivamount'=>$unitdivamount,'checkout_clean'=>$checkout_clean,
+                'DDC_maintenancelength'=>$DDC_maintenancelength,'drycleaning'=>$drycleaning,'DDC_chargelength'=>$DDC_chargelength,'chargtype'=>$chargtype,'chargamount'=>$chargamount,
+                'DDC_unitsubtotal'=>$DDC_unitsubtotal,'DDC_totalallsubtl'=>$DDC_totalallsubtl,'DDC_tefundtotal'=>$DDC_tefundtotal);
             $ssreangtemp=array();
             $ssreangtemp=$this->Func_curl($data2);
-            return $ssreangtemp;
             $ssreangtemp=explode(',',$ssreangtemp);
             if($ssreangtemp[0]==0 && $ssreangtemp[1]==1){
                 return [0,1];
             }
         }
-
-
-
-
+        $this->db->query('DROP TABLE '.$DDC_temptble_name);
+        $DDC_ref_unitcustomer=$this->Initial_data($UserStamp);
+        return $DDC_ref_unitcustomer;
     }
     // Comparison function
     function compare($a, $b) {
@@ -726,5 +831,4 @@ class Mdl_finance_deposit_calculations extends CI_Model{
         }
         return ($a->value < $b->value) ? -1 : 1;
     }
-
 }

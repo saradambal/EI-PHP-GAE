@@ -1,5 +1,6 @@
 <?php
 require_once "Header.php";
+require_once "./application/libraries/Chart.php";
 ?>
 <html>
 <head>
