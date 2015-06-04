@@ -6,11 +6,11 @@
  * Time: 11:13 AM
  */
 
-class Mdl_terminate_search_update  extends CI_Model{
+class Mdl_access_rights_terminate_search_update  extends CI_Model{
 
     public function URT_SRC_errormsg_loginid($URT_SRC_source){
 
-       $URT_SRC_errorarray =array();
+        $URT_SRC_errorarray =array();
         $USRC_arr_loginid =array();
         $USRC_arr_uldid =array();
         $URT_SRC_data_uld_tble=false;
@@ -21,35 +21,35 @@ class Mdl_terminate_search_update  extends CI_Model{
         if($row>0){
             $URT_SRC_data_uld_tble=true;
         }
-        $this->load->model('EILIB/Common_function');
+        $this->load->model('EILIB/Mdl_eilib_common_function');
         $URT_SRC_errormsg_query = "349,350,351,352,353,354,355,401,454,455,458,465";
-        $URT_SRC_errorarray=$this->Common_function->getErrorMessageList($URT_SRC_errormsg_query);
+        $URT_SRC_errorarray=$this->Mdl_eilib_common_function->getErrorMessageList($URT_SRC_errormsg_query);
         if(($URT_SRC_source=='URT_SRC_radio_loginterminate')||($URT_SRC_source=='URT_SRC_radio_rejoin')){
            if($URT_SRC_source=='URT_SRC_radio_loginterminate'){
-            $this->db->select();
-            $this->db->from('VW_ACCESS_RIGHTS_TERMINATE_LOGINID');
-            $this->db->where('URC_DATA!="SUPER ADMIN"');
-            $this->db->order_by('ULD_LOGINID');
-          }
-          else if($URT_SRC_source=='URT_SRC_radio_rejoin'){
-          $this->db->select();
-          $this->db->from('VW_ACCESS_RIGHTS_REJOIN_LOGINID');
-          $this->db->order_by('ULD_LOGINID');
-         }
-         $URT_SRC_select_loginid=$this->db->get();
-         foreach($URT_SRC_select_loginid->result_array() as $row){
-            $USRC_arr_loginid[]=$row['ULD_LOGINID'];
-         }
+                $this->db->select();
+                $this->db->from('VW_ACCESS_RIGHTS_TERMINATE_LOGINID');
+                $this->db->where('URC_DATA!="SUPER ADMIN"');
+                $this->db->order_by('ULD_LOGINID');
+           }
+           else if($URT_SRC_source=='URT_SRC_radio_rejoin'){
+              $this->db->select();
+              $this->db->from('VW_ACCESS_RIGHTS_REJOIN_LOGINID');
+              $this->db->order_by('ULD_LOGINID');
+           }
+           $URT_SRC_select_loginid=$this->db->get();
+           foreach($URT_SRC_select_loginid->result_array() as $row){
+              $USRC_arr_loginid[]=$row['ULD_LOGINID'];
+           }
         }
         else if($URT_SRC_source=='URT_SRC_radio_optsrcupd'){
-         $this->db->select();
-         $this->db->from('VW_ACCESS_RIGHTS_REJOIN_LOGINID');
-         $this->db->order_by('ULD_LOGINID');
-         $URT_SRC_select_loginid=$this->db->get();
-         foreach($URT_SRC_select_loginid->result_array() as $row)
-         {
-          $USRC_arr_loginid[]=$row['ULD_LOGINID'];
-         }
+             $this->db->select();
+             $this->db->from('VW_ACCESS_RIGHTS_REJOIN_LOGINID');
+             $this->db->order_by('ULD_LOGINID');
+             $URT_SRC_select_loginid=$this->db->get();
+             foreach($URT_SRC_select_loginid->result_array() as $row)
+             {
+              $USRC_arr_loginid[]=$row['ULD_LOGINID'];
+             }
         }
         $this->db->select();
         $this->db->from('ROLE_CREATION');
@@ -58,55 +58,53 @@ class Mdl_terminate_search_update  extends CI_Model{
         foreach($URT_SRC_select_customrole_menu->result_array() as $row){
          $URT_SRC_customrole_array[]=$row["RC_NAME"];
         }
-     $URT_SRC_result=(object)["URT_SRC_obj_errmsg"=>$URT_SRC_errorarray,"URT_SRC_obj_loginid"=>$USRC_arr_loginid,"URT_SRC_obj_source"=>$URT_SRC_source,"URT_SRC_obj_flg_login"=>$URT_SRC_data_uld_tble,"URT_SRC_customerole"=>$URT_SRC_customrole_array];
-     return $URT_SRC_result;
+        $URT_SRC_result=(object)["URT_SRC_obj_errmsg"=>$URT_SRC_errorarray,"URT_SRC_obj_loginid"=>$USRC_arr_loginid,"URT_SRC_obj_source"=>$URT_SRC_source,"URT_SRC_obj_flg_login"=>$URT_SRC_data_uld_tble,"URT_SRC_customerole"=>$URT_SRC_customrole_array];
+        return $URT_SRC_result;
     }
     public function URT_SRC_func_enddate($URT_SRC_lb_loginid,$URT_SRC_recdver,$URT_SRC_flag_srcupd,$URT_SRC_flg_reverlen){
 
         if($URT_SRC_flag_srcupd=='URT_SRC_check_enddate'){
-         $this->db->select( 'UA_JOIN_DATE,UA_REASON,UA_END_DATE,UA_JOIN');
+            $this->db->select( 'UA_JOIN_DATE,UA_REASON,UA_END_DATE,UA_JOIN');
             $this->db->from('USER_ACCESS UA');
             $this->db->where("UA.ULD_ID =(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='".$URT_SRC_lb_loginid."') AND UA.UA_REC_VER=(SELECT MAX(UA_REC_VER) FROM USER_ACCESS WHERE ULD_ID=UA.ULD_ID)");
         }
-    else if($URT_SRC_flag_srcupd=='URT_SRC_check_rejoindate'){
-        $this->db->select('UA_JOIN_DATE,UA_REASON,UA_END_DATE,UA_JOIN');
-        $this->db->from('USER_ACCESS UA');
-        $this->db->where("UA.ULD_ID =(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='".$URT_SRC_lb_loginid."') AND UA.UA_REC_VER=(SELECT MAX(UA_REC_VER) FROM USER_ACCESS WHERE ULD_ID=UA.ULD_ID)");
-    }
-    else if($URT_SRC_flag_srcupd=='URT_SRC_srcupd'){
-        $this->db->select( 'UA_JOIN_DATE,UA_REASON,UA_END_DATE,UA_JOIN');
-        $this->db->from('USER_ACCESS UA');
-        $this->db->where("UA.ULD_ID =(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='".$URT_SRC_lb_loginid."') AND UA.UA_REC_VER=".$URT_SRC_recdver."");
-    }
-    $URT_SRC_select_enddate=$this->db->get();
-    foreach($URT_SRC_select_enddate->result_array() as $row)
-    {
-        $URT_SRC_joindate=$row["UA_JOIN_DATE"];
-       $URT_SRC_reason=$row["UA_REASON"];
-        $URT_SRC_enddate=$row["UA_END_DATE"];
-        $URT_SRC_join=$row["UA_JOIN"];
-    }
-    if($URT_SRC_flg_reverlen=='URT_SRC_recvrsion_more'){
-        $URT_SRC_recdver=($URT_SRC_recdver)+1;
-        $this->db->select( 'UA_JOIN_DATE');
-        $this->db->from('USER_ACCESS UA');
-        $this->db->where("UA.ULD_ID =(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='".$URT_SRC_lb_loginid."') AND UA.UA_REC_VER=".$URT_SRC_recdver."");
-        $URT_SRC_select_next_jdate=$this->db->get();
-        $row_count=$this->db->count_all_results();
-
-        if($row_count>0){
-      foreach($URT_SRC_select_next_jdate->result_array() as $row){
-          $URT_SRC_next_jdate=$row['UA_JOIN_DATE'];
-      }
+        else if($URT_SRC_flag_srcupd=='URT_SRC_check_rejoindate'){
+            $this->db->select('UA_JOIN_DATE,UA_REASON,UA_END_DATE,UA_JOIN');
+            $this->db->from('USER_ACCESS UA');
+            $this->db->where("UA.ULD_ID =(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='".$URT_SRC_lb_loginid."') AND UA.UA_REC_VER=(SELECT MAX(UA_REC_VER) FROM USER_ACCESS WHERE ULD_ID=UA.ULD_ID)");
         }
-      else
-        $URT_SRC_next_jdate='URT_SRC_nomore_recver';
-     $URT_SRC_result=(object)["URT_SRC_obj_next_jdate"=>$URT_SRC_next_jdate,"URT_SRC_obj_joindate"=>$URT_SRC_joindate,"URT_SRC_obj_endate"=>$URT_SRC_enddate,"URT_SRC_obj_reason"=>$URT_SRC_reason,"URT_SRC_obj_srcupd"=>$URT_SRC_flag_srcupd];
-      }
-    else
-      $URT_SRC_result=(object)["URT_SRC_obj_joindate"=>$URT_SRC_joindate,"URT_SRC_obj_endate"=>$URT_SRC_enddate,"URT_SRC_obj_reason"=>$URT_SRC_reason,"URT_SRC_obj_srcupd"=>$URT_SRC_flag_srcupd];
+        else if($URT_SRC_flag_srcupd=='URT_SRC_srcupd'){
+            $this->db->select( 'UA_JOIN_DATE,UA_REASON,UA_END_DATE,UA_JOIN');
+            $this->db->from('USER_ACCESS UA');
+            $this->db->where("UA.ULD_ID =(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='".$URT_SRC_lb_loginid."') AND UA.UA_REC_VER=".$URT_SRC_recdver."");
+        }
+        $URT_SRC_select_enddate=$this->db->get();
+        foreach($URT_SRC_select_enddate->result_array() as $row){
+            $URT_SRC_joindate=$row["UA_JOIN_DATE"];
+            $URT_SRC_reason=$row["UA_REASON"];
+            $URT_SRC_enddate=$row["UA_END_DATE"];
+            $URT_SRC_join=$row["UA_JOIN"];
+        }
+        if($URT_SRC_flg_reverlen=='URT_SRC_recvrsion_more'){
+            $URT_SRC_recdver=($URT_SRC_recdver)+1;
+            $this->db->select( 'UA_JOIN_DATE');
+            $this->db->from('USER_ACCESS UA');
+            $this->db->where("UA.ULD_ID =(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='".$URT_SRC_lb_loginid."') AND UA.UA_REC_VER=".$URT_SRC_recdver."");
+            $URT_SRC_select_next_jdate=$this->db->get();
+            $row_count=$this->db->count_all_results();
+            if($row_count>0){
+                 foreach($URT_SRC_select_next_jdate->result_array() as $row){
+                   $URT_SRC_next_jdate=$row['UA_JOIN_DATE'];
+                 }
+            }
+            else
+             $URT_SRC_next_jdate='URT_SRC_nomore_recver';
+             $URT_SRC_result=(object)["URT_SRC_obj_next_jdate"=>$URT_SRC_next_jdate,"URT_SRC_obj_joindate"=>$URT_SRC_joindate,"URT_SRC_obj_endate"=>$URT_SRC_enddate,"URT_SRC_obj_reason"=>$URT_SRC_reason,"URT_SRC_obj_srcupd"=>$URT_SRC_flag_srcupd];
+        }
+        else
+          $URT_SRC_result=(object)["URT_SRC_obj_joindate"=>$URT_SRC_joindate,"URT_SRC_obj_endate"=>$URT_SRC_enddate,"URT_SRC_obj_reason"=>$URT_SRC_reason,"URT_SRC_obj_srcupd"=>$URT_SRC_flag_srcupd];
 
-      return $URT_SRC_result;
+        return $URT_SRC_result;
     }
     /*-------------------------------------------FUNCTION TO GET LOGIN ID REC VER-----------------------------*/
     function URT_SRC_func_recordversion($URT_SRC_lb_loginid_rec,$URT_SRC_flag_recver,$URT_SRC_recvrsion_one) {
@@ -115,8 +113,7 @@ class Mdl_terminate_search_update  extends CI_Model{
         $this->db->where("ULD_ID =(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='".$URT_SRC_lb_loginid_rec."') AND UA_TERMINATE='X'");
         $URT_SRC_select_rec=$this->db->get();
         $URT_SRC_recordversion=array();
-        foreach($URT_SRC_select_rec->result_array() as $row)
-        {
+        foreach($URT_SRC_select_rec->result_array() as $row){
             $URT_SRC_recordversion[]=$row['UA_REC_VER'];
         }
         if(count($URT_SRC_recordversion)==1){
@@ -131,58 +128,57 @@ class Mdl_terminate_search_update  extends CI_Model{
     }
 
     /*-------------------------------------------FUNCTION TO TERMINATE LOGIN DETAILS-----------------------------*/
-    function URT_SRC_func_terminate($URT_SRC_emailid,$URT_SRC_enddate,$URT_SRC_reason,$URT_SRC_flg_terminate,$UserStamp,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
-
+    function URT_SRC_func_terminate($URT_SRC_emailid,$URT_SRC_enddate,$URT_SRC_reason,$URT_SRC_flg_terminate,$UserStamp,$service){
         try{
-            $URSRC_sharedocflag=0;$URSRC_sharecalflag=0;$URSRC_sharesiteflag=0;
-            $URT_SRC_enddate = date('Y-m-d',strtotime($URT_SRC_enddate));
-//      URT_SRC_conn.setAutoCommit(false);
-            $this->db->select('UA_ID,UA_REASON');
-            $this->db->from('USER_ACCESS');
-            $this->db->where(" ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='".$URT_SRC_emailid."') AND UA_REC_VER=(SELECT MAX(UA_REC_VER) FROM USER_ACCESS where ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='".$URT_SRC_emailid."'))");
-            $URT_SRC_select_terminate=$this->db->get();
+                  $URSRC_sharedocflag=0;$URSRC_sharecalflag=0;$URSRC_sharesiteflag=0;
+                  $URT_SRC_enddate = date('Y-m-d',strtotime($URT_SRC_enddate));
+                  //      URT_SRC_conn.setAutoCommit(false);
+                  $this->db->select('UA_ID,UA_REASON');
+                  $this->db->from('USER_ACCESS');
+                  $this->db->where(" ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='".$URT_SRC_emailid."') AND UA_REC_VER=(SELECT MAX(UA_REC_VER) FROM USER_ACCESS where ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='".$URT_SRC_emailid."'))");
+                  $URT_SRC_select_terminate=$this->db->get();
 
-      foreach($URT_SRC_select_terminate->result_array() as $row)
-      {
-          $URT_SRC_userpro_id=$row['UA_ID'];
-          $URT_SRC_old_reason=$row['UA_REASON'];
-      }
-      $URT_SRC_insert_terminate ="CALL SP_LOGIN_TERMINATE_SAVE('".$URT_SRC_emailid."','".$URT_SRC_enddate."','".$URT_SRC_reason."','".$UserStamp."',@TERM_FLAG,@TEMPTBL_OUT_LOGINID)";
+                  foreach($URT_SRC_select_terminate->result_array() as $row)
+                  {
+                      $URT_SRC_userpro_id=$row['UA_ID'];
+                      $URT_SRC_old_reason=$row['UA_REASON'];
+                  }
+                  $URT_SRC_insert_terminate ="CALL SP_LOGIN_TERMINATE_SAVE('".$URT_SRC_emailid."','".$URT_SRC_enddate."','".$URT_SRC_reason."','".$UserStamp."',@TERM_FLAG,@TEMPTBL_OUT_LOGINID)";
 
-      $URT_SRC_sucess_flag=0;
-            $this->db->query($URT_SRC_insert_terminate);
-            $URT_SRC_flag_lgnterminateselect="SELECT @TERM_FLAG as TERM_FLAG ,@TEMPTBL_OUT_LOGINID as TEMPTBL_OUT_LOGINID";
-            $URT_SRC_flag_lgnterminaters=$this->db->query($URT_SRC_flag_lgnterminateselect);
-            $URT_SRC_sucess_flag=$URT_SRC_flag_lgnterminaters->row()->TERM_FLAG;
-            $URT_SRC_terminatetemplogidtbl=$URT_SRC_flag_lgnterminaters->row()->TEMPTBL_OUT_LOGINID;
+          $URT_SRC_sucess_flag=0;
+                $this->db->query($URT_SRC_insert_terminate);
+                $URT_SRC_flag_lgnterminateselect="SELECT @TERM_FLAG as TERM_FLAG ,@TEMPTBL_OUT_LOGINID as TEMPTBL_OUT_LOGINID";
+                $URT_SRC_flag_lgnterminaters=$this->db->query($URT_SRC_flag_lgnterminateselect);
+                $URT_SRC_sucess_flag=$URT_SRC_flag_lgnterminaters->row()->TERM_FLAG;
+                $URT_SRC_terminatetemplogidtbl=$URT_SRC_flag_lgnterminaters->row()->TEMPTBL_OUT_LOGINID;
 
-      if($URT_SRC_sucess_flag==1)
-      {
-          $this->load->model('EILIB/Common_function');
-          /*---------------------------------UNSHARE THE FILE & FOLDER---------------------------------------------*/
-          $URSRC_sharedocflag=$this->Common_function->URSRC_unshareDocuments("",$URT_SRC_emailid,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
-          if($URSRC_sharedocflag==1){
-        //********************** UNSHARE CALENDAR
-        $URSRC_sharecalflag=$this->Common_function->USRC_shareUnSharecalender($URT_SRC_emailid,'none',$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
-              if($URSRC_sharecalflag==0){
+          if($URT_SRC_sucess_flag==1)
+          {
+              $this->load->model('EILIB/Mdl_eilib_common_function');
+              /*---------------------------------UNSHARE THE FILE & FOLDER---------------------------------------------*/
+              $URSRC_sharedocflag=$this->Mdl_eilib_common_function->URSRC_unshareDocuments("",$URT_SRC_emailid,$service);
+              if($URSRC_sharedocflag==1){
+            //********************** UNSHARE CALENDAR
+                  $URSRC_sharecalflag=$this->Mdl_eilib_common_function->USRC_shareUnSharecalender($URT_SRC_emailid,'none',$service);
+                  if($URSRC_sharecalflag==0){
+                      $this->db->trans_rollback();
+                      $this->Mdl_eilib_common_function->URSRC_shareDocuments("",$URT_SRC_emailid,$service);
+                  }
+              }
+              else{
                   $this->db->trans_rollback();
-                  $this->Common_function->URSRC_shareDocuments("",$URT_SRC_emailid,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+                  $this->Mdl_eilib_common_function->URSRC_shareDocuments("",$URT_SRC_emailid,$service);
               }
           }
-          else{
-              $this->db->trans_rollback();
-              $this->Common_function->URSRC_shareDocuments("",$URT_SRC_emailid,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
-          }
-      }
 
-      $URT_SRC_success_flag=array();
-      $URT_SRC_success_flag=[$URT_SRC_flg_terminate,$URT_SRC_sucess_flag,$URSRC_sharedocflag,$URSRC_sharecalflag];
-            $this->db->trans_commit();
-      if($URT_SRC_terminatetemplogidtbl!=null&&$URT_SRC_terminatetemplogidtbl!='undefined'){
-          $drop_query = "DROP TABLE ".$URT_SRC_terminatetemplogidtbl;
-          $this->db->query($drop_query);
-      }
-      return $URT_SRC_success_flag;
+          $URT_SRC_success_flag=array();
+          $URT_SRC_success_flag=[$URT_SRC_flg_terminate,$URT_SRC_sucess_flag,$URSRC_sharedocflag,$URSRC_sharecalflag];
+                $this->db->trans_commit();
+          if($URT_SRC_terminatetemplogidtbl!=null&&$URT_SRC_terminatetemplogidtbl!='undefined'){
+              $drop_query = "DROP TABLE ".$URT_SRC_terminatetemplogidtbl;
+              $this->db->query($drop_query);
+          }
+          return $URT_SRC_success_flag;
     }catch(Exception $e)
         {
             $this->db->trans_rollback();
@@ -231,8 +227,7 @@ return $URT_SRC_success_flag;
 }
 //
 /*-------------------------------------------FUNCTION TO REJOIN LOGIN DETAILS-----------------------------*/
-function URT_SRC_func_rejoin($URT_SRC_upd_emailid,$URT_SRC_upd_rejoindate,$URT_SRC_upd_customrole,$URT_SRC_flg_rejoin,$UserStamp,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token) {
-
+function URT_SRC_func_rejoin($URT_SRC_upd_emailid,$URT_SRC_upd_rejoindate,$URT_SRC_upd_customrole,$URT_SRC_flg_rejoin,$UserStamp,$service) {
     try{
             $URSRC_sharedocflag=0;$URSRC_sharecalflag=0;$URSRC_sharesiteflag=0;
              $URT_SRC_temptable='';
@@ -240,7 +235,6 @@ function URT_SRC_func_rejoin($URT_SRC_upd_emailid,$URT_SRC_upd_rejoindate,$URT_S
         $URT_SRC_upd_rejoindate = date('Y-m-d',strtotime($URT_SRC_upd_rejoindate));
   $URT_SRC_upd_customrole=str_replace("_"," ",$URT_SRC_upd_customrole);
   $URT_SRC_select_rejoin_id="SELECT UA_ID,RC_ID,MAX(UA.UA_REC_VER) as UA_REC_VER,ULD_ID FROM USER_ACCESS UA WHERE UA.ULD_ID =(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='".$URT_SRC_upd_emailid."')";
-//      var URT_SRC_rs_rejoin_id=URT_SRC_stmt_rejoin_id.executeQuery(URT_SRC_select_rejoin_id);
         $URT_SRC_rs_rejoin_id=$this->db->query($URT_SRC_select_rejoin_id);
   foreach($URT_SRC_rs_rejoin_id->result_array() as $row)
   {
@@ -261,21 +255,19 @@ function URT_SRC_func_rejoin($URT_SRC_upd_emailid,$URT_SRC_upd_rejoindate,$URT_S
     $URT_SRC_flag_lgncreinsert=$URT_SRC_flag_rejoincrers->row()->REJOIN_FLAG;
     $URT_SRC_temptable=$URT_SRC_flag_rejoincrers->row()->TEMPTABLE;
         if($URT_SRC_flag_lgncreinsert==1){
-            $this->load->model('EILIB/Common_function');
-            $URSRC_sharedocflag= $this->Common_function->URSRC_shareDocuments($URT_SRC_upd_customrole,$URT_SRC_upd_emailid,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+            $this->load->model('EILIB/Mdl_eilib_common_function');
+            $URSRC_sharedocflag= $this->Mdl_eilib_common_function->URSRC_shareDocuments($URT_SRC_upd_customrole,$URT_SRC_upd_emailid,$service);
             if($URSRC_sharedocflag==1){
-//          URSRC_sharesiteflag=URSRC_addViewer(URSRC_conn,URSRC_loginid)
-                $URSRC_sharecalflag=$this->Common_function->USRC_shareUnSharecalender($URT_SRC_upd_emailid,'writer',$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+                //URSRC_sharesiteflag=URSRC_addViewer(URSRC_conn,URSRC_loginid)
+                $URSRC_sharecalflag=$this->Mdl_eilib_common_function->USRC_shareUnSharecalender($URT_SRC_upd_emailid,'writer',$service);
                 if($URSRC_sharecalflag==0){
-
                     $this->db->trans_rollback();
-                    $this->Common_function->URSRC_unshareDocuments($URT_SRC_upd_customrole,$URT_SRC_upd_emailid,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
-
+                    $this->Mdl_eilib_common_function->URSRC_unshareDocuments($URT_SRC_upd_customrole,$URT_SRC_upd_emailid,$service);
                 }
             }
             else{
                 $this->db->trans_rollback();
-                $this->Common_function->URSRC_unshareDocuments($URT_SRC_upd_customrole,$URT_SRC_upd_emailid,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
+                $this->Mdl_eilib_common_function->URSRC_unshareDocuments($URT_SRC_upd_customrole,$URT_SRC_upd_emailid,$service);
 
             }
         }

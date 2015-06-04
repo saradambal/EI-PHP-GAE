@@ -3,7 +3,7 @@
 //************************************ACCESS_RIGHTS_ACCESS_RIGHTS-SEARCH/UPDATE***********************************************//
  DONE BY:safi
 
-   VER 0.01 - INITIAL VERSION-SD:09/11/2013 ED:07/01/2014
+   VER 0.01 - INITIAL VERSION-SD:04/05/2015 ED:14/05/2015
 -->
 <!--HTML TAG START-->
 <?php

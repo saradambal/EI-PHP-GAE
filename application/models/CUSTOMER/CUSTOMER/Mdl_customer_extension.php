@@ -7,33 +7,34 @@ class Mdl_Customer_Extension extends CI_Model{
     //FUNCTION TO GET ALL EXTENSION UNIT NOS
     public  function CEXTN_getExtnUnitNo()
     {
-        $CEXTN_extndtsarray =[];
+        $CEXTN_extndtsarray =array();
         $this->db->select("UNIT_NO");
         $this->db->from('VW_EXTENSION_CUSTOMER');
         $this->db->order_by('UNIT_NO');
         $query=$this->db->get();
         foreach($query->result_array() as $row){
             $CEXTN_extndtsarray[]=$row['UNIT_NO'];
-
         }
-    return $CEXTN_extndtsarray;
+        return $CEXTN_extndtsarray;
     }
     //FUNCTION TO GET CUSTOMER NAME N CUSTOMER ID
     public function CEXTN_getCustomerNameId($CEXTN_lb_unitno)  {
-      $CEXTN_extndtsarray =[];
-      $CEXTN_customeridarray =[];
-      $CEXTN_customernamearray=[];
+      $CEXTN_extndtsarray =array();
+      $CEXTN_customeridarray =array();
+      $CEXTN_customernamearray=array();
       $this->db->select("CUSTOMER_ID,CUSTOMERNAME");
       $this->db->from('VW_EXTENSION_CUSTOMER');
       $this->db->where('UNIT_NO=', $CEXTN_lb_unitno);
       $this->db->order_by('CUSTOMERNAME');
       $query=$this->db->get();
+
       foreach($query->result_array() as $row){
           $CEXTN_customeridarray[]=$row['CUSTOMER_ID'];
           $CEXTN_customernamearray[]=$row['CUSTOMERNAME'];
 
       }
       $CEXTN_extndtsarray=array($CEXTN_customeridarray,$CEXTN_customernamearray);
+
     return $CEXTN_extndtsarray;
   }
     //FUNCTION TO GET CUSTOMER DETAILS FOR THE SELECTED CUSTOMER ID
@@ -255,8 +256,8 @@ class Mdl_Customer_Extension extends CI_Model{
         $this->db->query($drop_query);
 //    eilib.DropTempTable(CEXTN_cdtlscon, CExtntblname);
     $CEXTN_diffunittno=array();
-        $this->load->model('EILIB/Common_function');
-    $CEXTN_unitdate=$this->Common_function->GetUnitSdEdate($CEXTN_unitno);//call function to get unit start n end date
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+    $CEXTN_unitdate=$this->Mdl_eilib_common_function->GetUnitSdEdate($CEXTN_unitno);//call function to get unit start n end date
      $CEXTN_unitsdate=$CEXTN_unitdate['unitsdate'];//get unit start date
     $CEXTN_unitedate=$CEXTN_unitdate['unitedate'];//get unit end date
     $CEXTN_diffunittno=$this->CEXTN_getdiffUnitNo($CEXTN_unitno);
@@ -288,9 +289,9 @@ class Mdl_Customer_Extension extends CI_Model{
     //FUNCTION TO GET ROOM TYPE FOR SAME UNIT
     function CEXTN_getRoomType($CEXTN_unitno,$CEXTN_roomtype){
         $CEXTN_roomtypearray =array();
-        $this->load->model('EILIB/Common_function');
-        $CEXTN_roomtypearray=$this->Common_function->CUST_getRoomType($CEXTN_unitno,$CEXTN_roomtype);
-        $unitdate=$this->Common_function->GetUnitSdEdate($CEXTN_unitno);//call function to get unit start n end date
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $CEXTN_roomtypearray=$this->Mdl_eilib_common_function->CUST_getRoomType($CEXTN_unitno,$CEXTN_roomtype);
+        $unitdate=$this->Mdl_eilib_common_function->GetUnitSdEdate($CEXTN_unitno);//call function to get unit start n end date
         $CEXTN_unitsdate=$unitdate['unitsdate'];//get unit start date
         $CEXTN_unitedate=$unitdate['unitedate'];//get unit end date
         $CEXTN_rmtypenunitdate=(object)["unitsdate"=>$CEXTN_unitsdate,"unitedate"=>$CEXTN_unitedate,"roomtype"=>$CEXTN_roomtypearray];
@@ -300,20 +301,20 @@ class Mdl_Customer_Extension extends CI_Model{
     function CEXTN_getdiffunitCardNo($CEXTN_unit,$CEXTN_firstname,$CEXTN_lastname){
 
         $CEXTN_cardnoresult=array();
-        $this->load->model('EILIB/Common_function');
-        $CEXTN_cardnoresult=$this->Common_function->CUST_getunitCardNo_FirstLast($CEXTN_unit,$CEXTN_firstname,$CEXTN_lastname);
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $CEXTN_cardnoresult=$this->Mdl_eilib_common_function->CUST_getunitCardNo_FirstLast($CEXTN_unit,$CEXTN_firstname,$CEXTN_lastname);
         return $CEXTN_cardnoresult;
   }
     //FUNCTION TO CHK PRORATED OR NOT
     function CEXTN_chkProrated($CEXTN_db_chkindate,$CEXTN_db_chkoutdate){
         $CEXTN_chkproflag="";
-        $this->load->model('EILIB/Common_function');
-        $CEXTN_chkproflag=$this->Common_function->CUST_chkProrated($CEXTN_db_chkindate,$CEXTN_db_chkoutdate);
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $CEXTN_chkproflag=$this->Mdl_eilib_common_function->CUST_chkProrated($CEXTN_db_chkindate,$CEXTN_db_chkoutdate);
         return $CEXTN_chkproflag;
   }
 
     //FUNCTION TO SAVE CUSTOMER DETAILS
-    function CEXTN_SaveDetails()
+    function CEXTN_SaveDetails($UserStamp)
   {
       try
       {
@@ -336,59 +337,59 @@ class Mdl_Customer_Extension extends CI_Model{
       $CEXTN_tb_compname=$_POST["CEXTN_tb_compname"];
       $CEXTN_tb_contrcompname=$CEXTN_tb_compname;//company name for contract
       if($CEXTN_tb_compname=="")
-      {  $CEXTN_tb_compname=null;  }else{$CEXTN_tb_compname='"'.$CEXTN_tb_compname.'"';}
+      {  $CEXTN_tb_compname='null';  }else{$CEXTN_tb_compname="'$CEXTN_tb_compname'";}
       $CEXTN_tb_compaddr=$_POST["CEXTN_tb_compaddr"];
       if($CEXTN_tb_compaddr=="")
-      {  $CEXTN_tb_compaddr=null;  }else{$CEXTN_tb_compaddr='"'.$CEXTN_tb_compaddr.'"';}
+      {  $CEXTN_tb_compaddr='null';  }else{$CEXTN_tb_compaddr="'$CEXTN_tb_compaddr'";}
       $CEXTN_tb_comppostcode=$_POST["CEXTN_tb_comppostcode"];
       if($CEXTN_tb_comppostcode=="")
-      {  $CEXTN_tb_comppostcode=null;  }else{$CEXTN_tb_comppostcode='"'.$CEXTN_tb_comppostcode.'"';}
+      {  $CEXTN_tb_comppostcode='null';  }else{$CEXTN_tb_comppostcode="'$CEXTN_tb_comppostcode'";}
       $CEXTN_tb_officeno=$_POST["CEXTN_tb_officeno"];
       if($CEXTN_tb_officeno=="")
-      {  $CEXTN_tb_officeno=null;  }else{$CEXTN_tb_officeno='"'.$CEXTN_tb_officeno.'"';}
+      {  $CEXTN_tb_officeno='null';  }else{$CEXTN_tb_officeno="'$CEXTN_tb_officeno'";}
       //PERSONAL DETAILS
       $CEXTN_tb_emailid=$_POST["CEXTN_tb_emailid"];//($_POST["CEXTN_tb_emailid).toString().toLowerCase();
       $CEXTN_tb_mobileno=$_POST["CEXTN_tb_mobileno"];
       if($CEXTN_tb_mobileno=="")
-      {  $CEXTN_tb_mobileno=null;  }else{$CEXTN_tb_mobileno='"'.$CEXTN_tb_mobileno.'"';}
+      {  $CEXTN_tb_mobileno='null';  }else{$CEXTN_tb_mobileno="'$CEXTN_tb_mobileno'";}
       $CEXTN_tb_intmobileno=$_POST["CEXTN_tb_intmobileno"];
       if($CEXTN_tb_intmobileno=="")
-      {  $CEXTN_tb_intmobileno=null;  }else{$CEXTN_tb_intmobileno='"'.$CEXTN_tb_intmobileno.'"';}
+      {  $CEXTN_tb_intmobileno='null';  }else{$CEXTN_tb_intmobileno="'$CEXTN_tb_intmobileno'";}
       $CEXTN_db_dob=$_POST["CEXTN_db_dob"];
       if($CEXTN_db_dob==""){
-          $CEXTN_db_dob=null;
+          $CEXTN_db_dob='null';
       }
       else{
           $CEXTN_db_dob=date('Y-m-d',strtotime($CEXTN_db_dob));
-          $CEXTN_db_dob='"'.$CEXTN_db_dob.'"';
+          $CEXTN_db_dob="'$CEXTN_db_dob'";
       }
       $CEXTN_tb_nation=$_POST["CEXTN_tb_nation"];
       $CEXTN_tb_passno=$_POST["CEXTN_tb_passno"];
       $CEXTN_tb_contrpassno=$CEXTN_tb_passno;//passport no for contract
       if($CEXTN_tb_passno=="")
-      {  $CEXTN_tb_passno=null;}else{$CEXTN_tb_passno='"'.$CEXTN_tb_passno.'"';}
+      {  $CEXTN_tb_passno='null';}else{$CEXTN_tb_passno="'$CEXTN_tb_passno'";}
       $CEXTN_db_passdate=$_POST["CEXTN_db_passdate"];
       $CEXTN_tb_contrpassdate=$CEXTN_db_passdate;//passport date for contract
       if($CEXTN_db_passdate==""){
-          $CEXTN_db_passdate=null;
+          $CEXTN_db_passdate='null';
       }
       else{
           $CEXTN_db_passdate=date('Y-m-d',strtotime($CEXTN_db_passdate));
-          $CEXTN_db_passdate='"'.$CEXTN_db_passdate.'"';
+          $CEXTN_db_passdate="'$CEXTN_db_passdate'";
       }
       $CEXTN_tb_epno=$_POST["CEXTN_tb_epno"];
       $CEXTN_tb_contrepno=$CEXTN_tb_epno;//ep no for contract
       if($CEXTN_tb_epno==""){
-          $CEXTN_tb_epno=null;
+          $CEXTN_tb_epno='null';
       }else{
-          $CEXTN_tb_epno='"'.$CEXTN_tb_epno.'"';}
+          $CEXTN_tb_epno="'$CEXTN_tb_epno'";}
       $CEXTN_db_epdate=$_POST["CEXTN_db_epdate"];
       $CEXTN_tb_contrepdate=$CEXTN_db_epdate;////ep date for contract
-      if($CEXTN_db_epdate==""){  $CEXTN_db_epdate=null;
+      if($CEXTN_db_epdate==""){  $CEXTN_db_epdate='null';
       }
       else{
           $CEXTN_db_epdate=date('Y-m-d',strtotime($CEXTN_db_epdate));
-          $CEXTN_db_epdate='"'.$CEXTN_db_epdate.'"';
+          $CEXTN_db_epdate="'$CEXTN_db_epdate'";
       }
       $CEXTN_ta_comments=$_POST["CEXTN_ta_comments"];
       if($CEXTN_ta_comments!="")
@@ -425,17 +426,17 @@ class Mdl_Customer_Extension extends CI_Model{
       $CEXTN_tb_noticeperiod=$_POST["CEXTN_tb_noticeperiod"];
       $CEXTN_contractnoticeperiod=$CEXTN_tb_noticeperiod;
       if($CEXTN_tb_noticeperiod=="")
-      {    $CEXTN_tb_noticeperiod=null;  }else{$CEXTN_tb_noticeperiod='"'.$CEXTN_tb_noticeperiod.'"';}
+      {    $CEXTN_tb_noticeperiod='null';  }else{$CEXTN_tb_noticeperiod="'$CEXTN_tb_noticeperiod'";}
 
       $CEXTN_db_noticeperioddate=$_POST["CEXTN_db_noticeperioddate"];
       $CEXTN_tb_contrnoticedate=$CEXTN_db_noticeperioddate;//notice date for contract
       if($CEXTN_tb_contrnoticedate=='undefined'){$CEXTN_tb_contrnoticedate="";}
       if($CEXTN_db_noticeperioddate==""||$CEXTN_db_noticeperioddate=='undefined'){
-          $CEXTN_db_noticeperioddate=null;
+          $CEXTN_db_noticeperioddate='null';
       }
       else{
           $CEXTN_db_noticeperioddate=date('Y-m-d',strtotime($CEXTN_db_noticeperioddate));
-          $CEXTN_db_noticeperioddate='"'.$CEXTN_db_noticeperioddate.'"';}
+          $CEXTN_db_noticeperioddate="'$CEXTN_db_noticeperioddate'";}
 
       $CEXTN_cb_sameamtprorated=$_POST["CEXTN_cb_sameamtprorated"];
 
@@ -454,31 +455,51 @@ class Mdl_Customer_Extension extends CI_Model{
       {
           if($CEXTN_tb_airquarterfee=="")
           {
-              $CEXTN_tb_airquarterfee=null;
+              $CEXTN_tb_airquarterfee='null';
           }
-          $CEXTN_tb_fixedairfee=null;
+          $CEXTN_tb_fixedairfee='null';
       }
       else
       {
-          $CEXTN_tb_airquarterfee=null;
+          $CEXTN_tb_airquarterfee='null';
           if($CEXTN_tb_fixedairfee=="")
           {
-              $CEXTN_tb_fixedairfee=null;
+              $CEXTN_tb_fixedairfee='null';
           }
       }
       $CEXTN_tb_electcapfee=$_POST["CEXTN_tb_electcapfee"];
       if($CEXTN_tb_electcapfee=="")
-      {  $CEXTN_tb_electcapfee=null;}
+      {  $CEXTN_tb_electcapfee='null';}
+          else{
+              $CEXTN_tb_electcapfee="'$CEXTN_tb_electcapfee'";
+
+          }
       $CEXTN_tb_curtaindryfee=$_POST["CEXTN_tb_curtaindryfee"];
       if($CEXTN_tb_curtaindryfee=="")
-      {  $CEXTN_tb_curtaindryfee=null;}
+      {  $CEXTN_tb_curtaindryfee='null';}
+          else{
+              $CEXTN_tb_curtaindryfee="'$CEXTN_tb_curtaindryfee'";
+
+          }
       $CEXTN_tb_chkoutcleanfee=$_POST["CEXTN_tb_chkoutcleanfee"];
       if($CEXTN_tb_chkoutcleanfee=="")
-      {  $CEXTN_tb_chkoutcleanfee=null;}
+      {  $CEXTN_tb_chkoutcleanfee='null';}
+          else{
+              $CEXTN_tb_chkoutcleanfee="'$CEXTN_tb_chkoutcleanfee'";
+
+          }
       //SAME AMOUNT
       $CEXTN_tb_sameamtdep=$_POST["CEXTN_tb_sameamtdep"];
       $CEXTN_tb_sameamtrent=$_POST["CEXTN_tb_sameamtrent"];
       $CEXTN_tb_sameamtprocost=$_POST["CEXTN_tb_sameamtprocost"];
+          if($CEXTN_tb_sameamtprocost==''){
+
+              $CEXTN_tb_sameamtprocost='null';
+          }
+          else
+          {
+              $CEXTN_tb_sameamtprocost="'$CEXTN_tb_sameamtprocost'";
+          }
       //DIFFERENT AMOUNT
       $CEXTN_tb_diffamtdep=$_POST["CEXTN_tb_diffamtdep"];
       if($CEXTN_tb_diffamtdep=="")
@@ -501,10 +522,10 @@ class Mdl_Customer_Extension extends CI_Model{
       //QUATORS N LEASE PERIOD CALC
       $CEXTN_sdate=$CEXTN_db_chkindate;//.split('-');
       $CEXTN_edate=$CEXTN_db_chkoutdate;//.split('-');
-//          $CEXTN_Leaseperiod=$this->Common_function->getLeasePeriod($CEXTN_sdate,$CEXTN_edate);
-//               $CEXTN_quators=$this->Common_function->quarterCalc(new DateTime($CEXTN_sdate), new DateTime($CEXTN_edate));
-//      $CEXTN_quators  = eilib.quarterCalc(new Date(CEXTN_sdate[0],CEXTN_sdate[1]-1,CEXTN_sdate[2]),new Date(CEXTN_edate[0],CEXTN_edate[1]-1,CEXTN_edate[2]));
-//      $CEXTN_Leaseperiod  = eilib.leasePeriodCalc(new Date(CEXTN_sdate[0],CEXTN_sdate[1]-1,CEXTN_sdate[2]),new Date(CEXTN_edate[0],CEXTN_edate[1]-1,CEXTN_edate[2]));
+          $this->load->model('EILIB/Mdl_eilib_common_function');
+          $this->load->model('EILIB/Mdl_eilib_quarter_calc');
+          $CEXTN_Leaseperiod=$this->Mdl_eilib_common_function->getLeasePeriod($CEXTN_sdate,$CEXTN_edate);
+          $CEXTN_quators=$this->Mdl_eilib_quarter_calc->quarterCalc(new DateTime($CEXTN_sdate), new DateTime($CEXTN_edate));
       //SET UNIT NO N ROOM TYPE
       $CEXTN_unitno="";
       $CEXTN_roomtype="";
@@ -533,10 +554,10 @@ class Mdl_Customer_Extension extends CI_Model{
       else
       {
           $CEXTN_unitno=$CEXTN_lb_unitno;
-          $CEXTN_chksameunit="X";
+          $CEXTN_chksameunit='X';
       }
       if($CEXTN_chksameunit=="")
-      {    $CEXTN_chksameunit=null;  }else{$CEXTN_chksameunit='"'.$CEXTN_chksameunit.'"';}
+      {    $CEXTN_chksameunit='null';  }else{$CEXTN_chksameunit="'$CEXTN_chksameunit'";}
 
       if($CEXTN_radio_unit=="CEXTN_radio_sameunit")
       {
@@ -554,6 +575,7 @@ class Mdl_Customer_Extension extends CI_Model{
       }
       $CEXTN_rent_check="";
       //CHECK SAME OR DIFF AMOUNT
+          echo $CEXTN_radio_amt;
       if($CEXTN_radio_amt=="CEXTN_radio_sameamt")
       {
           $CEXTN_waivedvalue=$CEXTN_hidden_sameamtwaived;
@@ -561,16 +583,17 @@ class Mdl_Customer_Extension extends CI_Model{
           $CEXTN_rent_check=$CEXTN_hidden_sameamtprorated;
           $CEXTN_rentamt=$CEXTN_tb_sameamtrent;
           $CEXTN_depositamt=$CEXTN_tb_sameamtdep;
-          $CEXTN_depositamt=null;
+          $CEXTN_depositamt='null';
+          echo $CEXTN_waivedvalue.'sss';
         if($CEXTN_waivedvalue!="")
         {
             $CEXTN_profeeamt=$CEXTN_tb_sameamtprocost;
         }
         else
         {
-            $CEXTN_profeeamt=null;
+            $CEXTN_profeeamt='null';
         }
-        $CEXTN_sameamntflag="X";
+        $CEXTN_sameamntflag="'X'";
       }
       else
       {
@@ -591,9 +614,8 @@ class Mdl_Customer_Extension extends CI_Model{
       {
           $CEXTN_card_array=$CEXTN_cb_diffunitcard;
           $card_lbl=$_POST["CEXTN_slctcustlbl"];
-          $CEXTN_find=strlen(strstr($card_lbl,','));
-          echo $CEXTN_find;
 
+          $CEXTN_find=strlen(strstr($card_lbl,','));
           if($CEXTN_find>0)
           {
               $finalarray=explode(",",$card_lbl);//card_lbl.split(",")
@@ -607,64 +629,70 @@ class Mdl_Customer_Extension extends CI_Model{
               $CEXTN_card_lbl=$card_lbl;
         }
       }
-          print_r($CEXTN_card_lbl);
       $CEXTN_customercard="";
-      if($CEXTN_card_array!='undefined')
+      if(count($CEXTN_card_array)>0)//!='undefined')
       {
 //          $CEXTN_find=(CEXTN_card_array.toString()).search(',');
-          $CEXTN_find=strlen(strstr($CEXTN_card_array,','));
-          if($CEXTN_find>0)
+
+//         implode(",", $CEXTN_card_array);
+//          echo ($CEXTN_card_array);
+//         print_r(preg_match(",",$CEXTN_card_array));
+//
+////          $CEXTN_find=strlen(strstr($CEXTN_card_array,','));
+////        return  [strstr($CEXTN_card_array,','),'kjkk'];
+//          exit;
+
+          if(count($CEXTN_card_array)>1)
           {
               $accessflag=0;
-              for($i=0;$i<count($CEXTN_card_array);$i++)
-          {
-              if($CEXTN_card_array[$i]=="")continue;
-            $CEXTN_cardnos=$CEXTN_card_array[$i];
-            $CEXTN_cardlbl=str_replace("_"," ",$CEXTN_card_lbl[$i]);//CEXTN_card_lbl[i].replace(/ /g,"_");
-            $CEXTN_customename=str_replace("_"," ",$CEXTN_customename);//$CEXTN_customename.replace(/ /g,"_");
-            if($CEXTN_cardlbl==$CEXTN_customename)
-            {
-                if($CEXTN_accesscard=="")
-                {
-                    $CEXTN_accesscard=$CEXTN_cardnos;
-                    $CEXTN_customercard=$CEXTN_cardnos;
-                $CEXTN_guestcard=$CEXTN_cardnos.","." ";
+              for($i=0;$i<count($CEXTN_card_array);$i++){
+                    if($CEXTN_card_array[$i]=="")continue;
+                    $CEXTN_cardnos=$CEXTN_card_array[$i];
+
+                    $CEXTN_cardlbl=str_replace(" ","_",$CEXTN_card_lbl[$i]);//CEXTN_card_lbl[i].replace(/ /g,"_");
+                    $CEXTN_customename=str_replace(" ","_",$CEXTN_customename);//$CEXTN_customename.replace(/ /g,"_");
+
+                    if($CEXTN_cardlbl==$CEXTN_customename){
+                        if($CEXTN_accesscard==""){
+                            $CEXTN_accesscard=$CEXTN_cardnos;
+                            $CEXTN_customercard=$CEXTN_cardnos;
+                            $CEXTN_guestcard=$CEXTN_cardnos.","." ";
+                        }
+                        else{
+                            $CEXTN_accesscard=$CEXTN_accesscard.",".$CEXTN_cardnos;
+                            $CEXTN_guestcard=$CEXTN_guestcard.",".$CEXTN_cardnos.", ";
+                            $CEXTN_customercard=$CEXTN_cardnos;
+                        }
+                    }
+                    else{
+                    if($CEXTN_accesscard=="")
+                    {
+                        $CEXTN_guestcard=$CEXTN_cardnos.",X";
+                        $CEXTN_accesscard=$CEXTN_cardnos;
+                    }
+                    else
+                    {
+                        $CEXTN_accesscard=$CEXTN_accesscard.",".$CEXTN_cardnos;
+                        $CEXTN_guestcard=$CEXTN_guestcard.",".$CEXTN_cardnos.",X";
+                    }
+                }
               }
-                else
-                {
-                    $CEXTN_accesscard=$CEXTN_accesscard.",".$CEXTN_cardnos;
-                    $CEXTN_guestcard=$CEXTN_guestcard.",".$CEXTN_cardnos.", ";
-                    $CEXTN_customercard=$CEXTN_cardnos;
-                }
-            }
-            else
-            {
-                if($CEXTN_accesscard=="")
-                {
-                    $CEXTN_guestcard=$CEXTN_cardnos.",X";
-                    $CEXTN_accesscard=$CEXTN_cardnos;
-                }
-                else
-                {
-                    $CEXTN_accesscard=$CEXTN_accesscard.",".$CEXTN_cardnos;
-                    $CEXTN_guestcard=$CEXTN_guestcard.",".$CEXTN_cardnos.",X";
-                }
-            }
           }
-        }
           else
           {
               $accessflag=1;
-              $CEXTN_accesscard=$CEXTN_card_array;
+              $CEXTN_accesscard=$CEXTN_card_array[0];
               $CEXTN_customercard=$CEXTN_card_array;
-          $CEXTN_guestcard=$CEXTN_card_array.", ";
+              $CEXTN_guestcard=$CEXTN_card_array[0].", ";
         }
       }
       else
       {
           $CEXTN_accesscard="";
-        $CEXTN_guestcard=$CEXTN_accesscard.", ";
+          $CEXTN_guestcard=$CEXTN_accesscard.", ";
       }
+
+
       //CALENDAR DATE N TIME
       $CEXTN_prevchkoutdate=date('Y-m-d',strtotime($CEXTN_db_chkindate));//eilib.SqlDateFormat(CEXTN_db_chkindate);
       $CEXTN_prevchkoutdatefromtime=$CEXTN_hidden_chkinfromtime;
@@ -677,46 +705,97 @@ class Mdl_Customer_Extension extends CI_Model{
 //      $CEXTN_saveconn =eilib.db_GetConnection();
 //      CEXTN_saveconn.setAutoCommit(false);
 //      $CEXTN_savestmt=CEXTN_saveconn.createStatement();
-          echo "CALL SP_CUSTOMER_EXTENSION_INSERT('$CEXTN_hidden_custid','$CEXTN_tb_compname','$CEXTN_tb_compaddr','$CEXTN_tb_comppostcode','$CEXTN_tb_officeno','$CEXTN_unitno','$CEXTN_chksameunit','$CEXTN_roomtype','$CEXTN_lb_chkinfromtime','$CEXTN_lb_chkintotime','$CEXTN_lb_chkoutfromtime','$CEXTN_lb_chkouttotime','$CEXTN_Leaseperiod','$CEXTN_quators','$CEXTN_waivedvalue','$CEXTN_proratedvalue','$CEXTN_tb_noticeperiod','$CEXTN_db_noticeperioddate','$CEXTN_rentamt','$CEXTN_depositamt','$CEXTN_profeeamt','$CEXTN_tb_fixedairfee','$CEXTN_tb_airquarterfee','$CEXTN_tb_electcapfee','$CEXTN_tb_chkoutcleanfee','$CEXTN_tb_curtaindryfee','$CEXTN_accesscard','$CEXTN_db_chkindate','$UserStamp','$CEXTN_db_chkindate','$CEXTN_db_chkoutdate','$CEXTN_guestcard','$CEXTN_tb_nation','$CEXTN_tb_mobileno','$CEXTN_tb_intmobileno','$CEXTN_tb_emailid','$CEXTN_tb_passno','$CEXTN_db_passdate','$CEXTN_db_dob','$CEXTN_tb_epno','$CEXTN_db_epdate','$CEXTN_ta_comments','$CEXTN_sameamntflag',@EXTNFLAG,@TEMP_OUT_EXT_CARNOTBLNAME,@TEMP_OUT_EXTN_CLPDTLSTTBLNAME,@TEMP_OUT_EXTN_FEEDTLTBLNAME,@PAY_CHK_MSG)";
-exit;
+//          echo "CALL SP_CUSTOMER_EXTENSION_INSERT( EX_CUSTOMER_ID,
+//IN EX_COMPANY_NAME ,
+//IN EX_COMPANY_ADDR ,
+//IN EX_POSTAL_CODE ,
+//IN EX_OFFICE_NO ,
+//IN EX_UNIT_NO ,
+//IN EX_SAMEUNIT_FLAG ,
+//IN EX_ROOM_TYPE ,
+//IN EX_SD_STIME ,
+//IN EX_SD_ETIME ,
+//IN EX_ED_STIME ,
+//IN EX_ED_ETIME ,
+//IN EX_LEASE_PERIOD,
+//IN EX_QUARTERS ,
+//IN EX_PROCESSING_WAIVED,
+//IN EX_PRORATED       ,
+//IN EX_NOTICE_PERIOD,
+//IN EX_NOTICE_START_DATE ,
+//IN EX_RENT ,
+//IN EX_DEPOSIT ,
+//IN EX_PROCESSING_FEE,
+//IN EX_AIRCON_FIXED_FEE,
+//IN EX_AIRCON_QUARTELY_FEE ,
+//IN EX_ELECTRICITY_CAP ,
+//IN EX_CHECKOUT_CLEANING_FEE ,
+//IN EX_DRYCLEAN_FEE ,
+//IN EX_CARD_NO ,
+//IN EX_VALID_FROM ,
+//IN USERSTAMP ,
+//IN EX_STARTDATE ,
+//IN EX_ENDDATE ,
+//IN EX_GUEST_CARD ,
+//IN EX_NATIONALITY ,
+//IN EX_MOBILE ,
+//IN EX_INTL_MOBILE ,
+//IN EX_EMAIL ,
+//IN EX_PASSPORT_NO ,
+//IN EX_PASSPORT_DATE ,
+//IN EX_DOB ,
+//IN EX_EP_NO ,
+//IN EX_EP_DATE ,
+//IN EX_COMMENTS,
+//IN EX_SAMEAMNTFLAG ,
+//OUT EX_SUCCESSFLAG ,
+//OUT TEMP_OUT_EXT_CARNOTBLNAME ,
+//OUT TEMP_OUT_EXTN_CLPDTLSTTBLNAME ,
+//OUT TEMP_OUT_EXTN_FEEDTLTBLNAME ,
+//OUT PAY_CHK_MSG TEXT)";
+//          echo "CALL SP_CUSTOMER_EXTENSION_INSERT('$CEXTN_hidden_custid','$CEXTN_tb_compname','$CEXTN_tb_compaddr','$CEXTN_tb_comppostcode','$CEXTN_tb_officeno','$CEXTN_unitno','$CEXTN_chksameunit','$CEXTN_roomtype','$CEXTN_lb_chkinfromtime','$CEXTN_lb_chkintotime','$CEXTN_lb_chkoutfromtime','$CEXTN_lb_chkouttotime','$CEXTN_Leaseperiod','$CEXTN_quators','$CEXTN_waivedvalue','$CEXTN_proratedvalue','$CEXTN_tb_noticeperiod','$CEXTN_db_noticeperioddate','$CEXTN_rentamt','$CEXTN_depositamt','$CEXTN_profeeamt','$CEXTN_tb_fixedairfee','$CEXTN_tb_airquarterfee','$CEXTN_tb_electcapfee','$CEXTN_tb_chkoutcleanfee','$CEXTN_tb_curtaindryfee','$CEXTN_accesscard','$CEXTN_db_chkindate','$UserStamp','$CEXTN_db_chkindate','$CEXTN_db_chkoutdate','$CEXTN_guestcard','$CEXTN_tb_nation','$CEXTN_tb_mobileno','$CEXTN_tb_intmobileno','$CEXTN_tb_emailid','$CEXTN_tb_passno','$CEXTN_db_passdate','$CEXTN_db_dob','$CEXTN_tb_epno','$CEXTN_db_epdate','$CEXTN_ta_comments','$CEXTN_sameamntflag',@EXTNFLAG,@TEMP_OUT_EXT_CARNOTBLNAME,@TEMP_OUT_EXTN_CLPDTLSTTBLNAME,@TEMP_OUT_EXTN_FEEDTLTBLNAME,@PAY_CHK_MSG)";
+          $CEXTN_save="CALL SP_CUSTOMER_EXTENSION_INSERT($CEXTN_hidden_custid,$CEXTN_tb_compname,$CEXTN_tb_compaddr,$CEXTN_tb_comppostcode,$CEXTN_tb_officeno,'$CEXTN_unitno',$CEXTN_chksameunit,'$CEXTN_roomtype','$CEXTN_lb_chkinfromtime','$CEXTN_lb_chkintotime','$CEXTN_lb_chkoutfromtime','$CEXTN_lb_chkouttotime','$CEXTN_Leaseperiod','$CEXTN_quators','$CEXTN_waivedvalue','$CEXTN_proratedvalue',$CEXTN_tb_noticeperiod,$CEXTN_db_noticeperioddate,'$CEXTN_rentamt',$CEXTN_depositamt,$CEXTN_profeeamt,$CEXTN_tb_fixedairfee,$CEXTN_tb_airquarterfee,$CEXTN_tb_electcapfee,$CEXTN_tb_chkoutcleanfee,$CEXTN_tb_curtaindryfee,'$CEXTN_accesscard','$CEXTN_db_chkindate','$UserStamp','$CEXTN_db_chkindate','$CEXTN_db_chkoutdate','$CEXTN_guestcard','$CEXTN_tb_nation',$CEXTN_tb_mobileno,$CEXTN_tb_intmobileno,'$CEXTN_tb_emailid',$CEXTN_tb_passno,$CEXTN_db_passdate,$CEXTN_db_dob,$CEXTN_tb_epno,$CEXTN_db_epdate,'$CEXTN_ta_comments',$CEXTN_sameamntflag,@EXTNFLAG,@TEMP_OUT_EXT_CARNOTBLNAME,@TEMP_OUT_EXTN_CLPDTLSTTBLNAME,@TEMP_OUT_EXTN_FEEDTLTBLNAME,@PAY_CHK_MSG)";
+echo $CEXTN_save;
+
+          $this->db->query($CEXTN_save);
 //      CEXTN_savestmt.execute("CALL SP_CUSTOMER_EXTENSION_INSERT("+CEXTN_hidden_custid+","+CEXTN_tb_compname+","+CEXTN_tb_compaddr+","+CEXTN_tb_comppostcode+","+CEXTN_tb_officeno+","+CEXTN_unitno+","+CEXTN_chksameunit+",'"+CEXTN_roomtype+"','"+CEXTN_lb_chkinfromtime+"','"+CEXTN_lb_chkintotime+"','"+CEXTN_lb_chkoutfromtime+"','"+CEXTN_lb_chkouttotime+"','"+CEXTN_Leaseperiod+"',"+CEXTN_quators+",'"+CEXTN_waivedvalue+"','"+CEXTN_proratedvalue+"',"+CEXTN_tb_noticeperiod+","+CEXTN_db_noticeperioddate+","+CEXTN_rentamt+","+CEXTN_depositamt+","+CEXTN_profeeamt+","+CEXTN_tb_fixedairfee+","+CEXTN_tb_airquarterfee+","+CEXTN_tb_electcapfee+","+CEXTN_tb_chkoutcleanfee+","+CEXTN_tb_curtaindryfee+",'"+CEXTN_accesscard+"','"+CEXTN_db_chkindate+"','"+UserStamp+"','"+CEXTN_db_chkindate+"','"+CEXTN_db_chkoutdate+"','"+CEXTN_guestcard+"','"+CEXTN_tb_nation+"',"+CEXTN_tb_mobileno+","+CEXTN_tb_intmobileno+",'"+CEXTN_tb_emailid+"',"+CEXTN_tb_passno+","+CEXTN_db_passdate+","+CEXTN_db_dob+","+CEXTN_tb_epno+","+CEXTN_db_epdate+",'"+CEXTN_ta_comments+"','"+CEXTN_sameamntflag+"',@EXTNFLAG,@TEMP_OUT_EXT_CARNOTBLNAME,@TEMP_OUT_EXTN_CLPDTLSTTBLNAME,@TEMP_OUT_EXTN_FEEDTLTBLNAME,@PAY_CHK_MSG)");
 //      CEXTN_savestmt.close();
       $CEXTN_saveflag=0;
       $CEXTN_finalarr=$this->CEXTN_ReturnFlagGetExtnFormTempTables();
       $CEXTN_saveflag=$CEXTN_finalarr[0];
-//      if(CEXTN_saveflag==1)
-//      {
+      if($CEXTN_saveflag==1)
+      {
 //          $CEXTN_calenderIDcode =eilib.CUST_getCalenderId(CEXTN_saveconn);//GET CALENDAR ID
-//          $CEXTN_TargetFolderId=eilib.CUST_TargetFolderId(CEXTN_saveconn);//GET TARGER FOLDER ID
-//          $docowner=eilib.CUST_documentowner(CEXTN_saveconn);//get doc owner
-//          CEXTN_CALEVENTS=eilib.CTermExtn_GetCalevent(CEXTN_saveconn,CEXTN_hidden_custid);
-//          //CALL CALENDAR EVENT FUNCTION FROM EILIB
+          $CEXTN_TargetFolderId=$this->Mdl_eilib_common_function->CUST_TargetFolderId();//GET TARGER FOLDER ID
+          $docowner=$this->Mdl_eilib_common_function->CUST_documentowner($UserStamp);//get doc owner
+          $CEXTN_CALEVENTS=$this->Mdl_eilib_common_function->CTermExtn_GetCalevent($CEXTN_hidden_custid);
+          //CALL CALENDAR EVENT FUNCTION FROM EILIB
 //          eilib.CTermExtn_Calevent(CEXTN_saveconn,CEXTN_hidden_custid,"",CEXTN_calenderIDcode,CEXTN_formname,"");
-//          $cust_config_array=[];
-//          cust_config_array=eilib.CUST_invoice_contractreplacetext(CEXTN_saveconn);
-//          $CEXTN_invoiceid=cust_config_array[9];
-//        $CEXTN_invoicesno=cust_config_array[0];
-//        $CEXTN_invoicedate=cust_config_array[1];
-//        if(CEXTN_rent_check!="")
-//        {
-//            CEXTN_rent_check='true';
-//        }
-//        else
-//        {
-//            CEXTN_rent_check='false';
-//        }
-//        //CONTRACT N INVOICE
-//        if(CEXTN_radio_amt=="CEXTN_radio_sameamt")
-//        {
+          $cust_config_array=array();
+          $cust_config_array=$this->Mdl_eilib_common_function->CUST_invoice_contractreplacetext();
+          $CEXTN_invoiceid=$cust_config_array[9];
+        $CEXTN_invoicesno=$cust_config_array[0];
+        $CEXTN_invoicedate=$cust_config_array[1];
+        if($CEXTN_rent_check!="")
+        {
+            $CEXTN_rent_check='true';
+        }
+        else
+        {
+            $CEXTN_rent_check='false';
+        }
+        //CONTRACT N INVOICE
+        if($CEXTN_radio_amt=="CEXTN_radio_sameamt")
+        {
 //            eilib.CUST_contractmail(CEXTN_saveconn,CEXTN_unitno,CEXTN_db_chkindate,CEXTN_db_chkoutdate,CEXTN_tb_contrcompname,CEXTN_continvoicecustomename,CEXTN_contractnoticeperiod,CEXTN_tb_contrpassno,CEXTN_tb_contrpassdate,CEXTN_tb_contrepno,CEXTN_tb_contrepdate,CEXTN_tb_contrnoticedate,CEXTN_Leaseperiod,CEXTN_customercard,CEXTN_rentamt,CEXTN_tb_airquarterfee,CEXTN_tb_fixedairfee,CEXTN_tb_electcapfee,CEXTN_tb_curtaindryfee,CEXTN_tb_chkoutcleanfee,CEXTN_profeeamt,CEXTN_depositamt,CEXTN_waivedvalue,CEXTN_roomtype,CEXTN_rent_check,CEXTN_lb_emailid,"EXTENSION",CEXTN_TargetFolderId,docowner)
-//        }
-//        else
-//        {
+        }
+        else
+        {
 //            eilib.CUST_invoicecontractmail(CEXTN_saveconn,CEXTN_unitno,CEXTN_invoiceid,CEXTN_db_chkindate,CEXTN_db_chkoutdate,CEXTN_tb_contrcompname,CEXTN_continvoicecustomename,CEXTN_invoicesno,CEXTN_invoicedate,CEXTN_contractnoticeperiod,CEXTN_tb_contrpassno,CEXTN_tb_contrpassdate,CEXTN_tb_contrepno,CEXTN_tb_contrepdate,CEXTN_tb_contrnoticedate,CEXTN_Leaseperiod,CEXTN_customercard,CEXTN_rentamt,CEXTN_tb_airquarterfee,CEXTN_tb_fixedairfee,CEXTN_tb_electcapfee,CEXTN_tb_curtaindryfee,CEXTN_tb_chkoutcleanfee,CEXTN_profeeamt,CEXTN_depositamt,CEXTN_waivedvalue,CEXTN_roomtype,CEXTN_TargetFolderId,CEXTN_rent_check,docowner,CEXTN_lb_emailid,"EXTENSION",CEXTN_hidden_custid)
-//        }
-//      }
-      $this->CEXTN_DropTempTables($CEXTN_finalarr[1]);
-//      CEXTN_saveconn.commit();
+        }
+      }
+//      $this->CEXTN_DropTempTables($CEXTN_finalarr[1]);
+          $this->db->trans_commit();//CEXTN_saveconn.commit();
 //      CEXTN_saveconn.close();
       return $CEXTN_saveflag."_".$CEXTN_finalarr[2];
     }
@@ -747,37 +826,30 @@ exit;
       return (Logger.getLog());
     }
 
-    //FUNCTION TO GET FLAG N TEMP TABLES
-//    function CEXTN_ReturnFlagGetExtnFormTempTables(CEXTN_saveconn)
-//  {
-//      $CEXTN_Temptablearray=[];
-//      $saveflag_stmt=CEXTN_saveconn.createStatement();
-//      $saveflag_query="SELECT @EXTNFLAG,@TEMP_OUT_EXT_CARNOTBLNAME,@TEMP_OUT_EXTN_CLPDTLSTTBLNAME,@TEMP_OUT_EXTN_FEEDTLTBLNAME,@PAY_CHK_MSG";
-//      $saveflag_rs=saveflag_stmt.executeQuery(saveflag_query);
-//      $CEXTN_saveflag=0;
-//      $CEXTN_paymsg=null;
-//      while(saveflag_rs.next())
-//      {
-//          CEXTN_saveflag=saveflag_rs.getString(1);
-//          if(saveflag_rs.getString(2)!=null&&saveflag_rs.getString(2)!=undefined&&saveflag_rs.getString(2)!="")
-//          {
-//              CEXTN_Temptablearray.push(saveflag_rs.getString(2))
-//      }
-//          if(saveflag_rs.getString(3)!=null&&saveflag_rs.getString(3)!=undefined&&saveflag_rs.getString(3)!="")
-//          {
-//              CEXTN_Temptablearray.push(saveflag_rs.getString(3))
-//      }
-//          if(saveflag_rs.getString(4)!=null&&saveflag_rs.getString(4)!=undefined&&saveflag_rs.getString(4)!="")
-//          {
-//              CEXTN_Temptablearray.push(saveflag_rs.getString(4))
-//      }
-//          CEXTN_paymsg=saveflag_rs.getString(5);
-//      }
-//      $CEXTN_finalflagtemparray=[CEXTN_saveflag,CEXTN_Temptablearray,CEXTN_paymsg];
-//      saveflag_rs.close();
-//      saveflag_stmt.close();
-//      return CEXTN_finalflagtemparray;
-//  }
+//    FUNCTION TO GET FLAG N TEMP TABLES
+    function CEXTN_ReturnFlagGetExtnFormTempTables(){
+          $CEXTN_Temptablearray=array();
+          $saveflag_query="SELECT @EXTNFLAG as EXTNFLAG,@TEMP_OUT_EXT_CARNOTBLNAME as TEMP_OUT_EXT_CARNOTBLNAME,@TEMP_OUT_EXTN_CLPDTLSTTBLNAME as TEMP_OUT_EXTN_CLPDTLSTTBLNAME,@TEMP_OUT_EXTN_FEEDTLTBLNAME as TEMP_OUT_EXTN_FEEDTLTBLNAME,@PAY_CHK_MSG as PAY_CHK_MSG";
+          $saveflag_rs=$this->db->query($saveflag_query);
+          $CEXTN_saveflag=0;
+          $CEXTN_paymsg=null;
+          $CEXTN_saveflag=$saveflag_rs->row()->EXTNFLAG;//saveflag_rs.getString(1);
+          if($saveflag_rs->row()->TEMP_OUT_EXT_CARNOTBLNAME!=null&&$saveflag_rs->row()->TEMP_OUT_EXT_CARNOTBLNAME!='undefined'&&$saveflag_rs->row()->TEMP_OUT_EXT_CARNOTBLNAME!="")
+          {
+               $CEXTN_Temptablearray[]=($saveflag_rs->row()->TEMP_OUT_EXT_CARNOTBLNAME);
+          }
+          if($saveflag_rs->row()->TEMP_OUT_EXTN_CLPDTLSTTBLNAME!=null&&$saveflag_rs->row()->TEMP_OUT_EXTN_CLPDTLSTTBLNAME!='undefined'&&$saveflag_rs->row()->TEMP_OUT_EXTN_CLPDTLSTTBLNAME!="")
+          {
+              $CEXTN_Temptablearray[]=($saveflag_rs->row()->TEMP_OUT_EXTN_CLPDTLSTTBLNAME);
+          }
+          if($saveflag_rs->row()->TEMP_OUT_EXTN_FEEDTLTBLNAME!=null&&$saveflag_rs->row()->TEMP_OUT_EXTN_FEEDTLTBLNAME!='undefined'&&$saveflag_rs->row()->TEMP_OUT_EXTN_FEEDTLTBLNAME!="")
+          {
+              $CEXTN_Temptablearray[]=($saveflag_rs->row()->TEMP_OUT_EXTN_FEEDTLTBLNAME);
+          }
+          $CEXTN_paymsg=$saveflag_rs->row()->PAY_CHK_MSG;
+          $CEXTN_finalflagtemparray=[$CEXTN_saveflag,$CEXTN_Temptablearray,$CEXTN_paymsg];
+          return $CEXTN_finalflagtemparray;
+  }
     //FUNCTION TO DROP TEMP TABLES
 //    function CEXTN_DropTempTables($CEXTN_Temptablearray)
 //  {

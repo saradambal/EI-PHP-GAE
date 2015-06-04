@@ -12,8 +12,8 @@ class Mdl_customer_expiry_list extends CI_Model{
     public function CEXP_get_initial_values(){
         $CEXP_errorAarray=array();
         $CEXP_select_err_msg="80,81,82,83,84,85,86,87,88,89,282,256";
-        $this->load->model("EILIB/Common_function");
-        $CEXP_errorAarray=$this->Common_function->getErrorMessageList($CEXP_select_err_msg);
+        $this->load->model("EILIB/Mdl_eilib_common_function");
+        $CEXP_errorAarray=$this->Mdl_eilib_common_function->getErrorMessageList($CEXP_select_err_msg);
         $this->db->select();
         $this->db->from('CUSTOMER');
         $CEXP_select_customer=$this->db->get();
@@ -28,7 +28,7 @@ class Mdl_customer_expiry_list extends CI_Model{
            $CEXP_max_date_array[]=($row["CLP_ENDDATE"]);
         }
        //-----------------CODING TO GET EMAIL LIST FROM DATABASE----------------------------//
-       $CWEXP_email_array=$this->Common_function->getProfileEmailId('EXPIRY');
+       $CWEXP_email_array=$this->Mdl_eilib_common_function->getProfileEmailId('EXPIRY');
        $CEXP_initial_values_array=array();
        $CEXP_initial_values=(object)['CEXP_error_msg'=>$CEXP_errorAarray,'CEXP_emailid'=>$CWEXP_email_array,'CEXP_custAarray'=>$CEXP_custAarray,'CEXP_max_date_array'=>$CEXP_max_date_array];
        $CEXP_initial_values_array[]=($CEXP_initial_values);
@@ -39,7 +39,7 @@ class Mdl_customer_expiry_list extends CI_Model{
     public function CEXP_get_customer_details($fromdate,$todate,$radiovalue,$UserStamp,$timeZoneFormat){
 //        set_time_limit(0);
         $CEXP_fromdate=date('Y-m-d',strtotime($fromdate));
-        $CEXP_todate=date('Y-m-d',strtotime($todate));//eilib.SqlDateFormat(todate);
+        $CEXP_todate=date('Y-m-d',strtotime($todate));
         $CEXP_check_radio_value=$radiovalue;
         $CEXP_cust_id_array=[];
         $CEXP_final_expiry_result=array();
@@ -116,7 +116,6 @@ class Mdl_customer_expiry_list extends CI_Model{
     //FUNCTION TO SEND WEEKLY CUSTOMER EXPIRY LIST-----------//
     public  function CWEXP_get_customerdetails($CWEXP_weekBefore,$CWEXP_email_id,$UserStamp,$timeZoneFormat){
         $CWEXP_weekBefore=$CWEXP_weekBefore;
-
         $CWEXP_email_id=$CWEXP_email_id;
         $CWEXP_mail_username=explode('@',$CWEXP_email_id);//CWEXP_email_id.split('@');
         $CWEXP_select_emaildata="SELECT * from EMAIL_TEMPLATE_DETAILS WHERE ET_ID=3";
@@ -127,7 +126,6 @@ class Mdl_customer_expiry_list extends CI_Model{
         }
         $CWEXP_subject=str_replace('[WEEKS_AHEAD]', $CWEXP_weekBefore,$CWEXP_subject_db);//CWEXP_subject_db.replace("[WEEKS_AHEAD]", CWEXP_weekBefore);
         $CWEXP_message=str_replace('[WEEK_AHEAD]', $CWEXP_weekBefore,$CWEXP_message_db);//CWEXP_message_db.replace("'[WEEK_AHEAD]'",CWEXP_weekBefore);
-
         if($CWEXP_weekBefore==1){
             $CWEXP_subject=str_replace("WEEKS", 'WEEK',$CWEXP_subject);//CWEXP_subject.replace("WEEKS", 'WEEK');
             $CWEXP_message=str_replace("WEEKS", 'WEEK',$CWEXP_message);//CWEXP_message.replace("WEEKS", 'WEEK');

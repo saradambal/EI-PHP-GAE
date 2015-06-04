@@ -17,9 +17,10 @@ $(document).ready(function(){
     $(".preloader").show();
     $('textarea').autogrow({onInitialize: true});
     var CCAN_errorAarray=[];
+    var controller_url="<?php echo base_url(); ?>" + '/index.php/CUSTOMER/CUSTOMER/Ctrl_Customer_Cancel_Uncancel/' ;
     $.ajax({
         type:'post',
-        'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_getcustomer",
+        'url':controller_url+"CCAN_getcustomer",
         success:function(data){
             $(".preloader").hide();
             var CCAN_initialvalues_result=JSON.parse(data);
@@ -58,7 +59,7 @@ $(document).ready(function(){
         $('#CCAN_lbl_title').text("CANCEL CUSTOMER").show();
         $.ajax({
             type:'post',
-            'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_getcustomer_details",
+            'url':controller_url+"CCAN_getcustomer_details",
             data:{'CCAN_select_type':CCAN_select_type},
             success:function(data){
                 var response_unit=JSON.parse(data);
@@ -89,7 +90,7 @@ $(document).ready(function(){
         $('#CCAN_lbl_title').text("UNCANCEL CUSTOMER").show();
         $.ajax({
             type:'post',
-            'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_getcustomer_details",
+            'url':controller_url+"CCAN_getcustomer_details",
             data:{'CCAN_select_type':CCAN_select_type},
             success:function(data){
                 var response_unit=JSON.parse(data);
@@ -204,7 +205,7 @@ $(document).ready(function(){
                 var CCAN_select_type = $('input:radio[name=CCAN_mainradiobutton]:checked').val();
                 $.ajax({
                     type:'post',
-                    url:"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_get_customervalues",
+                    url:controller_url+"CCAN_get_customervalues",
                     data:{'CCAN_select_type':CCAN_select_type,'CCAN_name_recver':CCAN_name_recver,'cust_id':CCAN_name_id_array[0]},
                     success:function(data){
                         var response_unit=JSON.parse(data);
@@ -303,7 +304,7 @@ $(document).ready(function(){
         var CCAN_select_type = $('input:radio[name=CCAN_mainradiobutton]:checked').val();
         $.ajax({
             type:'POST',
-            url:"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_get_customervalues",
+            url:controller_url+"CCAN_get_customervalues",
             data:{'CCAN_select_type':CCAN_select_type,'CCAN_name_recver':CCAN_name_recver,'cust_id':CCAN_customer_id},
             success:function(data){
                 var response_unit=JSON.parse(data);
@@ -463,7 +464,7 @@ $(document).ready(function(){
             var CCAN_select_type = $('input:radio[name=CCAN_mainradiobutton]:checked').val();
             $.ajax({
                 type:'post',
-                'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_getcustomer_details",
+                'url':controller_url+"CCAN_getcustomer_details",
                 data:{'CCAN_select_type':CCAN_select_type},
                 success:function(data){
                     var response_unit=JSON.parse(data);
@@ -518,7 +519,7 @@ $(document).ready(function(){
         var form_element=$('#CCAN_form_cancelform').serialize()
         $.ajax({
             type:'post',
-            url:"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_cancel",
+            url:controller_url+"CCAN_cancel",
             data:form_element+"&cust_id="+cust_id+"&CCAN_name_recver="+CCAN_name_recver,
             success:function(data){
                 var final_value=JSON.parse(data);
@@ -538,7 +539,7 @@ $(document).ready(function(){
         var form_element=$('#CCAN_form_cancelform').serialize()
         $.ajax({
             type:'post',
-            url:"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Cancel/CCAN_uncancel",
+            url:controller_url+"CCAN_uncancel",
             data:form_element+"&cust_id="+cust_id+"&CCAN_name_recver="+CCAN_name_recver,
             success:function(data){
                 var final_value=JSON.parse(data);
@@ -566,8 +567,6 @@ $(document).ready(function(){
 
 <body>
 <div class="container">
-<!--        <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif"  /></div></div></div>-->
-
     <div class="preloader"><span class="Centerer"></span><img class="preloaderimg"/> </div>
     <div class="title text-center"><h4><b>CUSTOMER CANCELLATION</b></h4></div>
     <form id="CCAN_form_cancelform" name="CCAN_cancel_form" class="form-horizontal content" role="form">
@@ -739,7 +738,6 @@ $(document).ready(function(){
         </div>
     </form>
 </div>
-</body>
 </body>
 <!---BODY TAG END-->
 </html>

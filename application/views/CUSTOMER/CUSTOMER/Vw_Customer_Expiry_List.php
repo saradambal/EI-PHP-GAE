@@ -26,12 +26,13 @@ $(document).ready(function(){
     var from_date;
     var to_date;
     var radio_value;
+    var controller_url="<?php echo base_url(); ?>" + '/index.php/CUSTOMER/CUSTOMER/Ctrl_Customer_Expiry_List/' ;
     $(".preloader").show();
     $('#CEXP_div_htmltable').hide();
     $('#CWEXP_tble_buttontable').hide();
     $.ajax({
          type:'post',
-        'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CEXP_get_initial_values",
+        'url':controller_url+"CEXP_get_initial_values",
          success:function(data){
              $(".preloader").hide();
 
@@ -39,7 +40,7 @@ $(document).ready(function(){
              CEXP_load_initial_values(initial_value);
          },
         error:function(data){
-
+            show_msgbox("CUSTOMER EXPIRY LIST",JSON.stringify(data),"error",false);
 
         }
     });
@@ -260,7 +261,7 @@ $(document).ready(function(){
             to_date=CEXP_equaldate;
             $.ajax({
                 type:'post',
-                'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CEXP_get_customer_details",
+                'url':controller_url+"CEXP_get_customer_details",
                 data:{'CEXP_fromdate':CEXP_equaldate,'CEXP_todate':CEXP_equaldate,'CEXP_radio_button_select_value':CEXP_radio_button_select_value},
                 success:function(data){
                     var final_value=JSON.parse(data);
@@ -269,7 +270,7 @@ $(document).ready(function(){
                 },
                 error:function(data){
 
-alert(JSON.stringify(data))
+                    show_msgbox("CUSTOMER EXPIRY LIST",JSON.stringify(data),"error",false);
                 }
             });
         }
@@ -280,7 +281,7 @@ alert(JSON.stringify(data))
             to_date=CEXP_beforedate;
             $.ajax({
                 type:'post',
-                'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CEXP_get_customer_details",
+                'url':controller_url+"CEXP_get_customer_details",
                 data:{'CEXP_fromdate':CEXP_beforedate,'CEXP_todate':CEXP_beforedate,'CEXP_radio_button_select_value':CEXP_radio_button_select_value},
                 success:function(data){
                     var final_value=JSON.parse(data);
@@ -289,7 +290,7 @@ alert(JSON.stringify(data))
 
                 },
                 error:function(data){
-                    alert(JSON.stringify(data))
+                    show_msgbox("CUSTOMER EXPIRY LIST",JSON.stringify(data),"error",false);
 
                 }
             });
@@ -302,7 +303,7 @@ alert(JSON.stringify(data))
             to_date=CEXP_enddate;
             $.ajax({
                 type:'post',
-                'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CEXP_get_customer_details",
+                'url':controller_url+"CEXP_get_customer_details",
                 data:{'CEXP_fromdate':CEXP_fromdate,'CEXP_todate':CEXP_enddate,'CEXP_radio_button_select_value':CEXP_radio_button_select_value},
                 success:function(data){
                     var final_value=JSON.parse(data);
@@ -310,7 +311,7 @@ alert(JSON.stringify(data))
 
                 },
                 error:function(data){
-                    alert(JSON.stringify(data))
+                    show_msgbox("CUSTOMER EXPIRY LIST",JSON.stringify(data),"error",false);
 
                 }
             });
@@ -320,7 +321,7 @@ alert(JSON.stringify(data))
 
 
 
-        var pdfurl=document.location.href='<?php echo site_url('Ctrl_Customer_Expiry_List/Customer_Expiry_List_pdf')?>?CEXP_fromdate='+from_date+'&CEXP_todate='+to_date+'&CEXP_radio_button_select_value='+radio_value+'&header='+header;
+        var pdfurl=document.location.href='<?php echo site_url('CUSTOMER/CUSTOMER/Ctrl_Customer_Expiry_List/Customer_Expiry_List_pdf')?>?CEXP_fromdate='+from_date+'&CEXP_todate='+to_date+'&CEXP_radio_button_select_value='+radio_value+'&header='+header;
 
     });
     ///----------SUBMIT BUTTON VALIDATION----------------------//
@@ -343,7 +344,7 @@ alert(JSON.stringify(data))
         var formelement=$('#CEXP_form_expirylist_weeklyexpiryform').serialize();
         $.ajax({
              type:'post',
-            'url':"<?php echo base_url();?>"+"index.php/Ctrl_Customer_Expiry_List/CWEXP_get_customerdetails",
+            'url':controller_url+"CWEXP_get_customerdetails",
              data:formelement,
             success:function(data){
                 var final_value=JSON.parse(data);
@@ -351,7 +352,7 @@ alert(JSON.stringify(data))
 
             },
             error:function(data){
-                alert(JSON.stringify(data))
+                show_msgbox("CUSTOMER EXPIRY LIST",JSON.stringify(data),"error",false);
 
             }
 

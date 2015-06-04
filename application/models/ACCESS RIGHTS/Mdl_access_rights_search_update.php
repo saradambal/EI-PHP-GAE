@@ -78,8 +78,8 @@ class Mdl_access_rights_search_update extends CI_Model{
         foreach($query->result_array() as $row){
             $URSRC_logindetails_array[]=$row['ULD_LOGINID'];
         }
-        $this->load->model('EILIB/Common_function');
-        $ErrorMessage= $this->Common_function->getErrorMessageList('36,354,360,361,362,363,364,365,366,367,370,371,372,373,374,376,401,454,455,458,465');
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $ErrorMessage= $this->Mdl_eilib_common_function->getErrorMessageList('36,354,360,361,362,363,364,365,366,367,370,371,372,373,374,376,401,454,455,458,465');
         $URSRC_initial_values=(object)['URSRC_userrights'=>$URSRC_userrights_array,'URSRC_role_array'=>$URSRC_role_array,'URSRC_loginid_array'=>$URSRC_logindetails_array,'URSRC_errorAarray'=>$ErrorMessage,'URSRC_basicroles_array'=>$URSRC_basicroles_array,'URSRC_basicrole'=>$URSRC_basicrole,'URSRC_basicrole_profile_array'=>$URSRC_basicrole_profile_array,'UserStamp'=>$UserStamp];
         return $URSRC_initial_values;
     }
@@ -375,51 +375,7 @@ foreach($URSRC_select_file->result_array() as $row){
     $URSRC_values_array[]=($URSRC_values);
     return $URSRC_values_array;
     }
-//    public function URSRC_getmenubasic_folder1(){
-//
-//        $URSRC_main_main=array();
-//        $URSRC_first_submenu=array();
-//        $URSRC_second_sub_menu=array();
-//        $URSRC_fp_id_array=array();
-//
-//        $i=0;
-//        $main_menu_query= $this->db->query("SELECT DISTINCT MP_MNAME FROM MENU_PROFILE MP ORDER BY MP_MNAME ASC");
-//        foreach ($main_menu_query->result_array() as $row)//main menu loop
-//        {
-//            $URSRC_main_main[]=$row["MP_MNAME"];
-//            $URSRC_submenu_array =array();
-//
-//            $sub_menu_query=$this->db->query("SELECT  MP_MSUB, MP.MP_ID FROM MENU_PROFILE MP WHERE MP.MP_MNAME='".$URSRC_main_main[$i]."' AND MP.MP_MSUB IS NOT NULL GROUP BY MP_MSUB ORDER BY MP.MP_MSUB ASC ");
-//            $j=0;
-//
-//            $URSRC_submenu=array();
-//            foreach($sub_menu_query->result_array() as $row1)//sub menu loop
-//            {
-//
-//
-//                $URSRC_submenu[]=array($row1["MP_ID"],$row1["MP_MSUB"]);
-//
-//
-//
-//                $sub_sub_menu_data=$this->db->query("SELECT MP.MP_ID, MP_MSUBMENU FROM MENU_PROFILE MP WHERE MP.MP_MNAME='".$URSC_Main_menu_array[$i]."' AND  MP.MP_MSUB='".$URSC_sub_menu_row[$j][1]."' AND MP.MP_MSUBMENU IS NOT NULL  ORDER BY MP_MSUBMENU ASC");
-//                $URSC_sub_sub_menu_row=array();
-//                $URSC_sub_sub_menu_row_data=array();
-//                foreach($sub_sub_menu_data->result_array() as $row2){
-//
-//                    $URSC_sub_sub_menu_row_data[]=array($row2["MP_ID"],$row2["MP_MSUBMENU"]);
-//                }
-////                $URSC_sub_sub_menu_row_col[]=$URSC_sub_sub_menu_row;
-////                $URSC_sub_sub_menu_data_array[]=$URSC_sub_sub_menu_row_data;
-//                $j++;
-//            }
-//            $URSC_sub_sub_menu_array[]=$URSC_sub_sub_menu_row_data;
-//            $URSC_sub_menu_array[]=$URSRC_submenu;
-//            $i++;
-//        }
-//
-//        $final_values=array($URSRC_main_main, $URSC_sub_menu_array,$URSC_sub_sub_menu_array);
-//        return $final_values;
-//    }
+
     public function URSRC_getmenubasic_folder1() {
 
         $URSRC_finalmenu=array();

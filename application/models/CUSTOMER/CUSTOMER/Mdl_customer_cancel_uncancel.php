@@ -6,7 +6,7 @@
  * Time: 3:45 PM
  */
 
-class Mdl_customer_cancel extends CI_Model {
+class Mdl_customer_cancel_uncancel extends CI_Model {
 
     public function CCAN_getcustomer(){
         $CCAN_cust_values='';
@@ -18,15 +18,14 @@ class Mdl_customer_cancel extends CI_Model {
           $CCAN_cust_values='false';
         }
         $CCAN_select_err_msg='44,90,248,328,330,401,458';
-        $this->load->model("EILIB/Common_function");
-        $CCAN_errorAarray=$this->Common_function->getErrorMessageList($CCAN_select_err_msg);
+        $this->load->model("EILIB/Mdl_eilib_common_function");
+        $CCAN_errorAarray=$this->Mdl_eilib_common_function->getErrorMessageList($CCAN_select_err_msg);
         $CCAN_initial_values_array=array();
         $CCAN_initial_values=(object)['CCAN_error_msg'=>$CCAN_errorAarray,'CCAN_cust_values'=>$CCAN_cust_values];
         $CCAN_initial_values_array=[$CCAN_initial_values];
         return $CCAN_initial_values_array;
     }
-
-        //*************FUNCTION TO RETURN UNIT NO  *************************//
+            //*************FUNCTION TO RETURN UNIT NO  *************************//
     public  function CCAN_getcustomer_details($CCAN_select_type){
         return $this->CCAN_allcustomerdetails($CCAN_select_type);
     }
@@ -57,7 +56,6 @@ class Mdl_customer_cancel extends CI_Model {
         $CCAN_feetemptbl_query = 'SELECT @CCAN_FEETMPTBLNAM AS TEMP_TABLE';
         $outparm_result = $this->db->query($CCAN_feetemptbl_query);
         $CCAN_temptblname=$outparm_result->row()->TEMP_TABLE;
-
         if($CCAN_select_type=="CANCEL CUSTOMER"){
             $this->db->select();
             $this->db->from('CUSTOMER_ENTRY_DETAILS CED,NATIONALITY_CONFIGURATION NC ,UNIT U');
@@ -70,21 +68,21 @@ class Mdl_customer_cancel extends CI_Model {
             $this->db->join('CUSTOMER_PERSONAL_DETAILS CPD','CED.CUSTOMER_ID=CPD.CUSTOMER_ID','left');
             $this->db->where('(CED.UNIT_ID=U.UNIT_ID) AND (CED.CUSTOMER_ID='.$CCAN_custid.') and (CPD.NC_ID=NC.NC_ID) and (CLP.CLP_TERMINATE IS NULL) and  (CED.CED_REC_VER=CF.CUSTOMER_VER)  and (CED.CED_REC_VER='.$CCAN_recver.') AND CED.CED_REC_VER=CLP.CED_REC_VER');
             $this->db->order_by('CED.CED_REC_VER');
-                    $CCAN_alldata=$this->db->get();
+            $CCAN_alldata=$this->db->get();
 
         }
         if($CCAN_select_type=="UNCANCEL CUSTOMER"){
-//            $this->db->select();
-//            $this->db->from('CUSTOMER_ENTRY_DETAILS CED,NATIONALITY_CONFIGURATION NC ,UNIT U');
-//            $this->db->join('CUSTOMER_COMPANY_DETAILS CCD',' CED.CUSTOMER_ID=CCD.CUSTOMER_ID','left');
-//            $this->db->join('CUSTOMER_LP_DETAILS CLP','CED.CUSTOMER_ID=CLP.CUSTOMER_ID','left');
-//            $this->db->join('CUSTOMER_ACCESS_CARD_DETAILS CACD','CED.CUSTOMER_ID=CACD.CUSTOMER_ID AND CACD.ACN_ID is null AND CLP.UASD_ID=CACD.UASD_ID','left');
-//            $this->db->join('UNIT_ACCESS_STAMP_DETAILS UASD','UASD.UASD_ID=CACD.UASD_ID','left');
-//            $this->db->join($CCAN_temptblname.' CF','CED.CUSTOMER_ID=CF.CUSTOMER_ID','left');
-//            $this->db->join('CUSTOMER C','CED.CUSTOMER_ID=C.CUSTOMER_ID','left');
-//            $this->db->join('CUSTOMER_PERSONAL_DETAILS CPD','CED.CUSTOMER_ID=CPD.CUSTOMER_ID','left');
-//            $this->db->where('(CED.UNIT_ID=U.UNIT_ID) AND (CED.CUSTOMER_ID='.$CCAN_custid.') and (CPD.NC_ID=NC.NC_ID) and CLP.CLP_TERMINATE IS NULL  and  (CED.CED_REC_VER=CF.CUSTOMER_VER) and (CED.CED_CANCEL_DATE is not null)  and(CED.CED_REC_VER='.$CCAN_recver.') AND CED.CED_REC_VER=CLP.CED_REC_VER');
-//           $this->db->order_by('CED.CED_REC_VER');
+            //            $this->db->select();
+            //            $this->db->from('CUSTOMER_ENTRY_DETAILS CED,NATIONALITY_CONFIGURATION NC ,UNIT U');
+            //            $this->db->join('CUSTOMER_COMPANY_DETAILS CCD',' CED.CUSTOMER_ID=CCD.CUSTOMER_ID','left');
+            //            $this->db->join('CUSTOMER_LP_DETAILS CLP','CED.CUSTOMER_ID=CLP.CUSTOMER_ID','left');
+            //            $this->db->join('CUSTOMER_ACCESS_CARD_DETAILS CACD','CED.CUSTOMER_ID=CACD.CUSTOMER_ID AND CACD.ACN_ID is null AND CLP.UASD_ID=CACD.UASD_ID','left');
+            //            $this->db->join('UNIT_ACCESS_STAMP_DETAILS UASD','UASD.UASD_ID=CACD.UASD_ID','left');
+            //            $this->db->join($CCAN_temptblname.' CF','CED.CUSTOMER_ID=CF.CUSTOMER_ID','left');
+            //            $this->db->join('CUSTOMER C','CED.CUSTOMER_ID=C.CUSTOMER_ID','left');
+            //            $this->db->join('CUSTOMER_PERSONAL_DETAILS CPD','CED.CUSTOMER_ID=CPD.CUSTOMER_ID','left');
+            //            $this->db->where('(CED.UNIT_ID=U.UNIT_ID) AND (CED.CUSTOMER_ID='.$CCAN_custid.') and (CPD.NC_ID=NC.NC_ID) and CLP.CLP_TERMINATE IS NULL  and  (CED.CED_REC_VER=CF.CUSTOMER_VER) and (CED.CED_CANCEL_DATE is not null)  and(CED.CED_REC_VER='.$CCAN_recver.') AND CED.CED_REC_VER=CLP.CED_REC_VER');
+            //           $this->db->order_by('CED.CED_REC_VER');
             $CCAN_alldata=("SELECT  * FROM  CUSTOMER_ENTRY_DETAILS CED LEFT JOIN CUSTOMER_COMPANY_DETAILS CCD on CED.CUSTOMER_ID=CCD.CUSTOMER_ID left join CUSTOMER_LP_DETAILS CLP on CED.CUSTOMER_ID=CLP.CUSTOMER_ID left join CUSTOMER_ACCESS_CARD_DETAILS CACD on CED.CUSTOMER_ID=CACD.CUSTOMER_ID and (CLP.UASD_ID=CACD.UASD_ID) AND CACD.ACN_ID IS NULL left join UNIT_ACCESS_STAMP_DETAILS UASD on  (UASD.UASD_ID=CACD.UASD_ID) left join ".$CCAN_temptblname." CF on  CED.CUSTOMER_ID=CF.CUSTOMER_ID left join CUSTOMER C on CED.CUSTOMER_ID=C.CUSTOMER_ID left join  CUSTOMER_PERSONAL_DETAILS CPD on CED.CUSTOMER_ID=CPD.CUSTOMER_ID ,NATIONALITY_CONFIGURATION NC ,UNIT U  where   (CED.UNIT_ID=U.UNIT_ID)AND (CED.CUSTOMER_ID=".$CCAN_custid.") and(CPD.NC_ID=NC.NC_ID)and(CLP.CLP_TERMINATE is null) and (CED.CED_CANCEL_DATE is not null) and  (CED.CED_REC_VER=CF.CUSTOMER_VER)  and(CED.CED_REC_VER=".$CCAN_recver.") AND CED.CED_REC_VER=CLP.CED_REC_VER  order by CED.CED_REC_VER ");
             $CCAN_alldata=$this->db->query($CCAN_alldata);
 
@@ -152,7 +150,7 @@ class Mdl_customer_cancel extends CI_Model {
   public function CCAN_cancel($UserStamp,$custid,$recver,$CCAN_unitnumber,$CCAN_tb_firstname,$CCAN_tb_lastname,$CCAN_ta_comments,$cal_service){
       try{
           $cal_flag='';
-          $this->load->model('EILIB/Calender');
+          $this->load->model('EILIB/Mdl_eilib_calender');
           $CCAN_unit_value=$CCAN_unitnumber;
           $CCAN_firstname = $CCAN_tb_firstname;
           $CCAN_lastname  = $CCAN_tb_lastname;
@@ -182,7 +180,7 @@ class Mdl_customer_cancel extends CI_Model {
                  $CCAN_start_time_out=$row["CED_SD_ETIME"];
                  $CCAN_end_time_in=$row["CED_ED_STIME"];
                  $CCAN_end_time_out=$row["CED_ED_ETIME"];
-               $cal_flag=$this->Calender->CUST_customercalenderdeletion($cal_service,$CCAN_custid,$CCAN_checkin_date,$CCAN_start_time_in,$CCAN_start_time_out,$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,'');
+               $cal_flag=$this->Mdl_eilib_calender->CUST_customercalenderdeletion($cal_service,$CCAN_custid,$CCAN_checkin_date,$CCAN_start_time_in,$CCAN_start_time_out,$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,'');
              }
          }
 
@@ -234,14 +232,15 @@ class Mdl_customer_cancel extends CI_Model {
             $recver_array=array();
             $cancel_date_array=array();
             $unit_no_array=array();
-            $this->load->model('EILIB/Common_function');
-            $this->load->model('EILIB/Calender');
+            $this->load->model('EILIB/Mdl_eilib_common_function');
+            $this->load->model('EILIB/Mdl_eilib_calender');
+            $this->load->model('EILIB/Mdl_eilib_quarter_calc');
             foreach($CCAN_custeventrs->result_array() as $row){
                $CCAN_checkin_date = $row["CLP_STARTDATE"];
                $CCAN_checkout_date = $row["CLP_ENDDATE"];
                $recver=$row["CED_REC_VER"];
-               $CCAN_Leaseperiod=$this->Common_function->getLeasePeriod($CCAN_checkin_date,$CCAN_checkout_date);
-               $CCAN_quators=$this->Common_function->quarterCalc(new DateTime($CCAN_checkin_date), new DateTime($CCAN_checkout_date));
+               $CCAN_Leaseperiod=$this->Mdl_eilib_common_function->getLeasePeriod($CCAN_checkin_date,$CCAN_checkout_date);
+               $CCAN_quators=$this->Mdl_eilib_quarter_calc->quarterCalc(new DateTime($CCAN_checkin_date), new DateTime($CCAN_checkout_date));
                $lease_period_array[]=($CCAN_Leaseperiod);
                $quaters_array[]=($CCAN_quators);
                $recver_array[]=($recver);
@@ -293,27 +292,27 @@ class Mdl_customer_cancel extends CI_Model {
                     $CCAN_roomtype=$row["URTD_ROOM_TYPE"];
                     if($CCAN_unitno==$CCAN_unit_value && $CCAN_roomtype==$CCAN_roomType){
                        if($count==1){
-                         $cal_flag=$this->Calender->CUST_customercalendercreation($cal_service,$CCAN_custid,$CCAN_checkin_date,$CCAN_start_time_in,$CCAN_start_time_out,$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$CCAN_firstname,$CCAN_lastname,$CCAN_mobile,$CCAN_intmoblie,$CCAN_office,$CCAN_emailid,$CCAN_unitno,$CCAN_roomtype,"");
-                         $cal_flag= $this->Calender->CUST_customercalenderdeletion($cal_service,$CCAN_custid,'','','',$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$type);
+                         $cal_flag=$this->Mdl_eilib_calender->CUST_customercalendercreation($cal_service,$CCAN_custid,$CCAN_checkin_date,$CCAN_start_time_in,$CCAN_start_time_out,$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$CCAN_firstname,$CCAN_lastname,$CCAN_mobile,$CCAN_intmoblie,$CCAN_office,$CCAN_emailid,$CCAN_unitno,$CCAN_roomtype,"");
+                         $cal_flag= $this->Mdl_eilib_calender->CUST_customercalenderdeletion($cal_service,$CCAN_custid,'','','',$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$type);
                        }
                        else{
-                         $cal_flag=$this->Calender->CUST_customercalendercreation($cal_service,$CCAN_custid,$CCAN_checkin_date,$CCAN_start_time_in,$CCAN_start_time_out,$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$CCAN_firstname,$CCAN_lastname,$CCAN_mobile,$CCAN_intmoblie,$CCAN_office,$CCAN_emailid,$CCAN_unitno,$CCAN_roomtype,"");
-                          $this->Calender->CUST_customercalenderdeletion($cal_service,$CCAN_custid,'','','',$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$type);
+                         $cal_flag=$this->Mdl_eilib_calender->CUST_customercalendercreation($cal_service,$CCAN_custid,$CCAN_checkin_date,$CCAN_start_time_in,$CCAN_start_time_out,$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$CCAN_firstname,$CCAN_lastname,$CCAN_mobile,$CCAN_intmoblie,$CCAN_office,$CCAN_emailid,$CCAN_unitno,$CCAN_roomtype,"");
+                          $this->Mdl_eilib_calender->CUST_customercalenderdeletion($cal_service,$CCAN_custid,'','','',$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$type);
                        }
                     }
                     if($CCAN_roomtype!=$CCAN_roomType&&$CCAN_unitno==$CCAN_unit_value){
                        $CCAN_custunittype="DIFF RM";
-                       $this->Calender->CUST_customercalenderdeletion($cal_service,$CCAN_custid,$CCAN_checkin_date,$CCAN_start_time_in,$CCAN_start_time_out,'','','',$type);
-                       $this->Calender->CUST_customercalendercreation($cal_service,$CCAN_custid,$CCAN_checkin_date,$CCAN_start_time_in,$CCAN_start_time_out,$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$CCAN_firstname,$CCAN_lastname,$CCAN_mobile,$CCAN_intmoblie,$CCAN_office,$CCAN_emailid,$CCAN_unitno,$CCAN_roomtype,$CCAN_custunittype);
+                       $this->Mdl_eilib_calender->CUST_customercalenderdeletion($cal_service,$CCAN_custid,$CCAN_checkin_date,$CCAN_start_time_in,$CCAN_start_time_out,'','','',$type);
+                       $this->Mdl_eilib_calender->CUST_customercalendercreation($cal_service,$CCAN_custid,$CCAN_checkin_date,$CCAN_start_time_in,$CCAN_start_time_out,$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$CCAN_firstname,$CCAN_lastname,$CCAN_mobile,$CCAN_intmoblie,$CCAN_office,$CCAN_emailid,$CCAN_unitno,$CCAN_roomtype,$CCAN_custunittype);
                     }
                     if($CCAN_unitno!=$CCAN_unit_value){
                        $CCAN_custunittype="DIFF UNIT";
-                       $cal_flag= $this->Calender->CUST_customercalendercreation($cal_service,$CCAN_custid,$CCAN_checkin_date,$CCAN_start_time_in,$CCAN_start_time_out,$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$CCAN_firstname,$CCAN_lastname,$CCAN_mobile,$CCAN_intmoblie,$CCAN_office,$CCAN_emailid,$CCAN_unitno,$CCAN_roomtype,$CCAN_custunittype);
-                       $cal_flag=$this->Calender->CUST_customercalendercreation($cal_service,$CCAN_custid,$CCAN_checkin_date,$CCAN_start_time_in,$CCAN_start_time_out,$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$CCAN_firstname,$CCAN_lastname,$CCAN_mobile,$CCAN_intmoblie,$CCAN_office,$CCAN_emailid,$CCAN_unitno,$CCAN_roomtype,$CCAN_custunittype);
+                       $cal_flag= $this->Mdl_eilib_calender->CUST_customercalendercreation($cal_service,$CCAN_custid,$CCAN_checkin_date,$CCAN_start_time_in,$CCAN_start_time_out,$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$CCAN_firstname,$CCAN_lastname,$CCAN_mobile,$CCAN_intmoblie,$CCAN_office,$CCAN_emailid,$CCAN_unitno,$CCAN_roomtype,$CCAN_custunittype);
+                       $cal_flag=$this->Mdl_eilib_calender->CUST_customercalendercreation($cal_service,$CCAN_custid,$CCAN_checkin_date,$CCAN_start_time_in,$CCAN_start_time_out,$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$CCAN_firstname,$CCAN_lastname,$CCAN_mobile,$CCAN_intmoblie,$CCAN_office,$CCAN_emailid,$CCAN_unitno,$CCAN_roomtype,$CCAN_custunittype);
                     }
                  }
                  if($count==1){
-                   $cal_flag=$this->Calender->CUST_customercalendercreation($cal_service,$CCAN_custid,'','','',$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$CCAN_firstname,$CCAN_lastname,$CCAN_mobile,$CCAN_intmoblie,$CCAN_office,$CCAN_emailid,$CCAN_unitno,$CCAN_roomtype,'');
+                   $cal_flag=$this->Mdl_eilib_calender->CUST_customercalendercreation($cal_service,$CCAN_custid,'','','',$CCAN_checkout_date,$CCAN_end_time_in,$CCAN_end_time_out,$CCAN_firstname,$CCAN_lastname,$CCAN_mobile,$CCAN_intmoblie,$CCAN_office,$CCAN_emailid,$CCAN_unitno,$CCAN_roomtype,'');
                  }
 
             }

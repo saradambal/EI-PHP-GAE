@@ -18,9 +18,10 @@ include "Header.php";
 var value_array=[];
 var USR_SITE_checked_mpid=[];
 var USR_SITE_errorAarray=[];
+var controller_url="<?php echo base_url(); ?>" + '/index.php/ACCESSRIGHTS/Ctrl_Access_Rights_Site_Maintenance/' ;
 //START DOCUMENT READY FUNCTION
 $(document).ready(function(){
-//    $('.preloader').show();
+    $('.preloader').show();
     var USR_SITE_menuname=[];
     var USR_SITE_submenu=[];
     var USR_SITE_subsubmenu=[];
@@ -32,17 +33,20 @@ $(document).ready(function(){
     function USR_SITE_loadInitialValue(){
     $.ajax({
         type:'post',
-        'url':"<?php echo base_url();?>"+"index.php/Ctrl_Site_Maintenance/USR_SITE_getintialvalue",
+        'url':controller_url+"/USR_SITE_getintialvalue",
         success:function(data){
             value_array=JSON.parse(data);
             USR_SITE_tree_view(value_array) ;
+        },
+        error:function(data){
+
+            show_msgbox("SITE MAINTENANCE",JSON.stringify(data),"error",false);
         }
     });
     }
     //COMMON TREE VIEW FUNCTION
     function USR_SITE_tree_view(value_array){
         $('.preloader').hide();
-
         $('#USR_SITE_tble_menu').replaceWith('<table id="USR_SITE_tble_menu"  ></table>')
         var count=0;
         var menus=[];
@@ -287,7 +291,7 @@ $(document).ready(function(){
         $('.preloader').show();
         $.ajax({
             type:'POST',
-            'url':"<?php echo base_url();?>"+"index.php/Ctrl_Site_Maintenance/USR_SITE_update",
+            'url':controller_url+"/USR_SITE_update",
             data:$('#USR_SITE_form_user').serialize(),
             success:function(data){
                     if($('#USR_SITE_btn_submitbutton').val()=='REVOKE ACCESS')
@@ -308,7 +312,7 @@ $(document).ready(function(){
     });
 //SUCCESS FUNCTION FOR UPDATING
     function USR_SITE_clear(){
-        $('.preloader').hide();
+//        $('.preloader').hide();
         USR_SITE_loadInitialValue();
     }
 });
@@ -320,8 +324,7 @@ $(document).ready(function(){
 <!--BODY TAG START-->
 <body>
  <div class="container">
-     <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif"  /></div></div></div>
-<!--    <div class="preloader"><span class="Centerer"></span><img class="preloaderimg"/> </div>-->
+          <div class="preloader"><span class="Centerer"></span><img class="preloaderimg"/> </div>
           <div class="title text-center"><h4><b>SITE MAINTENANCE</b></h4></div>
           <div class="panel-body">
               <form id="USR_SITE_form_user" name="USR_SITE_form_user" class="form-horizontal content" role="form">
@@ -330,7 +333,6 @@ $(document).ready(function(){
                   </div>
                   <input align="right" type="button" class="maxbtn" name="USR_SITE_btn_submitbutton" id="USR_SITE_btn_submitbutton" style="width:190px">
 
-<!--                <input align="right" type="button" class="btn  btn-info" style="width:140px;" name="USR_SITE_btn_submitbutton" id="USR_SITE_btn_submitbutton" disabled>-->
               </form>
            </div>
    </div>

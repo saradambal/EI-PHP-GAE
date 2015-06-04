@@ -794,7 +794,7 @@ public  function getLogoCalendar()
         return $finalResult;
     }
 //FUNCTION TO SHARE DOCS FOR THE LOGIN ID
-function URSRC_shareDocuments($URSRC_custom_role,$URSRC_loginid,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
+function URSRC_shareDocuments($URSRC_custom_role,$URSRC_loginid,$service){
 $URSRC_sharedocflag='';
 try{
     $URSRC_usermenu_array=array();
@@ -911,7 +911,7 @@ catch(Exception $e){
 return $URSRC_sharedocflag;
 }
 //FUNCTION TO UNSHARE DOCS
-public function URSRC_unshareDocuments($URSRC_custom_role,$URSRC_loginid,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
+public function URSRC_unshareDocuments($URSRC_custom_role,$URSRC_loginid,$service){
 $URSRC_sharedocflag='';
 try{
     $URSRC_fileid_array=array();
@@ -1044,24 +1044,24 @@ foreach ($filearray1 as $child1) {
 return $emp_uploadfilenamelist;
 }
 //FUNCTION TO SHARE/UNSHARE CALENDAR
-function USRC_shareUnSharecalender($URSRC_loginid,$role,$ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token){
-$this->load->model('EILIB/Mdl_eilib_calender');
-$calendarId=$this->Mdl_eilib_calender->GetEICalendarId();
-try{
-    $cal = $this->Calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
-    $rule = new Google_Service_Calendar_AclRule();
-    $scope = new Google_Service_Calendar_AclRuleScope();
-    $scope->setType("user");
-    $scope->setValue($URSRC_loginid);
-    $rule->setScope($scope);
-    $rule->setRole($role);
-    $createdRule = $cal->acl->insert($calendarId, $rule);
-    return 1;
-}
-catch(Exception $e){
-    return 0;
-}
-}
+    function USRC_shareUnSharecalender($URSRC_loginid,$role,$service){
+        $this->load->model('EILIB/Mdl_eilib_calender');
+        $calendarId=$this->Mdl_eilib_calender->GetEICalendarId();
+        try{
+            $cal = $this->Mdl_eilib_calender->createCalendarService();
+            $rule = new Google_Service_Calendar_AclRule();
+            $scope = new Google_Service_Calendar_AclRuleScope();
+            $scope->setType("user");
+            $scope->setValue($URSRC_loginid);
+            $rule->setScope($scope);
+            $rule->setRole($role);
+            $createdRule = $cal->acl->insert($calendarId, $rule);
+            return 1;
+        }
+        catch(Exception $e){
+            return 0;
+        }
+    }
 //FUNCTION TO FILE ID TO GET TITLE
 public  function CUST_FileId_invoiceTem()
 {

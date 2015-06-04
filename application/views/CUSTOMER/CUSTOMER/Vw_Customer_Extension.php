@@ -254,12 +254,11 @@ $(document).ready(function()
                 url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_getCustomerNameId_result',
                 data:{"unitno":CEXTN_lb_unitno},
                 success: function(data){
-
                     var value_array=JSON.parse(data);
 
                             CEXTN_allCustExtndts=value_array;
         var CEXTN_namearray=[];
-        for(var k=0;k<CEXTN_allCustExtndts.length;k++)
+        for(var k=0;k<CEXTN_allCustExtndts[1].length;k++)
         {
             CEXTN_namearray.push(CEXTN_allCustExtndts[1][k]);
         }
@@ -302,7 +301,7 @@ $(document).ready(function()
         var CEXTN_lb_unitno=$('#CEXTN_lb_unitno').val();
         var CEXTN_custname=CEXTN_lb_custname.split("_");
         var CEXTN_name_id_array=[];
-        for(var k=0;k<CEXTN_allCustExtndts.length;k++)
+        for(var k=0;k<CEXTN_allCustExtndts[1].length;k++)
         {
             if(CEXTN_allCustExtndts[1][k]==CEXTN_lb_custname)
             {
@@ -409,7 +408,7 @@ $(document).ready(function()
             if(CEXTN_diffunitlen==0)
             {
                 $('#CEXTN_div_diffunit').hide();
-                $('#CEXTN_div_nodiffuniterr').text(CEXTN_errmsgs[20]).show();
+                $('#CEXTN_div_nodiffuniterr').text(CEXTN_errmsgs[20].EMC_DATA).show();
             }
             else
             {
@@ -477,7 +476,7 @@ $(document).ready(function()
     {
         var CEXTN_lb_unitno=$('#CEXTN_lb_unitno').val();
         var CEXTN_lb_diffunituno=$("#CEXTN_lb_diffunituno").val();
-        var CEXTN_normtypeerr=CEXTN_errmsgs[2];
+        var CEXTN_normtypeerr=CEXTN_errmsgs[2].EMC_DATA;
         var CEXTN_roomtype=CEXTN_rmtype.roomtype;
         var CEXTNunitsdate=CEXTN_rmtype.unitsdate
         var CEXTNunitedate=CEXTN_rmtype.unitedate
@@ -638,7 +637,7 @@ alert(JSON.stringify(data))
     function CEXTN_getdiffunitCardNo_result(CEXTN_diffunitcard)
     {
         CEXTN_finalCard=CEXTN_diffunitcard[1];
-        $('#CEXTN_tble_diffunitcardlist tr').remove();
+        $('#CEXTN_tble_diffunitcardlist > div').remove();
         $('#CEXTN_div_diffunitnocarderrmsg').hide();
         CEXTN_chkcardlen=CEXTN_diffunitcard[0].length;
         if(CEXTN_diffunitcard[0].length>0)
@@ -649,7 +648,7 @@ alert(JSON.stringify(data))
                 var CEXTN_lb_diffunitcardid="CEXTN_lb_diffunitcard"+i;
                 var CEXTN_cb_diffunitcardid="CEXTN_cb_diffunitcard"+i;
                 var CEXTN_tb_diffunitcard="CEXTN_tb_diffunitcard"+i;
-                var CEXTN_cardresult ='<div class="row form-group"><div class="col-md-2"><div class="checkbox"><label><input type=checkbox class="CEXTN_class_diffunitcard CEXTN_btn_validate_class" name="CEXTN_cb_diffunitcard" id='+i+' value='+CEXTN_cardnovalue+'>' + CEXTN_cardnovalue + '</label></div></div><div class="col-md-5"><select name="CEXTN_lb_diffunitcard" id='+CEXTN_lb_diffunitcardid+' class="CEXTN_class_diffunitcard CEXTN_btn_validate_class form-control"  style="display: none;"></select></div><input type="hidden"  name="CEXTN_tb_diffunitcard" id='+CEXTN_tb_diffunitcard+'/></div>';
+                var CEXTN_cardresult ='<div class="row form-group"><div class="col-md-2"><div class="checkbox"><label><input type=checkbox class="CEXTN_class_diffunitcard CEXTN_btn_validate_class" name="CEXTN_cb_diffunitcard[]" id='+i+' value='+CEXTN_cardnovalue+'>' + CEXTN_cardnovalue + '</label></div></div><div class="col-md-5"><select name="CEXTN_lb_diffunitcard" id='+CEXTN_lb_diffunitcardid+' class="CEXTN_class_diffunitcard CEXTN_btn_validate_class form-control"  style="display: none;"></select></div><input type="hidden"  name="CEXTN_tb_diffunitcard" id='+CEXTN_tb_diffunitcard+'/></div>';
 
 //                var CEXTN_cardresult='<tr id="custid"><td> <input type=checkbox class="CEXTN_class_diffunitcard CEXTN_btn_validate_class" name="CEXTN_cb_diffunitcard" id='+i+' value='+CEXTN_cardnovalue+'>'+CEXTN_cardnovalue+'</td><td><select name="CEXTN_lb_diffunitcard" id='+CEXTN_lb_diffunitcardid+' class="CEXTN_class_diffunitcard CEXTN_btn_validate_class" hidden/></td><td><input type="text" name="CEXTN_tb_diffunitcard" id='+CEXTN_tb_diffunitcard+' hidden/></td></tr>';
                 $('#CEXTN_tble_diffunitcardlist').append(CEXTN_cardresult);
@@ -972,7 +971,7 @@ alert(JSON.stringify(data))
             else
             {
                 emailchk="invalid";
-                $("#CEXTN_lbl_emailerrmsg").text(CEXTN_errmsgs[5])
+                $("#CEXTN_lbl_emailerrmsg").text(CEXTN_errmsgs[5].EMC_DATA)
                 $('#CEXTN_tb_emailid').addClass("invalid")
             }
         }
@@ -988,7 +987,7 @@ alert(JSON.stringify(data))
             if($("#CEXTN_db_passdate").val()!=""&&new Date(FormTableDateFormat($("#CEXTN_db_passdate").val())).setHours(0,0,0,0)<=new Date(FormTableDateFormat($("#CEXTN_db_chkoutdate").val())).setHours(0,0,0,0))
             {
                 $('#CEXTN_db_passdate').addClass("invalid")
-                $("#CEXTN_passdate_err").text(CEXTN_errmsgs[28])
+                $("#CEXTN_passdate_err").text(CEXTN_errmsgs[28].EMC_DATA)
                 CEXTN_validinput=0;
             }
             else
@@ -999,7 +998,7 @@ alert(JSON.stringify(data))
             if($("#CEXTN_db_epdate").val()!=""&&new Date(FormTableDateFormat($("#CEXTN_db_epdate").val())).setHours(0,0,0,0)<=new Date(FormTableDateFormat($("#CEXTN_db_chkoutdate").val())).setHours(0,0,0,0))
             {
                 $('#CEXTN_db_epdate').addClass("invalid")
-                $("#CEXTN_epdate_err").text(CEXTN_errmsgs[27])
+                $("#CEXTN_epdate_err").text(CEXTN_errmsgs[27].EMC_DATA)
                 CEXTN_validinput=0;
             }
             else
@@ -1029,7 +1028,8 @@ alert(JSON.stringify(data))
             var cardnos = [];
             var cardid=[];
             var cardlblll=[];
-            $('input:checkbox[name=CEXTN_cb_diffunitcard]:checked').each(function() {
+//            $('input[name="Sub_menu[]"]:checked').each(function() {
+            $('input:checkbox[name="CEXTN_cb_diffunitcard[]"]:checked').each(function() {
                 if ($(this).val()) {
                     cardnos.push($(this).val());
                     var id=$(this).attr("id")
@@ -1044,7 +1044,7 @@ alert(JSON.stringify(data))
             $('#CEXTN_slctcustlbl').val(cardlblll)
             var cardnos1 = [];
             var cardid1=[];
-            $('input:checkbox[name=CEXTN_cb_diffunitcard]:not(:checked)').each(function() {
+            $('input:checkbox[name="CEXTN_cb_diffunitcard[]"]:not(:checked)').each(function() {
                 cardnos1.push($(this).val());
                 var id=$(this).attr("id")
                 cardid1.push(id);
@@ -1059,7 +1059,7 @@ alert(JSON.stringify(data))
             for(var i=0;i<cardid.length;i++)
             {
                 var id=cardid[i];
-                var cardno=$("input[name='CEXTN_cb_diffunitcard']:checked").val();
+                var cardno=$('input[name="CEXTN_cb_diffunitcard[]"]:checked').val();
                 $('#CEXTN_lb_diffunitcard'+id)
                 var CEXTN_tb_firstname=$('#CEXTN_tb_firstname').val();
                 var CEXTN_tb_lastname=$('#CEXTN_tb_lastname').val();
@@ -1174,14 +1174,14 @@ alert(JSON.stringify(data))
         {
             CEXTN_validinput=0;
             CEXTN_passnoflag=1;
-            $("#CEXTN_passno_err").text(CEXTN_errmsgs[22]);
+            $("#CEXTN_passno_err").text(CEXTN_errmsgs[22].EMC_DATA);
             $("#CEXTN_tb_passno").addClass("invalid")
         }
         if(CEXTN_db_epdate!=""&&CEXTN_tb_epno=="")
         {
             CEXTN_epnoflag=1;
             CEXTN_validinput=0;
-            $("#CEXTN_epno_err").text(CEXTN_errmsgs[23]);
+            $("#CEXTN_epno_err").text(CEXTN_errmsgs[23].EMC_DATA);
             $("#CEXTN_tb_epno").addClass("invalid")
         }
 //MINIMUM DIGIT VALIDATION START
@@ -1189,7 +1189,7 @@ alert(JSON.stringify(data))
         {
             CEXTN_validinput=0;
             $("#CEXTN_tb_electcapfee").addClass("invalid")
-            $("#CEXTN_electcap_err").text(CEXTN_errmsgs[19])
+            $("#CEXTN_electcap_err").text(CEXTN_errmsgs[19].EMC_DATA)
         }
         else
         {
@@ -1200,7 +1200,7 @@ alert(JSON.stringify(data))
         {
             CEXTN_validinput=0;
             $("#CEXTN_tb_diffamtrent").addClass("invalid")
-            $("#CEXTN_diffamtrent_err").text(CEXTN_errmsgs[16])
+            $("#CEXTN_diffamtrent_err").text(CEXTN_errmsgs[16].EMC_DATA)
         }
         else
         {
@@ -1211,7 +1211,7 @@ alert(JSON.stringify(data))
         {
             CEXTN_validinput=0;
             $("#CEXTN_tb_diffamtdep").addClass("invalid")
-            $("#CEXTN_diffamtdeposit_err").text(CEXTN_errmsgs[17])
+            $("#CEXTN_diffamtdeposit_err").text(CEXTN_errmsgs[17].EMC_DATA)
         }
         else
         {
@@ -1222,7 +1222,7 @@ alert(JSON.stringify(data))
         {
             CEXTN_validinput=0;
             $("#CEXTN_tb_diffamtprocost").addClass("invalid")
-            $("#CEXTN_diffamtprofee_err").text(CEXTN_errmsgs[18])
+            $("#CEXTN_diffamtprofee_err").text(CEXTN_errmsgs[18].EMC_DATA)
         }
         else
         {
@@ -1233,7 +1233,7 @@ alert(JSON.stringify(data))
         {
             CEXTN_validinput=0;
             $("#CEXTN_tb_comppostcode").addClass("invalid")
-            $("#CEXTN_postcode_err").text(CEXTN_errmsgs[15])
+            $("#CEXTN_postcode_err").text(CEXTN_errmsgs[15].EMC_DATA)
         }
         else
         {
@@ -1244,7 +1244,7 @@ alert(JSON.stringify(data))
         {
             CEXTN_validinput=0;
             $("#CEXTN_tb_passno").addClass("invalid")
-            $("#CEXTN_passno_err").text(CEXTN_errmsgs[13])
+            $("#CEXTN_passno_err").text(CEXTN_errmsgs[13].EMC_DATA)
         }
         else if(CEXTN_passnoflag==0)
         {
@@ -1256,7 +1256,7 @@ alert(JSON.stringify(data))
         {
             CEXTN_validinput=0;
             $("#CEXTN_tb_epno").addClass("invalid")
-            $("#CEXTN_epno_err").text(CEXTN_errmsgs[14])
+            $("#CEXTN_epno_err").text(CEXTN_errmsgs[14].EMC_DATA)
         }
         else if(CEXTN_epnoflag==0)
         {
@@ -1270,7 +1270,7 @@ alert(JSON.stringify(data))
         {
             CEXTN_validinput=0;
             $("#CEXTN_tb_mobileno").addClass("invalid")
-            $("#CEXTN_mobile_err").text(CEXTN_errmsgs[12])
+            $("#CEXTN_mobile_err").text(CEXTN_errmsgs[12].EMC_DATA)
         }
         else
         {
@@ -1281,7 +1281,7 @@ alert(JSON.stringify(data))
         {
             CEXTN_validinput=0;
             $("#CEXTN_tb_intmobileno").addClass("invalid")
-            $("#CEXTN_intlmobile_err").text(CEXTN_errmsgs[12])
+            $("#CEXTN_intlmobile_err").text(CEXTN_errmsgs[12].EMC_DATA)
         }
         else
         {
@@ -1292,7 +1292,7 @@ alert(JSON.stringify(data))
         {
             CEXTN_validinput=0;
             $("#CEXTN_tb_officeno").addClass("invalid")
-            $("#CEXTN_officeno_err").text(CEXTN_errmsgs[12])
+            $("#CEXTN_officeno_err").text(CEXTN_errmsgs[12].EMC_DATA)
         }
         else
         {
@@ -1441,36 +1441,36 @@ alert(JSON.stringify(data))
             }
             if(CEXTN_custdtls.cust_comppostcode!="")
             {
-                $('#CEXTN_tb_comppostcode').val(CEXTN_custdtls.cust_comppostcode).prop("title",CEXTN_errmsgs[1]);
+                $('#CEXTN_tb_comppostcode').val(CEXTN_custdtls.cust_comppostcode).prop("title",CEXTN_errmsgs[1].EMC_DATA);
             }
             else
             {
-                $('#CEXTN_tb_comppostcode').val("").prop("title",CEXTN_errmsgs[1]).prop("title",CEXTN_errmsgs[1])
+                $('#CEXTN_tb_comppostcode').val("").prop("title",CEXTN_errmsgs[1].EMC_DATA).prop("title",CEXTN_errmsgs[1].EMC_DATA)
             }
             $('#CEXTN_tb_emailid').val(CEXTN_custdtls.cust_email).attr("size",(CEXTN_custdtls.cust_email).length);
             if(CEXTN_custdtls.cust_mobile!="")
             {
-                $('#CEXTN_tb_mobileno').val(CEXTN_custdtls.cust_mobile).prop("title",CEXTN_errmsgs[1]);
+                $('#CEXTN_tb_mobileno').val(CEXTN_custdtls.cust_mobile).prop("title",CEXTN_errmsgs[1].EMC_DATA);
             }
             else
             {
-                $('#CEXTN_tb_mobileno').val("").prop("size","20").prop("title",CEXTN_errmsgs[1])
+                $('#CEXTN_tb_mobileno').val("").prop("size","20").prop("title",CEXTN_errmsgs[1].EMC_DATA)
             }
             if(CEXTN_custdtls.cust_intlmobile!="")
             {
-                $('#CEXTN_tb_intmobileno').val(CEXTN_custdtls.cust_intlmobile).prop("title",CEXTN_errmsgs[1]);//.attr("size",(CEXTN_custdtls.cust_intlmobile).length);
+                $('#CEXTN_tb_intmobileno').val(CEXTN_custdtls.cust_intlmobile).prop("title",CEXTN_errmsgs[1].EMC_DATA);//.attr("size",(CEXTN_custdtls.cust_intlmobile).length);
             }
             else
             {
-                $('#CEXTN_tb_intmobileno').val("").prop("size","20").prop("title",CEXTN_errmsgs[1])
+                $('#CEXTN_tb_intmobileno').val("").prop("size","20").prop("title",CEXTN_errmsgs[1].EMC_DATA)
             }
             if(CEXTN_custdtls.cust_officeno!="")
             {
-                $('#CEXTN_tb_officeno').val(CEXTN_custdtls.cust_officeno).prop("title",CEXTN_errmsgs[1]);
+                $('#CEXTN_tb_officeno').val(CEXTN_custdtls.cust_officeno).prop("title",CEXTN_errmsgs[1].EMC_DATA);
             }
             else
             {
-                $('#CEXTN_tb_officeno').val("").prop("size","20").prop("title",CEXTN_errmsgs[1])
+                $('#CEXTN_tb_officeno').val("").prop("size","20").prop("title",CEXTN_errmsgs[1].EMC_DATA)
             }
             if(CEXTN_custdtls.cust_dob=="")
             {
@@ -1565,8 +1565,8 @@ alert(JSON.stringify(data))
                         var CEXTN_custlbl='GUEST'+i;
                     }
                     var cardsize=CEXTN_card[i].length;
-                    var CEXTN_result=CEXTN_cardlabel+' <div class="col-sm-2"><input type="text" name="CEXTN_tb_sameunitsamermcustcard" value='+CEXTN_card[i]+' size='+cardsize+' readonly></div><div><input type="text" name="CEXTN_hidden_sameunitsamermcustcard"  value='+CEXTN_custlbl+' hidden/></div>';
-                    var CEXTN_result1=CEXTN_cardlabel+' <div class="col-sm-2"><input type="text" name="CEXTN_tb_sameunitdiffrmcustcard" value='+CEXTN_card[i]+' size='+cardsize+' readonly></div><div><input type="text" name="CEXTN_hidden_sameunitdiffrmcustcard"  value='+CEXTN_custlbl+' hidden/></div>';
+                    var CEXTN_result=CEXTN_cardlabel+' <div class="col-sm-2"><input type="text" class="form-control" name="CEXTN_tb_sameunitsamermcustcard" value='+CEXTN_card[i]+' size='+cardsize+' readonly ></div><div><input type="text" name="CEXTN_hidden_sameunitsamermcustcard"  value='+CEXTN_custlbl+' hidden/></div>';
+                    var CEXTN_result1=CEXTN_cardlabel+' <div class="col-sm-2"><input type="text" class="form-control" name="CEXTN_tb_sameunitdiffrmcustcard" value='+CEXTN_card[i]+' size='+cardsize+' readonly></div><div><input type="text" name="CEXTN_hidden_sameunitdiffrmcustcard"  value='+CEXTN_custlbl+' hidden/></div>';
                     $('#CTERM_tbl_sameunitsamermcust_card').append(CEXTN_result);
                     $('#CTERM_tbl_sameunitdiffrmcust_card').append(CEXTN_result1);
                 }
@@ -1850,7 +1850,7 @@ alert(JSON.stringify(data))
     {
         var CEXTN_tb_firstname=$("#CEXTN_tb_firstname").val();
         var CEXTN_tb_lastname=$("#CEXTN_tb_lastname").val();
-        var CEXTN_successmsg=CEXTN_errmsgs[7];
+        var CEXTN_successmsg=CEXTN_errmsgs[7].EMC_DATA;
         if(saveresult.match("SCRIPT EXCEPTION:"))
         {
             $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXTENSION",msgcontent:saveresult,position:$("#CEXTN_div_save").position()}});
@@ -1878,7 +1878,7 @@ alert(JSON.stringify(data))
             {
                 if(saveresult.toString()=='0')
                 {
-                    $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXTENSION",msgcontent:CEXTN_errmsgs[21],position:$("#CEXTN_div_save").position()}});
+                    $(document).doValidation({rule:'messagebox',prop:{msgtitle:"CUSTOMER EXTENSION",msgcontent:CEXTN_errmsgs[21].EMC_DATA,position:$("#CEXTN_div_save").position()}});
                 }
                 else
                 {
@@ -1947,7 +1947,6 @@ alert(JSON.stringify(data))
 <!--BODY TAG START-->
 <body>
 <div class="container">
-
     <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
     <div class="row title text-center"><h4><b>CUSTOMER EXTENSION</b></h4></div>
     <div id="CEXTN_div_allerrmsg"></div>
@@ -2007,7 +2006,7 @@ alert(JSON.stringify(data))
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3">DATE OF BIRTH</label>
-                        <div class="col-sm-2"> <input type="text" name="CEXTN_db_dob" id="CEXTN_db_dob"  maxlength="10" style="width:75px;" class="datenonmandtry"/><p class="field" ></div>
+                        <div class="col-sm-2"> <input type="text" name="CEXTN_db_dob" id="CEXTN_db_dob"  maxlength="10" style="width:110px;" class="datenonmandtry form-control"/><p class="field" ></div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3">NATIONALITY</label>
@@ -2019,56 +2018,63 @@ alert(JSON.stringify(data))
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3">PASSPORT EXPIRY DATE</label>
-                        <div class="col-sm-2"> <input type="text" name="CEXTN_db_passdate" id="CEXTN_db_passdate"  maxlength="10" style="width:75px;" class="datenonmandtry CEXTN_btn_validate_class form-control"/><p id="CEXTN_passdate_err" class="errormsg" ></p></div>
+                        <div class="col-sm-2"> <input type="text" name="CEXTN_db_passdate" id="CEXTN_db_passdate"  maxlength="10" style="width:110px;" class="datenonmandtry CEXTN_btn_validate_class form-control"/><p id="CEXTN_passdate_err" class="errormsg" ></p></div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3">EP NUMBER</label>
-                        <div class="col-sm-2"> <input type="text" name="CEXTN_tb_epno" id="CEXTN_tb_epno"  maxlength="15" class="alnumonlynozero CEXTN_btn_validate_class form-control" /><p id="CEXTN_epno_err" class="errormsg"></div>
+                        <div class="col-sm-3"> <input type="text" name="CEXTN_tb_epno" id="CEXTN_tb_epno"  maxlength="15" class="alnumonlynozero CEXTN_btn_validate_class form-control" /><p id="CEXTN_epno_err" class="errormsg"></div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3">EP EXPIRY DATE</label>
-                        <div class="col-sm-2"> <input type="text" name="CEXTN_db_epdate" id="CEXTN_db_epdate"  maxlength="10" style="width:75px;" class="datenonmandtry CEXTN_btn_validate_class"/><p id="CEXTN_epdate_err" class="errormsg" ></p></div>
+                        <div class="col-sm-2"> <input type="text" name="CEXTN_db_epdate" id="CEXTN_db_epdate"  maxlength="10" style="width:75px;" class="datenonmandtry CEXTN_btn_validate_class form-control"/><p id="CEXTN_epdate_err" class="errormsg" ></p></div>
                     </div>
                     <div class="form-group">
                             <label class="col-sm-3">SAME/DIFFERENT UNIT<em>*</em></label>
-                        <div class="col-lg-9">
-                            <label><input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_sameunit" value="CEXTN_radio_sameunit" checked="checked" class="CEXTN_btn_validate_class"/>
-                            SAME UNIT & SAME ROOM </label><input type="hidden" id="CEXTN_hidden_setrmtype"/>
+                            <div class="radio col-sm-offset-3">
+                                <label >
+                                <input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_sameunit" value="CEXTN_radio_sameunit" checked="checked" class="CEXTN_btn_validate_class"/>
+                                SAME UNIT & SAME ROOM </label><input type="hidden" id="CEXTN_hidden_setrmtype"/>
+                            </div>
                             <div id="CEXTN_div_sameunitsamerm" class="col-sm-offset-3">
                                 <div id="CEXTN_tble_sameunitsamerm" class="form-group">
                                     <div class="form-group">
                                         <label  class="col-sm-3">UNIT NUMBER</label>
-                                        <div class="col-sm-2"> <input type="text" name="CEXTN_tb_sameunitsamermuno" id="CEXTN_tb_sameunitsamermuno" style="width:35px;" class="rdonly" readonly />
+                                        <div class="col-sm-2"> <input type="text" name="CEXTN_tb_sameunitsamermuno" id="CEXTN_tb_sameunitsamermuno" style="width:60px;" class="rdonly form-control" readonly />
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3">ROOM TYPE</label>
-
-                                        <div class="col-sm-2">  <input type="text" name="CEXTN_tb_sameunitsamermrmtype" id="CEXTN_tb_sameunitsamermrmtype" class="rdonly" readonly />
+                                        <div class="col-sm-2">  <input type="text" name="CEXTN_tb_sameunitsamermrmtype" id="CEXTN_tb_sameunitsamermrmtype" class="rdonly form-control" readonly />
+                                        </div>
+                                    </div>
+                                    <div id="CTERM_tbl_sameunitsamermcust_card" hidden></div>
+                                </div>
+                            </div>
+                            <div class="radio col-sm-offset-3">
+                                <label>
+                                <input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_sameunitdiffroom"  value="CEXTN_radio_sameunitdiffroom" class="CEXTN_btn_validate_class" />
+                                SAME UNIT & DIFFERENT ROOM</label><div id="CEXTN_div_sameunitdiffroomerr" class="errormsg"></div>
+                            </div>
+                            <div id="CEXTN_div_sameunitdiffrm" hidden>
+                                <div id="CEXTN_tble_sameunitdiffrm" class="col-sm-offset-3">
+                                    <div class="form-group">
+                                        <label class="col-sm-3" id="CEXTN_lbl_sameunitdiffrmuno">UNIT NUMBER</label>
+                                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_sameunitdiffrmuno" id="CEXTN_tb_sameunitdiffrmuno" style="width:35px;" class="rdonly" readonly />
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3" id="CEXTN_lbl_sameunitdiffrmrmtype">ROOM TYPE<em>*</em></label>
+                                        <div class="col-sm-2"><select name="CEXTN_lb_sameunitdiffrmrmtype" id="CEXTN_lb_sameunitdiffrmrmtype" ></select>
                                         </div>
                                     </div>
                                 </div>
-                                <div id="CTERM_tbl_sameunitsamermcust_card" hidden></div>
+                                <div id="CTERM_tbl_sameunitdiffrmcust_card" hidden></div>
                             </div>
-                            <label><input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_sameunitdiffroom"  value="CEXTN_radio_sameunitdiffroom" class="CEXTN_btn_validate_class" />
-                                   SAME UNIT & DIFFERENT ROOM</label><div id="CEXTN_div_sameunitdiffroomerr" class="errormsg"></div>
-                        <div id="CEXTN_div_sameunitdiffrm" hidden>
-                            <div id="CEXTN_tble_sameunitdiffrm" class="col-sm-offset-3">
-                                <div class="form-group">
-                                    <label class="col-sm-3" id="CEXTN_lbl_sameunitdiffrmuno">UNIT NUMBER</label>
-                                    <div class="col-sm-2"><input type="text" name="CEXTN_tb_sameunitdiffrmuno" id="CEXTN_tb_sameunitdiffrmuno" style="width:35px;" class="rdonly" readonly />
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3" id="CEXTN_lbl_sameunitdiffrmrmtype">ROOM TYPE<em>*</em></label>
-                                    <div class="col-sm-2"><select name="CEXTN_lb_sameunitdiffrmrmtype" id="CEXTN_lb_sameunitdiffrmrmtype" ></select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="CTERM_tbl_sameunitdiffrmcust_card" hidden></div>
+                        <div class="radio col-sm-offset-3">
+                            <label>
+                            <input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_diffunit" value="CEXTN_radio_diffunit" class="CEXTN_btn_validate_class" />
+                            DIFFERENT UNIT</label><div id="CEXTN_div_nodiffuniterr" class="errormsg"></div>
                         </div>
-                        <label><input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_diffunit" value="CEXTN_radio_diffunit" class="CEXTN_btn_validate_class" />
-                        DIFFERENT UNIT</label><div id="CEXTN_div_nodiffuniterr" class="errormsg"></div>
                         <div id="CEXTN_div_diffunit" hidden>
                             <div id="CEXTN_tble_diffunit" class="col-sm-offset-3">
                                 <div class="form-group">
@@ -2093,22 +2099,23 @@ alert(JSON.stringify(data))
                                                 <input type="radio" name="CEXTN_radio_difunitcard" id="CEXTN_radio_difunitcardno"  value="CEXTN_radio_difunitcardno" class="CEXTN_btn_validate_class" hidden />
                                                 CARD NUMBER</label><label id="CEXTN_div_custerrmsg" class="errormsg" hidden></label>
                                             </div>
+                                         </div>
                                     </div>
+                                    <div id="CEXTN_div_diffunitcardlist" hidden><div id="CEXTN_tble_diffunitcardlist" class="CEXTN_btn_validate_class"></div>
+                                        <div id="CEXTN_div_diffunitnocarderrmsg" class="errormsg" hidden></div>
                                     </div>
-
-                                </div>
-                                <div id="CEXTN_div_diffunitcardlist" hidden><div id="CEXTN_tble_diffunitcardlist" class="CEXTN_btn_validate_class"></div>
-                                    <div id="CEXTN_div_diffunitnocarderrmsg" class="errormsg" hidden></div>
-                                </div>
-
-                                <input type="radio" name="CEXTN_radio_difunitcard" id="CEXTN_radio_difunitnullcard"  value="CEXTN_radio_difunitnullcard" class="CEXTN_btn_validate_class" hidden/><label id="CEXTN_lbl_diffunitnull" hidden>NULL</label>
+                                    <div class="radio">
+                                        <label id="CEXTN_lbl_diffunitnull" hidden>
+                                        <input type="radio" name="CEXTN_radio_difunitcard" id="CEXTN_radio_difunitnullcard"  value="CEXTN_radio_difunitnullcard" class="CEXTN_btn_validate_class" hidden/>
+                                            NULL</label>
+                                    </div>
                         </div>
-                    </div>
+<!--                    </div>-->
                         </div>
                     <div class="form-group">
                         <label class="col-sm-3">INITIAL CHECK IN DATE </label>
                         <div class="col-sm-2">
-                            <input type="text" name="CEXTN_db_prevchkindate" id="CEXTN_db_prevchkindate" style="width:75px;" class="rdonly form-control" readonly />
+                            <input type="text" name="CEXTN_db_prevchkindate" id="CEXTN_db_prevchkindate" style="width:110px;" class="rdonly form-control" readonly />
                             <input type="hidden" name="CEXTN_hidden_prechkinfromtime" id="CEXTN_hidden_prechkinfromtime"><input type="hidden" name="CEXTN_hidden_prechkintotime" id="CEXTN_hidden_prechkintotime">
                         </div>
                     </div>
@@ -2120,7 +2127,7 @@ alert(JSON.stringify(data))
                         <select id="CEXTN_lb_chkinfromtime" name="CEXTN_lb_chkinfromtime"  style="width:110px;" class="CEXTN_btn_validate_class form-control col-sm-2" hidden><option>SELECT</option>
                         </select>
                         <label  id="CEXTN_lbl_chkinto" style="width:35px;" class="col-sm-2" hidden>TO</label>
-                        <select id="CEXTN_lb_chkintotime" name="CEXTN_lb_chkintotime"  style="width:110px;" class="CEXTN_btn_validate_class" hidden><option>SELECT</option></select>
+                        <select id="CEXTN_lb_chkintotime" name="CEXTN_lb_chkintotime"  style="width:110px;" class="CEXTN_btn_validate_class form-control" hidden><option>SELECT</option></select>
                         <input type="hidden" name="CEXTN_hidden_chkinfromtime" id="CEXTN_hidden_chkinfromtime"><input type="hidden" name="CEXTN_hidden_chkintotime" id="CEXTN_hidden_chkintotime">
                         <div class="errormsg" id="CEXTN_usdatexpiremsg"></div>
                     </div>
@@ -2139,11 +2146,11 @@ alert(JSON.stringify(data))
 
                     <div class="form-group">
                         <label class="col-sm-3">NOTICE PERIOD</label>
-                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_noticeperiod" id="CEXTN_tb_noticeperiod" style="width:15px;"/></div>
+                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_noticeperiod" id="CEXTN_tb_noticeperiod" style="width:15px;" class="form-control"/></div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3">NOTICE PERIOD DATE</label>
-                        <div class="col-sm-2"><input type="text" name="CEXTN_db_noticeperioddate" id="CEXTN_db_noticeperioddate" class="CEXTN_class_prowaiv CEXTN_btn_validate_class datenonmandtry" maxlength="10" style="width:75px;" /></div>
+                        <div class="col-sm-2"><input type="text" name="CEXTN_db_noticeperioddate" id="CEXTN_db_noticeperioddate" class="CEXTN_class_prowaiv CEXTN_btn_validate_class datenonmandtry form-control" maxlength="10" style="width:110px;" /></div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3">SELECT AIRCON FEE</label>
@@ -2174,24 +2181,24 @@ alert(JSON.stringify(data))
                             </label>
                         </div>
                         <div id="CEXTN_div_sameamt">
-                            <div id="CEXTN_tble_sameamt" class="">
+                            <div id="CEXTN_tble_sameamt" class="col-sm-offset-3">
                                 <div class="form-group">
                                     <label class="col-sm-2" id="CEXTN_lbl_sameamtdep">DEPOSIT</label>
                                     <div class="col-sm-2">
-                                        <input type="text" name="CEXTN_tb_sameamtdep" id="CEXTN_tb_sameamtdep" style="width:55px;" class="rdonly" readonly />
+                                        <input type="text" name="CEXTN_tb_sameamtdep" id="CEXTN_tb_sameamtdep" style="width:77px;" class="rdonly" readonly />
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label id="CEXTN_lbl_sameamtrent">RENT</label>
-                                    <div class="col-sm-2">
-                                        <input type="text" name="CEXTN_tb_sameamtrent" id="CEXTN_tb_sameamtrent" style="width:55px;" class="rdonly" readonly />
+                                    <label  class="col-sm-2" id="CEXTN_lbl_sameamtrent">RENT</label>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="CEXTN_tb_sameamtrent" id="CEXTN_tb_sameamtrent" style="width:77px;" class="rdonly" readonly />
                                         <input type="checkbox" name="CEXTN_cb_sameamtprorated" id="CEXTN_cb_sameamtprorated" disabled /><label id="CEXTN_lbl_sameamtprorated"></label><input type="hidden" name="CEXTN_hidden_sameamtprorated" id="CEXTN_hidden_sameamtprorated" />
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2" id="CEXTN_lbl_sameamtprocost">PROCESSING COST</label>
                                     <div class="col-sm-2">
-                                        <input type="text" name="CEXTN_tb_sameamtprocost" id="CEXTN_tb_sameamtprocost" style="width:55px;" class="rdonly" readonly />
+                                        <input type="text" name="CEXTN_tb_sameamtprocost" id="CEXTN_tb_sameamtprocost" style="width:77px;" class="rdonly" readonly />
                                         <input type="checkbox" name="CEXTN_cb_sameamtwaived" id="CEXTN_cb_sameamtwaived" class="CEXTN_btn_validate_class" disabled /><label id="CEXTN_lbl_sameamtwaived"></label><input type="hidden" id="CEXTN_hidden_sameamtwaived" name="CEXTN_hidden_sameamtwaived"/>
                                     </div>
                                 </div>
@@ -2204,17 +2211,17 @@ alert(JSON.stringify(data))
                             </label>
                         </div>
                         <div id="CEXTN_div_diffamt" hidden>
-                            <div id="CEXTN_tble_diffamt" class="">
+                            <div id="CEXTN_tble_diffamt" class="col-sm-offset-3">
                                 <div class="form-group">
                                     <label class="col-sm-2" id="CEXTN_lbl_diffamtdep">DEPOSIT</label>
-                                    <div class="col-sm-2"><input type="text" name="CEXTN_tb_diffamtdep" id="CEXTN_tb_diffamtdep" style="width:55px;" class="5digitdollaronly CEXTN_btn_validate_class"/>
+                                    <div class="col-sm-2"><input type="text" name="CEXTN_tb_diffamtdep" id="CEXTN_tb_diffamtdep" style="width:77px;" class="5digitdollaronly CEXTN_btn_validate_class form-control"/>
                                         <p id="CEXTN_diffamtdeposit_err" class="errormsg"></p>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="col-sm-2" id="CEXTN_lbl_diffamtrent">RENT<em>*</em></label>
-                                    <div class="col-sm-2">
-                                        <input type="text" name="CEXTN_tb_diffamtrent" id="CEXTN_tb_diffamtrent" style="width:55px;" class="CEXTN_class_prowaiv 5digitdollaronly CEXTN_btn_validate_class"/>
+                                    <div class="col-sm-3">
+                                        <input type="text" name="CEXTN_tb_diffamtrent" id="CEXTN_tb_diffamtrent" style="width:77px;" class="CEXTN_class_prowaiv 5digitdollaronly CEXTN_btn_validate_class form-control"/>
                                         <input type="checkbox" name="CEXTN_cb_diffamtprorated" id="CEXTN_cb_diffamtprorated"  class="CEXTN_btn_validate_class" disabled/><label id="CEXTN_lbl_diffamtprorated"></label><input type="hidden" name="CEXTN_hidden_diffamtprorated" id="CEXTN_hidden_diffamtprorated" />
                                         <p id="CEXTN_diffamtrent_err" class="errormsg"></p>
                                     </div>
@@ -2222,7 +2229,7 @@ alert(JSON.stringify(data))
                                 <div class="form-group">
                                     <label class="col-sm-2" id="CEXTN_lbl_diffamtprocost">PROCESSING COST</label>
                                     <div class="col-sm-2">
-                                        <input type="text" name="CEXTN_tb_diffamtprocost" id="CEXTN_tb_diffamtprocost" style="width:55px;" maxlength="7" class="CEXTN_class_prowaiv CEXTN_btn_validate_class"/>
+                                        <input type="text" name="CEXTN_tb_diffamtprocost" id="CEXTN_tb_diffamtprocost" style="width:77px;" maxlength="7" class="CEXTN_class_prowaiv CEXTN_btn_validate_class form-control"/>
                                         <input type="checkbox" name="CEXTN_cb_diffamtwaived" id="CEXTN_cb_diffamtwaived" class="CEXTN_class_prowaiv CEXTN_btn_validate_class" disabled /><label id="CEXTN_lbl_diffamtwaived"></label><input type="hidden" id="CEXTN_hidden_diffamtwaived" name="CEXTN_hidden_diffamtwaived"/>
                                         <p id="CEXTN_diffamtprofee_err" class="errormsg"></p>
                                     </div>
@@ -2232,34 +2239,26 @@ alert(JSON.stringify(data))
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3">ELECTRICITY CAPPED</label>
-                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_electcapfee" id="CEXTN_tb_electcapfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control"/>
+                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_electcapfee" id="CEXTN_tb_electcapfee" style="width:77px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control"/>
                             <p id="CEXTN_electcap_err" class="errormsg"></p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3">CURTAIN DRY CLEANING FEE</label>
-                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_curtaindryfee" id="CEXTN_tb_curtaindryfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control"/></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3">CURTAIN DRY CLEANING FEE</label>
-                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_curtaindryfee" id="CEXTN_tb_curtaindryfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control"/></div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-3">CURTAIN DRY CLEANING FEE</label>
-                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_curtaindryfee" id="CEXTN_tb_curtaindryfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control"/></div>
+                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_curtaindryfee" id="CEXTN_tb_curtaindryfee" style="width:77px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control"/></div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3">CHECKOUT CLEANING FEE</label>
-                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_chkoutcleanfee" id="CEXTN_tb_chkoutcleanfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control"/></div>
+                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_chkoutcleanfee" id="CEXTN_tb_chkoutcleanfee" style="width:77px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control"/></div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3">E-MAIL ID<em>*</em></label>
-                        <div class="col-sm-2"><select id="CEXTN_lb_emailid" name="CEXTN_lb_emailid" class="CEXTN_btn_validate_class"><option>SELECT</option></select>
+                        <div class="col-sm-4"><select id="CEXTN_lb_emailid" name="CEXTN_lb_emailid" class="CEXTN_btn_validate_class form-control"><option>SELECT</option></select>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3">COMMENTS</label>
-                        <div class="col-sm-4"><textarea  name="CEXTN_ta_comments" id="CEXTN_ta_comments" class="CEXTN_btn_validate_class" rows="5"></textarea></div>
+                        <div class="col-sm-4"><textarea  name="CEXTN_ta_comments" id="CEXTN_ta_comments" class="CEXTN_btn_validate_class form-control" rows="5"></textarea></div>
                     </div>
                 </div>
                 <div style="position:relative;left:105px;" id="CEXTN_div_save">

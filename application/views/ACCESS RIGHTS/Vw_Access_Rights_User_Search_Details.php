@@ -19,9 +19,7 @@ include "Header.php";
     //DOCUMENT READY FUNCTION START
     $(document).ready(function(){
         $(document).on('click','#URSRC_btn_pdf',function(){
-
-            var pdfurl=document.location.href='<?php echo site_url('Ctrl_User_Search_Details/User_Details_pdf')?>';
-
+            var pdfurl=document.location.href='<?php echo site_url('ACCESSRIGHTS/Ctrl_Access_Rights_User_Search_Details/User_Details_pdf')?>';
         });
         $('#URSRC_btn_pdf').hide();
         var title;
@@ -36,7 +34,7 @@ include "Header.php";
         function table(){
             $.ajax({
                 type:'post',
-                'url':"<?php echo base_url();?>" +"index.php/Ctrl_User_Search_Details/USD_SRC_flextable_getdatas",
+                'url':"<?php echo base_url();?>" +"index.php/ACCESSRIGHTS/Ctrl_Access_Rights_User_Search_Details/USD_SRC_flextable_getdatas",
                 success:function(data){
                     $('.preloader').hide();
                     var USD_SRC_response=JSON.parse(data);
@@ -44,8 +42,7 @@ include "Header.php";
                     var USD_SRC_errorAarray=USD_SRC_response[1];
                     if(values_array.length!=0)
                     {
-//                        title=USD_SRC_errorAarray[1].toString().replace("PROJECT","EMPLOYEE");
-//                        $('#URSRC_lbl_title').text(title).show();
+
                         $('#URSRC_btn_pdf').show();
                         var USU_table_header='<table id="USD_SRC_SRC_tble_htmltable" border="1"  cellspacing="0" class="srcresult" style="width:1500px" ><thead  bgcolor="#6495ed" style="color:white"><tr><th nowrap>LOGIN ID</th><th nowrap>ROLE</th><th>REC VER</th><th   class="uk-date-column">JOIN DATE</th><th  class="uk-date-column">TERMINATION DATE</th><th >REASON OF TERMINATION</th><th>USERSTAMP</th><th  class="uk-timestp-column" nowrap>TIMESTAMP</th></tr></thead><tbody>'
                         for(var j=0;j<values_array.length;j++){
@@ -98,6 +95,10 @@ include "Header.php";
                         $('#URSRC_btn_pdf').hide();
                     }
 
+                },
+                error:function(data){
+
+                    show_msgbox("USER SEARCH DETAILS",JSON.stringify(data),"error",false);
                 }
 
             } );//FUNCTION FOR SORTING
@@ -133,11 +134,10 @@ include "Header.php";
 <!--BODY TAG START-->
 <body>
 <div class="container">
-    <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif"  /></div></div></div>
-    <!--    <div class="preloader"><span class="Centerer"></span><img class="preloaderimg"/> </div>-->
+    <div class="preloader"><span class="Centerer"></span><img class="preloaderimg"/> </div>
     <div class="title text-center"><h4><b>USER SEARCH DETAILS</b></h4></div>
         <div class="panel-body">
-            <form id="USD_SRC_SRC_form_user" name="USD_SRC_SRC_form_user" class="form-horizontal" role="form">
+            <form id="USD_SRC_SRC_form_user" name="USD_SRC_SRC_form_user" class="form-horizontal content" role="form">
                 <div><label id="URSRC_lbl_title" name="URSRC_lbl_title" class="srctitle"></label></div>
                 <div><input type="button" id='URSRC_btn_pdf' class="btnpdf" value="PDF"></div><br>
                 <div class="table-responsive" id="tablecontainer" hidden >
@@ -148,7 +148,6 @@ include "Header.php";
             </form>
         </div>
     </div>
-
 </body>
 <!--BODY TAG END-->
 </html>

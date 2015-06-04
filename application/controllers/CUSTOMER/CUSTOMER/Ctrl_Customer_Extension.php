@@ -3,24 +3,25 @@ include "GET_USERSTAMP.php";
 include "GET_CONFIG.php";
 $USERSTAMP=$UserStamp;
 class Ctrl_Customer_Extension extends CI_Controller{
+
     public function index(){
 
         $this->load->view('CUSTOMER/CUSTOMER/Vw_Customer_Extension');
     }
     public function CEXTN_getCommonvalues()
     {
-        $this->load->model('EILIB/Common_function');
+        $this->load->model('EILIB/Mdl_eilib_common_function');
         $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_extension');
         $formname=$_POST['Formname'];
         $errorlist=$_POST['ErrorList'];
         $unit = $this->Mdl_customer_extension->CEXTN_getExtnUnitNo();
-        $nationality = $this->Common_function->getNationality();
-        $EmailList= $this->Common_function->getEmailId($formname);
-        $Option= $this->Common_function->getOption();
-        $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
-        $Timelist=$this->Common_function->getTimeList();
-        $proratedlabel=$this->Common_function->CUST_getProratedWaivedValue();
-        $AllUnit =$this->Common_function->getAllActiveUnits();
+        $nationality = $this->Mdl_eilib_common_function->getNationality();
+        $EmailList= $this->Mdl_eilib_common_function->getEmailId($formname);
+        $Option= $this->Mdl_eilib_common_function->getOption();
+        $ErrorMessage= $this->Mdl_eilib_common_function->getErrorMessageList($errorlist);
+        $Timelist=$this->Mdl_eilib_common_function->getTimeList();
+        $proratedlabel=$this->Mdl_eilib_common_function->CUST_getProratedWaivedValue();
+        $AllUnit =$this->Mdl_eilib_common_function->getAllActiveUnits();
         $Values=array($unit,$nationality,$EmailList,$Option,$ErrorMessage,$Timelist,$proratedlabel,$AllUnit);
         echo json_encode($Values);
     }
