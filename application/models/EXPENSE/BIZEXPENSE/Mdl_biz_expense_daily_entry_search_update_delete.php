@@ -1,5 +1,5 @@
 <?php
-Class Mdl_biz_daily_entry_search_update_delete extends CI_Model {
+Class Mdl_biz_expense_daily_entry_search_update_delete extends CI_Model {
     public function initialvalues($ErrorMessage)
     {
         $BDLY_INPUT_unittable=[];
@@ -134,10 +134,9 @@ Class Mdl_biz_daily_entry_search_update_delete extends CI_Model {
 
     public function BDLY_INPUT_checkexistunit($BDLY_INPUT_unitval)
     {
-        $this->load->model('EILIB/Common_function');
-        $HKPunitflag=$this->Common_function->CheckHKPUnitnoExists($BDLY_INPUT_unitval);
-        $Unitnoflag=$this->Common_function->CheckUnitnoExists($BDLY_INPUT_unitval);
-
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $HKPunitflag=$this->Mdl_eilib_common_function->CheckHKPUnitnoExists($BDLY_INPUT_unitval);
+        $Unitnoflag=$this->Mdl_eilib_common_function->CheckUnitnoExists($BDLY_INPUT_unitval);
         if($HKPunitflag==true || $Unitnoflag==true)
         {
             return true;
@@ -263,8 +262,8 @@ Class Mdl_biz_daily_entry_search_update_delete extends CI_Model {
             $BDLY_INPUT_invoiceto='';
         $BDLY_INPUT_values_array=array($BDLY_INPUT_invoiceto,$BDLY_INPUT_digital_voiceno,$BDLY_INPUT_digital_accno);
     }
-        $this->load->model('EILIB/Common_function');
-        $BDLY_INPUT_getsedate=$this->Common_function->GetUnitSdEdInvdate($BDLY_INPUT_unitno);
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $BDLY_INPUT_getsedate=$this->Mdl_eilib_common_function->GetUnitSdEdInvdate($BDLY_INPUT_unitno);
 
         $BDLY_INPUT_values_array[]=$BDLY_INPUT_getsedate;
 
@@ -281,8 +280,8 @@ Class Mdl_biz_daily_entry_search_update_delete extends CI_Model {
         }
 //    $BDLY_INPUT_elect_values_array=[];
         $BDLY_INPUT_elect_values_array[]=$BDLY_INPUT_invoiceto;
-        $this->load->model('EILIB/Common_function');
-        $BDLY_INPUT_getsedate=$this->Common_function->GetUnitSdEdInvdate($BDLY_INPUT_unit);
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $BDLY_INPUT_getsedate=$this->Mdl_eilib_common_function->GetUnitSdEdInvdate($BDLY_INPUT_unit);
         $BDLY_INPUT_elect_values_array[]=$BDLY_INPUT_getsedate;
         $BDLY_INPUT_elect_values_array[]=$BDLY_INPUT_invoicetoid;
     return $BDLY_INPUT_elect_values_array;
@@ -290,8 +289,8 @@ Class Mdl_biz_daily_entry_search_update_delete extends CI_Model {
     //GET THE ACCESS CARD VALUE//
     public function BDLY_INPUT_checkcardno($BDLY_INPUT_cardno)
     {
-        $this->load->model('EILIB/Common_function');
-        $BDLY_INPUT_cardexist=$this->Common_function->Check_ExistsCard($BDLY_INPUT_cardno);
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $BDLY_INPUT_cardexist=$this->Mdl_eilib_common_function->Check_ExistsCard($BDLY_INPUT_cardno);
       return $BDLY_INPUT_cardexist;
     }
 
@@ -310,8 +309,8 @@ Class Mdl_biz_daily_entry_search_update_delete extends CI_Model {
          }
          $BDLY_INPUT_unitexp_values=[];
          $BDLY_INPUT_unitexp_values[]=$BDLY_INPUT_namearray;
-         $this->load->model('EILIB/Common_function');
-         $BDLY_INPUT_getsedate=$this->Common_function->GetUnitSdEdInvdate($BDLY_INPUT_uexp_unit);
+         $this->load->model('EILIB/Mdl_eilib_common_function');
+         $BDLY_INPUT_getsedate=$this->Mdl_eilib_common_function->GetUnitSdEdInvdate($BDLY_INPUT_uexp_unit);
          $BDLY_INPUT_unitexp_values[]=$BDLY_INPUT_getsedate;
          return $BDLY_INPUT_unitexp_values;
      }
@@ -327,8 +326,8 @@ Class Mdl_biz_daily_entry_search_update_delete extends CI_Model {
           $BDLY_INPUT_starhubecnid=$row['ECN_ID'];
       }
       $BDLY_INPUT_starhub_values=array($BDLY_INPUT_accno,$BDLY_INPUT_invoiceto,$BDLY_INPUT_starhubecnid);
-      $this->load->model('EILIB/Common_function');
-      $BDLY_INPUT_getsedate=$this->Common_function->GetUnitSdEdInvdate($BDLY_INPUT_star_unitt);
+      $this->load->model('EILIB/Mdl_eilib_common_function');
+      $BDLY_INPUT_getsedate=$this->Mdl_eilib_common_function->GetUnitSdEdInvdate($BDLY_INPUT_star_unitt);
       $BDLY_INPUT_starhub_values[]=$BDLY_INPUT_getsedate;
     return $BDLY_INPUT_starhub_values;
   }
@@ -1202,8 +1201,8 @@ public function BDLY_SRC_getUnitList($selectedexpense,$selectedSearchopt,$startd
 
     if($BDLY_SRC_lb_ExpenseList_val==3)
     {
-        $this->load->model('EILIB/Common_function');
-        $BDLY_SRC_arr_unitcmts=$this->Common_function->BDLY_getinvoicefrom();
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $BDLY_SRC_arr_unitcmts=$this->Mdl_eilib_common_function->BDLY_getinvoicefrom();
     }
 
     return [$BDLY_SRC_Expdataobject,$unit_start_end_date_obj,$BDLY_SRC_TableWidth,$BDLY_SRC_arr_unitcmts];
@@ -1422,14 +1421,14 @@ public function BDLY_SRC_getUnitList($selectedexpense,$selectedSearchopt,$startd
         $BDLY_SRC_CHKcardorunitflag="";
         if($BDLY_SRC_selectedexptype==6)
         {
-            $this->load->model('EILIB/Common_function');
-            $BDLY_SRC_CHKcardorunitflag=$this->Common_function->Check_ExistsCard($BDLY_SCR_DT_access_cardrunit);
+            $this->load->model('EILIB/Mdl_eilib_common_function');
+            $BDLY_SRC_CHKcardorunitflag=$this->Mdl_eilib_common_function->Check_ExistsCard($BDLY_SCR_DT_access_cardrunit);
         }
         else
         {
-            $this->load->model('EILIB/Common_function');
-            $CheckHKPUnitnoExists=$this->Common_function->CheckHKPUnitnoExists($BDLY_SCR_DT_access_cardrunit);
-            $CheckUnitnoExists=$this->Common_function->CheckUnitnoExists($BDLY_SCR_DT_access_cardrunit);
+            $this->load->model('EILIB/Mdl_eilib_common_function');
+            $CheckHKPUnitnoExists=$this->Mdl_eilib_common_function->CheckHKPUnitnoExists($BDLY_SCR_DT_access_cardrunit);
+            $CheckUnitnoExists=$this->Mdl_eilib_common_function->CheckUnitnoExists($BDLY_SCR_DT_access_cardrunit);
             if (($CheckHKPUnitnoExists==true) || ($CheckUnitnoExists==true))
             {
                 $BDLY_SRC_CHKcardorunitflag=true;
@@ -1443,8 +1442,8 @@ public function BDLY_SRC_getUnitList($selectedexpense,$selectedSearchopt,$startd
     }
     /*------------------------------------------EILIB FUNCTION TO GET UNIT SDATE,EDATE AND INVDATE -----------------------------------------------------*/
     public function BDLY_SRC_getUnitDate($BDLY_SRC_unitno){
-        $this->load->model('EILIB/Common_function');
-        $BDLY_SRC_unitdate=$this->Common_function->GetUnitSdEdInvdate($BDLY_SRC_unitno);
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $BDLY_SRC_unitdate=$this->Mdl_eilib_common_function->GetUnitSdEdInvdate($BDLY_SRC_unitno);
         return $BDLY_SRC_unitdate;
     }
     /*------------------------------------------WILL UPDATE DATA TABLE ROW IN DB -------------------------------------------------*/
@@ -1595,8 +1594,8 @@ public function BDLY_SRC_getUnitList($selectedexpense,$selectedSearchopt,$startd
     }
     else
     {
-        $this->load->model('EILIB/Common_function');
-        $BDLY_SRC_chkdelflag=$this->Common_function->DeleteRecord($BDLY_SRC_tableid[$selectedexpense],$BDLY_Delete_key,$USERSTAMP);
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $BDLY_SRC_chkdelflag=$this->Mdl_eilib_common_function->DeleteRecord($BDLY_SRC_tableid[$selectedexpense],$BDLY_Delete_key,$USERSTAMP);
     }
     return $BDLY_SRC_chkdelflag;
   }

@@ -1,7 +1,10 @@
 <?php
-include "GET_USERSTAMP.php";
-$USERSTAMP=$UserStamp;
 class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
+    function __construct() {
+        parent::__construct();
+        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+    }
 // initial form
     public function index()
     {
@@ -10,19 +13,16 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
 // fetch data
     public function commondata()
     {
-        $this->load->model('EILIB/Common_function');
         $errorlist=$_REQUEST['ErrorList'];
-        $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
+        $ErrorMessage= $this->Mdl_eilib_common_function->getErrorMessageList($errorlist);
         $this->load->database();
-        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
         $data=$this->Mdl_personal_daily_entry_search_update_delete->common_data($ErrorMessage);
         echo json_encode($data);
     }
 // CAR EXPENSE SAVE FUNCTION
     public function carexpensesave()
     {
-        global $USERSTAMP;
-        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
+        $USERSTAMP= $this->Mdl_eilib_common_function->getSessionUserStamp();
         $result = $this->Mdl_personal_daily_entry_search_update_delete->carexpenseinsert($USERSTAMP) ;
         if ($result == TRUE) {
             $flag=1;
@@ -34,8 +34,7 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
 // CAR LOAN SAVE FUNCTION
     public function carloansave()
     {
-        global $USERSTAMP;
-        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
+        $USERSTAMP= $this->Mdl_eilib_common_function->getSessionUserStamp();
         $result = $this->Mdl_personal_daily_entry_search_update_delete->carloaninsert($USERSTAMP) ;
         if ($result == TRUE) {
             $flag=1;
@@ -48,21 +47,17 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
 //BABY AND PERSONAL SAVE FUNCTION
     public function babypersonalsave()
     {
-        global $USERSTAMP;
-        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
+        $USERSTAMP= $this->Mdl_eilib_common_function->getSessionUserStamp();
         $result = $this->Mdl_personal_daily_entry_search_update_delete->babypersonalinsert($USERSTAMP) ;
         echo JSON_encode($result);
-
     }
 
  // search updte fetch data
     public function srchupdatecommondata()
     {
         $this->load->database();
-        $this->load->model('EILIB/Common_function');
         $errorlist=$_REQUEST['ErrorList'];
-        $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
-        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
+        $ErrorMessage= $this->Mdl_eilib_common_function->getErrorMessageList($errorlist);
         $data=$this->Mdl_personal_daily_entry_search_update_delete->srchupdte_common_data($ErrorMessage);
         echo json_encode($data);
     }
@@ -71,7 +66,6 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
     {
         $this->load->database();
         $categorydata= $this->input->post('categorydata');
-        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
         $data=$this->Mdl_personal_daily_entry_search_update_delete->PDLY_SEARCH_lb_babysearchoptionvalue($categorydata);
         echo json_encode($data);
     }
@@ -84,7 +78,6 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
         $PDLY_SEARCH_lb_getstartvaluevalue=date('Y-m-d',strtotime($PDLY_SEARCH_lb_getstartvaluevalue));
         $PDLY_SEARCH_lb_getendvaluevalue= $this->input->post('PDLY_SEARCH_lb_getendvaluevalue');
         $PDLY_SEARCH_lb_getendvaluevalue=date('Y-m-d',strtotime($PDLY_SEARCH_lb_getendvaluevalue));
-        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
         $data=$this->Mdl_personal_daily_entry_search_update_delete->PDLY_SEARCH_lb_comments($PDLY_SEARCH_lb_typelistvalue,$PDLY_SEARCH_lb_getstartvaluevalue,$PDLY_SEARCH_lb_getendvaluevalue);
         echo json_encode($data);
     }
@@ -98,7 +91,6 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
         $PDLY_SEARCH_lb_getstartvaluevalue=date('Y-m-d',strtotime($PDLY_SEARCH_lb_getstartvaluevalue));
         $PDLY_SEARCH_lb_getendvaluevalue= $this->input->post('PDLY_SEARCH_lb_getendvaluevalue');
         $PDLY_SEARCH_lb_getendvaluevalue=date('Y-m-d',strtotime($PDLY_SEARCH_lb_getendvaluevalue));
-        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
         $data=$this->Mdl_personal_daily_entry_search_update_delete->PDLY_SEARCH_lb_invoicefrom($PDLY_SEARCH_lb_typelistvalue,$PDLY_SEARCH_lb_getstartvaluevalue,$PDLY_SEARCH_lb_getendvaluevalue,$PDLY_SEARCH_lb_babysearchoptionvalue);
         echo json_encode($data);
     }
@@ -112,14 +104,13 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
         $PDLY_SEARCH_lb_getstartvaluevalue=date('Y-m-d',strtotime($PDLY_SEARCH_lb_getstartvaluevalue));
         $PDLY_SEARCH_lb_getendvaluevalue= $this->input->post('PDLY_SEARCH_lb_getendvaluevalue');
         $PDLY_SEARCH_lb_getendvaluevalue=date('Y-m-d',strtotime($PDLY_SEARCH_lb_getendvaluevalue));
-        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
         $data=$this->Mdl_personal_daily_entry_search_update_delete->PDLY_SEARCH_lb_invoiceitems($PDLY_SEARCH_lb_typelistvalue,$PDLY_SEARCH_lb_getstartvaluevalue,$PDLY_SEARCH_lb_getendvaluevalue,$PDLY_SEARCH_lb_babysearchoptionvalue);
         echo json_encode($data);
     }
     //PDLY_SEARCH_searchbybaby
     public function PDLY_SEARCH_searchbybaby()
     {
-        global $timeZoneFormat;
+        $timeZoneFormat= $this->Mdl_eilib_common_function->getTimezone();        
         $this->load->database();
         $PDLY_SEARCH_typelistvalue= $this->input->post('PDLY_SEARCH_typelistvalue');
         $PDLY_SEARCH_startdate=$this->input->post('PDLY_SEARCH_startdate');
@@ -136,14 +127,12 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
         $PDLY_SEARCH_searchcomments=$this->db->escape_like_str($PDLY_SEARCH_searchcomments);
         $PDLY_SEARCH_invitemcom=$this->db->escape_like_str($PDLY_SEARCH_invitemcom);
         $PDLY_SEARCH_invfromcomt=$this->db->escape_like_str($PDLY_SEARCH_invfromcomt);
-        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
         $data=$this->Mdl_personal_daily_entry_search_update_delete->PDLY_SEARCH_searchbybaby($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory,$timeZoneFormat);
-
         echo json_encode($data);
     }
     //EXPENSE BABY UPDATEFUNCTION
     public function expensebabyupdate(){
-        global $USERSTAMP;
+        $USERSTAMP= $this->Mdl_eilib_common_function->getSessionUserStamp();
         $ebid= $this->input->post('rowid');
         $babycategory= $this->input->post('babycategory');
         $babycategory=$this->db->escape_like_str($babycategory);
@@ -156,7 +145,6 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
         $babyinvitem=$this->db->escape_like_str($babyinvitem);
         $babycomment= $this->input->post('babycomment');
         $babycomment=$this->db->escape_like_str($babycomment);
-        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
         $result = $this->Mdl_personal_daily_entry_search_update_delete->expensebabyupdate($ebid,$babycategory,$babyinvdate,$babyinamt,$babyinfromt,$babyinvitem,$babycomment,$USERSTAMP) ;
         if ($result == TRUE) {
             $flag=1;
@@ -180,9 +168,7 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
         $carinvitem=$this->db->escape_like_str($carinvitem);
         $carcomment= $this->input->post('carcomment');
         $carcomment=$this->db->escape_like_str($carcomment);
-        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
         $result = $this->Mdl_personal_daily_entry_search_update_delete->expensecarupdate($ecid,$carcategory,$carinvdate,$carinamt,$carinfromt,$carinvitem,$carcomment,$USERSTAMP) ;
-
         if ($result == TRUE) {
             $flag=1;
         } else {
@@ -205,7 +191,6 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
         $personalinvitem=$this->db->escape_like_str($personalinvitem);
         $personalcomment= $this->input->post('personalcomment');
         $personalcomment=$this->db->escape_like_str($personalcomment);
-        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
         $result = $this->Mdl_personal_daily_entry_search_update_delete->expensepersonalupdate($epid,$personalcategory,$personalinvdate,$personalinamt,$personalinfromt,$personalinvitem,$personalcomment,$USERSTAMP) ;
         if ($result == TRUE) {
             $flag=1;
@@ -227,7 +212,6 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
         $eclamount= $this->input->post('eclamount');
         $eclcomments= $this->input->post('eclcomments');
         $eclcomments=$this->db->escape_like_str($eclcomments);
-        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
         $result = $this->Mdl_personal_daily_entry_search_update_delete->expensecarloanupdate($eclid,$eclpaiddate,$eclfromperiod,$ecltopaid,$eclamount,$eclcomments,$USERSTAMP) ;
         if ($result == TRUE) {
             $flag=1;
@@ -246,7 +230,6 @@ class Ctrl_Personal_Daily_Entry_Search_Update_Delete extends CI_Controller{
         $enddate=date('Y-m-d',strtotime($enddate));
         $PDLY_SEARCH_lb_typelistvalue= $this->input->post('PDLY_SEARCH_lb_typelistvalue');
         $PDLY_SEARCH_lb_babysearchoptionvalue= $this->input->post('PDLY_SEARCH_lb_babysearchoptionvalue');
-        $this->load->model('EXPENSE/PERSONAL/Mdl_personal_daily_entry_search_update_delete');
         $result = $this->Mdl_personal_daily_entry_search_update_delete->deleteoption($PDLY_rowid,$startdate,$enddate,$PDLY_SEARCH_lb_typelistvalue,$PDLY_SEARCH_lb_babysearchoptionvalue,$USERSTAMP) ;
         echo ($result);
     }

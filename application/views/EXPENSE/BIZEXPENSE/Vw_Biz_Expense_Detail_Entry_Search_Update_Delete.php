@@ -69,6 +69,7 @@ include "Header.php";
         var airconservicebyarray=[];
         var sdate='';
         var edate='';
+        var controller_url="<?php echo base_url(); ?>" + '/index.php/EXPENSE/BIZEXPENSE/Ctrl_Biz_Expense_Detail_Entry_Search_Update_Delete/' ;
         $('#BDTL_btn_pdf').hide();
     //RADIO  BUTTON CLICK FUNCTION
         $('.BDE_rd_selectform').click(function(){
@@ -79,7 +80,7 @@ include "Header.php";
                 $('.preloader').show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BDTL_INPUT_expense_err_invoice",
+                    url: controller_url+"BDTL_INPUT_expense_err_invoice",
                     success: function(res) {
                         $('.preloader').hide();
                         $("html, body").animate({ scrollTop: $(document).height() }, "slow");
@@ -105,7 +106,7 @@ include "Header.php";
                $('.preloader').show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_expensetypes",
+                    url: controller_url+"BTDTL_SEARCH_expensetypes",
                     success: function(res) {
                         $('.preloader').hide();
                         $("html, body").animate({ scrollTop: $(document).height() }, "slow");
@@ -218,7 +219,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BDTL_INPUT_all_exp_types_unitno",
+                    url: controller_url+"BDTL_INPUT_all_exp_types_unitno",
                     data:{'BDTL_INPUT_all_expense_types':BDTL_INPUT_all_expense_types},
                     success: function(res) {
                         $('.preloader').hide();
@@ -345,7 +346,7 @@ include "Header.php";
                     $('.preloader').show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BDTL_INPUT_get_SDate_EDate",
+                        url: controller_url+"BDTL_INPUT_get_SDate_EDate",
                         data:{'unitselectedlist':$('#BDTL_INPUT_lb_unitno_list').find('option:selected').text()},
                         success: function(res) {
                             $('.preloader').hide();
@@ -418,7 +419,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BDTL_INPUT_airconservicedby_check",
+                    url: controller_url+"BDTL_INPUT_airconservicedby_check",
                     data:{'BDTL_INPUT_newaircon':BDTL_INPUT_newaircon},
                     success: function(res) {
                         $('.preloader').hide();
@@ -508,7 +509,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BDTL_INPUT_save",
+                    url: controller_url+"BDTL_INPUT_save",
                     data:$('#BDTL_INPUT_form_biz_detail').serialize(),
                     success: function(res) {
                         $('.preloader').hide();
@@ -804,7 +805,7 @@ include "Header.php";
                 {
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_expense_searchby",
+                        url: controller_url+"BTDTL_SEARCH_expense_searchby",
                         data:{'BTDTL_SEARCH_search_option':BTDTL_SEARCH_search_option,'BTDTL_SEARCH_lb_expense_types':BTDTL_SEARCH_lb_expense_types,'BTDTL_SEARCH_flag_searchby':BTDTL_SEARCH_flag_searchby},
                         success: function(res) {
                             $('.preloader').hide();
@@ -819,7 +820,7 @@ include "Header.php";
                 {
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_expense_searchby",
+                        url: controller_url+"BTDTL_SEARCH_expense_searchby",
                         data:{'BTDTL_SEARCH_search_option':BTDTL_SEARCH_search_option,'BTDTL_SEARCH_lb_expense_types':BTDTL_SEARCH_lb_expense_types,'BTDTL_SEARCH_flag_searchby':BTDTL_SEARCH_flag_searchby},
                         success: function(res) {
                             $('.preloader').hide();
@@ -961,7 +962,7 @@ include "Header.php";
                     if((BTDTL_SEARCH_search_option==112)||(BTDTL_SEARCH_search_option==110)||(BTDTL_SEARCH_search_option==122)||(BTDTL_SEARCH_search_option==104)||(BTDTL_SEARCH_search_option==108)||(BTDTL_SEARCH_search_option==103)||(BTDTL_SEARCH_search_option==101)){
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_comments_autocomplete",
+                            url: controller_url+"BTDTL_SEARCH_comments_autocomplete",
                             data:{'searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val()},
                             success: function(res) {
                                 $('.preloader').hide();
@@ -1019,7 +1020,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_flex_aircon",
+                    url: controller_url+"BTDTL_SEARCH_flex_aircon",
                     data:{'BTDTL_SEARCH_lb_ariconunitno':$('#BTDTL_SEARCH_lb_ariconunitno').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1036,7 +1037,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_flex_aircon1",
+                    url: controller_url+"BTDTL_SEARCH_flex_aircon1",
                     data:{'BTDTL_SEARCH_lb_ariconservicedbyunitno':$('#BTDTL_SEARCH_lb_ariconservicedbyunitno').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1052,7 +1053,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_carpark",
+                    url: controller_url+"BTDTL_SEARCH_show_carpark",
                     data:{'BTDTL_SEARCH_lb_carno':$('#BTDTL_SEARCH_lb_carno').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1068,7 +1069,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_carpark1",
+                    url: controller_url+"BTDTL_SEARCH_show_carpark1",
                     data:{'BTDTL_SEARCH_lb_carparkunitno':$('#BTDTL_SEARCH_lb_carparkunitno').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1084,7 +1085,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_digital",
+                    url: controller_url+"BTDTL_SEARCH_show_digital",
                     data:{'BTDTL_SEARCH_lb_digitalacctno':$('#BTDTL_SEARCH_lb_digitalacctno').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1100,7 +1101,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_digital1",
+                    url: controller_url+"BTDTL_SEARCH_show_digital1",
                     data:{'BTDTL_SEARCH_lb_digitalvoiceno':$('#BTDTL_SEARCH_lb_digitalvoiceno').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1116,7 +1117,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_digital2",
+                    url: controller_url+"BTDTL_SEARCH_show_digital2",
                     data:{'BTDTL_SEARCH_lb_digitalinvoiceto':$('#BTDTL_SEARCH_lb_digitalinvoiceto').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1132,7 +1133,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_digital3",
+                    url: controller_url+"BTDTL_SEARCH_show_digital3",
                     data:{'BTDTL_SEARCH_lb_digitalunitno':$('#BTDTL_SEARCH_lb_digitalunitno').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1148,7 +1149,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_electricity",
+                    url: controller_url+"BTDTL_SEARCH_show_electricity",
                     data:{'BTDTL_SEARCH_lb_electricityinvoiceto':$('#BTDTL_SEARCH_lb_electricityinvoiceto').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1164,7 +1165,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_electricity1",
+                    url: controller_url+"BTDTL_SEARCH_show_electricity1",
                     data:{'BTDTL_SEARCH_lb_electricityunitno':$('#BTDTL_SEARCH_lb_electricityunitno').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1180,7 +1181,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_starhub",
+                    url: controller_url+"BTDTL_SEARCH_show_starhub",
                     data:{'BTDTL_SEARCH_lb_starhubunitno':$('#BTDTL_SEARCH_lb_starhubunitno').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1196,7 +1197,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_starhub1",
+                    url: controller_url+"BTDTL_SEARCH_show_starhub1",
                     data:{'BTDTL_SEARCH_flag':$('#BTDTL_SEARCH_flag').val(),'BTDTL_SEARCH_lb_starhubacctno':$('#BTDTL_SEARCH_lb_starhubacctno').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1212,7 +1213,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_starhub2",
+                    url: controller_url+"BTDTL_SEARCH_show_starhub2",
                     data:{'BTDTL_SEARCH_emptyflag':$('#BTDTL_SEARCH_emptyflag').val(),'BTDTL_SEARCH_lb_starhubinvoiceto':$('#BTDTL_SEARCH_lb_starhubinvoiceto').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1228,7 +1229,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_starhub3",
+                    url: controller_url+"BTDTL_SEARCH_show_starhub3",
                     data:{'BTDTL_SEARCH_emptyflag':$('#BTDTL_SEARCH_emptyflag').val(),'BTDTL_SEARCH_lb_starhubssid':$('#BTDTL_SEARCH_lb_starhubssid').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1244,7 +1245,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_starhub4",
+                    url: controller_url+"BTDTL_SEARCH_show_starhub4",
                     data:{'BTDTL_SEARCH_emptyflag':$('#BTDTL_SEARCH_emptyflag').val(),'BTDTL_SEARCH_lb_starhubpwd':$('#BTDTL_SEARCH_lb_starhubpwd').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1260,7 +1261,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_starhub5",
+                    url: controller_url+"BTDTL_SEARCH_show_starhub5",
                     data:{'BTDTL_SEARCH_emptyflag':$('#BTDTL_SEARCH_emptyflag').val(),'BTDTL_SEARCH_lb_starhubmodem':$('#BTDTL_SEARCH_lb_starhubmodem').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1276,7 +1277,7 @@ include "Header.php";
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_starhub6",
+                    url: controller_url+"BTDTL_SEARCH_show_starhub6",
                     data:{'BTDTL_SEARCH_emptyflag':$('#BTDTL_SEARCH_emptyflag').val(),'BTDTL_SEARCH_lb_starhub_cableserialno':$('#BTDTL_SEARCH_lb_starhub_cableserialno').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1292,7 +1293,7 @@ include "Header.php";
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_flex_aircon2",
+                    url: controller_url+"BTDTL_SEARCH_flex_aircon2",
                     data:{'BTDTL_SEARCH_ta_airconcomments':$('#BTDTL_SEARCH_ta_airconcomments').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1305,7 +1306,7 @@ include "Header.php";
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_carpark2",
+                    url: controller_url+"BTDTL_SEARCH_show_carpark2",
                     data:{'BTDTL_SEARCH_ta_carparkcomments':$('#BTDTL_SEARCH_ta_carparkcomments').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1318,7 +1319,7 @@ include "Header.php";
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_digital4",
+                    url: controller_url+"BTDTL_SEARCH_show_digital4",
                     data:{'BTDTL_SEARCH_ta_digitalcomments':$('#BTDTL_SEARCH_ta_digitalcomments').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1331,7 +1332,7 @@ include "Header.php";
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_electricity2",
+                    url: controller_url+"BTDTL_SEARCH_show_electricity2",
                     data:{'BTDTL_SEARCH_ta_electricitycomments':$('#BTDTL_SEARCH_ta_electricitycomments').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1344,7 +1345,7 @@ include "Header.php";
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_starhub7",
+                    url: controller_url+"BTDTL_SEARCH_show_starhub7",
                     data:{'BTDTL_SEARCH_emptyflag':$('#BTDTL_SEARCH_emptyflag').val(),'BTDTL_SEARCH_ta_starhubaddtnlch':$('#BTDTL_SEARCH_ta_starhubaddtnlch').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1357,7 +1358,7 @@ include "Header.php";
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_starhub8",
+                    url: controller_url+"BTDTL_SEARCH_show_starhub8",
                     data:{'BTDTL_SEARCH_emptyflag':$('#BTDTL_SEARCH_emptyflag').val(),'BTDTL_SEARCH_ta_starhubbasic':$('#BTDTL_SEARCH_ta_starhubbasic').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1370,7 +1371,7 @@ include "Header.php";
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_starhub9",
+                    url: controller_url+"BTDTL_SEARCH_show_starhub9",
                     data:{'BTDTL_SEARCH_emptyflag':$('#BTDTL_SEARCH_emptyflag').val(),'BTDTL_SEARCH_ta_starhubcomments':$('#BTDTL_SEARCH_ta_starhubcomments').val(),'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1385,7 +1386,7 @@ include "Header.php";
                 var BTDTL_SEARCH_starhubappl_enddate=DatePickerFormat($('#BTDTL_SEARCH_db_starhubappl_enddate').val());
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_starhub10",
+                    url: controller_url+"BTDTL_SEARCH_show_starhub10",
                     data:{'BTDTL_SEARCH_starhubappl_startdate':BTDTL_SEARCH_starhubappl_startdate,'BTDTL_SEARCH_starhubappl_enddate':BTDTL_SEARCH_starhubappl_enddate,'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1400,7 +1401,7 @@ include "Header.php";
                 var BTDTL_SEARCH_cable_enddate=DatePickerFormat($('#BTDTL_SEARCH_db_starhubcable_enddate').val());
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_starhub11",
+                    url: controller_url+"BTDTL_SEARCH_show_starhub11",
                     data:{'BTDTL_SEARCH_cable_startdate':BTDTL_SEARCH_cable_startdate,'BTDTL_SEARCH_cable_enddate':BTDTL_SEARCH_cable_enddate,'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -1415,7 +1416,7 @@ include "Header.php";
                 var BTDTL_SEARCH_internet_enddate=DatePickerFormat($('#BTDTL_SEARCH_db_starhubinternet_enddate').val());
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/BTDTL_SEARCH_show_starhub12",
+                    url: controller_url+"BTDTL_SEARCH_show_starhub12",
                     data:{'BTDTL_SEARCH_internet_startdate':BTDTL_SEARCH_internet_startdate,'BTDTL_SEARCH_internet_enddate':BTDTL_SEARCH_internet_enddate,'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_parentfunc_flex':'BTDTL_SEARCH_parentfunc_flex'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -2113,7 +2114,7 @@ include "Header.php";
             }
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/airconserviceupdate",
+                url: controller_url+"airconserviceupdate",
                 data:{'primaryid':airconcombineid,'unitid':airconunitid,'airconserviceby':airconserviceby,'aircomments':aircomments,'serviceby':serviceby,'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_lb_expense_type':$('#BTDTL_SEARCH_lb_expense_type').val(),'searchvalue':searchvalue},
                 success: function(data) {
                     $('.preloader').hide();
@@ -2183,7 +2184,7 @@ include "Header.php";
             }
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/carparkupdate",
+                url: controller_url+"carparkupdate",
                 data:{'primaryid':carparkcombineid,'unitid':carparkunitid,'carno':carno,'carparkcomments':carparkcomments,'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_lb_expense_type':$('#BTDTL_SEARCH_lb_expense_type').val(),'searchvalue':searchvalue},
                 success: function(data) {
                     $('.preloader').hide();
@@ -2290,7 +2291,7 @@ include "Header.php";
             }
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/digitalvoiceupdate",
+                url: controller_url+"digitalvoiceupdate",
                 data:{'primaryid':digitalcombineid,'unitid':digitalunitid,'invoiceto':invoiceto,'invoiceno':invoiceno,'acctno':acctno,'comments':comments,'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_lb_expense_type':$('#BTDTL_SEARCH_lb_expense_type').val(),'searchvalue':searchvalue},
                 success: function(data) {
                     $('.preloader').hide();
@@ -2367,7 +2368,7 @@ include "Header.php";
             }
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/electricityupdate",
+                url: controller_url+"electricityupdate",
                 data:{'primaryid':electriccombineid,'unitid':electricunitid,'invoiceto':invoiceto,'electcomments':electcomments,'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_lb_expense_type':$('#BTDTL_SEARCH_lb_expense_type').val(),'searchvalue':searchvalue},
                 success: function(data) {
                     $('.preloader').hide();
@@ -2598,7 +2599,7 @@ include "Header.php";
                 var searchvalue=$('#BTDTL_SEARCH_lb_starhubunitno').val();
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Detail_Entry_Search_Update_Delete/starhubupdate",
+                url: controller_url+"starhubupdate",
                 data:{'primaryid':primaryid,'unitid':unitid,'unitno':unitno,'invoiceto':invoiceto,'acctno':acctno,'appldate':appldate,'cablestartdte':cablestartdte,'cableenddate':cableenddate,'internetstartdte':internetstartdte,'internetenddate':internetenddate,'ssid':ssid,'pwd':pwd,'cablebox':cablebox,'modemno':modemno,'basicgroup':basicgroup,'addchnnl':addchnnl,'comments':comments,'BTDTL_SEARCH_lb_searchoptions':$('#BTDTL_SEARCH_lb_searchoptions').val(),'BTDTL_SEARCH_lb_expense_type':$('#BTDTL_SEARCH_lb_expense_type').val(),'searchvalue':searchvalue,'startdate':startdate,'BTDTL_SEARCH_starhubid':BTDTL_SEARCH_starhubid},
                 success: function(data) {
                     $('.preloader').hide();

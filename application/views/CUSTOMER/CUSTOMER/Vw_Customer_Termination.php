@@ -23,6 +23,7 @@ td, th {
             var string = inputdate.split("-");
             return string[2]+'-'+ string[1]+'-'+string[0];
         }
+        var controller_url="<?php echo base_url(); ?>" + '/index.php/CUSTOMER/CUSTOMER/Ctrl_Customer_Termination/' ;
         var CTERM_ptdfrmtime=[];
         var CTERM_minptdcustdate="";
         var CTERM_custptdchkflag=false;
@@ -32,7 +33,7 @@ td, th {
 //CALL GS FUNCTION TO CALENDAR EVENT TIME N ERROR MESSAGES
         $.ajax({
             type: "POST",
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Customer_Termination/CTERM_getErrMsgCalTime",
+            'url': controller_url+"CTERM_getErrMsgCalTime",
             success: function(res) {
                 $('.preloader').hide();
                 var result=JSON.parse(res);
@@ -67,7 +68,7 @@ td, th {
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Customer_Termination/CTERM_getCustomerName",
+                    url: controller_url+"CTERM_getCustomerName",
                     data:$('#CTERM_form').serialize(),
                     success: function(res) {
                         $('.preloader').hide();
@@ -80,7 +81,7 @@ td, th {
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Customer_Termination/CTERM_getCustomerName",
+                    url: controller_url+"CTERM_getCustomerName",
                     data:$('#CTERM_form').serialize(),
                     success: function(res) {
                         $('.preloader').hide();
@@ -93,7 +94,7 @@ td, th {
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Customer_Termination/CTERM_getCustomerName",
+                    url: controller_url+"CTERM_getCustomerName",
                     data:$('#CTERM_form').serialize(),
                     success: function(res) {
                         $('.preloader').hide();
@@ -150,7 +151,7 @@ td, th {
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Customer_Termination/CTERM_getCustomerId",
+                    url: controller_url+"CTERM_getCustomerId",
                     data:$('#CTERM_form').serialize(),
                     success: function(res) {
                         var result=JSON.parse(res);
@@ -175,7 +176,7 @@ td, th {
                 $('#CTERM_hidden_custid').val(CTERM_Cid[0]);
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Customer_Termination/CTERM_getCustomerdtls",
+                    url: controller_url+"CTERM_getCustomerdtls",
                     data:{'custid':CTERM_Cid[0],'radiooption':CTERM_radio_termoption},
                     success: function(res) {
                         $('.preloader').hide();
@@ -272,7 +273,7 @@ td, th {
             $('#CTERM_hidden_custid').val(CTERM_id);
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Customer_Termination/CTERM_getCustomerdtls",
+                url: controller_url+"CTERM_getCustomerdtls",
                 data:{'custid':CTERM_id,'radiooption':CTERM_radio_termoption},
                 success: function(res) {
                     $('.preloader').hide();
@@ -294,10 +295,9 @@ td, th {
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Customer_Termination/CTERM_UpdatePtd",
+                    url: controller_url+"CTERM_UpdatePtd",
                     data:$('#CTERM_form').serialize()+'&Globalrecver='+Globalrecver,
                     success: function(res) {
-                        alert(res)
                         $('.preloader').hide();
                         CTERM_UpdatePtd_result(res)
                     }
@@ -593,10 +593,9 @@ td, th {
             var CTERM_unitno =$("input[name='CTERM_unitno']:checked").val();
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Customer_Termination/CTERM_getMinPTD",
+                url: controller_url+"CTERM_getMinPTD",
                 data:{'CTERM_custid':CTERM_custid,'CTERM_radio_termoption':CTERM_radio_termoption,'CTERM_unitno':CTERM_unitno},
                 success: function(res) {
-                    alert(res)
                     $('.preloader').hide();
                         var result=JSON.parse(res);
                         CTERM_getMinPTD_result(result)
@@ -987,10 +986,9 @@ td, th {
             $(".preloader").show();
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Customer_Termination/CTERM_UpdatePtd",
+                url: controller_url+"CTERM_UpdatePtd",
                 data:$('#CTERM_form').serialize()+'&Globalrecver='+Globalrecver,
                 success: function(res) {
-                    alert(res)
                     $('.preloader').hide();
                         CTERM_UpdatePtd_result(res)
                 }
@@ -1015,7 +1013,7 @@ td, th {
                 $('.preloader').show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Customer_Termination/CTERM_getCustomerName",
+                    url: controller_url+"CTERM_getCustomerName",
                     data:$('#CTERM_form').serialize(),
                     success: function(res) {
                         $('.preloader').hide();
@@ -1062,8 +1060,6 @@ td, th {
                             </select></div>
                     </div>
                     <div id="CTERM_div_custid" class="col-lg-offset-2">
-<!--                                <table id="CTERM_tble_custid">-->
-<!--                                </table>-->
                     </div>
                 <div id="CTERM_div_errmsg"></div>
                 <div id="CTERM_div_srctable" class="table-responsive" hidden>

@@ -35,13 +35,6 @@ Class Mdl_personal_daily_entry_search_update_delete extends CI_Model {
         $carexptypeqry = $this->db->get();
         $carexptype=$carexptypeqry->result();
 
-//        //ERROR MESSAGE CONFIGURATION
-//        $this->db->select("EMC_ID,EMC_DATA");
-//        $this->db->from("ERROR_MESSAGE_CONFIGURATION");
-//        $this->db->where("EMC_ID IN (105,400)");
-//        $errmsg = $this->db->get();
-//        $errormessage=$errmsg->result();
-
         //AUTOCOMPLETE FUNCTION FOR INVOICE FROM
         $this->db->select("EP_INVOICE_FROM");
         $this->db->from("EXPENSE_PERSONAL");
@@ -262,12 +255,6 @@ Class Mdl_personal_daily_entry_search_update_delete extends CI_Model {
         $this->db->from("EXPENSE_PERSONAL");
         $invoicefrom = $this->db->get();
         $personalinvoicefrom=$invoicefrom->result();
-        //ERROR MESSAGE CONFIGURATION
-//        $this->db->select("EMC_ID,EMC_DATA");
-//        $this->db->from("ERROR_MESSAGE_CONFIGURATION");
-//        $this->db->where("EMC_ID IN (2,20,45,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,134,140,170,209,210,211,212,315)");
-//        $errmsg = $this->db->get();
-//        $errormessage=$errmsg->result();
 
         return $arrayvalues=array($PDLY_SEARCH_expensepersonalArray,$PDLY_SEARCH_expensebabyArray,$PDLY_SEARCH_expensecarArray,$PDLY_SEARCH_expensecarloanArray,$PDLY_SEARCH_babyexpensecategArray,$PDLY_SEARCH_carexpensecategArray,$PDLY_SEARCH_personalexpensecategArray,$ErrorMessage,$PDLY_SEARCH_personalexp_Array,$babyexptype,$carexptype,$perexpype,$personalinvoicefrom);
     }
@@ -540,8 +527,8 @@ Class Mdl_personal_daily_entry_search_update_delete extends CI_Model {
     {
         $PDLY_SEARCH_twodimen=array(36=>['EXPENSE_BABY',66],37=>['EXPENSE_PERSONAL',64],35=>['EXPENSE_CAR',65],38=>['EXPENSE_CAR_LOAN',67]);
         $tableid=$PDLY_SEARCH_twodimen[$PDLY_SEARCH_lb_typelistvalue][1];
-        $this->load->model('EILIB/Common_function');
-        $deleteflag=$this->Common_function->DeleteRecord($tableid,$PDLY_rowid,$USERSTAMP);
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $deleteflag=$this->Mdl_eilib_common_function->DeleteRecord($tableid,$PDLY_rowid,$USERSTAMP);
         return $deleteflag;
     }
 

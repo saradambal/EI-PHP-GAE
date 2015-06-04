@@ -1,10 +1,13 @@
 <?php
-include "GET_USERSTAMP.php";
-$USERSTAMP=$UserStamp;
 class Ctrl_Pdf extends CI_Controller{
 
+    function __construct() {
+        parent::__construct();
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+    }
     public function pdfexport()
     {
+        $timeZoneFormat= $this->Mdl_eilib_common_function->getTimezone();
         $this->load->library('pdf');
         $data='';
         $PDLY_SEARCH_lb_babysearchoptionmatch= $this->input->post('PDLY_SEARCH_lb_babysearchoption');
@@ -28,7 +31,7 @@ class Ctrl_Pdf extends CI_Controller{
             $PDLY_SEARCH_invitemcom=$this->db->escape_like_str($PDLY_SEARCH_invitemcom);
             $PDLY_SEARCH_invfromcomt=$this->db->escape_like_str($PDLY_SEARCH_invfromcomt);
             $this->load->model('EXPENSE/Mdl_pdf');
-            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
+            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory,$timeZoneFormat);
 
         }
         else if(($PDLY_SEARCH_lb_babysearchoptionmatch==52)||($PDLY_SEARCH_lb_babysearchoptionmatch==58)||($PDLY_SEARCH_lb_babysearchoptionmatch==69))
@@ -49,7 +52,7 @@ class Ctrl_Pdf extends CI_Controller{
             $PDLY_SEARCH_invitemcom=$this->db->escape_like_str($PDLY_SEARCH_invitemcom);
             $PDLY_SEARCH_invfromcomt=$this->db->escape_like_str($PDLY_SEARCH_invfromcomt);
             $this->load->model('EXPENSE/Mdl_pdf');
-            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
+            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory,$timeZoneFormat);
 
         }
         else if(($PDLY_SEARCH_lb_babysearchoptionmatch==51)||($PDLY_SEARCH_lb_babysearchoptionmatch==57)||($PDLY_SEARCH_lb_babysearchoptionmatch==68)||($PDLY_SEARCH_lb_babysearchoptionmatch==65))
@@ -70,7 +73,7 @@ class Ctrl_Pdf extends CI_Controller{
             $PDLY_SEARCH_searchcomments=$this->db->escape_like_str($PDLY_SEARCH_searchcomments);
             $PDLY_SEARCH_invitemcom=$this->db->escape_like_str($PDLY_SEARCH_invitemcom);
             $PDLY_SEARCH_invfromcomt=$this->db->escape_like_str($PDLY_SEARCH_invfromcomt);
-            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
+            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory,$timeZoneFormat);
 
         }
         else if(($PDLY_SEARCH_lb_babysearchoptionmatch==53)||($PDLY_SEARCH_lb_babysearchoptionmatch==59)||($PDLY_SEARCH_lb_babysearchoptionmatch==70)||($PDLY_SEARCH_lb_babysearchoptionmatch==63)||($PDLY_SEARCH_lb_babysearchoptionmatch==66)||($PDLY_SEARCH_lb_babysearchoptionmatch==64))
@@ -91,7 +94,7 @@ class Ctrl_Pdf extends CI_Controller{
             $PDLY_SEARCH_searchcomments=$this->db->escape_like_str($PDLY_SEARCH_searchcomments);
             $PDLY_SEARCH_invitemcom=$this->db->escape_like_str($PDLY_SEARCH_invitemcom);
             $PDLY_SEARCH_invfromcomt=$this->db->escape_like_str($PDLY_SEARCH_invfromcomt);
-            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
+            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory,$timeZoneFormat);
 
         }
         else if(($PDLY_SEARCH_lb_babysearchoptionmatch==55)||($PDLY_SEARCH_lb_babysearchoptionmatch==61)||($PDLY_SEARCH_lb_babysearchoptionmatch==72))
@@ -112,7 +115,7 @@ class Ctrl_Pdf extends CI_Controller{
             $PDLY_SEARCH_searchcomments=$this->db->escape_like_str($PDLY_SEARCH_searchcomments);
             $PDLY_SEARCH_invitemcom=$this->db->escape_like_str($PDLY_SEARCH_invitemcom);
             $PDLY_SEARCH_invfromcomt=$this->db->escape_like_str($PDLY_SEARCH_invfromcomt);
-            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
+            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory,$timeZoneFormat);
 
         }
         else if(($PDLY_SEARCH_lb_babysearchoptionmatch==54)||($PDLY_SEARCH_lb_babysearchoptionmatch==60)||($PDLY_SEARCH_lb_babysearchoptionmatch==71))
@@ -133,7 +136,7 @@ class Ctrl_Pdf extends CI_Controller{
             $PDLY_SEARCH_searchcomments=$this->db->escape_like_str($PDLY_SEARCH_searchcomments);
             $PDLY_SEARCH_invitemcom=$this->db->escape_like_str($PDLY_SEARCH_invitemcom);
             $PDLY_SEARCH_invfromcomt=$this->db->escape_like_str($PDLY_SEARCH_invfromcomt);
-            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory);
+            $data=$this->Mdl_pdf->Pdfexport($PDLY_SEARCH_typelistvalue,$PDLY_SEARCH_startdate,$PDLY_SEARCH_enddate,$PDLY_SEARCH_babysearchoption,$PDLY_SEARCH_fromamount,$PDLY_SEARCH_toamount,$PDLY_SEARCH_searchcomments,$PDLY_SEARCH_invitemcom,$PDLY_SEARCH_invfromcomt,$PDLY_SEARCH_babycategory,$timeZoneFormat);
 
         }
         if($PDLY_SEARCH_typelistvalue==36){$pdfFilePath='BABY EXPENSE.pdf';}
@@ -150,8 +153,8 @@ class Ctrl_Pdf extends CI_Controller{
     }
     public function pdfexportbizexpense(){
         $this->load->library('pdf');
-        global $USERSTAMP;
-        global $timeZoneFormat;
+        $USERSTAMP= $this->Mdl_eilib_common_function->getSessionUserStamp();
+        $timeZoneFormat= $this->Mdl_eilib_common_function->getTimezone();
         $this->load->database();
         $BDLY_SRC_lb_unitno=$this->input->post('BDLY_SRC_lb_unitno');
         $BDLY_SRC_lb_invoiceto=$this->input->post('BDLY_SRC_lb_invoiceto');
@@ -184,7 +187,7 @@ class Ctrl_Pdf extends CI_Controller{
     }
     public function pdfexportbizdetailexpense(){
         $this->load->library('pdf');
-        global $timeZoneFormat;
+        $timeZoneFormat= $this->Mdl_eilib_common_function->getTimezone();
         $this->load->database();
         $Expensetype=$this->input->get('Expensetype');
         $BTDTL_SEARCH_lb_searchoptions=$this->input->get('BTDTL_SEARCH_lb_searchoptions');

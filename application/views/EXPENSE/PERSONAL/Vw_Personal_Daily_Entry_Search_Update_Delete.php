@@ -75,6 +75,7 @@ $(document).ready(function(){
     var car_category=[];
     var personal_categroy=[];
     var personalinvoicefrom=[];
+    var controller_url="<?php echo base_url(); ?>" + '/index.php/EXPENSE/PERSONAL/Ctrl_Personal_Daily_Entry_Search_Update_Delete/' ;
     //LIST BOX ITEM CHANGE FUNCTION
     $('.PE_rd_selectform').click(function(){
         var listboxoption=$(this).val();
@@ -84,7 +85,7 @@ $(document).ready(function(){
             $('.preloader').show();
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/commondata",
+                url: controller_url+"commondata",
                 data:{"ErrorList":'105,106,400,401'},
                 success: function(res) {
                     $('.preloader').hide();
@@ -139,7 +140,7 @@ $(document).ready(function(){
             $('.preloader').show();
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/srchupdatecommondata",
+                url: controller_url+"srchupdatecommondata",
                 data:{"ErrorList":'2,20,45,105,106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,134,140,170,209,210,211,212,315,401'},
                 success: function(res) {
                     $('.preloader').hide();
@@ -550,7 +551,7 @@ $(document).ready(function(){
         $.ajax({
             type: "POST",
             data: $('#personalexpense').serialize(),
-            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/carexpensesave",
+            url: controller_url+"carexpensesave",
             success: function(res) {
                 $('.preloader').hide();
                 if(res==1)
@@ -583,7 +584,7 @@ $(document).ready(function(){
         $.ajax({
             type: "POST",
             data: $('#personalexpense').serialize(),
-            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/carloansave",
+            url: controller_url+"carloansave",
             success: function(res) {
                 $('.preloader').hide();
                 if(res==1)
@@ -620,7 +621,7 @@ $(document).ready(function(){
         $.ajax({
             type: "POST",
             data: $('#personalexpense').serialize(),
-            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/babypersonalsave",
+            url: controller_url+"babypersonalsave",
             success: function(res) {
                 $('.preloader').hide();
                 var result_value=JSON.parse(res);
@@ -979,7 +980,7 @@ $(document).ready(function(){
             var categorydata=$('#PDLY_SEARCH_lb_babysearchoption').val();
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/PDLY_SEARCH_lb_babysearchoptionvalue",
+                url: controller_url+"PDLY_SEARCH_lb_babysearchoptionvalue",
                 data:'&categorydata='+categorydata,
                 success: function(res) {
                     $(".preloader").hide();
@@ -1286,7 +1287,7 @@ $(document).ready(function(){
                 var PDLY_SEARCH_lb_typelistvalue=$('#PDLY_SEARCH_lb_typelist').val();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/PDLY_SEARCH_lb_comments",
+                    url: controller_url+"PDLY_SEARCH_lb_comments",
                     data:'&PDLY_SEARCH_lb_typelistvalue='+PDLY_SEARCH_lb_typelistvalue+'&PDLY_SEARCH_lb_getstartvaluevalue='+PDLY_SEARCH_lb_getstartvaluevalue+'&PDLY_SEARCH_lb_getendvaluevalue='+PDLY_SEARCH_lb_getendvaluevalue,
                     success: function(res) {
                         $('.preloader').hide();
@@ -1350,7 +1351,7 @@ $(document).ready(function(){
                 var PDLY_SEARCH_lb_typelistvalue=$('#PDLY_SEARCH_lb_typelist').val();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/PDLY_SEARCH_lb_invoicefrom",
+                    url: controller_url+"PDLY_SEARCH_lb_invoicefrom",
                     data:'&PDLY_SEARCH_lb_typelistvalue='+PDLY_SEARCH_lb_typelistvalue+'&PDLY_SEARCH_lb_getstartvaluevalue='+PDLY_SEARCH_lb_getstartvaluevalue+'&PDLY_SEARCH_lb_getendvaluevalue='+PDLY_SEARCH_lb_getendvaluevalue+'&PDLY_SEARCH_lb_babysearchoptionvalue='+PDLY_SEARCH_lb_babysearchoptionvalue,
                     success: function(res) {
                         $('.preloader').hide();
@@ -1416,7 +1417,7 @@ $(document).ready(function(){
                 var PDLY_SEARCH_lb_typelistvalue=$('#PDLY_SEARCH_lb_typelist').val();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/PDLY_SEARCH_lb_invoiceitems",
+                    url: controller_url+"PDLY_SEARCH_lb_invoiceitems",
                     data:'&PDLY_SEARCH_lb_typelistvalue='+PDLY_SEARCH_lb_typelistvalue+'&PDLY_SEARCH_lb_getstartvaluevalue='+PDLY_SEARCH_lb_getstartvaluevalue+'&PDLY_SEARCH_lb_getendvaluevalue='+PDLY_SEARCH_lb_getendvaluevalue+'&PDLY_SEARCH_lb_babysearchoptionvalue='+PDLY_SEARCH_lb_babysearchoptionvalue,
                     success: function(res) {
                         $('.preloader').hide();
@@ -1650,7 +1651,7 @@ $(document).ready(function(){
             var PDLY_SEARCH_babycategory="";
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/PDLY_SEARCH_searchbybaby",
+                url: controller_url+"PDLY_SEARCH_searchbybaby",
                 data:{'PDLY_SEARCH_typelistvalue':PDLY_SEARCH_typelistvalue,'PDLY_SEARCH_startdate':PDLY_SEARCH_startdate,'PDLY_SEARCH_enddate':PDLY_SEARCH_enddate,'PDLY_SEARCH_babysearchoption':PDLY_SEARCH_babysearchoption,'PDLY_SEARCH_fromamount':PDLY_SEARCH_fromamount,'PDLY_SEARCH_toamount':PDLY_SEARCH_toamount,'PDLY_SEARCH_searchcomments':PDLY_SEARCH_searchcomments,'PDLY_SEARCH_invitemcom':PDLY_SEARCH_invitemcom,'PDLY_SEARCH_invfromcomt':PDLY_SEARCH_invfromcomt,'PDLY_SEARCH_babycategory':PDLY_SEARCH_babycategory},
                 success: function(res) {
                     PDLY_SEARCH_babysearchdetailsvalues=JSON.parse(res);
@@ -1673,7 +1674,7 @@ $(document).ready(function(){
             var PDLY_SEARCH_babycategory=$('#PDLY_SEARCH_lb_babyexpansecategory').val();
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/PDLY_SEARCH_searchbybaby",
+                url: controller_url+"PDLY_SEARCH_searchbybaby",
                 data:{'PDLY_SEARCH_typelistvalue':PDLY_SEARCH_typelistvalue,'PDLY_SEARCH_startdate':PDLY_SEARCH_startdate,'PDLY_SEARCH_enddate':PDLY_SEARCH_enddate,'PDLY_SEARCH_babysearchoption':PDLY_SEARCH_babysearchoption,'PDLY_SEARCH_fromamount':PDLY_SEARCH_fromamount,'PDLY_SEARCH_toamount':PDLY_SEARCH_toamount,'PDLY_SEARCH_searchcomments':PDLY_SEARCH_searchcomments,'PDLY_SEARCH_invitemcom':PDLY_SEARCH_invitemcom,'PDLY_SEARCH_invfromcomt':PDLY_SEARCH_invfromcomt,'PDLY_SEARCH_babycategory':PDLY_SEARCH_babycategory},
                 success: function(res) {
                     PDLY_SEARCH_babysearchdetailsvalues=JSON.parse(res);
@@ -1696,7 +1697,7 @@ $(document).ready(function(){
             var PDLY_SEARCH_babycategory="";
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/PDLY_SEARCH_searchbybaby",
+                url: controller_url+"PDLY_SEARCH_searchbybaby",
                 data:{'PDLY_SEARCH_typelistvalue':PDLY_SEARCH_typelistvalue,'PDLY_SEARCH_startdate':PDLY_SEARCH_startdate,'PDLY_SEARCH_enddate':PDLY_SEARCH_enddate,'PDLY_SEARCH_babysearchoption':PDLY_SEARCH_babysearchoption,'PDLY_SEARCH_fromamount':PDLY_SEARCH_fromamount,'PDLY_SEARCH_toamount':PDLY_SEARCH_toamount,'PDLY_SEARCH_searchcomments':PDLY_SEARCH_searchcomments,'PDLY_SEARCH_invitemcom':PDLY_SEARCH_invitemcom,'PDLY_SEARCH_invfromcomt':PDLY_SEARCH_invfromcomt,'PDLY_SEARCH_babycategory':PDLY_SEARCH_babycategory},
                 success: function(res) {
                     PDLY_SEARCH_babysearchdetailsvalues=JSON.parse(res);
@@ -1720,7 +1721,7 @@ $(document).ready(function(){
             var PDLY_SEARCH_babycategory="";
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/PDLY_SEARCH_searchbybaby",
+                url: controller_url+"PDLY_SEARCH_searchbybaby",
                 data:{'PDLY_SEARCH_typelistvalue':PDLY_SEARCH_typelistvalue,'PDLY_SEARCH_startdate':PDLY_SEARCH_startdate,'PDLY_SEARCH_enddate':PDLY_SEARCH_enddate,'PDLY_SEARCH_babysearchoption':PDLY_SEARCH_babysearchoption,'PDLY_SEARCH_fromamount':PDLY_SEARCH_fromamount,'PDLY_SEARCH_toamount':PDLY_SEARCH_toamount,'PDLY_SEARCH_searchcomments':PDLY_SEARCH_searchcomments,'PDLY_SEARCH_invitemcom':PDLY_SEARCH_invitemcom,'PDLY_SEARCH_invfromcomt':PDLY_SEARCH_invfromcomt,'PDLY_SEARCH_babycategory':PDLY_SEARCH_babycategory},
                 success: function(res) {
                     PDLY_SEARCH_babysearchdetailsvalues=JSON.parse(res);
@@ -1744,7 +1745,7 @@ $(document).ready(function(){
             var PDLY_SEARCH_babycategory="";
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/PDLY_SEARCH_searchbybaby",
+                url: controller_url+"PDLY_SEARCH_searchbybaby",
                 data:{'PDLY_SEARCH_typelistvalue':PDLY_SEARCH_typelistvalue,'PDLY_SEARCH_startdate':PDLY_SEARCH_startdate,'PDLY_SEARCH_enddate':PDLY_SEARCH_enddate,'PDLY_SEARCH_babysearchoption':PDLY_SEARCH_babysearchoption,'PDLY_SEARCH_fromamount':PDLY_SEARCH_fromamount,'PDLY_SEARCH_toamount':PDLY_SEARCH_toamount,'PDLY_SEARCH_searchcomments':PDLY_SEARCH_searchcomments,'PDLY_SEARCH_invitemcom':PDLY_SEARCH_invitemcom,'PDLY_SEARCH_invfromcomt':PDLY_SEARCH_invfromcomt,'PDLY_SEARCH_babycategory':PDLY_SEARCH_babycategory},
                 success: function(res) {
                     PDLY_SEARCH_babysearchdetailsvalues=JSON.parse(res);
@@ -1768,7 +1769,7 @@ $(document).ready(function(){
             var PDLY_SEARCH_babycategory="";
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/PDLY_SEARCH_searchbybaby",
+                url: controller_url+"PDLY_SEARCH_searchbybaby",
                 data:{'PDLY_SEARCH_typelistvalue':PDLY_SEARCH_typelistvalue,'PDLY_SEARCH_startdate':PDLY_SEARCH_startdate,'PDLY_SEARCH_enddate':PDLY_SEARCH_enddate,'PDLY_SEARCH_babysearchoption':PDLY_SEARCH_babysearchoption,'PDLY_SEARCH_fromamount':PDLY_SEARCH_fromamount,'PDLY_SEARCH_toamount':PDLY_SEARCH_toamount,'PDLY_SEARCH_searchcomments':PDLY_SEARCH_searchcomments,'PDLY_SEARCH_invitemcom':PDLY_SEARCH_invitemcom,'PDLY_SEARCH_invfromcomt':PDLY_SEARCH_invfromcomt,'PDLY_SEARCH_babycategory':PDLY_SEARCH_babycategory},
                 success: function(res) {
                     PDLY_SEARCH_babysearchdetailsvalues=JSON.parse(res);
@@ -2058,7 +2059,7 @@ $(document).ready(function(){
             $('#PDLY_SEARCH_btn_deletebutton').attr("disabled", "disabled");
             var table=$('#PDLY_SEARCH_tbl_htmltable').DataTable( {
                 "aaSorting": [],
-                "pageLength": 25,
+                "pageLength": 10,
                 "sPaginationType":"full_numbers",
                 "aoColumnDefs" : [
                     { "aTargets" : ["uk-date-column"] , "sType" : "uk_date"}, { "aTargets" : ["uk-timestp-column"] , "sType" : "uk_timestp"} ]
@@ -2207,7 +2208,7 @@ $(document).ready(function(){
         }
         $.ajax({
             type: "POST",
-            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/expensebabyupdate",
+            url: controller_url+"expensebabyupdate",
             data:{'rowid':combineid,'babycategory':babycategory,'babyinvdate':babyinvdate,'babyinamt':babyinamt,'babyinfromt':babyinfromt,'babyinvitem':babyinvitem,'babycomment':babycomment},
             success: function(data) {
                 $('.preloader').hide();
@@ -2350,7 +2351,7 @@ $(document).ready(function(){
         }
         $.ajax({
             type: "POST",
-            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/expensecarupdate",
+            url: controller_url+"expensecarupdate",
             data:{'rowid':carcombineid,'carcategory':carcategory,'carinvdate':carinvdate,'carinamt':carinamt,'carinfromt':carinfromt,'carinvitem':carinvitem,'carcomment':carcomment},
             success: function(data) {
                 $('.preloader').hide();
@@ -2513,7 +2514,7 @@ $(document).ready(function(){
         }
         $.ajax({
             type: "POST",
-            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/expensepersonalupdate",
+            url: controller_url+"expensepersonalupdate",
             data:{'rowid':personalcombineid,'personalcategory':personalcategory,'personalinvdate':personalinvdate,'personalinamt':personalinamt,'personalinfromt':personalinfromt,'personalinvitem':personalinvitem,'personalcomment':personalcomment},
             success: function(data) {
                 $('.preloader').hide();
@@ -2646,7 +2647,7 @@ $(document).ready(function(){
         //CHECK PAID DATE GREATER THAN FROM PERIOD & TO PERIOD
         $.ajax({
             type: "POST",
-            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/expensecarloanupdate",
+            url: controller_url+"expensecarloanupdate",
             data:{'rowid':carloancombineid,'eclpaiddate':eclpaiddate,'eclfromperiod':eclfromperiod,'ecltopaid':ecltopaid,'eclamount':eclamount,'eclcomments':eclcomments},
             success: function(data) {
                 $('.preloader').hide();
@@ -2674,9 +2675,6 @@ $(document).ready(function(){
                 else
                 {
                     show_msgbox("PERSONAL EXPENSE ENTRY/SEARCH/UPDATE/DELETE",PDLY_SEARCH_hdrmsgArray[36].EMC_DATA,"success",false);
-//                                PDLY_SEARCH_loadflextable()
-//                                PDLY_SEARCH_babysearchdetails(PDLY_SEARCH_babysearchdetailsvalues)
-//                                PDLY_SEARCH_searchvalue()
                 }
             }
         });
@@ -2696,7 +2694,7 @@ $(document).ready(function(){
         var PDLY_SEARCH_lb_babysearchoptionvalue=$('#PDLY_SEARCH_lb_babysearchoption').val();
         $.ajax({
             type: "POST",
-            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Personal_Daily_Entry_Search_Update_Delete/deleteoption",
+            url: controller_url+"deleteoption",
             data:{'PDLY_SEARCH_lb_typelistvalue':PDLY_SEARCH_lb_typelistvalue,'PDLY_rowid':PDLY_rowid,'startdate':startdate,'enddate':enddate,'PDLY_SEARCH_lb_babysearchoptionvalue':PDLY_SEARCH_lb_babysearchoptionvalue},
             success: function(data) {
                 $('.preloader').hide();
@@ -2745,15 +2743,7 @@ $(document).ready(function(){
                     }
                     else
                     {
-//                                show_msgbox("PERSONAL EXPENSE ENTRY/SEARCH/UPDATE/DELETE",PDLY_SEARCH_CONFSAVEMSG,"success",false);
                         PDLY_SEARCH_loadflextable();
-//                            $('#PDLY_SEARCH_tbl_htmltable').show();
-//                            $('#PDLY_SEARCH_lbl_flextableheader').hide();
-//                            $('#PDLY_SEARCH_btn_searchbutton').hide();
-//                            $('#PDLY_SEARCH_btn_deletebutton').hide();
-//                            $('#PDLY_SEARCH_div_htmltable').show();
-//                            $('#PDLY_btn_pdf').show();
-//                            $('#PDLY_SEARCH_lbl_nodataerrormsg').hide();
                     }
                 }
                 else
@@ -2772,7 +2762,7 @@ $(document).ready(function(){
 <div class="container">
 <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
 <div class="title text-center"><h4><b>PERSONAL EXPENSE ENTRY/SEARCH/UPDATE/DELETE</b></h4></div>
-<form id="personalexpense" class="form-horizontal content" method="post" action="<?php echo site_url("Ctrl_Pdf/pdfexport") ?>" >
+<form id="personalexpense" class="form-horizontal content" method="post" action="<?php echo site_url("EXPENSE/Ctrl_Pdf/pdfexport") ?>" >
 
 <div class="panel-body">
 <div style="padding-bottom: 15px">

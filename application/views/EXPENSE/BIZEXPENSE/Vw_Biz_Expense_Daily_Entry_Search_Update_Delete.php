@@ -104,6 +104,7 @@ var BDLY_SRC_flag_autocom='';
         var BDLY_INPUT_load_allunitnovalues;
         var BDLY_INPUT_unitno_options ='';
         var BDLY_INPUT_arr_autocmp='';
+        var controller_url="<?php echo base_url(); ?>" + '/index.php/EXPENSE/BIZEXPENSE/Ctrl_Biz_Expense_Daily_Entry_Search_Update_Delete/' ;
         $(".datepickdate").datepicker({dateFormat:'dd-mm-yy',changeYear: true,changeMonth: true});
         $(".datepickdate").datepicker("option","maxDate",new Date());
     //RADIO BUTTON CLICK FUNCTION
@@ -115,7 +116,7 @@ var BDLY_SRC_flag_autocom='';
                 $('.preloader').show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/initialvalues",
+                    url: controller_url+"initialvalues",
                     data:{"ErrorList":'2,8,9,10,105,169,204,205,206,207,208,242,245,246,247,248,250,256,258,400'},
                     success: function(res) {
                         $('.preloader').hide();
@@ -150,7 +151,7 @@ var BDLY_SRC_flag_autocom='';
                 $('.preloader').show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_getInitialvalue",
+                    url: controller_url+"BDLY_SRC_getInitialvalue",
                     success: function(res) {
                         $('.preloader').hide();
                         $("html, body").animate({ scrollTop: $(document).height() }, "slow");
@@ -471,7 +472,7 @@ var BDLY_SRC_flag_autocom='';
                 $('.preloader').show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_checkexistunit",
+                    url: controller_url+"BDLY_INPUT_checkexistunit",
                     data:{"BDLY_INPUT_unitval":BDLY_INPUT_unitval},
                     success: function(res) {
                         $('.preloader').hide();
@@ -486,7 +487,7 @@ var BDLY_SRC_flag_autocom='';
                 $('.preloader').show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_save_values",
+                    url: controller_url+"BDLY_INPUT_save_values",
                     data:$('#BDLY_INPUT_form_dailyentry').serialize(),
                     success: function(res) {
                         $('.preloader').hide();
@@ -529,7 +530,7 @@ var BDLY_SRC_flag_autocom='';
                             $(".preloader").show();
                             $.ajax({
                                 type: "POST",
-                                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_save_values",
+                                url: controller_url+"BDLY_INPUT_save_values",
                                 data:$('#BDLY_INPUT_form_dailyentry').serialize(),
                                 success: function(res) {
                                     $('.preloader').hide();
@@ -710,7 +711,7 @@ var BDLY_SRC_flag_autocom='';
                     $('#BDLY_INPUT_lbl_hourmsg').hide();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_get_unitno",
+                        url: controller_url+"BDLY_INPUT_get_unitno",
                         data:{"BDLY_INPUT_type":BDLY_INPUT_type},
                         success: function(res) {
                             $('.preloader').hide();
@@ -727,7 +728,7 @@ var BDLY_SRC_flag_autocom='';
                 $('#BDLY_INPUT_lbl_hourmsg').hide();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_get_balance",
+                    url: controller_url+"BDLY_INPUT_get_balance",
                     success: function(res) {
                         $('.preloader').hide();
                         balance_result=JSON.parse(res);
@@ -749,7 +750,7 @@ var BDLY_SRC_flag_autocom='';
                     $('#BDLY_INPUT_lbl_hourmsg').hide();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_get_cleanername",
+                        url: controller_url+"BDLY_INPUT_get_cleanername",
                         success: function(res) {
                             $('.preloader').hide();
                             cleanername=JSON.parse(res);
@@ -771,7 +772,7 @@ var BDLY_SRC_flag_autocom='';
                     $('#BDLY_INPUT_lbl_hourmsg').hide();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_get_allunitno",
+                        url: controller_url+"BDLY_INPUT_get_allunitno",
                         success: function(res) {
                             $('.preloader').hide();
                             BDLY_INPUT_load_allunitnoval=JSON.parse(res);
@@ -1339,7 +1340,7 @@ var BDLY_SRC_flag_autocom='';
                 if(BDLY_INPUT_type==4){
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_get_SEdate",
+                        url: controller_url+"BDLY_INPUT_get_SEdate",
                         data:{"BDLY_INPUT_unitno":BDLY_INPUT_unitno},
                         success: function(res) {
                             $('.preloader').hide();
@@ -1352,7 +1353,7 @@ var BDLY_SRC_flag_autocom='';
                 else if(BDLY_INPUT_type==7){
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_get_SEdate",
+                        url: controller_url+"BDLY_INPUT_get_SEdate",
                         data:{"BDLY_INPUT_unitno":BDLY_INPUT_unitno},
                         success: function(res) {
                             $('.preloader').hide();
@@ -1365,7 +1366,7 @@ var BDLY_SRC_flag_autocom='';
                 else if(BDLY_INPUT_type==6){
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_get_SEdate",
+                        url: controller_url+"BDLY_INPUT_get_SEdate",
                         data:{"BDLY_INPUT_unitno":BDLY_INPUT_unitno},
                         success: function(res) {
                             $('.preloader').hide();
@@ -1378,7 +1379,7 @@ var BDLY_SRC_flag_autocom='';
                 else{
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_get_values",
+                        url: controller_url+"BDLY_INPUT_get_values",
                         data:{"BDLY_INPUT_unitno":BDLY_INPUT_unitno,"BDLY_INPUT_type":BDLY_INPUT_type},
                         success: function(res) {
                             $('.preloader').hide();
@@ -1521,7 +1522,7 @@ var BDLY_SRC_flag_autocom='';
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_get_invoiceto",
+                    url: controller_url+"BDLY_INPUT_get_invoiceto",
                     data:{"BDLY_INPUT_unit":BDLY_INPUT_unit},
                     success: function(res) {
                         $('.preloader').hide();
@@ -2014,7 +2015,7 @@ var BDLY_SRC_flag_autocom='';
 //                $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_save_values",
+                    url: controller_url+"BDLY_INPUT_save_values",
                     data:$('#BDLY_INPUT_form_dailyentry').serialize(),
                     success: function(res) {
                         $('.preloader').hide();
@@ -2041,7 +2042,7 @@ var BDLY_SRC_flag_autocom='';
                 BDLY_INPUT_access_flag1=1;
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_checkcardno",
+                    url: controller_url+"BDLY_INPUT_checkcardno",
                     data:{"BDLY_INPUT_cardno":BDLY_INPUT_cardno},
                     success: function(res) {
                         $('.preloader').hide();
@@ -2080,7 +2081,7 @@ var BDLY_SRC_flag_autocom='';
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_save_values",
+                        url: controller_url+"BDLY_INPUT_save_values",
                         data:$('#BDLY_INPUT_form_dailyentry').serialize(),
                         success: function(res) {
                             $('.preloader').hide();
@@ -2328,7 +2329,7 @@ var BDLY_SRC_flag_autocom='';
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_get_invoiceto",
+                    url: controller_url+"BDLY_INPUT_get_invoiceto",
                     data:{"BDLY_INPUT_unit":BDLY_INPUT_unit},
                     success: function(res) {
                         $('.preloader').hide();
@@ -2342,7 +2343,7 @@ var BDLY_SRC_flag_autocom='';
             $(".preloader").show();
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_save_values",
+                url: controller_url+"BDLY_INPUT_save_values",
                 data:$('#BDLY_INPUT_form_dailyentry').serialize(),
                 success: function(res) {
                     $('.preloader').hide();
@@ -2486,7 +2487,7 @@ var BDLY_SRC_flag_autocom='';
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_get_category",
+                    url: controller_url+"BDLY_INPUT_get_category",
                     data:{"BDLY_INPUT_uexp_unit":BDLY_INPUT_uexp_unit},
                     success: function(res) {
                         $('.preloader').hide();
@@ -2565,7 +2566,7 @@ var BDLY_SRC_flag_autocom='';
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_INPUT_get_accno",
+                    url: controller_url+"BDLY_INPUT_get_accno",
                     data:{"BDLY_INPUT_star_unit":BDLY_INPUT_star_unit},
                     success: function(res) {
                         $('.preloader').hide();
@@ -3349,7 +3350,7 @@ var BDLY_SRC_flag_autocom='';
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_getSearchOptions",
+                        url: controller_url+"BDLY_SRC_getSearchOptions",
                         data:{'selectedexpense':selectedexpense},
                         success: function(res) {
                             $('.preloader').hide();
@@ -3412,7 +3413,7 @@ var BDLY_SRC_flag_autocom='';
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_getAnyTypeExpData",
+                    url: controller_url+"BDLY_SRC_getAnyTypeExpData",
                     data:$('#BDLY_INPUT_form_dailyentry').serialize(),
                     success: function(res) {
                         $('.preloader').hide();
@@ -3604,7 +3605,7 @@ var BDLY_SRC_flag_autocom='';
                           $( ".BDLY_SRC_class_dynamicrows" ).show();
                             $.ajax({
                                 type: "POST",
-                                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_get_cleanernameservicedue",
+                                url: controller_url+"BDLY_SRC_get_cleanernameservicedue",
                                 data:{'BDLY_SRC_servicedue':BDLY_SRC_servicedue,'BDLY_SRC_servicedue':BDLY_SRC_servicedue,'selectedSearchopt':selectedSearchopt},
                                 success: function(res) {
                                     $('.preloader').hide();
@@ -3791,7 +3792,7 @@ var BDLY_SRC_flag_autocom='';
                 $('#BDLY_SRC_tr_searchopt_cusname').show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_get_cusname",
+                    url: controller_url+"BDLY_SRC_get_cusname",
                     data:{'startdate':startdate,'enddate':enddate},
                     success: function(res) {
                         $('.preloader').hide();
@@ -3992,7 +3993,7 @@ var BDLY_SRC_flag_autocom='';
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_get_autocomplete",
+                        url: controller_url+"BDLY_SRC_get_autocomplete",
                         data:$('#BDLY_INPUT_form_dailyentry').serialize(),
                         success: function(res) {
                             $('.preloader').hide();
@@ -4011,7 +4012,7 @@ var BDLY_SRC_flag_autocom='';
                         $(".preloader").show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_getUnitexp_catg",
+                            url: controller_url+"BDLY_SRC_getUnitexp_catg",
                             data:{'startdate':startdate,'enddate':enddate},
                             success: function(res) {
                                 $('.preloader').hide();
@@ -4025,7 +4026,7 @@ var BDLY_SRC_flag_autocom='';
                         $(".preloader").show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_get_accountno",
+                            url: controller_url+"BDLY_SRC_get_accountno",
                             data:{'selectedexpense':selectedexpense,'startdate':startdate,'enddate':enddate},
                             success: function(res) {
                                 $('.preloader').hide();
@@ -4039,7 +4040,7 @@ var BDLY_SRC_flag_autocom='';
                         $(".preloader").show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_invoiceto",
+                            url: controller_url+"BDLY_SRC_invoiceto",
                             data:{'selectedexpense':selectedexpense,'selectedSearchopt':selectedSearchopt,'startdate':startdate,'enddate':enddate},
                             success: function(res) {
                                 $('.preloader').hide();
@@ -4053,7 +4054,7 @@ var BDLY_SRC_flag_autocom='';
                         $(".preloader").show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_get_cleanername",
+                            url: controller_url+"BDLY_SRC_get_cleanername",
                             data:{'selectedSearchopt':selectedSearchopt,'startdate':startdate,'enddate':enddate},
                             success: function(res) {
                                 $('.preloader').hide();
@@ -4067,7 +4068,7 @@ var BDLY_SRC_flag_autocom='';
                         $(".preloader").show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_getPurchase_card",
+                            url: controller_url+"BDLY_SRC_getPurchase_card",
                             data:{'startdate':startdate,'enddate':enddate},
                             success: function(res) {
                                 $('.preloader').hide();
@@ -4081,7 +4082,7 @@ var BDLY_SRC_flag_autocom='';
                         $(".preloader").show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_getCarNoList",
+                            url: controller_url+"BDLY_SRC_getCarNoList",
                             data:{'startdate':startdate,'enddate':enddate},
                             success: function(res) {
                                 $('.preloader').hide();
@@ -4095,7 +4096,7 @@ var BDLY_SRC_flag_autocom='';
                         $(".preloader").show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_getServiceByList",
+                            url: controller_url+"BDLY_SRC_getServiceByList",
                             data:{'startdate':startdate,'enddate':enddate},
                             success: function(res) {
                                 $('.preloader').hide();
@@ -4109,7 +4110,7 @@ var BDLY_SRC_flag_autocom='';
                         $(".preloader").show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_getUnitList",
+                            url: controller_url+"BDLY_SRC_getUnitList",
                             data:{'selectedexpense':selectedexpense,'selectedSearchopt':selectedSearchopt,'startdate':startdate,'enddate':enddate},
                             success: function(res) {
                                 $('.preloader').hide();
@@ -4123,7 +4124,7 @@ var BDLY_SRC_flag_autocom='';
                         $(".preloader").show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_getDigitalVoiceNo",
+                            url: controller_url+"BDLY_SRC_getDigitalVoiceNo",
                             data:{'startdate':startdate,'enddate':enddate},
                             success: function(res) {
                                 $('.preloader').hide();
@@ -4201,7 +4202,7 @@ var BDLY_SRC_flag_autocom='';
             BDLY_SRC_sucsval=0;
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_getAnyTypeExpData",
+                url: controller_url+"BDLY_SRC_getAnyTypeExpData",
                 data:$('#BDLY_INPUT_form_dailyentry').serialize(),
                 success: function(res) {
                     $('.preloader').hide();
@@ -4704,7 +4705,7 @@ var BDLY_SRC_flag_autocom='';
                         $(".preloader").show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_check_access_cardOrUnitno",
+                            url: controller_url+"BDLY_SRC_check_access_cardOrUnitno",
                             data:{'inputval':inputval,'BDLY_SRC_selectedexptype':BDLY_SRC_selectedexptype},
                             success: function(res) {
                                 $('.preloader').hide();
@@ -4745,7 +4746,7 @@ var BDLY_SRC_flag_autocom='';
                                BDLY_SRC_purchasecard=1;
                             $.ajax({
                                 type: "POST",
-                                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_check_access_cardOrUnitno",
+                                url: controller_url+"BDLY_SRC_check_access_cardOrUnitno",
                                 data:{'BDLY_SCR_DT_access_card':BDLY_SCR_DT_access_card,'BDLY_SRC_selectedexptype':BDLY_SRC_selectedexptype},
                                 success: function(res) {
                                     $('.preloader').hide();
@@ -4871,7 +4872,7 @@ var BDLY_SRC_flag_autocom='';
              var selectedexpense=$('#BDLY_SRC_lb_ExpenseList').val();
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_DeleteRowData",
+                url: controller_url+"BDLY_SRC_DeleteRowData",
                 data:{'BDLY_SRC_DeleteKey':BDLY_SRC_DeleteKey,'selectedexpense':selectedexpense},
                 success: function(res) {
                     $('.preloader').hide();
@@ -4915,7 +4916,7 @@ var BDLY_SRC_flag_autocom='';
                 {
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_getAnyTypeExpData",
+                        url: controller_url+"BDLY_SRC_getAnyTypeExpData",
                         data:$('#BDLY_INPUT_form_dailyentry').serialize(),
                         success: function(res) {
                             $('.preloader').hide();
@@ -5215,7 +5216,7 @@ var BDLY_SRC_flag_autocom='';
                         $(".preloader").show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_get_cusname1",
+                            url: controller_url+"BDLY_SRC_get_cusname1",
                             data:{'BDLY_DT_getunit_no':BDLY_DT_getunit_no},
                             success: function(res) {
                                 $('.preloader').hide();
@@ -5281,7 +5282,7 @@ var BDLY_SRC_flag_autocom='';
                     $(".preloader").show();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_getUnitDate",
+                        url: controller_url+"BDLY_SRC_getUnitDate",
                         data:{'unidate':$(this).html()},
                         success: function(res) {
                             $('.preloader').hide();
@@ -5332,7 +5333,7 @@ var BDLY_SRC_flag_autocom='';
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_get_cusname2",
+                    url: controller_url+"BDLY_SRC_get_cusname2",
                     data:{'BDLY_DT_getunit_no':BDLY_DT_getunit_no},
                     success: function(res) {
                         $('.preloader').hide();
@@ -5419,7 +5420,7 @@ var BDLY_SRC_flag_autocom='';
 //CALL FUNCTION TO UPDATE RECORD IN DB
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_UpdaterowData",
+                url: controller_url+"BDLY_SRC_UpdaterowData",
                 data:{'BDLY_DT_row_new_vals':BDLY_DT_row_new_vals,'BDLY_DT_row_old_vals':BDLY_DT_row_old_vals,'BDLY_SRC_lb_ExpenseList':$("#BDLY_SRC_lb_ExpenseList").val(),'selectedSearchopt':selectedSearchopt},
                 success: function(res) {
                     $('.preloader').hide();
@@ -5476,7 +5477,7 @@ var BDLY_SRC_flag_autocom='';
                         $('.preloader').show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Biz_Daily_Entry_Search_Update_Delete/BDLY_SRC_getAnyTypeExpData",
+                            url: controller_url+"BDLY_SRC_getAnyTypeExpData",
                             data:$('#BDLY_INPUT_form_dailyentry').serialize(),
                             success: function(res) {
                                 $('.preloader').hide();
@@ -5540,7 +5541,7 @@ var BDLY_SRC_flag_autocom='';
 <div class="container">
     <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
     <div class="title text-center"><h4><b>BIZ EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE</b></h4></div>
-    <form id="BDLY_INPUT_form_dailyentry" class="form-horizontal content"  method="post" action="<?php echo site_url("Ctrl_Pdf/pdfexportbizexpense") ?>">
+    <form id="BDLY_INPUT_form_dailyentry" class="form-horizontal content"  method="post" action="<?php echo site_url("EXPENSE/Ctrl_Pdf/pdfexportbizexpense") ?>">
         <div class="panel-body">
                     <div style="padding-bottom: 15px">
                         <div class="radio">
