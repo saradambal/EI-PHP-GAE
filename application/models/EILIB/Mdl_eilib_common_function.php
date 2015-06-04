@@ -11,7 +11,15 @@
 //VER 0.02-SD:02/06/2015 ED:02/06/2015,GET THE LOGO & CALENDAR IMAGE PATH AND THEN GET THE SERVICE ID
 //VER 0.01-SD:08/05/2015 ED:09/05/2015,COMPLETED COMMON FUNCTION
 //*******************************************************************************************************//
+use google\appengine\api\users\User;
+use google\appengine\api\users\UserService;
 class Mdl_eilib_common_function extends CI_Model {
+    //GET SESSION USERSTAMP
+ public function getSessionUserStamp(){
+    $user = UserService::getCurrentUser();
+    $UserStamp=$user->getEmail();
+    return $UserStamp;
+}
 //FUNCTION TO GET BANK_TRANSFER_MODELS
 public function getRecheckinCustomerUnit()
 {
