@@ -14,9 +14,9 @@ class Ctrl_Report_Report extends CI_Controller{
     }
 
     public function REP_getdomain_err(){
-        $this->load->model('REPORT/Mdl_report_report');
-        $final_value=$this->Mdl_report_report->REP_getdomain_err();
-        echo json_encode($final_value);
+          $this->load->model('REPORT/Mdl_report_report');
+          $final_value=$this->Mdl_report_report->REP_getdomain_err();
+          echo json_encode($final_value);
 
     }
     public function  REP_func_load_searchby_option(){
