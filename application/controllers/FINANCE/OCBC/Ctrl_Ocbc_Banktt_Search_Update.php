@@ -1,7 +1,7 @@
 <?php
 include 'GET_USERSTAMP.php';
-require_once 'google/appengine/api/mail/Message.php';
-use google\appengine\api\mail\Message;
+//require_once 'google/appengine/api/mail/Message.php';
+//use google\appengine\api\mail\Message;
 $UserStamp=$UserStamp;
 $timeZoneFormat=$timeZoneFormat;
 class Ctrl_Ocbc_Banktt_Search_Update extends CI_Controller
@@ -25,7 +25,7 @@ class Ctrl_Ocbc_Banktt_Search_Update extends CI_Controller
     public function Banktt_customer()
     {
         $unit=$_POST['Unit'];
-        $this->load->model('OCBC/Mdl_ocbc_banktt_entry');
+        $this->load->model('FINANCE/OCBC/Mdl_ocbc_banktt_entry');
         $customer=$this->Mdl_ocbc_banktt_entry->get_Banktt_Csutomer($unit);
         echo json_encode($customer);
     }

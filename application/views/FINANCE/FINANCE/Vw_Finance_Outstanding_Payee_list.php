@@ -4,11 +4,12 @@
 </head>
 <script>
     $(document).ready(function() {
+        var controller_url="<?php echo base_url(); ?>" + '/index.php/FINANCE/FINANCE/Ctrl_Finance_Outstanding_Payee_list/' ;
         $('#spacewidth').height('0%');
         var Message;
         $.ajax({
             type: "POST",
-            url: '/index.php/Ctrl_Finance_Outstanding_Payee_list/ProfileEmailId',
+            url: controller_url+"ProfileEmailId",
             data:{"ErrorList":'6'},
             success: function(data){
                 var value_array=JSON.parse(data);
@@ -82,25 +83,31 @@
             $('#FIN_OPL_outstanding_form').find('input[type=text]').val('');
             $("#FIN_OPL_btn_save").attr("disabled", "disabled");
         }
- //************************FORM RESET FUNCTION START******************************//
+// //************************FORM RESET FUNCTION START******************************//
         $(document).on('click','#FIN_OPL_btn_save',function(){
             var FormElements=$('#FIN_OPL_outstanding_form').serialize();
             $.ajax({
                 type: "POST",
-                url: "/index.php/Ctrl_Finance_Outstanding_Payee_list/FIN_OPL_opllist",
+                url: controller_url+"FIN_OPL_opllist",
                 data:FormElements,
                 success: function(data){
-                    alert(data)
                     $('.preloader').hide();
                     var returnvalue=JSON.parse(data);
-                    $('section').html(returnvalue);
-                    if(returnvalue==1)
+                    if(returnvalue=='opllist')
                     {
                         show_msgbox("OUTSTANDING PAYEES LIST",'EMAIL SENT WITH THE CURRENT OUTSTANDING PAYEES LIST',"success",false);
                     }
+                    else if(returnvalue=='emptylist')
+                    {
+                        show_msgbox("OUTSTANDING PAYEES LIST",'EMAIL LIST EMPTY',"success",false);
+                    }
+                    else if(returnvalue=='ACTIVECCLIST')
+                    {
+                        show_msgbox("OUTSTANDING PAYEES LIST",'EMAIL SENT WITH THE CURRENT ACTIVE CUSTOMER LIST',"success",false);
+                    }
                     else
                     {
-                        show_msgbox("OUTSTANDING PAYEES LIST",'EMAIL NOT SENT WITH THE CURRENT OUTSTANDING PAYEES LIST',"success",false);
+                        show_msgbox("OUTSTANDING PAYEES LIST",returnvalue,"success",false);
                     }
                 },
                 error: function(data){

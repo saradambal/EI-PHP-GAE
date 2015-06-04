@@ -67,6 +67,8 @@ class Mdl_finance_outstanding_payee_list extends CI_Model
                     return $returnMessage;
                 } else {
                     $flag = 1;
+//                    set_time_limit(0);
+                    $period = $_POST['FIN_OPL_db_period'];
                     $activecclist = "CALL SP_ACTIVE_CUSTOMERLIST('$period','$UserStamp',@TEMP_OPL_ACTIVECUSTOMER_TABLE,@TEMP_OPL_SORTEDACTIVECUSTOMER_TABLE)";
                     $this->db->query($activecclist);
                     $outparm_query = 'SELECT @TEMP_OPL_ACTIVECUSTOMER_TABLE AS TEMP_TABLE1,@TEMP_OPL_SORTEDACTIVECUSTOMER_TABLE AS TEMP_TABLE2';
@@ -75,10 +77,39 @@ class Mdl_finance_outstanding_payee_list extends CI_Model
                     $sortactivelisttablename = $outparm_result->row()->TEMP_TABLE2;
                     $FIN_Active_listquery = "SELECT *FROM $activelisttablename ORDER BY UNIT_NO,CUSTOMERNAME";
                     $result1 = $this->db->query($FIN_Active_listquery);
-                    $ActiveCustomerList = array('ACtiveflag'=>10);
+                    $numrows=$this->db->affected_rows();
+                    $FIN_Active_sortlistquery = "SELECT *FROM $sortactivelisttablename ORDER BY UNIT_NO,CUSTOMERNAME";
+                    $sortresult = $this->db->query($FIN_Active_sortlistquery);
+                    $sortnumrows=$this->db->affected_rows();
+                    $headerdata='UNIT,CUSTOMER,STARTDATE,ENDDATE,RENT,DEPOSIT,PROCESSING FEE,TERMINATE,PRE TERMINATE,PRE TERMINATE DATE,COMMENTS';
+                    $FIN_ACT_folresult=$this->db->query("SELECT PCN_DATA FROM PAYMENT_CONFIGURATION WHERE CGN_ID=49");
+                    $folderid=$FIN_ACT_folresult->row()->PCN_DATA;
+                    $this->load->library('Google');
+                    $this->load->model('EILIB/Mdl_eilib_common_function');
+                    $service = $this->Mdl_eilib_common_function->get_service_document();
+                    $FILEID=$this->insertFile($service, 'ACTIVE CC LIST', 'CUSTOMER_DETAILS', $folderid);
+                    $ActiveCustomerList = array('ACtiveflag'=>10,'header'=>$headerdata,"Rows"=>$numrows,"period"=>$period,"SortRows"=>$sortnumrows,"Fileid"=>$FILEID);
                     $i = 0;
                     foreach ($result1->result_array() as $key => $value) {
-                        $key = 'data' . $i;
+                        $key = 'data'.$i;
+                        $unit = $value["UNIT_NO"];
+                        $customername = $value["CUSTOMERNAME"];
+                        $Startdate = $value["STARTDATE"];
+                        $Enddate = $value["ENDDATE"];
+                        $Payment = $value["PAYMENT_AMOUNT"];
+                        $Deposit = $value["DEPOSIT"];
+                        $ProcessingFee = $value['PROCESSING_FEE'];
+                        $Terminate = $value['CLP_TERMINATE'];
+                        $Preterminate = $value['PRETERMINATE'];
+                        $Preterminatedate = $value['PRETERMINATEDATE'];
+                        $Comments = $value['COMMENTS'];
+                        $data = $unit . '!~' . $customername . '!~' . $Startdate . '!~' . $Enddate . '!~' . $Payment . '!~' . $Deposit . '!~' . $ProcessingFee . '!~' . $Terminate . '!~' . $Preterminate . '!~' . $Preterminatedate . '!~' . $Comments;
+                        $ActiveCustomerList[$key] = $data;
+                        $i++;
+                    }
+                    $i = 0;
+                    foreach ($sortresult->result_array() as $key => $value) {
+                        $key = 'sortdata'.$i;
                         $unit = $value["UNIT_NO"];
                         $customername = $value["CUSTOMERNAME"];
                         $Startdate = $value["STARTDATE"];
@@ -96,14 +127,9 @@ class Mdl_finance_outstanding_payee_list extends CI_Model
                     }
                     $this->db->query('DROP TABLE IF EXISTS ' . $activelisttablename);
                     $this->db->query('DROP TABLE IF EXISTS ' . $sortactivelisttablename);
-//                    $countvalue=count($ActiveCustomerList);
-//                    $ActiveCustomerList=array('ACtivecount'=>$countvalue);
-//                    $ActiveCustomerList['ACtivecount'] = $countvalue;
                     $Returnvalue=$this->Func_curl($ActiveCustomerList);
-                    return $Returnvalue;
-                    $temptable = array($activelisttablename, $sortactivelisttablename, $Returnvalue, $Option);
+                    $temptable = array($Returnvalue, $Username, $Maildate);
                     return $temptable;
-
                 }
             }
             catch (Exception $e)
@@ -131,7 +157,28 @@ class Mdl_finance_outstanding_payee_list extends CI_Model
             return $e->getMessage();
         }
         curl_close($ch);
-
+    }
+    public  function insertFile($service, $title, $description, $parentId) {
+        $file = new Google_Service_Drive_DriveFile();
+        $file->setTitle($title);
+        $file->setDescription($description);
+        $file->setMimeType('application/vnd.google-apps.spreadsheet');
+        if ($parentId != null) {
+            $parent = new Google_Service_Drive_ParentReference();
+            $parent->setId($parentId);
+            $file->setParents(array($parent));
+        }
+        try {
+            $createdFile = $service->files->insert($file, array(
+                'mimeType' => 'application/vnd.google-apps.spreadsheet',//$mimeType,
+                'convert' => TRUE,
+                'uploadType'=>'resumable'
+            ));
+            return $createdFile->getId();
+        }
+        catch (Exception $e) {
+            print "An error occurred: " . $e->getMessage();
+        }
     }
 
 }

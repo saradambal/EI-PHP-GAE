@@ -1,8 +1,8 @@
 <?php
 error_reporting(0);
 include 'GET_USERSTAMP.php';
-require_once 'google/appengine/api/mail/Message.php';
-use google\appengine\api\mail\Message;
+//require_once 'google/appengine/api/mail/Message.php';
+//use google\appengine\api\mail\Message;
 $UserStamp=$UserStamp;
 $timeZoneFormat=$timeZoneFormat;
 Class Ctrl_Customer_Erm_Entry_Search_Update extends CI_Controller
@@ -35,17 +35,17 @@ Class Ctrl_Customer_Erm_Entry_Search_Update extends CI_Controller
         $mydate=getdate(date("U"));
         $sysdate="$mydate[month] $mydate[mday], $mydate[year]";
         $emailsubject="NEW ERM LEED -".$sysdate;
-        if($Create_confirm[1]==1)
-        {
-            $message1 = new Message();
-            $message1->setSender($displayname.'<'.$UserStamp.'>');
-            $message1->setSender($UserStamp);
-            $message1->addTo($Emailtemplate[0]);
-            $message1->addCc($Emailtemplate[1]);
-            $message1->setSubject($emailsubject);
-            $message1->setHtmlBody($Create_confirm[0]);
-            $message1->send();
-        }
+//        if($Create_confirm[1]==1)
+//        {
+//            $message1 = new Message();
+//            $message1->setSender($displayname.'<'.$UserStamp.'>');
+//            $message1->setSender($UserStamp);
+//            $message1->addTo($Emailtemplate[0]);
+//            $message1->addCc($Emailtemplate[1]);
+//            $message1->setSubject($emailsubject);
+//            $message1->setHtmlBody($Create_confirm[0]);
+//            $message1->send();
+//        }
         echo json_encode($Create_confirm[1]);
     }
     public function ERM_SRC_InitialDataLoad()
@@ -130,16 +130,16 @@ Class Ctrl_Customer_Erm_Entry_Search_Update extends CI_Controller
         $mydate=getdate(date("U"));
         $sysdate="$mydate[month] $mydate[mday], $mydate[year]";
         $emailsubject="NEW ERM LEED -".$sysdate;
-        if($Create_confirm[0]==1)
-        {
-            $message1 = new Message();
-            $message1->setSender($displayname.'<'.$UserStamp.'>');
-            $message1->addTo($Emailtemplate[0]);
-            $message1->addCc($Emailtemplate[1]);
-            $message1->setSubject($emailsubject);
-            $message1->setHtmlBody($message);
-            $message1->send();
-        }
+//        if($Create_confirm[0]==1)
+//        {
+//            $message1 = new Message();
+//            $message1->setSender($displayname.'<'.$UserStamp.'>');
+//            $message1->addTo($Emailtemplate[0]);
+//            $message1->addCc($Emailtemplate[1]);
+//            $message1->setSubject($emailsubject);
+//            $message1->setHtmlBody($message);
+//            $message1->send();
+//        }
         echo json_encode($Returnvalues);
     }
 }

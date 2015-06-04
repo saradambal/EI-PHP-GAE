@@ -1,10 +1,14 @@
+<!--********************************************PAYMENT ENTRY FOR TERMINATED CUSTOMER*********************************************-->
+<!--*******************************************FILE DESCRIPTION***************************************************-->
+<!--VER 0.02- SD:04/06/2015 ED:04/06/2015,changed Controller Model and View names in ver0.02-->
+<!--VER 0.01-INITIAL VERSION-SD:15/05/2015 ED:15/05/2015 in ver0.01-->
 <html>
 <head>
     <?php include 'Header.php'; ?>
 </head>
 <script>
     $(document).ready(function() {
-        $('.preloader').show();
+        var controller_url="<?php echo base_url(); ?>" + '/index.php/FINANCE/FINANCE/Ctrl_Finance_Payments_Entry_Terminated_Customer/' ;
         $('#FIN_Payment_id').hide();
         $('.autogrowcomments').autogrow({onInitialize: true});
         $(".amtonly").doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
@@ -43,7 +47,7 @@
         var allunitdetails;
         $.ajax({
             type: "POST",
-            url: '/index.php/Ctrl_Finance_Payments_Entry_Terminated_Customer/PaymentInitialDatas',
+            url: controller_url+"PaymentInitialDatas",
             data:{"ErrorList":'2,3,92,248,309'},
             success: function(data){
                 $('.preloader').hide();
@@ -278,7 +282,7 @@
             var FormElements=$('#FIN_TER_PaymentEntry_form').serialize();
             $.ajax({
                 type: "POST",
-                url: "/index.php/Ctrl_Finance_Payments_Entry_Terminated_Customer/Term_PaymentEntry_Save",
+                url: controller_url+"Term_PaymentEntry_Save",
                 data:FormElements,
                 success: function(data){
                     var returnvalue=JSON.parse(data);

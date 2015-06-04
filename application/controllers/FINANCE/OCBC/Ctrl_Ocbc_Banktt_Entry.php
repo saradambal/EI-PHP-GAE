@@ -1,7 +1,7 @@
 <?php
 include 'GET_USERSTAMP.php';
-require_once 'google/appengine/api/mail/Message.php';
-use google\appengine\api\mail\Message;
+//require_once 'google/appengine/api/mail/Message.php';
+//use google\appengine\api\mail\Message;
 $UserStamp=$UserStamp;
 class Ctrl_Ocbc_Banktt_Entry extends CI_Controller
 {

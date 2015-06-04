@@ -147,5 +147,93 @@ class Mdl_finance_payments_entry_active_customer extends CI_Model {
         $this->db->query("COMMIT");
         return $Confirm_Meessage;
     }
-
+    public function payment_extract_details($unit,$customer,$UserStamp,$timeZoneFormat)
+    {
+        set_time_limit(0);
+        $temptablequery="CALL SP_PAYMENT_SEARCH_TEMP_TABLE('$unit','$customer',null,null,null,'3','$UserStamp',@FINALTABLENAME)";
+        $FIN_SRC_searchquery='SELECT RD.PP_ID,RD.PD_ID,U.UNIT_NO,RD.CUSTOMER_ID,RD.CED_REC_VER,C.CUSTOMER_FIRST_NAME,C.CUSTOMER_LAST_NAME,RUFD.PD_PAYMENT,RD.PD_HIGHLIGHT_FLAG,RUFD.PD_DEPOSIT,RUFD.PD_PROCESSING_FEE,RUFD.PD_CLEANING_FEE,RUFD.PD_DEPOSIT_REFUND,DATE_FORMAT(RD.PD_FOR_PERIOD,"%M-%Y") AS PD_FOR_PERIOD,DATE_FORMAT(RD.PD_PAID_DATE,"%d-%m-%Y") AS PD_PAID_DATE,RD.PD_COMMENTS,ULD.ULD_lOGINID,DATE_FORMAT(CONVERT_TZ(RD.PD_TIMESTAMP,'.$timeZoneFormat.'),"%d-%m-%Y %T") AS PD_TIMESTAMP FROM TEMP_PAYMENT_FEE_DETAIL RUFD,PAYMENT_DETAILS RD ,UNIT U,CUSTOMER C,USER_LOGIN_DETAILS ULD WHERE RUFD.PD_ID=RD.PD_ID AND C.CUSTOMER_ID=RD.CUSTOMER_ID AND RD.CUSTOMER_ID=RUFD.CUSTOMER_ID AND RD.UNIT_ID=U.UNIT_ID AND RUFD.UNIT_ID=RD.UNIT_ID AND RD.ULD_ID=ULD.ULD_ID ORDER BY C.CUSTOMER_FIRST_NAME,PD_FOR_PERIOD';
+        $this->db->query($temptablequery);
+        $outparm_query = 'SELECT @FINALTABLENAME AS TEMP_TABLE';
+        $outparm_result = $this->db->query($outparm_query);
+        $csrc_tablename=$outparm_result->row()->TEMP_TABLE;
+        $Selectquery=str_replace('TEMP_PAYMENT_FEE_DETAIL',$csrc_tablename,$FIN_SRC_searchquery);
+        $resultset=$this->db->query($Selectquery);
+        $paymentnumrows=$this->db->affected_rows();
+        $this->db->query('DROP TABLE IF EXISTS '.$csrc_tablename);
+        $FIN_ACT_folresult=$this->db->query("SELECT DDC_DATA FROM DEPOSIT_DEDUCTION_CONFIGURATION WHERE CGN_ID=30");
+        $folderid=$FIN_ACT_folresult->row()->DDC_DATA;
+        $Currentyear=date('Y');
+        $SSname='EI_DEPOSIT_DEDUCTIONS_'.$Currentyear;
+        $this->load->library('Google');
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $service = $this->Mdl_eilib_common_function->get_service_document();
+        $children1 = $service->children->listChildren($folderid);
+        $filearray1=$children1->getItems();
+        $SSexistflag=0;
+        $Sexistflag=0;
+        foreach ($filearray1 as $child1)
+        {
+            $fileid=$service->files->get($child1->getId())->id;
+            $filename=$service->files->get($child1->getId())->title;
+            if($filename==$SSname)
+            {
+                $SSexistflag=1;
+                $SSfileid=$fileid;
+                break;
+            }
+        }
+        if($SSexistflag==1)
+        {
+            $SSfileid=$SSfileid;
+        }
+        else
+        {
+            $SSfileid=$this->insertFile($service, '$SSname', 'PAYMENT_DETAILS', $folderid);
+        }
+        $ssheaders='UNIT,CUSTOMER NAME,PAYMENT AMOUNT,DEPOSIT,PROCESSING FEE,CLEANINGFEE,DEPOSIT REFUND,FORPERIOD,PAIDDATE,COMMENTS,TIMESTAMP,USERSTAMP';
+        $PaymentExtractList = array('Extract'=>11,'header'=>$ssheaders,"Rows"=>$paymentnumrows,"Fileid"=>$SSfileid);
+         $i = 0;
+        foreach ($resultset->result_array() as $key => $value) {
+            $key = 'Paymentdata'.$i;
+            $unit=$value['UNIT_NO'];
+            $customer=$value['CUSTOMER_FIRST_NAME'].' '.$value['CUSTOMER_LAST_NAME'];
+            $payment=$value['PD_PAYMENT'];
+            $amountflag=$value['PD_HIGHLIGHT_FLAG'];
+            $deposit=$value['PD_DEPOSIT'];
+            $process=$value['PD_PROCESSING_FEE'];
+            $clean=$value['PD_CLEANING_FEE'];
+            $drefund=$value['PD_DEPOSIT_REFUND'];
+            $forperiod=$value['PD_FOR_PERIOD'];
+            $paiddate=$value['PD_PAID_DATE'];
+            $comments=$value['PD_COMMENTS'];
+            $Userstamp=$value['ULD_lOGINID'];
+            $timestamp=$value['PD_TIMESTAMP'];
+            $paymentrecords=$unit.'!~'.$customer.'!~'.$payment.'!~'.$amountflag.'!~'.$deposit.'!~'.$process.'!~'.$clean.'!~'.$drefund.'!~'.$forperiod.'!~'.$paiddate.'!~'.$comments.'!~'.$Userstamp.'!~'.$timestamp;
+            $PaymentExtractList[$key] = $paymentrecords;
+            $i++;
+        }
+//        return $PaymentExtractList;
+        $SSResponse=$this->Func_curl($PaymentExtractList);
+        return $SSResponse;
+    }
+    public function Func_curl($data)
+    {
+        $url = "https://script.google.com/macros/s/AKfycbyHPUsdw6HUVwm4ihnupskKosYuta4sPkCcc8n60tKorKopUKM/exec";
+        $ch = curl_init();
+        $data = http_build_query($data);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_ENCODING, "gzip,deflate");
+        try {
+            $response = curl_exec($ch);
+            return $response;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        curl_close($ch);
+    }
 }

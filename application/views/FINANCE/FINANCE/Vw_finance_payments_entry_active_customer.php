@@ -1,3 +1,7 @@
+<!--********************************************PAYMENT ENTRY FOR ACTIVE CUSTOMER*********************************************-->
+<!--*******************************************FILE DESCRIPTION***************************************************-->
+<!--VER 0.02- SD:04/06/2015 ED:04/06/2015,changed Controller Model and View names in ver0.02-->
+<!--VER 0.01-INITIAL VERSION-SD:11/05/2015 ED:11/05/2015 in ver0.01-->
 <html>
 <head>
     <?php include 'Header.php'; ?>
@@ -5,6 +9,7 @@
 <script>
     $(document).ready(function() {
         $('#spacewidth').height('0%');
+        var controller_url="<?php echo base_url(); ?>" + '/index.php/FINANCE/FINANCE/Ctrl_Finance_Payments_Entry_Active_Customer/' ;
         var t=$('#Finance_Entry_Table').DataTable({
 
         });
@@ -16,7 +21,7 @@
         var counter=0;
         $.ajax({
             type: "POST",
-            url: '/index.php/Ctrl_Finance_Payments_Entry_Active_Customer/PaymentInitialDatas',
+            url: controller_url+"PaymentInitialDatas",
             data:{ErrorList:'2,3,92,248,309'},
             success: function(data){
                 $('.preloader').hide();
@@ -103,6 +108,7 @@
         var CustomernameDetails;
         $(document).on('change','.UnitChange',function() {
             var id=this.id;
+            $('.preloader').show();
             var splittedid=id.split('_');
             var unit=$('#'+id).val();
             $('#customeremptymessage').text('');
@@ -111,9 +117,10 @@
             {
                 $.ajax({
                     type: "POST",
-                    url: '/index.php/Ctrl_Finance_Payments_Entry_Active_Customer/ActiveCustomer',
+                    url: controller_url+"ActiveCustomer",
                     data:{"UNIT":unit},
                     success: function(data){
+                        $('.preloader').hide();
                         var value_array=JSON.parse(data);
                         CustomernameDetails=value_array;
                         var uniquecustomer=[];
@@ -221,6 +228,7 @@
         var LP=[];
         function GetcustomerOldDetails(Customerid,rowid)
         {
+            $('.preloader').show();
             var unit=$('#Unitid_'+rowid).val();
             var customer=$('#Customerid_'+rowid).val();
             var options ='<option value="">SELECT</option>';
@@ -229,7 +237,7 @@
                 $('#TempCustomerid_'+rowid).val(Customerid);
                 $.ajax({
                     type: "POST",
-                    url: '/index.php/Ctrl_Finance_Payments_Entry_Active_Customer/ActiveCustomerLeasePeriod',
+                    url: controller_url+"ActiveCustomerLeasePeriod",
                     data:{"UNIT":unit,"CUSTOMERID":Customerid},
                     success: function(data){
                         var value_array=JSON.parse(data);
@@ -273,6 +281,7 @@
         }
         $(document).on('change','.LPChange',function() {
             var id=this.id;
+            $('.preloader').show();
             var splittedid=id.split('_');
             var Leaseperiod=$('#Leaseperiodid_'+splittedid[1]).val();
             var paymenttype=$('#Paymentid_'+splittedid[1]).val();
@@ -285,9 +294,10 @@
             {
             $.ajax({
                 type: "POST",
-                url: '/index.php/Ctrl_Finance_Payments_Entry_Active_Customer/ActiveCustomerLeasePeriodDates',
+                url: controller_url+"ActiveCustomerLeasePeriodDates",
                 data:{"UNIT":unit,"CUSTOMERID":customer,"RECVER":lp},
                 success: function(data){
+                    $('.preloader').hide();
                     var value_array=JSON.parse(data);
                     DBstartdate=value_array[0].CLP_STARTDATE;
                     if(value_array[0].CLP_PRETERMINATE_DATE!=null && value_array[0].CLP_PRETERMINATE_DATE!='')
@@ -427,6 +437,7 @@
         }
     }
      $(document).on('click', '#Payment_btn_submitbutton', function () {
+         $('.preloader').show();
       var unitarray=[];
       var Customerarray=[];
       var Leasperiodarray=[];
@@ -455,9 +466,10 @@
       }
       $.ajax({
           type: "POST",
-          url: '/index.php/Ctrl_Finance_Payments_Entry_Active_Customer/PaymentEntrySave',
+          url: controller_url+"PaymentEntrySave",
           data:{"UNIT":unitarray,"CUSTOMERID":Customerarray,"LP":Leasperiodarray,"PAYMENT":paymenttypearray,"AMOUNT":amountarray,"FORPERIOD":forperiodarray,"PAIDDATE":paiddatearray,"Comments":commentsarray,"FLAG":amountflag},
           success: function(data){
+              $('.preloader').hide();
               var value_array=JSON.parse(data);
               if(value_array=='' || value_array==null)
               {

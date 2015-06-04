@@ -1,3 +1,7 @@
+<!--********************************************PAYMENT SEARCH /UPDATE / DELETE********************************************-->
+<!--*******************************************FILE DESCRIPTION***************************************************-->
+<!--VER 0.02- SD:04/06/2015 ED:04/06/2015,changed Controller Model and View names in ver0.02-->
+<!--VER 0.01-INITIAL VERSION-SD:11/05/2015 ED:12/05/2015 in ver0.01-->
 <html>
 <head>
     <?php include 'Header.php'; ?>
@@ -5,6 +9,7 @@
 <script>
     $(document).ready(function() {
         $('#spacewidth').height('0%');
+        var controller_url="<?php echo base_url(); ?>" + '/index.php/FINANCE/FINANCE/Ctrl_Finance_Payment_Search_Update/' ;
         $('.amtonly').doValidation({rule:'numbersonly',prop:{realpart:5,imaginary:2}});
         $('.autogrowcomments').autogrow({onInitialize: true});
         var Allunits;
@@ -45,7 +50,7 @@
         $('#Payment_Updation_form').hide();
         $.ajax({
             type: "POST",
-            url: '/index.php/Ctrl_Finance_Payment_Search_Update/InitialDataLoad',
+            url: controller_url+"InitialDataLoad",
             data:{ErrorList:'2,5,45,93,247,248,315'},
             success: function(data){
                 $('.preloader').hide();
@@ -367,7 +372,7 @@
          {
              $.ajax({
                  type: "POST",
-                 url: '/index.php/Ctrl_Finance_Payment_Search_Update/UnitCustomer',
+                 url: controller_url+"UnitCustomer",
                  data:{Unit:unit},
                  success: function(data){
                      var valuearray=JSON.parse(data);
@@ -478,6 +483,8 @@
                 $("#Payment_src_btn_search").attr("disabled", "disabled");
             }
         }
+        var extractunitno;
+        var extractcustomername;
         $(document).on('click','#Payment_src_btn_search',function() {
             $('.preloader').show();
             var searchoption=$('#Payment_SRC_SearchOption').val();
@@ -496,6 +503,8 @@
             {
                 var unit=$('#Payment_SRC_unit').val();
                 var customer=$('#Payment_SRC_Customer').val();
+                extractunitno=unit;
+                extractcustomername=customer;
                 data={Option:3,Unit:unit,Customer:customer,FromDate:'',Todate:'',Fromamount:'',Toamount:''};
                 customer=customer.replace('_',' ');
                 headervalue="DETAILS OF SELECTED UNIT : "+unit+" AND CUSTOMER NAME : "+customer;
@@ -529,7 +538,7 @@
                 var fromamount=$('#Payment_SRC_AR_fromamount').val();
                 var toamount=$('#Payment_SRC_AR_toamount').val();
                 data={Option:6,Unit:unit,Customer:'',FromDate:fromdate,Todate:todate,Fromamount:fromamount,Toamount:toamount};
-                headervalue="DETAILS OF SELECTED UNIT : "+unit+" AND FOR PERIOD : "+fromdate+"TO : "+todate+" AND AMOUNT : "+fromamount+" TO : "+toamount;
+                headervalue="DETAILS OF SELECTED UNIT : "+unit+" AND FOR PERIOD : "+fromdate+" TO : "+todate+" AND AMOUNT : "+fromamount+" TO : "+toamount;
                 $('#Payment_SRC_AR_Uint').val('SELECT');
                 $('#Payment_SRC_AR_fromdate').val('');
                 $('#Payment_SRC_AR_todate').val('');
@@ -540,7 +549,7 @@
             $('.preloader').show();
             $.ajax({
                 type: "POST",
-                url: '/index.php/Ctrl_Finance_Payment_Search_Update/PaymentsearchData',
+                url: controller_url+"PaymentsearchData",
                 data:data,
                 success: function(data){
                     var valuearray=JSON.parse(data);
@@ -619,6 +628,14 @@
                         "pageLength": 10,
                         "sPaginationType":"full_numbers"
                     });
+                    if(searchoption==3)
+                    {
+                        $('#Paymeny_Extract_btn').show();
+                    }
+                    else
+                    {
+                        $('#Paymeny_Extract_btn').hide();
+                    }
                     $("html, body").animate({ scrollTop: $(document).height() }, "slow");
                     $('.preloader').hide();
                 },
@@ -641,7 +658,7 @@
           $('#UD_Payment_Amountflag').prop('checked',false);
             $.ajax({
                 type: "POST",
-                url: '/index.php/Ctrl_Finance_Payment_Search_Update/PaymentsearchRowDetails',
+                url: controller_url+"PaymentsearchRowDetails",
                 data:{Unit:Unit,Rowid:Rowid,Customerid:Customerid,Recversion:Recversion},
                 success: function(data){
                     var valuearray=JSON.parse(data);
@@ -793,7 +810,7 @@
             var FormElements=$('#Updation_form').serialize();
             $.ajax({
                 type: "POST",
-                url: "/index.php/Ctrl_Finance_Payment_Search_Update/PaymentUpdationDetails",
+                url: controller_url+"PaymentUpdationDetails",
                 data:FormElements,
                 success: function(data){
                     if(data=='' || data==null)
@@ -826,7 +843,7 @@
             $('.preloader').show();
             $.ajax({
                 type: "POST",
-                url: "/index.php/Ctrl_Finance_Payment_Search_Update/PaymentsDetails",
+                url: controller_url+"PaymentsDetails",
                 data:{Rowid:deleterowid},
                 success: function(data){
                 if(data==1)
@@ -848,6 +865,32 @@
         });
         $(document).on('click','#UD_Btn_Payment_Deletion',function(){
          $('#Payment_Updation_form').hide();
+        });
+        $(document).on('click','#Paymeny_Extract_btn',function(){
+            extractunitno;
+            extractcustomername;
+            $.ajax({
+                type: "POST",
+                url: controller_url+"PaymentsExtractDetails",
+                data:{Unit:extractunitno,Customer:extractcustomername},
+                success: function(data){
+                    alert(data)
+                    if(data==1)
+                    {
+                        show_msgbox("PAYMENT SEARCH AND UPDATE",Errormsg[1].EMC_DATA,"success",false);
+                        $('#Payment_Search_DataTable').hide();
+                    }
+                    else
+                    {
+                        show_msgbox("PAYMENT SEARCH AND UPDATE",data,"success",false);
+                    }
+                    $('.preloader').hide();
+                },
+                error: function(data){
+                    alert('error in getting'+JSON.stringify(data));
+                    $('.preloader').hide();
+                }
+            });
         });
     });
 </script>
@@ -877,6 +920,11 @@
                         <section>
 
                         </section>
+                        <div class="row form-group">
+                            <div class="col-lg-offset-2 col-lg-3">
+                                <input type="button" id="Paymeny_Extract_btn" class="maxbtn" value="EXTRACT">
+                            </div>
+                        </div>
                     </div>
                     <div id="Payment_Updation_form" style="padding-left:30px;"hidden>
                         <form id="Updation_form">
