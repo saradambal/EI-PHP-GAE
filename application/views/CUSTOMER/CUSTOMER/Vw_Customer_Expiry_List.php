@@ -6,7 +6,7 @@ VER 0.01 -INITIAL VERSION-SD:26/05/2015 ED:28/05/2015;
 //*********************************************************************************************************//
 -->
 <?php
-require_once "EI_HDR.php";
+require_once('application/libraries/EI_HDR.php');
 ?>
 <!--HTML TAG START-->
 <html>

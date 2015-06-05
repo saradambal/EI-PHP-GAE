@@ -10,7 +10,7 @@
 //VER 5.5-SD:03/06/2015 ED:03/06/2015,CHANGED FILE NAME AND UPDATED URL FOR CONTRACT
 //VER 0.01-SD:22/05/2015 ED:06/02/2015,COMPLETED INVOICE AND CONTRACT
 //*******************************************************************************************************//
-include "./application/controllers/GET_USERSTAMP.php";
+//include "./application/controllers/GET_USERSTAMP.php";
 //require_once 'google/appengine/api/mail/Message.php';
 //use \google\appengine\api\mail\Message;
 class Mdl_eilib_invoice_contract extends CI_Model{
@@ -352,17 +352,18 @@ class Mdl_eilib_invoice_contract extends CI_Model{
             $this->load->model('EILIB/Mdl_eilib_common_function');
             $this->load->model('EILIB/Mdl_eilib_currency_to_word');
             $this->load->model('EILIB/Mdl_eilib_prorated_calc');
-
             $fileid= $this->Mdl_eilib_common_function->CUST_FileId_invoiceTem();
             $parentId= $this->Mdl_eilib_common_function->CUST_TargetFolderId();
             $url= $this->Mdl_eilib_common_function->getUrlAccessGasScript();
             $cust_config_array=$this->CUST_invoice_contractreplacetext();
-            $DEPOSITword=$this->Mdl_eilib_currency_to_word->currency_To_Word($deposit);
+            if($deposit!='null' )
+                $DEPOSITword=$this->Mdl_eilib_currency_to_word->currency_To_Word($deposit);
             $webloginfetch=$this->Mdl_eilib_common_function->CUST_GetLogindtls($unitno);
             $cust_config_array_concate=$cust_config_array[0];
             for($s=1;$s<count($cust_config_array);$s++){
                 $cust_config_array_concate.='^~^'.$cust_config_array[$s];
             }
+
             $rentstring = $rent;//.toString();
             $RENTword= $this->Mdl_eilib_currency_to_word->currency_To_Word($rentstring);
             $quartaircon_fetch=$airquartfee;
@@ -394,7 +395,7 @@ class Mdl_eilib_invoice_contract extends CI_Model{
             {
                 $checkoutfee_fetch=$checkout;
             }
-            if($procfee ==null)
+            if($procfee =='null')
             {
                 $PROCESSno="00.00";
                 $PROCESSword = "  ";
@@ -405,7 +406,7 @@ class Mdl_eilib_invoice_contract extends CI_Model{
                 $prostring =  $PROCESSno;//.toString();
                 $PROCESSword= $this->Mdl_eilib_currency_to_word->currency_To_Word($prostring);
             }
-            if($deposit == null)
+            if($deposit =='null')
             {
                 $DEPOSITno="00.00";
                 $DEPOSITEword="  ";
@@ -558,11 +559,13 @@ class Mdl_eilib_invoice_contract extends CI_Model{
             strpos($lp,"Months")==false?$monthschk=-1:$monthschk=strpos($lp,"Months");
             strpos($lp,"Month")==false?$monthchk=-1:$monthchk=strpos($lp,"Month");
             strpos($lp,"Day")==false?$daychk=-1:$daychk=strpos($lp,"Day");
+
             if($formname=="EXTENSION")
             {
                 if((($yearchk>0)||($monthschk>0)||(($monthchk>0)&&($daychk>0)))&&($rent_check=='true'))//greater than a month,prorated
                 {
-                    $proratedrent=$this->ProratedCalc->sMonthProratedCalc($check_in_date,$rent);
+                    $proratedrent=$this->Mdl_eilib_prorated_calc->sMonthProratedCalc($check_in_date,$rent);
+                    echo $proratedrent;
                     if($proratedrent!=0)
                     {
                         $flagProratedRentCkout=$proratedrent.'^~^'.$LastMonthformat;
@@ -606,97 +609,89 @@ class Mdl_eilib_invoice_contract extends CI_Model{
                     }
                 }
             }
-            else
-            {
-                $prlbl1= str_replace("checkin",$check_in_dated, $pro_lbl);
-                $prlbl2= str_replace("prochkout",$LastMonthformat, $prlbl1);
-                //LESS THAN EQUAL TO A MONTH
-                if(((($yearchk<0)&&($monthschk<0)&&($daychk>0)&&($monthchk<0))||(($yearchk<0)&&($monthschk<0)&&($daychk<0)&&($monthchk>0))))
-                {
-                    if($rent_check=='false')
-                    {
-                        $flagProratedRentCkout=1;
-                    }
-                }
-                //GREATER THAN A MONTH
-                else
-                {
-                    $proratedrent= $this->Mdl_eilib_prorated_calc->sMonthProratedCalc($check_in_date,$rent);
-                    if($proratedrent!=0)
-                        if($proratedrent!=0)
-                        {
-                            if($rent_check=='true')
-                            {
-                                $flagProratedRentCkout=$proratedrent.'^~^0';
-                            }
-                            else if($rent_check=='false')
-                            {
-                                $flagProratedRentCkout=1;
-                            }
-                        }
-                        else
-                        {
-                            $flagProratedRentCkout=1;
-                        }
-                }
-//                $url= $this->Mdl_eilib_common_function->getUrlAccessGasScript();
-                $url="https://script.google.com/macros/s/AKfycbyv58HZU2XsR2kbCMWZjNzMWSmOwoE7xsg_fesXktGk4Kj574u1/exec";
 
-                $parentId= $this->Mdl_eilib_common_function->CUST_TargetFolderId();
+            else {
+                $prlbl1 = str_replace("checkin", $check_in_dated, $pro_lbl);
+                $prlbl2 = str_replace("prochkout", $LastMonthformat, $prlbl1);
+                //LESS THAN EQUAL TO A MONTH
+                if (((($yearchk < 0) && ($monthschk < 0) && ($daychk > 0) && ($monthchk < 0)) || (($yearchk < 0) && ($monthschk < 0) && ($daychk < 0) && ($monthchk > 0)))) {
+                    if ($rent_check == 'false') {
+                        $flagProratedRentCkout = 1;
+                    }
+                } //GREATER THAN A MONTH
+                else {
+                    $proratedrent = $this->Mdl_eilib_prorated_calc->sMonthProratedCalc($check_in_date, $rent);
+                    if ($proratedrent != 0)
+                        if ($proratedrent != 0) {
+                            if ($rent_check == 'true') {
+                                $flagProratedRentCkout = $proratedrent . '^~^0';
+                            } else if ($rent_check == 'false') {
+                                $flagProratedRentCkout = 1;
+                            }
+                        } else {
+                            $flagProratedRentCkout = 1;
+                        }
+                }
+            }
+
+            $url= $this->Mdl_eilib_common_function->getUrlAccessGasScript();
+            $parentId= $this->Mdl_eilib_common_function->CUST_TargetFolderId();
 //                $parentId= "0Bzvv-O9jT9r_fml4MUR6MWpVNklORHlLYTg4VEVjaWxIR2JlcGpEclZoTWQ3WHV5dGgwQzQ";
 
-                $file = $service->files->get($cust_config_array[10]);
-                $title=$file->getTitle();
-                $description=$file->getDescription();
-                $filecontent=$this->downloadFile($service, $file);
-//                $mimeType=$file->getMimeType();
-                $newfile=$this->insertFile($service, $title, $description, $parentId, "test", $filecontent);
-                echo 'test'.$newfile->alternateLink.'***'.$newfile->id;
-                echo 'line'.$noepcontlineno.'ppp'.$pro_rated_lineno;
-//                exit;
-                $data = array('flagProratedRentCkout'=>$flagProratedRentCkout,'pro_rated_lineno'=>$pro_rated_lineno,'prlbl1'=>$prlbl1,'prlbl2'=>$prlbl2,'LastMonthformat'=>$LastMonthformat,'DEPOSITEword'=>$DEPOSITEword,'ntc_date1'=>$ntc_date1,'todaydat'=>$todaydat,'todaydatestring'=>$todaydatestring,'finalep_pass'=>$finalep_pass,
-                    'LastMonthformat'=>$LastMonthformat,'flag_paraAlign'=>$flag_paraAlign,'flag_paraAlign_sec'=>$flag_paraAlign_sec,'flag_paraAlign_thrd'=>$flag_paraAlign_thrd,'flag_paraAlign_four'=>$flag_paraAlign_four,'flag_paraAlign_five'=>$flag_paraAlign_five,
-                    'cexdd'=>$cexdd,'check_in_dated'=>$check_in_dated,'noticeSt'=>$noticeSt,'address1value'=>$address1value,'cardno'=>$cardno,'fixedstmtfetch'=>$fixedstmtfetch,'noepcontlineno'=>$noepcontlineno,'elec_fetch'=>$elec_fetch,'dryclean_fetch'=>$dryclean_fetch,
-                    'checkoutfee_fetch'=>$checkoutfee_fetch,'PROCESSno'=>$PROCESSno,'DEPOSITno'=>$DEPOSITno,'elec_fetch'=> $elec_fetch,'dryclean_fetch'=> $dryclean_fetch,'checkoutfee_fetch'=> $checkoutfee_fetch,'PROCESSno'=> $PROCESSno,'DEPOSITno'=> $DEPOSITno,'weblogin'=>$webloginfetch,'flag'=>1,'cust_config_array' => $newfile->id, 'RENTword' => $RENTword, 'PROCESSword' => $PROCESSword,'DEPOSITword'=>$DEPOSITword, 'proratedrent' => "shld present in word", 'proratedsmonth' => "2014-09-09"
-                , 'proratedemonth' => "2014-09-09", 'unitno' => $unitno, 'checkindate' => $checkindate, 'checkoutdate' => $checkoutdate, 'companyname' => $companyname, 'customername' => $customername, 'noticeperiod' => $noticeperiod,
-                    'passportno'=>   $passportno,'passportdate'=>$passportdate,'epno'=>$epno,'epdate'=>$epdate,'noticedate'=>$noticedate,'lp'=>$lp,'cardno'=>$cardno,'rent'=>$rent,
-                    'airquartfee'=>$airquartfee,'airfixedfee'=>$airfixedfee,'electcap'=>$electcap,'dryclean'=>$dryclean,'chkoutfee'=>$chkoutfee,'procfee'=>$procfee,
-                    'deposit'=>$deposit,'waived'=>$waived,'roomtype'=>$roomtype,'rent_check'=>$rent_check,'formname'=>$formname,
-                    'targetFolderId'=>"TEST" );
-                $ch = curl_init();
-                $data=http_build_query($data);
-                curl_setopt($ch, CURLOPT_URL, $url);
-                curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true );
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-                curl_setopt($ch, CURLOPT_ENCODING, "gzip,deflate");
-                try {
-                    $response = curl_exec($ch);
-                }
-                catch(Exception $e){
-                    echo   $e->getMessage();
-                }
+//                $file = $service->files->get($cust_config_array[10]);
+//                $title=$file->getTitle();
+//                $description=$file->getDescription();
+//                $filecontent=$this->downloadFile($service, $file);
+////                $mimeType=$file->getMimeType();
+//                $newfile=$this->insertFile($service, $title, $description, $parentId, "test", $filecontent);
 
-                curl_close($ch);
-                echo 'rest'.$response;
-                exit;
-                $file = new Google_Service_Drive_DriveFile();
-                $parent = new Google_Service_Drive_ParentReference();
-                $parent->setId($parentId);
-                $file->setParents(array($parent));
-                try {
-                    $service->files->patch($response, $file);
-                }
-                catch(Exception $e){
-                    echo   $e->getMessage();
-                }
-            }} catch (Exception $ex) {
-            print "An error occurred: " . $ex->getMessage();
+//                exit;
+            $data = array('flagProratedRentCkout'=>$flagProratedRentCkout,'pro_rated_lineno'=>$pro_rated_lineno,'prlbl1'=>$prlbl1,'prlbl2'=>$prlbl2,'LastMonthformat'=>$LastMonthformat,'DEPOSITEword'=>$DEPOSITEword,'ntc_date1'=>$ntc_date1,'todaydat'=>$todaydat,'todaydatestring'=>$todaydatestring,'finalep_pass'=>$finalep_pass,
+                'LastMonthformat'=>$LastMonthformat,'flag_paraAlign'=>$flag_paraAlign,'flag_paraAlign_sec'=>$flag_paraAlign_sec,'flag_paraAlign_thrd'=>$flag_paraAlign_thrd,'flag_paraAlign_four'=>$flag_paraAlign_four,'flag_paraAlign_five'=>$flag_paraAlign_five,
+                'cexdd'=>$cexdd,'check_in_dated'=>$check_in_dated,'noticeSt'=>$noticeSt,'address1value'=>$address1value,'cardno'=>$cardno,'fixedstmtfetch'=>$fixedstmtfetch,'noepcontlineno'=>$noepcontlineno,'elec_fetch'=>$elec_fetch,'dryclean_fetch'=>$dryclean_fetch,
+                'checkoutfee_fetch'=>$checkoutfee_fetch,'PROCESSno'=>$PROCESSno,'DEPOSITno'=>$DEPOSITno,'elec_fetch'=> $elec_fetch,'dryclean_fetch'=> $dryclean_fetch,'checkoutfee_fetch'=> $checkoutfee_fetch,'PROCESSno'=> $PROCESSno,'DEPOSITno'=> $DEPOSITno,'weblogin'=>$webloginfetch,'flag'=>1,'cust_config_array' => $cust_config_array[10], 'RENTword' => $RENTword, 'PROCESSword' => $PROCESSword,'DEPOSITword'=>$DEPOSITword, 'proratedrent' => "shld present in word", 'proratedsmonth' => "2014-09-09"
+            , 'proratedemonth' => "2014-09-09", 'unitno' => $unitno, 'checkindate' => $checkindate, 'checkoutdate' => $checkoutdate, 'companyname' => $companyname, 'customername' => $customername, 'noticeperiod' => $noticeperiod,
+                'passportno'=>   $passportno,'passportdate'=>$passportdate,'epno'=>$epno,'epdate'=>$epdate,'noticedate'=>$noticedate,'lp'=>$lp,'cardno'=>$cardno,'rent'=>$rent,
+                'airquartfee'=>$airquartfee,'airfixedfee'=>$airfixedfee,'electcap'=>$electcap,'dryclean'=>$dryclean,'chkoutfee'=>$chkoutfee,'procfee'=>$procfee,
+                'deposit'=>$deposit,'waived'=>$waived,'roomtype'=>$roomtype,'rent_check'=>$rent_check,'formname'=>$formname,
+                'targetFolderId'=>"TEST" );
+            $ch = curl_init();
+            $data=http_build_query($data);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true );
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            curl_setopt($ch, CURLOPT_ENCODING, "gzip,deflate");
+            try {
+                $response = curl_exec($ch);
+            }
+            catch(Exception $e){
+                echo   $e->getMessage();
+            }
+            curl_close($ch);
+            $file = new Google_Service_Drive_DriveFile();
+            $parent = new Google_Service_Drive_ParentReference();
+            $parent->setId($parentId);
+            $file->setParents(array($parent));
+            try {
+                $service->files->patch($response, $file);
+            }
+            catch(Exception $e){
+                return   $e->getMessage();
+            }
         }
-//        $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
-        return $response;    }
+        catch (Exception $ex) {
+            return $ex->getMessage();
+        }
+//        $file = $service->files->get($response);
+////        $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
+//        return [$response,$file->embedLink];
+
+        $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
+        return $response;
+    }
 //GET INVOICE ID ,CONTRACT ID ,SERIAL NO,INVOIC DATE
     public function CUST_invoice_contractreplacetext()
     {
@@ -1023,6 +1018,9 @@ class Mdl_eilib_invoice_contract extends CI_Model{
         catch(Exception $e) {
             echo $e->getMessage();
         }
+//        $file = $service->files->get($response);
+////        $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
+//        return [$response,$file->embedLink];
         $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
         return $response;
     }

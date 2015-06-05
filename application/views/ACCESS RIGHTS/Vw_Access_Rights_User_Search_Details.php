@@ -8,7 +8,7 @@
 
 <?php
 
-include "EI_HDR.php";
+require_once('application/libraries/EI_HDR.php');
 
 ?>
 

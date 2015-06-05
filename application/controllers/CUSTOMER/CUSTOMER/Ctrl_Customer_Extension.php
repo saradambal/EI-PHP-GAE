@@ -1,17 +1,17 @@
 <?php
-include "GET_USERSTAMP.php";
-include "GET_CONFIG.php";
-$USERSTAMP=$UserStamp;
+
 class Ctrl_Customer_Extension extends CI_Controller{
 
+    function __construct() {
+        parent::__construct();
+        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_extension');
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+    }
     public function index(){
 
         $this->load->view('CUSTOMER/CUSTOMER/Vw_Customer_Extension');
     }
-    public function CEXTN_getCommonvalues()
-    {
-        $this->load->model('EILIB/Mdl_eilib_common_function');
-        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_extension');
+    public function CEXTN_getCommonvalues(){
         $formname=$_POST['Formname'];
         $errorlist=$_POST['ErrorList'];
         $unit = $this->Mdl_customer_extension->CEXTN_getExtnUnitNo();
@@ -28,17 +28,16 @@ class Ctrl_Customer_Extension extends CI_Controller{
     public function CEXTN_getCustomerNameId_result()
     {
         $CEXTN_lb_unitno=$_POST['unitno'];
-        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_extension');
         $customer_IdName = $this->Mdl_customer_extension->CEXTN_getCustomerNameId($CEXTN_lb_unitno);
         echo json_encode($customer_IdName);
     }
     public function  CEXTN_getCustomerdtls_result()
     {
-        global $USERSTAMP;
+        $UserStamp=$this->Mdl_eilib_common_function->getSessionUserStamp();
+        $timeZoneFormat=$this->Mdl_eilib_common_function->getTimezone();
         $CEXTN_unitno=$_POST['unitno'];
         $CEXTN_custid=$_POST['customerId'];
-        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_extension');
-        $customer_finaldetls = $this->Mdl_customer_extension->CEXTN_getCustomerdtls($CEXTN_custid,$CEXTN_unitno,$USERSTAMP);
+        $customer_finaldetls = $this->Mdl_customer_extension->CEXTN_getCustomerdtls($CEXTN_custid,$CEXTN_unitno,$UserStamp);
         echo json_encode($customer_finaldetls);
     }
     public function CEXTN_getRoomType(){
@@ -57,7 +56,9 @@ class Ctrl_Customer_Extension extends CI_Controller{
     }
     public function CEXTN_SaveDetails(){
 
-        global $UserStamp;
+        $UserStamp=$this->Mdl_eilib_common_function->getSessionUserStamp();
+        $timeZoneFormat=$this->Mdl_eilib_common_function->getTimezone();
+        $this->load->library('Google');
         $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_extension');
         $final_value=$this->Mdl_customer_extension->CEXTN_SaveDetails($UserStamp);
         echo json_encode($final_value);

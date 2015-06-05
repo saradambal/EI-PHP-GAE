@@ -6,7 +6,7 @@
 -->
 <?php
 
-include "EI_HDR.php";
+require_once('application/libraries/EI_HDR.php');
 
 ?>
 <!--HTML TAG START-->
@@ -28,6 +28,7 @@ function CheckPageStatus(){
 $(document).ready(function()
 {
     $('textarea').autogrow({onInitialize: true});
+    var controller_url="<?php echo base_url(); ?>" +'/index.php/CUSTOMER/CUSTOMER/Ctrl_Customer_Extension/';
 //FUNCTION TO ALERT TRY CATCH ERROR MESSAGE
     function onFailure(CEXTN_error) {
         $(".preloader").hide();
@@ -156,10 +157,9 @@ $(document).ready(function()
 //CALL FUNCTION TO GET UNIT NOS,ERROR MSGS,PRORATED N WAIVED VALUE
     $.ajax({
         type: "POST",
-        url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_getCommonvalues',
+        url: controller_url+"CEXTN_getCommonvalues",
         data:{"Formname":'CustomerCreation',"ErrorList":'11,2,33,34,35,36,76,77,97,282,331,332,339,342,343,344,345,346,347,348,386,400,443,444,447,458,459,460,461'},
         success: function(data){
-
             var value_array=JSON.parse(data);
             var emailid=[];
             var prowaived=[];
@@ -251,7 +251,7 @@ $(document).ready(function()
 //CALL FUNCTION TO GET UNIT NOS,ERROR MSGS,PRORATED N WAIVED VALUE
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_getCustomerNameId_result',
+                url: controller_url+"CEXTN_getCustomerNameId_result",
                 data:{"unitno":CEXTN_lb_unitno},
                 success: function(data){
                     var value_array=JSON.parse(data);
@@ -325,7 +325,7 @@ $(document).ready(function()
                     $('#CEXTN_hidden_custid').val(CEXTN_name_id_array[0]);
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_getCustomerdtls_result',
+                        url: controller_url+"CEXTN_getCustomerdtls_result",
                         data:{"unitno":CEXTN_lb_unitno,"customerId":CEXTN_name_id_array[0]},
                         success: function(data){
                             var value_array=JSON.parse(data);
@@ -448,7 +448,7 @@ $(document).ready(function()
             $("#CEXTN_hidden_setrmtype").val(this.value);
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_getRoomType',
+                url: controller_url+"CEXTN_getRoomType",
                 data:{"unitno":CEXTN_lb_unitno,"rmtype":CEXTN_rmtype},
                 success:function(data){
 //                    alert(data);
@@ -577,7 +577,7 @@ $(document).ready(function()
 //ADD DIFF UNIT ROOM TYPE
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_getRoomType',
+                url: controller_url+"CEXTN_getRoomType",
                 data:{"unitno":CEXTN_lb_unitno,"rmtype":CEXTN_rmtype},
                 success:function(data){
 //                    alert(data);
@@ -610,7 +610,7 @@ $(document).ready(function()
         {
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_getdiffunitCardNo',
+                url: controller_url+"CEXTN_getdiffunitCardNo",
                 data:{"unitno":CEXTN_lb_unitno,"CEXTN_tb_firstname":CEXTN_tb_firstname,"CEXTN_tb_lastname":CEXTN_tb_lastname},
                 success:function(data){
 alert(data);
@@ -709,7 +709,7 @@ alert(JSON.stringify(data))
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_chkProrated',
+                    url: controller_url+"CEXTN_chkProrated",
                     data:{"CEXTN_db_chkindate":CEXTN_db_chkindate,"CEXTN_db_chkoutdate":CEXTN_db_chkoutdate},
                     success:function(data){
 //                        alert(data);
@@ -736,7 +736,7 @@ alert(JSON.stringify(data))
             {
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_chkProrated',
+                    url: controller_url+"CEXTN_chkProrated",
                     data:{"CEXTN_db_chkindate":CEXTN_db_chkindate,"CEXTN_db_chkoutdate":CEXTN_db_chkoutdate},
                     success:function(data){
 //                        alert(data);
@@ -1376,7 +1376,7 @@ alert(JSON.stringify(data))
         $('#CEXTN_hidden_custid').val(CEXTN_id);
         $.ajax({
             type: "POST",
-            url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_getCustomerdtls_result',
+            url: controller_url+"CEXTN_getCustomerdtls_result",
             data:{"unitno":CEXTN_lb_unitno,"customerId":CEXTN_id},
             success: function(data){
                 var value_array=JSON.parse(data);
@@ -1565,8 +1565,8 @@ alert(JSON.stringify(data))
                         var CEXTN_custlbl='GUEST'+i;
                     }
                     var cardsize=CEXTN_card[i].length;
-                    var CEXTN_result=CEXTN_cardlabel+' <div class="col-sm-2"><input type="text" class="form-control" name="CEXTN_tb_sameunitsamermcustcard" value='+CEXTN_card[i]+' size='+cardsize+' readonly ></div><div><input type="text" name="CEXTN_hidden_sameunitsamermcustcard"  value='+CEXTN_custlbl+' hidden/></div>';
-                    var CEXTN_result1=CEXTN_cardlabel+' <div class="col-sm-2"><input type="text" class="form-control" name="CEXTN_tb_sameunitdiffrmcustcard" value='+CEXTN_card[i]+' size='+cardsize+' readonly></div><div><input type="text" name="CEXTN_hidden_sameunitdiffrmcustcard"  value='+CEXTN_custlbl+' hidden/></div>';
+                    var CEXTN_result=CEXTN_cardlabel+' <div class="col-sm-2"><input type="text" class="form-control" name="CEXTN_tb_sameunitsamermcustcard[]" value='+CEXTN_card[i]+' size='+cardsize+' readonly ></div><div><input type="text" name="CEXTN_hidden_sameunitsamermcustcard[]"  value='+CEXTN_custlbl+' hidden/></div>';
+                    var CEXTN_result1=CEXTN_cardlabel+' <div class="col-sm-2"><input type="text" class="form-control" name="CEXTN_tb_sameunitdiffrmcustcard[]" value='+CEXTN_card[i]+' size='+cardsize+' readonly></div><div><input type="text" name="CEXTN_hidden_sameunitdiffrmcustcard[]"  value='+CEXTN_custlbl+' hidden/></div>';
                     $('#CTERM_tbl_sameunitsamermcust_card').append(CEXTN_result);
                     $('#CTERM_tbl_sameunitdiffrmcust_card').append(CEXTN_result1);
                 }
@@ -1634,7 +1634,7 @@ alert(JSON.stringify(data))
                 $('#CEXTN_cb_sameamtwaived').prop('checked',false);
                 $("#CEXTN_hidden_sameamtwaived").val("");
             }
-            $('#CEXTN_ta_comments').height(20);
+//            $('#CEXTN_ta_comments').height(20);
             $("#CEXTN_ta_comments").val(CEXTN_custdtls.cust_comts);
 //SET NOTICE PERIOD DATE
             if(CEXTN_custdtls.cust_noticedate!="")
@@ -1824,7 +1824,7 @@ alert(JSON.stringify(data))
             var form_element=$('#CEXTN_form').serialize();
             $.ajax({
                 type: "POST",
-                url: "<?php echo base_url(); ?>" + '/index.php/Ctrl_Customer_Extension/CEXTN_SaveDetails',
+                url: controller_url+"CEXTN_SaveDetails",
                 data:form_element,
                 success: function(data){
                     alert(data)
@@ -1833,6 +1833,7 @@ alert(JSON.stringify(data))
 
                 },
                 error: function(data){
+
                     alert('error in getting'+JSON.stringify(data));
 
                 }
