@@ -1,5 +1,11 @@
+<!--*********************************CUSTOMER TERMINATION*******************************************//
+//DONE BY:SASIKALA
+//VER 0.03 -SD:05/06/2015 ED:05/06/2015 GETTING HEADER FILE FROM LIB
+//VER 0.02 SD:04/06/2015 ED:04/06/2015,changed Controller Model and View names
+//VER 0.01-SD:30/05/2015 ED:03/06/2015,INITIAL VERSION
+//*******************************************************************************************************//-->
 <?php
-include "EI_HDR.php";
+require_once('application/libraries/EI_HDR.php');
 ?>
 <style>
 td, th {
@@ -989,6 +995,7 @@ td, th {
                 url: controller_url+"CTERM_UpdatePtd",
                 data:$('#CTERM_form').serialize()+'&Globalrecver='+Globalrecver,
                 success: function(res) {
+                    alert(res)
                     $('.preloader').hide();
                         CTERM_UpdatePtd_result(res)
                 }
