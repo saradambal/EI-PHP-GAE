@@ -1,6 +1,6 @@
 <?php
-require_once "EI_HDR.php";
-require_once "./application/libraries/Chart.php";
+require_once('application/libraries/EI_HDR.php');
+require_once('application/libraries/Chart.php');
 ?>
 <html>
 <head>
@@ -19,6 +19,7 @@ require_once "./application/libraries/Chart.php";
 <script type="text/javascript">
 // document ready function
 $(document).ready(function(){
+    var ctrl_charts_url="<?php echo site_url('REPORT/Ctrl_Report_Charts'); ?>";
 // initial data
     $('#spacewidth').height('0%');
     var chartname;
@@ -26,7 +27,7 @@ $(document).ready(function(){
     var errormsg;
     $.ajax({
         type: "POST",
-        url: "<?php echo site_url('Ctrl_Report_Charts/Initialdata'); ?>",
+        url: ctrl_charts_url+'/Initialdata',
         data:{'ErrorList':'387,388,389,390,391,392,393,394'},
         success: function(data){
             var value=JSON.parse(data);
@@ -51,6 +52,10 @@ $(document).ready(function(){
                 }
             }
             $('.preloader').hide();
+        },
+        error:function(data){
+            var errordata=(JSON.stringify(data));
+            show_msgbox("CHARTS",errordata,'error',false);
         }
     });
 // date picker and prepare input
@@ -121,11 +126,15 @@ $(document).ready(function(){
         $('.preloader').show();
         $.ajax({
             type: "POST",
-            url: "<?php echo site_url('Ctrl_Report_Charts/Expense_inputdata'); ?>",
+            url: ctrl_charts_url+'/Expense_inputdata',
             data:"unitno="+unitno+"&fromdate="+fromdate+"&todate="+todate+"&srch_data="+srch_data+"&flag="+flag,
             success: function(data){
                 var value_array=JSON.parse(data);
                 CHART_success_chartexpense(value_array);
+            },
+            error:function(data){
+                var errordata=(JSON.stringify(data));
+                show_msgbox("CHARTS",errordata,'error',false);
             }
         });
     }
@@ -348,7 +357,7 @@ $(document).ready(function(){
             $('.preloader').show();
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('Ctrl_Report_Charts/Subchartdata'); ?>",
+                url: ctrl_charts_url+'/Subchartdata',
                 data:"nameval="+ nameval,
                 success: function(data){
                     $('.preloader').hide();
@@ -362,6 +371,10 @@ $(document).ready(function(){
                         }
                         $('#chart_srch_data').show();
                     }
+                },
+                error:function(data){
+                    var errordata=(JSON.stringify(data));
+                    show_msgbox("CHARTS",errordata,'error',false);
                 }
             });
         }

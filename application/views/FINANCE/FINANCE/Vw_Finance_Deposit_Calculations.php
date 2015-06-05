@@ -1,5 +1,10 @@
 <?php
-require_once "EI_HDR.php";
+require_once('application/libraries/EI_HDR.php');
+//******************************************Deposit_Calculations********************************************//
+//VER 0.03-SD:02/06/2015 ED:02/06/2015,moved to folder and changed filename eilib file name
+//VER 0.02-SD:28/05/2015 ED:04/06/2015,did the ss part for deposit calculation and ss insert part
+//VER 0.01-SD:25/05/2015 ED:26/05/2015,completed form design and validation without ss part
+//*******************************************************************************************************//
 ?>
 <html>
 <head>
@@ -11,6 +16,7 @@ require_once "EI_HDR.php";
     <script type="text/javascript">
     // document ready function
         $(document).ready(function(){
+            var ctrl_DDCalculation_url="<?php echo site_url('FINANCE/FINANCE/Ctrl_Finance_Deposit_Calculations'); ?>";
             $('#spacewidth').height('0%');
             $('#DDC_btn_rbutton').hide();
             $('#DDC_btn_sbutton').hide();
@@ -23,7 +29,7 @@ require_once "EI_HDR.php";
         // initial data
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('Ctrl_Finance_Deposit_Calculations/Initialdata'); ?>",
+                url: ctrl_DDCalculation_url+'/Initialdata',
                 success: function(data) {
                     var initial_values=JSON.parse(data);
                     DDC_loadunitlistbox(initial_values);
@@ -52,9 +58,10 @@ require_once "EI_HDR.php";
                 var formelement=$('#DD_calculationform').serialize();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Finance_Deposit_Calculations/DDC_Dep_Cal_submit'); ?>",
+                    url: ctrl_DDCalculation_url+'/DDC_Dep_Cal_submit',
                     data: formelement,
                     success: function(calcdata) {
+                        alert(calcdata)
                         var calc_values=JSON.parse(calcdata);
 //                        DDC_conformationmsg(calc_values);
                     },
@@ -305,7 +312,7 @@ require_once "EI_HDR.php";
                     var custid=idarray[0].split('-');
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Finance_Deposit_Calculations/DDC_loaddatebox'); ?>",
+                        url: ctrl_DDCalculation_url+'/DDC_loaddatebox',
                         data: {'custid':custid[1],'custname':$('#DDC_lb_customerselect').val(),'unitno':$('#DDC_lb_unitselect').val()},
                         success: function(dateval) {
                             var datevalues=JSON.parse(dateval);
@@ -333,7 +340,7 @@ require_once "EI_HDR.php";
                 $('#DDC_recvertable').hide();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Finance_Deposit_Calculations/DDC_loaddatebox'); ?>",
+                    url: ctrl_DDCalculation_url+'/DDC_loaddatebox',
                     data: {'custid':id,'custname':DDC_name,'unitno':DDC_unitno},
                     success: function(dateval) {
                         var datevalues=JSON.parse(dateval);

@@ -1,4 +1,9 @@
 <?php
+//******************************************Deposit_Calculations********************************************//
+//VER 0.03-SD:02/06/2015 ED:02/06/2015,moved to folder and changed filename eilib file name
+//VER 0.02-SD:28/05/2015 ED:04/06/2015,did the ss part for deposit calculation and ss insert part
+//VER 0.01-SD:25/05/2015 ED:26/05/2015,completed form design and validation without ss part
+//*******************************************************************************************************//
 class Mdl_finance_deposit_calculations extends CI_Model{
     // GET THE UNIT  FOR LOAD IN THE  FORM
     public function Initial_data($UserStamp){
@@ -94,7 +99,7 @@ class Mdl_finance_deposit_calculations extends CI_Model{
                 if($service->files->get($child->getId())->getExplicitlyTrashed()==1)continue;
                 $fileid=$service->files->get($child->getId())->id;
                 $filename=$service->files->get($child->getId())->title;
-                $filenamelist[]=['id'=>$fileid,'title'=>$filename];break;
+                $filenamelist[]=['id'=>$fileid,'title'=>$filename];
             }
             return $filenamelist;
         }
@@ -102,57 +107,9 @@ class Mdl_finance_deposit_calculations extends CI_Model{
             return 0;
         }
     }
-    function deleteFile($service, $fileId) {
-        try {
-            $service->files->delete($fileId);
-        }
-        catch (Exception $e) {
-            print "An error occurred: " . $e->getMessage();
-        }
-    }
-    public  function insertFile($service, $title, $description, $parentId) {
-        $file = new Google_Service_Drive_DriveFile();
-        $file->setTitle($title);
-        $file->setDescription($description);
-        $file->setMimeType('application/vnd.google-apps.spreadsheet');
-        if ($parentId != null) {
-            $parent = new Google_Service_Drive_ParentReference();
-            $parent->setId($parentId);
-            $file->setParents(array($parent));
-        }
-        try {
-            $createdFile = $service->files->insert($file, array(
-            'mimeType' => 'application/vnd.google-apps.spreadsheet',//$mimeType,
-            'convert' => TRUE,
-            'uploadType'=>'resumable'
-            ));
-            return $createdFile->getId();
-        }
-        catch (Exception $e) {
-            print "An error occurred: " . $e->getMessage();
-        }
-    }
-    public function Func_curl($data){
-        $url="https://script.google.com/macros/s/AKfycbzmlgt77SgxpUjRgRWbp5ksUEInKUeTaWV_TPJKut-rsmDuI9ng/exec";
-        $ch = curl_init();
-        $data=urldecode(http_build_query($data));
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true );
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_ENCODING, "gzip,deflate");
-        try {
-            $response = curl_exec($ch);
-            return $response;
-        }
-        catch(Exception $e){
-            return $e->getMessage();
-        }
-        curl_close($ch);
-    }
     public function DDC_depcal_submit($unit_value,$name,$chkbox,$radio,$startdate,$enddate,$dep_custid,$DDC_recverlgth,$DDC_recdate,$UserStamp,$service){
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $this->load->model('EILIB/Mdl_eilib_invoice_contract');
         if($radio!='')
             $name=$name.'_'.$radio;
         else
@@ -252,24 +209,22 @@ class Mdl_finance_deposit_calculations extends CI_Model{
                     $DDC_oldfile_id=$DDC_getfiles[$i]['id'];
                     if($DDC_oldfile==$DDC_ssname_currentyear)
                     {
-                        $this->deleteFile($service,$DDC_oldfile_id);
+                        $this->Mdl_eilib_common_function->DeleteFile($service,$DDC_oldfile_id);
                     }
                 }
                 return ['DDC_flag_nosheet',$DDC_ssname_oldyear];
             }
-            $this->load->model('EILIB/Invoice_contract');
-            $this->load->model('EILIB/common_function');
-            $parentId=$this->Invoice_contract->getTemplatesFolderId();
-            $DDC_newspread_ssid=$this->insertFile($service, $DDC_ssname_currentyear, 'DD Calculation', $parentId);
+            $parentId=$this->Mdl_eilib_invoice_contract->getTemplatesFolderId();
+            $DDC_newspread_ssid=$this->Mdl_eilib_common_function->NewSpreadsheetCreation($service, $DDC_ssname_currentyear, 'DD Calculation', $parentId);
             $this->db->query("UPDATE FILE_PROFILE SET FP_FILE_ID='".$DDC_newspread_ssid."' WHERE FP_ID=1");
-            $DDC_docowner=$this->common_function->CUST_documentowner($UserStamp);
-            $this->Invoice_contract->SetDocOwner($service,$DDC_newspread_ssid,$DDC_docowner,$DDC_docowner);
+            $DDC_docowner=$this->Mdl_eilib_common_function->CUST_documentowner($UserStamp);
+            $this->Mdl_eilib_invoice_contract->SetDocOwner($service,$DDC_newspread_ssid,$DDC_docowner,$DDC_docowner);
             // GIVE PERMISSION TO EDITORS WHEN NEW SS CREATED USING EILIB
-//            $this->common_function->Deposit_Deduction_fileSharing($DDC_newspread_ssid, $DDC_folderid);
+            $this->Mdl_eilib_common_function->Deposit_Deduction_fileSharing($DDC_newspread_ssid, $DDC_folderid);
             $DDC_flg_tempsht=0;
             $data=array('ssflag'=>1,'DDC_newspread_ssid'=>$DDC_newspread_ssid,'DDC_ssname_getid'=>$DDC_ssname_getid,'DDC_currentmonth'=>$DDC_currentmonth);
             $ssnameload=array();
-            $ssnameload=$this->Func_curl($data);
+            $ssnameload=$this->Mdl_eilib_common_function->Func_curl($data);
             $ssnameload=explode(',',$ssnameload);
             $DDC_flg_tempsht=$ssnameload[0];
             $DDC_currentfile_id=$ssnameload[1];
@@ -282,7 +237,7 @@ class Mdl_finance_deposit_calculations extends CI_Model{
                     $DDC_oldfile_id=$DDC_getfiles[$i]['id'];
                     if($DDC_oldfile==$DDC_ssname_currentyear)
                     {
-                        $this->deleteFile($service,$DDC_oldfile_id);
+                        $this->Mdl_eilib_common_function->DeleteFile($service,$DDC_oldfile_id);
                     }
                 }
                 return [$DDC_flg_tempsht];
@@ -292,7 +247,7 @@ class Mdl_finance_deposit_calculations extends CI_Model{
         else{
             $data1=array('ssflag'=>2,'DDC_currentfile_id'=>$DDC_currentfile_id,'DDC_ssname_getid'=>$DDC_ssname_getid,'DDC_ssname_oldyear'=>$DDC_ssname_oldyear);
             $ssnametemp=array();
-            $ssnametemp=$this->Func_curl($data1);
+            $ssnametemp=$this->Mdl_eilib_common_function->Func_curl($data1);
             $ssnametemp=explode(',',$ssnametemp);
             if($ssnametemp[0]=='DDC_flag_nosheet'){
                 return $ssnametemp;
@@ -307,14 +262,14 @@ class Mdl_finance_deposit_calculations extends CI_Model{
             $DDC_chargtype=[];
             $DDC_chargamount=[];
             $DDC_electrcap=[];
-            $DDC_sprecverarray=[];
+            $DDC_sprecverarray='';
             $DDC_startdatearrary=[];
             $DDC_enddatearrary=[];
             $DDC_no_ofdivision='';
             $DDC_cardcount='';
             $DDC_cardamount='';
-            $DDC_dryclean = [];
-            $DDC_checkoutclean = [];
+            $DDC_dryclean = '';
+            $DDC_checkoutclean = '';
             $DDC_aircon = [];
             $DDC_airconquater = [];
             $DDC_quaters = [];
@@ -323,7 +278,7 @@ class Mdl_finance_deposit_calculations extends CI_Model{
             $DDC_proratedunpaid = '';
             $DDC_payunpaiddate = [];
             $DDC_paymentrecver = [];
-            $DDC_custpaymentid = [];
+            $DDC_custpaymentid = '';
             $DDC_unitinvoiceitem = [];
             $DDC_unitdivamount = [];
             $DDC_unitamount = [];
@@ -332,7 +287,7 @@ class Mdl_finance_deposit_calculations extends CI_Model{
             $DDC_eleamount = [];
             $DDC_invoicedate = [];
             $DDC_cardtilldate = '';
-            $DDC_custid=[];
+            $DDC_custid='';
             $DDC_sumofquater=[];
             $DDC_quatertotal='';
             $DDC_fixedaircon='';
@@ -572,7 +527,7 @@ class Mdl_finance_deposit_calculations extends CI_Model{
             }
             if($DDC_recverlgth==$selectedrecverlength)
             {
-                $DDC_recverarray=$recverlen[$i];
+                $DDC_recverarray=$DDC_recverarray;
             }
             else
             {
@@ -646,10 +601,9 @@ class Mdl_finance_deposit_calculations extends CI_Model{
                 $DDC_cap='';
             }
             //SET THE ELECTRICITY VALUES IN THE SHEET//
-            $caps='';$modifies='';
-            $maininvdate='';
-            $mainelecamt='';
-            $mainelecdivamt='';
+            $caps='';$modifies='';$electrcapkey='';
+            $invdate='';$elecamt='';$elecdivamt='';
+            $maininvdate='';$mainelecamt='';$mainelecdivamt='';
 //            $DDC_electrcap=uasort($DDC_electrcap,array($this, 'compare'));
             $DDC_cap_rec='';
             $DDC_cap_rec=$DDC_electrcap[0]->key;
@@ -676,9 +630,6 @@ class Mdl_finance_deposit_calculations extends CI_Model{
                     $caps=$caps.'^^'.$cap;
                     $modifies=$modifies.'^^'.$modify;
                 }
-                $invdate='';
-                $elecamt='';
-                $elecdivamt='';
                 for($j=0;$j<count($DDC_invoicedate);$j++){
                     if($DDC_electrcap[$c]->key==$DDC_invoicedate[$j]->key){
                         if($j==0){
@@ -694,14 +645,19 @@ class Mdl_finance_deposit_calculations extends CI_Model{
                     }
                 }
                 if($c==0){
-                    $maininvdate=$invdate;
-                    $mainelecamt=$elecamt;
-                    $mainelecdivamt=$elecdivamt;
+                    $electrcapkey=$DDC_electrcap[$c]->key;
                 }
                 else{
-                    $maininvdate=$maininvdate.'^~^'.$invdate;
-                    $mainelecamt=$mainelecamt.'^~^'.$elecamt;
-                    $mainelecdivamt=$mainelecdivamt.'^~^'.$elecdivamt;
+                    $electrcapkey=$electrcapkey.'^^'.$DDC_electrcap[$c]->key;
+                }
+            }
+            $invoicedatekey='';
+            for($k=0;$k<count($DDC_invoicedate);$k++){
+                if($c==0){
+                    $invoicedatekey=$DDC_invoicedate[$k]->key;
+                }
+                else{
+                    $invoicedatekey=$invoicedatekey.'^^'.$DDC_invoicedate[$k]->key;
                 }
             }
             //SET THE AIRCON FEE//
@@ -814,7 +770,7 @@ class Mdl_finance_deposit_calculations extends CI_Model{
                 'DDC_maintenancelength'=>$DDC_maintenancelength,'drycleaning'=>$drycleaning,'DDC_chargelength'=>$DDC_chargelength,'chargtype'=>$chargtype,'chargamount'=>$chargamount,
                 'DDC_unitsubtotal'=>$DDC_unitsubtotal,'DDC_totalallsubtl'=>$DDC_totalallsubtl,'DDC_tefundtotal'=>$DDC_tefundtotal);
             $ssreangtemp=array();
-            $ssreangtemp=$this->Func_curl($data2);
+            $ssreangtemp=$this->Mdl_eilib_common_function->Func_curl($data2);
             $ssreangtemp=explode(',',$ssreangtemp);
             if($ssreangtemp[0]==0 && $ssreangtemp[1]==1){
                 return [0,1];

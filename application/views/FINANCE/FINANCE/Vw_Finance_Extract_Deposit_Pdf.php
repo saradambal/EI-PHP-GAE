@@ -1,5 +1,5 @@
 <?php
-require_once "EI_HDR.php";
+require_once('application/libraries/EI_HDR.php');
 ?>
 <html>
 <head>
@@ -11,6 +11,7 @@ require_once "EI_HDR.php";
     <script type="text/javascript">
     // document ready function
         $(document).ready(function(){
+            var ctrl_DDExtract_url="<?php echo site_url('FINANCE/FINANCE/Ctrl_Finance_Extract_Deposit_Pdf'); ?>";
             $('#spacewidth').height('0%');
             var srtemailarray=[];
             var montharray=[];
@@ -21,7 +22,7 @@ require_once "EI_HDR.php";
         // initial data
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('Ctrl_Finance_Extract_Deposit_Pdf/Initialdata'); ?>",
+                url: ctrl_DDExtract_url+'/Initialdata',
                 success: function(data){
                     var initial_values=JSON.parse(data);
                     DDE_loadgetmonthh(initial_values);
@@ -63,7 +64,7 @@ require_once "EI_HDR.php";
                 {
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Finance_Extract_Deposit_Pdf/DDE_getsheetunit'); ?>",
+                        url: ctrl_DDExtract_url+'/DDE_getsheetunit',
                         data: {'month':month},
                         success: function(unitdata){
                             var unit_values=JSON.parse(unitdata);
@@ -108,7 +109,7 @@ require_once "EI_HDR.php";
                     var month=$('#DDE_lb_monthselect').val();
                     $.ajax({
                         type: "POST",
-                        url: "<?php echo site_url('Ctrl_Finance_Extract_Deposit_Pdf/DDE_customername'); ?>",
+                        url: ctrl_DDExtract_url+'/DDE_customername',
                         data: {'unit':unit,'month':month},
                         success: function(custdata){
                             var cust_values=JSON.parse(custdata);
@@ -170,7 +171,7 @@ require_once "EI_HDR.php";
                         $(".preloader").show();
                         $.ajax({
                             type: "POST",
-                            url: "<?php echo site_url('Ctrl_Finance_Extract_Deposit_Pdf/DDE_getcustid'); ?>",
+                            url: ctrl_DDExtract_url+'/DDE_getcustid',
                             data: {'name':name,'DDE_unit':DDE_unit,'DDE_month':DDE_month},
                             success: function(custdtldata){
                                 var custdtl_values=JSON.parse(custdtldata);
@@ -199,7 +200,7 @@ require_once "EI_HDR.php";
                 $('#DDE_emailtable').hide();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Finance_Extract_Deposit_Pdf/DDE_Dep_Exct_recversionfun'); ?>",
+                    url: ctrl_DDExtract_url+'/DDE_Dep_Exct_recversionfun',
                     data: {'DDE_namesplit':DDE_name.split(' ')[2],'DDE_unit':DDE_unit,'DDE_month':DDE_month,'DDE_name':DDE_name},
                     success: function(recverdata){
                         var recver_values=JSON.parse(recverdata);
@@ -235,7 +236,7 @@ require_once "EI_HDR.php";
                 var formelement=$("#DD_Extractionform").serialize();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Finance_Extract_Deposit_Pdf/DDE_Dep_Exct_submit'); ?>",
+                    url: ctrl_DDExtract_url+'/DDE_Dep_Exct_submit',
                     data: formelement,
                     success: function(submitdata){
                         var submit_values=JSON.parse(submitdata);
@@ -374,7 +375,7 @@ require_once "EI_HDR.php";
                 var name=$('#DDE_lb_customerselect').val();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Finance_Extract_Deposit_Pdf/DDE_Dep_Exct_recversionfun'); ?>",
+                    url: ctrl_DDExtract_url+'/DDE_Dep_Exct_recversionfun',
                     data: {'DDE_namesplit':getid,'DDE_unit':DDE_unit,'DDE_month':DDE_month,'DDE_name':name},
                     success: function(recverdata){
                         var recver_values=JSON.parse(recverdata);
@@ -403,7 +404,7 @@ require_once "EI_HDR.php";
                 $('#DDE_recvertable').hide();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo site_url('Ctrl_Finance_Extract_Deposit_Pdf/DDE_Dep_Exct_recversionfun'); ?>",
+                    url: ctrl_DDExtract_url+'/DDE_Dep_Exct_recversionfun',
                     data: {'DDE_namesplit':getid,'DDE_unit':DDE_unit,'DDE_month':DDE_month,'DDE_name':name},
                     success: function(recverdata){
                         var recver_values=JSON.parse(recverdata);

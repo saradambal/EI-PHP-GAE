@@ -1,5 +1,5 @@
 <?php
-require_once "EI_HDR.php";
+require_once('application/libraries/EI_HDR.php');
 ?>
 <html>
 <head>
