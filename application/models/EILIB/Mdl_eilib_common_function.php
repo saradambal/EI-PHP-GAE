@@ -6,6 +6,7 @@
 * Time: 5:59 PM
 */
 //******************************************COMMON FUNCTION********************************************//
+//VER 5.9-SD:05/06/2015 ED:05/06/2015,ADDED NEW SS CREATION,FILE DELETE,FILE UPLOAD,CRUL FUNCTIONS DONE BY KUMAR.R
 //DONE BY:SARADAMBAL
 //VER 5.8 -SD:04/06/2015 ED:04/06/2015,ADDED FUNCTION TO GET USERSTAMP AND REMOVED PARAMS FOR SERVICE DOCUMENT
 //VER 5.5-SD:03/06/2015 ED:03/06/2015,REMOVED QUARTER CALCULATION
@@ -1070,10 +1071,92 @@ public  function CUST_FileId_invoiceTem()
     $this->db->where("CCN_ID=11");
     return $this->db->get()->row()->CCN_DATA;
 }
+    //**************GET LEASE PERIOD DETAILS ******************//
 public function getActive_Customer_Recver_Dates($unit,$customer,$Recever)
 {
     $LPselectquery="SELECT CLP.CLP_STARTDATE,CLP.CLP_ENDDATE,CLP.CLP_PRETERMINATE_DATE FROM CUSTOMER_LP_DETAILS CLP,CUSTOMER_ENTRY_DETAILS CED,UNIT U WHERE CED.CUSTOMER_ID=CLP.CUSTOMER_ID AND CED.UNIT_ID = U.UNIT_ID AND CLP.CED_REC_VER = CED.CED_REC_VER AND CED.CUSTOMER_ID='$customer' AND CED.CED_REC_VER='$Recever' AND U.UNIT_NO='$unit'";
     $resultset=$this->db->query($LPselectquery);
     return $resultset->result();
 }
+    //********NEW SPREADSHEET CREATION*************//
+    public  function NewSpreadsheetCreation($service, $title, $description, $parentId) {
+        $file = new Google_Service_Drive_DriveFile();
+        $file->setTitle($title);
+        $file->setDescription($description);
+        $file->setMimeType('application/vnd.google-apps.spreadsheet');
+        if ($parentId != null) {
+            $parent = new Google_Service_Drive_ParentReference();
+            $parent->setId($parentId);
+            $file->setParents(array($parent));
+        }
+        try {
+            $createdFile = $service->files->insert($file, array(
+                'mimeType' => 'application/vnd.google-apps.spreadsheet',//$mimeType,
+                'convert' => TRUE,
+                'uploadType'=>'resumable'
+            ));
+            return $createdFile->getId();
+        }
+        catch (Exception $e) {
+            print "An error occurred: " . $e->getMessage();
+        }
+    }
+    //*************CUSTOMER FILE UPLOAD **************//
+    public function Customer_FileUpload($service, $title, $description, $parentId,$mimeType,$uploadfilename)
+    {
+        $file = new Google_Service_Drive_DriveFile();
+        $file->setTitle($title);
+        $file->setDescription($description);
+        $file->setMimeType($mimeType);
+        if ($parentId != null) {
+            $parent = new Google_Service_Drive_ParentReference();
+            $parent->setId($parentId);
+            $file->setParents(array($parent));
+        }
+        try
+        {
+            $data =file_get_contents($uploadfilename);
+            $createdFile = $service->files->insert($file, array(
+                'data' => $data,
+                'mimeType' => 'application/pdf',
+                'uploadType' => 'media',
+            ));
+            $fileid = $createdFile->getId();
+        }
+        catch (Exception $e)
+        {
+            $file_flag=0;
+        }
+        return $fileid;
+    }
+    //**************CRUL CALLING FUNCTION***************//
+    public function Func_curl($data)
+    {
+        $url =$this->getUrlAccessGasScript();
+        $ch = curl_init();
+        $data = http_build_query($data);
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($ch, CURLOPT_POST, true);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+        curl_setopt($ch, CURLOPT_ENCODING, "gzip,deflate");
+        try {
+            $response = curl_exec($ch);
+            return $response;
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+        curl_close($ch);
+    }
+    //*****************FILE DELETE***********************//
+    function DeleteFile($service, $fileId) {
+        try {
+            $service->files->delete($fileId);
+        }
+        catch (Exception $e) {
+            print "An error occurred: " . $e->getMessage();
+        }
+    }
 }
