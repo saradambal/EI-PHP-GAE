@@ -1,10 +1,11 @@
 <!--********************************************PAYMENT SEARCH /UPDATE / DELETE********************************************-->
 <!--*******************************************FILE DESCRIPTION***************************************************-->
+<!--VER 6.6 -SD:05/06/2015 ED:05/06/2015 GETTING HEADER FILE FROM LIB AND UPDATED PAYMENT EXTRACT SCRIPT-->
 <!--VER 0.02- SD:04/06/2015 ED:04/06/2015,changed Controller Model and View names in ver0.02-->
 <!--VER 0.01-INITIAL VERSION-SD:11/05/2015 ED:12/05/2015 in ver0.01-->
 <html>
 <head>
-    <?php include 'EI_HDR.php'; ?>
+    <?php require_once('application/libraries/EI_HDR.php'); ?>
 </head>
 <script>
     $(document).ready(function() {
@@ -874,11 +875,9 @@
                 url: controller_url+"PaymentsExtractDetails",
                 data:{Unit:extractunitno,Customer:extractcustomername},
                 success: function(data){
-                    alert(data)
-                    if(data==1)
+                    if(data=='Success')
                     {
-                        show_msgbox("PAYMENT SEARCH AND UPDATE",Errormsg[1].EMC_DATA,"success",false);
-                        $('#Payment_Search_DataTable').hide();
+                        show_msgbox("PAYMENT SEARCH AND UPDATE",'SELECTED CUSTOMER DETAILS EXTRACTED IN SPREADSHEET',"success",false);
                     }
                     else
                     {

@@ -2,9 +2,10 @@
 error_reporting(0);
 class Mdl_customer_creation extends CI_Model
 {
-        public function Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters,$service,$cal)
+        public function Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters)
         {
             try {
+                set_time_limit(0);
                 $FirstName = $_POST['CCRE_FirstName'];
                 $Lastname = $_POST['CCRE_LastName'];
                 $CompanyName = $_POST['CCRE_CompanyName'];
@@ -30,33 +31,32 @@ class Mdl_customer_creation extends CI_Model
                 $E_endtime = $_POST['CCRE_EDEndtime'];
                 $NoticePeriod = $_POST['CCRE_NoticePeriod'];
                 $NoticePeriodDate = $_POST['CCRE_NoticePeriodDate'];
-                $Quaterlyfee = $_POST['CCRE_Quaterlyfee'];
-                $Fixedaircon_fee = $_POST['CCRE_Fixedaircon_fee'];
-                $ElectricitycapFee = $_POST['CCRE_ElectricitycapFee'];
-                $Curtain_DrycleanFee = $_POST['CCRE_Curtain_DrycleanFee'];
-                $CheckOutCleanFee = $_POST['CCRE_CheckOutCleanFee'];
-                $DepositFee = $_POST['CCRE_DepositFee'];
+                $Quaterlyfee = $_POST['CCRE_Quaterlyfee'];if($Quaterlyfee==''){$InvQuaterlyfee='null';}else{$InvQuaterlyfee=$Quaterlyfee;}
+                $Fixedaircon_fee = $_POST['CCRE_Fixedaircon_fee'];if($Fixedaircon_fee==''){$InvFixedaircon_fee='null';}else{$InvFixedaircon_fee=$Fixedaircon_fee;}
+                $ElectricitycapFee = $_POST['CCRE_ElectricitycapFee'];if($ElectricitycapFee==''){$InvElectricitycapFee='null';}else{$InvElectricitycapFee=$ElectricitycapFee;}
+                $Curtain_DrycleanFee = $_POST['CCRE_Curtain_DrycleanFee'];if($Curtain_DrycleanFee==''){$InvCurtain_DrycleanFee='null';}else{$InvCurtain_DrycleanFee=$Curtain_DrycleanFee;}
+                $CheckOutCleanFee = $_POST['CCRE_CheckOutCleanFee'];if($CheckOutCleanFee==''){$InvCheckOutCleanFee='null';}else{$InvCheckOutCleanFee=$CheckOutCleanFee;}
+                $DepositFee = $_POST['CCRE_DepositFee'];if($DepositFee==''){$InvDepositFee='null';}else{$InvDepositFee=$DepositFee;}
                 $Rent = $_POST['CCRE_Rent'];
-                $ProcessingFee = $_POST['CCRE_ProcessingFee'];
+                $ProcessingFee = $_POST['CCRE_ProcessingFee'];if($ProcessingFee==''){$InvProcessingFee='null';}else{$InvProcessingFee=$ProcessingFee;}
                 $Comments = $this->db->escape_like_str($_POST['CCRE_Comments']);
                 $CardArray = $_POST['temptex'];
                 $Option = $_POST['AccessCard'];
                 $waived = $_POST['CCRE_process_waived'];
                 if ($waived == 'on') {
                     $processwaived = 'X';
+                    $Invwaived='true';
                 } else {
                     $processwaived = 'false';
-                }
-                if ($waived == 'on') {
-                    $process_waived = 'true';
-                } else {
-                    $process_waived = '';
+                    $Invwaived='false';
                 }
                 $prorated = $_POST['CCRE_Rent_Prorated'];
                 if ($prorated == 'on') {
                     $Prorated = 'X';
+                    $InvProrated='true';
                 } else {
                     $Prorated = '';
+                    $InvProrated='false';
                 }
                 if ($prorated == 'on') {
                     $Rent_Prorated = 'true';
@@ -118,7 +118,7 @@ class Mdl_customer_creation extends CI_Model
                 $this->db->query('DROP TABLE IF EXISTS ' . $temptable);
                 $Confirm_query = 'SELECT @CUSTOMER_SUCCESSFLAG AS CONFIRM';
                 $Confirm_result = $this->db->query($Confirm_query);
-                $Confirm_Meessage = $Confirm_result->row()->CONFIRM;
+                $Confirm_Meessage =$Confirm_result->row()->CONFIRM;
                 $Customerid_query = 'SELECT CUSTOMER_ID FROM CUSTOMER ORDER BY CUSTOMER_ID DESC LIMIT 1';
                 $Customer_result = $this->db->query($Customerid_query);
                 $Customerid = $Customer_result->row()->CUSTOMER_ID;
@@ -126,78 +126,64 @@ class Mdl_customer_creation extends CI_Model
                 $filename = $_FILES['CC_fileupload']['name'];
                 $filename = $Uint . '-' . $Customerid . '-' . $FirstName . ' ' . $Lastname;
                 $mimetype = 'application/pdf';
+                $this->load->model('EILIB/Mdl_eilib_common_function');
+                $service = $this->Mdl_eilib_common_function->get_service_document();
                 if ($filetempname != '')
                 {
-                    $this->insertFile($service, $filename, 'PersonalDetails', '0B1AhtyM5U79zREp5QkpiYmphODg', $mimetype, $filetempname);
+                    $this->Mdl_eilib_common_function->Customer_FileUpload($service, $filename, 'PersonalDetails', '0B1AhtyM5U79zREp5QkpiYmphODg', $mimetype, $filetempname);
                 }
                 if ($Confirm_Meessage==1)
                 {
                     $this->load->model('EILIB/Mdl_eilib_calender');
-                    $this->Calender->CUST_customercalendercreation($cal, $Customerid, $StartDate, $S_starttime, $S_endtime, $EndDate, $E_starttime, $E_endtime, $FirstName, $Lastname, $Mobile, $IntlMobile, $Officeno, $Emailid, $Uint, $RoomType, '');
-                    if ($CCoption == 4 || $CCoption == 5 || $CCoption == 6) {
-                        $this->load->model('EILIB/Mdl_eilib_common_function');
+                    $cal = $this->Mdl_eilib_calender->createCalendarService();
+                    $this->Mdl_eilib_calender->CUST_customercalendercreation($cal, $Customerid, $StartDate, $S_starttime, $S_endtime, $EndDate, $E_starttime, $E_endtime, $FirstName, $Lastname, $Mobile, $IntlMobile, $Officeno, $Emailid, $Uint, $RoomType, '');
+                    if ($CCoption == 4 || $CCoption == 5 || $CCoption == 6)
+                    {
                         $Invoiceandcontractid = $this->Mdl_eilib_common_function->CUST_invoice_contractreplacetext();
                         $Docowner = $this->Mdl_eilib_common_function->CUST_documentowner($UserStamp);
                         $this->load->model('EILIB/Mdl_eilib_invoice_contract');
                         if ($CCoption == 4)
                         {
-                            $InvoiceId = $this->Mdl_eilib_invoice_contract->CUST_invoice($UserStamp, $service, $Uint, $Name, $CompanyName, $Invoiceandcontractid[9], $Invoiceandcontractid[0], $Invoiceandcontractid[1], $Rent, $ProcessingFee, $DepositFee, $Startdate, $Enddate, $RoomType, $Leaseperiod, $Rent_Prorated, $Sendmailid, $Docowner, 'CREATION', $process_waived, $Customerid);
-                            return $InvoiceId;
+                            $InvoiceId = $this->Mdl_eilib_invoice_contract->CUST_invoice($UserStamp, $service, $Uint, $Name, $CompanyName, $Invoiceandcontractid[9], $Invoiceandcontractid[0], $Invoiceandcontractid[1], $Rent, $ProcessingFee, $DepositFee, $StartDate, $EndDate, $RoomType, $Leaseperiod, $InvProrated, $Sendmailid, $Docowner, 'CREATION',$Invwaived, $Customerid);
+                            $ReturnValue=array($Confirm_Meessage,$InvoiceId);
+                            return $ReturnValue;
                         }
                         else if ($CCoption == 5)
                         {
-                            $ContractId = $this->Mdl_eilib_invoice_contract->CUST_contract($service, $Uint, $Startdate, $Enddate, $CompanyName, $FirstName . ' ' . $Lastname, $NoticePeriod, $PassportNo, $PassportDate, $EpNo, $EPDate, $NoticePeriodDate, $Leaseperiod, $cardno, $Rent, $Quaterlyfee, $Fixedaircon_fee, $ElectricitycapFee, $Curtain_DrycleanFee, $CheckOutCleanFee, $ProcessingFee, $DepositFee, $process_waived, $RoomType, $Rent_Prorated, 'CREATION', $Sendmailid, $Docowner);
+                            $ContractId = $this->Mdl_eilib_invoice_contract->CUST_contract($service,$Uint,$Startdate,$Enddate,$CompanyName,$Name,$NoticePeriod,$PassportNo,$PassportDate,$EpNo,$EPDate,$NoticePeriodDate,$Leaseperiod,$cardno,$Rent,$InvQuaterlyfee,$InvFixedaircon_fee,$InvElectricitycapFee,$InvCurtain_DrycleanFee,$InvCheckOutCleanFee,$InvProcessingFee,$InvDepositFee,$Invwaived,$RoomType,$InvProrated,'CREATION',$Sendmailid,$Docowner);
+                            $ReturnValue=array($Confirm_Meessage,$ContractId);
+                            return $ReturnValue;
                         }
                         else if ($CCoption == 6)
                         {
-                            $InvoiceId = $this->Mdl_eilib_invoice_contract->CUST_invoice($UserStamp, $service, $Uint, $FirstName . ' ' . $Lastname, $CompanyName, $Invoiceandcontractid[9], $Invoiceandcontractid[0], $Invoiceandcontractid[1], $Rent, $ProcessingFee, $DepositFee, $Startdate, $Enddate, $RoomType, $Leaseperiod, $Rent_Prorated, $Sendmailid, $Docowner, 'CREATION', $process_waived, $Customerid);
-                            $ContractId = $this->Mdl_eilib_invoice_contract->CUST_contract($service, $Uint, $Startdate, $Enddate, $CompanyName, $FirstName . ' ' . $Lastname, $NoticePeriod, $PassportNo, $PassportDate, $EpNo, $EPDate, $NoticePeriodDate, $Leaseperiod, $cardno, $Rent, $Quaterlyfee, $Fixedaircon_fee, $ElectricitycapFee, $Curtain_DrycleanFee, $CheckOutCleanFee, $ProcessingFee, $DepositFee, $process_waived, $RoomType, $Rent_Prorated, 'CREATION', $Sendmailid, $Docowner);
+                            $InvoiceId = $this->Mdl_eilib_invoice_contract->CUST_invoice($UserStamp, $service, $Uint, $Name, $CompanyName, $Invoiceandcontractid[9], $Invoiceandcontractid[0], $Invoiceandcontractid[1], $Rent, $ProcessingFee, $DepositFee, $StartDate, $EndDate, $RoomType, $Leaseperiod, $InvProrated, $Sendmailid, $Docowner, 'CREATION',$Invwaived, $Customerid);
+                            $ContractId = $this->Mdl_eilib_invoice_contract->CUST_contract($service,$Uint,$Startdate,$Enddate,$CompanyName,$Name,$NoticePeriod,$PassportNo,$PassportDate,$EpNo,$EPDate,$NoticePeriodDate,$Leaseperiod,$cardno,$Rent,$InvQuaterlyfee,$InvFixedaircon_fee,$InvElectricitycapFee,$InvCurtain_DrycleanFee,$InvCheckOutCleanFee,$InvProcessingFee,$InvDepositFee,$Invwaived,$RoomType,$InvProrated,'CREATION',$Sendmailid,$Docowner);
+                            $ReturnValue=array($Confirm_Meessage,$InvoiceId,$ContractId);
+                            return $ReturnValue;
                         }
+                        $this->db->query('COMMIT');
                     }
-                    return $Confirm_Meessage;
+                    else
+                    {
+                        $this->db->query('COMMIT');
+                        $ReturnValue=array($Confirm_Meessage);
+                        return $ReturnValue;
+                    }
                 }
                 else
                 {
-                    return $Confirm_Meessage;
+                    $ReturnValue=array($Confirm_Meessage);
+                    return $ReturnValue;
                 }
             }
             catch (Exception $e)
             {
+                $this->db->query('ROLLBACK');
                 return $e->getMessage();
 
             }
         }
-   public function insertFile($service, $title, $description, $parentId,$mimeType,$uploadfilename)
-    {
-        $file = new Google_Service_Drive_DriveFile();
-        $file->setTitle($title);
-        $file->setDescription($description);
-        $file->setMimeType($mimeType);
-        if ($parentId != null) {
-            $parent = new Google_Service_Drive_ParentReference();
-            $parent->setId($parentId);
-            $file->setParents(array($parent));
-        }
-        try
-        {
-            $data =file_get_contents($uploadfilename);
-            $createdFile = $service->files->insert($file, array(
-                'data' => $data,
-                'mimeType' => 'application/pdf',
-                'uploadType' => 'media',
-            ));
-            $fileid = $createdFile->getId();
-       }
-        catch (Exception $e)
-        {
-            $file_flag=0;
-
-        }
-        return $fileid;
-
-    }
-
-    public function getRecheckinCustomer($unit)
+      public function getRecheckinCustomer($unit)
         {
             $this->db->select("CUSTOMER_ID,CUSTOMERNAME,CED_REC_VER");
             $this->db->order_by("CUSTOMERNAME", "ASC");

@@ -1,7 +1,7 @@
 <?php
 error_reporting(0);
-require_once 'google/appengine/api/mail/Message.php';
-use google\appengine\api\mail\Message;
+//require_once 'google/appengine/api/mail/Message.php';
+//use google\appengine\api\mail\Message;
 Class Ctrl_Finance_Outstanding_Payee_list extends CI_Controller
 {
     function __construct() {
@@ -64,7 +64,8 @@ Class Ctrl_Finance_Outstanding_Payee_list extends CI_Controller
                 $message1->setHtmlBody($mailbody);
                 $message1->send();
                 echo json_encode('ACTIVECCLIST');
-            }
+//                  echo json_encode($confirm_message);
+         }
         }
         catch (\InvalidArgumentException $e)
         {

@@ -1,6 +1,11 @@
+<!--********************************************CUSTOMER CREATION *******************************************-->
+<!--*******************************************FILE DESCRIPTION***************************************************-->
+<!--VER 6.6   SD:05/06/2015 ED:05/06/2015,added invoice and contract call function and file upload --->
+<!--VER 0.02- SD:04/06/2015 ED:04/06/2015,changed Controller Model and View names in ver0.02-->
+<!--VER 0.01-INITIAL VERSION-SD:11/05/2015 ED:12/05/2015 in ver0.01-->
 <html>
 <head>
-    <?php include 'EI_HDR.php'; ?>
+    <?php require_once('application/libraries/EI_HDR.php'); ?>
 </head>
 <script>
 $(document).ready(function() {
@@ -22,13 +27,11 @@ $(document).ready(function() {
     //******************CUSTOMER INITIAL DATA LODING***********************//
     var timearray;
     var errormsg
+    var controller_url="<?php echo base_url(); ?>" + '/index.php/CUSTOMER/CUSTOMER/Ctrl_Customer_Creation/' ;
     $.ajax({
         type: "POST",
-        url: "/index.php/Ctrl_Customer_Creation/Customer_Initaildatas",
-        data: {
-            "Formname": 'CustomerCreation',
-            "ErrorList": '1,2,6,33,34,35,36,37,321,324,339,342,343,344,345,346,347,348,400,443,444,458,459,460,461'
-        },
+        url: controller_url+"Customer_Initaildatas",
+        data: {"Formname": 'CustomerCreation',"ErrorList": '1,2,6,33,34,35,36,37,321,324,339,342,343,344,345,346,347,348,400,443,444,458,459,460,461'},
         success: function (data) {
             $('.preloader').hide();
             var value_array = JSON.parse(data);
@@ -425,7 +428,7 @@ $(document).ready(function() {
             $('.preloader').show();
             $.ajax({
                 type: "POST",
-                url: "/index.php/Ctrl_Customer_Creation/CustomerRoomTypeLoad",
+                url: controller_url+"CustomerRoomTypeLoad",
                 data: {"Unit": Unit},
                 success: function (data) {
                     var value_array = JSON.parse(data);
@@ -620,7 +623,7 @@ $(document).ready(function() {
                 var Unit = $('#CCRE_UnitNo').val();
                 $.ajax({
                     type: "POST",
-                    url: "/index.php/Ctrl_Customer_Creation/UnitCardNumbers",
+                    url: controller_url+"UnitCardNumbers",
                     data: {"Unit": Unit},
                     success: function (data) {
                         var value_array = JSON.parse(data);
@@ -970,8 +973,9 @@ $(document).ready(function() {
                 }
             }
         }
+//        var custurl=controller_url+"UnitCardNumbers",
         var option = 'SAVE';
-        xmlhttp.open("POST", "/index.php/Ctrl_Customer_Creation/CustomerCreationSave", true);
+        xmlhttp.open("POST",controller_url+"CustomerCreationSave", true);
         xmlhttp.send(new FormData(FormElements));
     });
     $(document).on('change blur', '.Customernamechange', function () {
@@ -1033,7 +1037,7 @@ $(document).ready(function() {
         if (startdate != '' && enddate != '' && Rent != '') {
             $.ajax({
                 type: "POST",
-                url: "/index.php/Ctrl_Customer_Creation/Prorated_check",
+                url: controller_url+"Prorated_check",
                 data: {SD: startdate, ED: enddate},
                 success: function (data) {
                     if (data != 'true') {

@@ -1,12 +1,20 @@
+<!--********************************************CHEQUE ENTRY AND SEARCH UPDATE******************************************-->
+<!--*******************************************FILE DESCRIPTION***************************************************-->
+<!--VER 6.6 -SD:05/06/2015 ED:05/06/2015 GETTING HEADER FILE FROM LIB-->
+<!--VER 0.02- SD:04/06/2015 ED:04/06/2015,changed Controller Model and View names t in ver0.02-->
+<!--VER 0.01-INITIAL VERSION-SD:21/05/2015 ED:21/05/2015 in ver0.01-->
 <html>
 <head>
-    <?php include 'EI_HDR.php'; ?>
+    <?php
+    require_once('application/libraries/EI_HDR.php');
+    ?>
 </head>
 <script>
     var ErrorControl ={AmountCompare:'InValid'}
     $(document).ready(function() {
         $('#CHEQUE_ENTRY_ta_comments').autogrow({onInitialize: true});
         $(".preloader").hide();
+        var controller_url="<?php echo base_url(); ?>" + '/index.php/FINANCE/OCBC/Ctrl_Ocbc_Cheque_Entry_Search_Update/' ;
         var Entry_errormsg=[];
         $("#CHEQUE_ENTRY_tb_chequeno").doValidation({rule:'numbersonly',prop:{realpart:6,leadzero:true}});
         $(".autosize").doValidation({rule:'alphanumeric',prop:{whitespace:true,autosize:true}});
@@ -33,7 +41,7 @@
                 $("#Cheque_Entry_btn_savebutton").attr("disabled", "disabled");
                 $.ajax({
                     type: "POST",
-                    url: '/index.php/Ctrl_Ocbc_Cheque_Entry_Search_Update/Cheque_Entry_InitialDataLoad',
+                    url: controller_url+"Cheque_Entry_InitialDataLoad",
                     data:{"Formname":'Cheque_Entry',"ErrorList":'2,3,400'},
                     success: function(data){
                         var value_array=JSON.parse(data);
@@ -54,7 +62,7 @@
                $('#Cheque_Search_Update_Form').show();
                 $.ajax({
                     type: "POST",
-                    url: '/index.php/Ctrl_Ocbc_Cheque_Entry_Search_Update/Cheque_Search_InitialDataLoad',
+                    url: controller_url+"Cheque_Search_InitialDataLoad",
                     data:{"ErrorList":'1,2,4,45,247,385,401'},
                     success: function(data){
                         var value_array=JSON.parse(data);
@@ -91,7 +99,7 @@
             var FormElements=$('#Form_Cheque_entry').serialize();
             $.ajax({
                 type: "POST",
-                url: '/index.php/Ctrl_Ocbc_Cheque_Entry_Search_Update/Cheque_Entry_Save',
+                url: controller_url+"Cheque_Entry_Save",
                 data:FormElements,
                 success: function(data){
                     var value_array=JSON.parse(data);
@@ -175,7 +183,7 @@
             {
                 $.ajax({
                     type: "POST",
-                    url: '/index.php/Ctrl_Ocbc_Cheque_Entry_Search_Update/ChequeNo',
+                    url: controller_url+"ChequeNo",
                     success: function(data){
                         var value_array=JSON.parse(data);
                         var appenddata='<BR><h4 style="color:#498af3;">CHEQUE NUMBER SEARCH</h4><BR>';
@@ -207,7 +215,7 @@
             {
                 $.ajax({
                     type: "POST",
-                    url: '/index.php/Ctrl_Ocbc_Cheque_Entry_Search_Update/ChequeUnit',
+                    url: controller_url+"ChequeUnit",
                     success: function(data){
                         var value_array=JSON.parse(data);
                         var appenddata='<BR><h4 style="color:#498af3;">UNIT SEARCH</h4><BR>';
@@ -374,7 +382,7 @@
             $('#Tableheader').text(title);
             $.ajax({
                 type: "POST",
-                url: '/index.php/Ctrl_Ocbc_Cheque_Entry_Search_Update/Cheque_SearchOption',
+                url: controller_url+"Cheque_SearchOption",
                 data:data,
                 success: function(data){
                     var value_array=JSON.parse(data);
@@ -567,7 +575,7 @@
             var data={"ID":selectedrowid,"cheque_date":cheque_date,"cheque_no":cheque_no,"cheque_to":cheque_to,"check_for":check_for,"check_amount":check_amount,"status":status,"debiteddate":debiteddate,"unit":unit,"comments":comments};
             $.ajax({
                 type: "POST",
-                url: "/index.php/Ctrl_Ocbc_Cheque_Entry_Search_Update/Cheque_Updation_Details",
+                url: controller_url+"Cheque_Updation_Details",
                 data:data,
                 success: function(msg){
                     var value_array=JSON.parse(msg);

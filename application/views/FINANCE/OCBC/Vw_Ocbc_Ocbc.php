@@ -1,6 +1,11 @@
+<!--********************************************OCBC*******************************************-->
+<!--*******************************************FILE DESCRIPTION***************************************************-->
+<!--VER 6.6 -SD:05/06/2015 ED:05/06/2015 GETTING HEADER FILE FROM LIB-->
+<!--VER 0.02- SD:04/06/2015 ED:04/06/2015,changed Controller Model and View names AND DT alignment in ver0.02-->
+<!--VER 0.01-INITIAL VERSION-SD:08/05/2015 ED:08/05/2015 in ver0.01-->
 <html>
 <head>
-    <?php include 'EI_HDR.php'; ?>
+    <?php require_once('application/libraries/EI_HDR.php'); ?>
 </head>
 <script>
     $(document).ready(function() {
@@ -48,6 +53,7 @@
             }
         }
         var errormsg;
+        //***********SUBMIT BUTTON ********************//
         $(document).on('click','#OCBC_btn_submitbutton',function() {
             var Forperiod=$("#Fin_OCBC_Forperiod").val();
             $('.preloader').show();

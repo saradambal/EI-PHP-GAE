@@ -67,7 +67,7 @@ class Mdl_finance_outstanding_payee_list extends CI_Model
                     return $returnMessage;
                 } else {
                     $flag = 1;
-//                    set_time_limit(0);
+                    set_time_limit(0);
                     $period = $_POST['FIN_OPL_db_period'];
                     $activecclist = "CALL SP_ACTIVE_CUSTOMERLIST('$period','$UserStamp',@TEMP_OPL_ACTIVECUSTOMER_TABLE,@TEMP_OPL_SORTEDACTIVECUSTOMER_TABLE)";
                     $this->db->query($activecclist);
@@ -87,7 +87,8 @@ class Mdl_finance_outstanding_payee_list extends CI_Model
                     $this->load->library('Google');
                     $this->load->model('EILIB/Mdl_eilib_common_function');
                     $service = $this->Mdl_eilib_common_function->get_service_document();
-                    $FILEID=$this->insertFile($service, 'ACTIVE CC LIST', 'CUSTOMER_DETAILS', $folderid);
+                    $this->load->model('EILIB/Mdl_eilib_common_function');
+                    $FILEID=$this->Mdl_eilib_common_function->NewSpreadsheetCreation($service, 'ACTIVE CC LIST', 'CUSTOMER_DETAILS', $folderid);
                     $ActiveCustomerList = array('ACtiveflag'=>10,'header'=>$headerdata,"Rows"=>$numrows,"period"=>$period,"SortRows"=>$sortnumrows,"Fileid"=>$FILEID);
                     $i = 0;
                     foreach ($result1->result_array() as $key => $value) {
@@ -127,7 +128,7 @@ class Mdl_finance_outstanding_payee_list extends CI_Model
                     }
                     $this->db->query('DROP TABLE IF EXISTS ' . $activelisttablename);
                     $this->db->query('DROP TABLE IF EXISTS ' . $sortactivelisttablename);
-                    $Returnvalue=$this->Func_curl($ActiveCustomerList);
+                    $Returnvalue=$this->Mdl_eilib_common_function->Func_curl($ActiveCustomerList);
                     $temptable = array($Returnvalue, $Username, $Maildate);
                     return $temptable;
                 }
@@ -138,47 +139,5 @@ class Mdl_finance_outstanding_payee_list extends CI_Model
 
             }
         }
-    public function Func_curl($data)
-    {
-        $url = "https://script.google.com/macros/s/AKfycbyHPUsdw6HUVwm4ihnupskKosYuta4sPkCcc8n60tKorKopUKM/exec";
-        $ch = curl_init();
-        $data = http_build_query($data);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
-        curl_setopt($ch, CURLOPT_ENCODING, "gzip,deflate");
-        try {
-            $response = curl_exec($ch);
-            return $response;
-        } catch (Exception $e) {
-            return $e->getMessage();
-        }
-        curl_close($ch);
-    }
-    public  function insertFile($service, $title, $description, $parentId) {
-        $file = new Google_Service_Drive_DriveFile();
-        $file->setTitle($title);
-        $file->setDescription($description);
-        $file->setMimeType('application/vnd.google-apps.spreadsheet');
-        if ($parentId != null) {
-            $parent = new Google_Service_Drive_ParentReference();
-            $parent->setId($parentId);
-            $file->setParents(array($parent));
-        }
-        try {
-            $createdFile = $service->files->insert($file, array(
-                'mimeType' => 'application/vnd.google-apps.spreadsheet',//$mimeType,
-                'convert' => TRUE,
-                'uploadType'=>'resumable'
-            ));
-            return $createdFile->getId();
-        }
-        catch (Exception $e) {
-            print "An error occurred: " . $e->getMessage();
-        }
-    }
 
 }

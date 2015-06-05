@@ -1,15 +1,19 @@
-<?php
-require_once "EI_HDR.php";
-?>
+<!--********************************************MODEL ENTRY AND SEARCH UPDATE******************************************-->
+<!--*******************************************FILE DESCRIPTION***************************************************-->
+<!--VER 6.6 -SD:05/06/2015 ED:05/06/2015 GETTING HEADER FILE FROM LIB-->
+<!--VER 0.02- SD:04/06/2015 ED:04/06/2015,changed Controller Model and View names t in ver0.02-->
+<!--VER 0.01-INITIAL VERSION-SD:23/05/2015 ED:23/05/2015 in ver0.01-->
+<?php require_once('application/libraries/EI_HDR.php'); ?>
 <script>
     $(document).ready(function(){
         var Model_Errormsg;
         var Allmodels;
         var allmodelsarray=[];
+        var controller_url="<?php echo base_url(); ?>" + '/index.php/FINANCE/OCBC/Ctrl_Ocbc_Model_Entry_Search_Update/' ;
         $(".autosize").doValidation({rule:'general',prop:{whitespace:true,autosize:true}});
         $.ajax({
             type: "POST",
-            url: '/index.php/Ctrl_Ocbc_Model_Entry_Search_Update/Model_initialdatas',
+            url: controller_url+"Model_initialdatas",
             data:{ErrorList:'3,4,5'},
             success: function(data){
                 $('.preloader').hide();
@@ -118,7 +122,7 @@ require_once "EI_HDR.php";
             {
                 $.ajax({
                     type: "POST",
-                    url: '/index.php/Ctrl_Ocbc_Model_Entry_Search_Update/ModelnameUpdate',
+                    url: controller_url+"ModelnameUpdate",
                     data:data,
                     success: function(data){
                         var values_array=JSON.parse(data);
@@ -148,7 +152,7 @@ require_once "EI_HDR.php";
             var Rowid=id[1];
             $.ajax({
                 type: "POST",
-                url: '/index.php/Ctrl_Ocbc_Model_Entry_Search_Update/ModelnameDelete',
+                url: controller_url+"ModelnameDelete",
                 data:{Data:Rowid},
                 success: function(data){
                     var value_array=JSON.parse(data);
@@ -199,7 +203,7 @@ require_once "EI_HDR.php";
             var modelname=$('#EntryModelName').val();
             $.ajax({
                 type: "POST",
-                url: '/index.php/Ctrl_Ocbc_Model_Entry_Search_Update/ModelnameInsert',
+                url: controller_url+"ModelnameInsert",
                 data:{Data:modelname},
                 success: function(data){
                 var valuesarray=JSON.parse(data);

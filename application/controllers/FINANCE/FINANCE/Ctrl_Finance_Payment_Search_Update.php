@@ -24,6 +24,7 @@ Class Ctrl_Finance_Payment_Search_Update extends CI_Controller
     public function PaymentsearchData()
     {
         $UserStamp=$this->Mdl_eilib_common_function->getSessionUserStamp();
+        $timeZoneFormat= $this->Mdl_eilib_common_function->getTimezone();
          $SearchOption=$_POST['Option'];
          $unit=$_POST['Unit'];
          $Customer=$_POST['Customer'];
@@ -31,7 +32,7 @@ Class Ctrl_Finance_Payment_Search_Update extends CI_Controller
          $Todate=$_POST['Todate'];
          $fromamount=$_POST['Fromamount'];
          $toamount=$_POST['Toamount'];
-         $searchResults=$this->Mdl_finance_payments_entry_active_customer->getSearchResults($SearchOption,$unit,$Customer,$Fromdate,$Todate,$fromamount,$toamount,$UserStamp);
+         $searchResults=$this->Mdl_finance_payments_entry_active_customer->getSearchResults($SearchOption,$unit,$Customer,$Fromdate,$Todate,$fromamount,$toamount,$UserStamp,$timeZoneFormat);
          echo json_encode($searchResults);
     }
     public function UnitCustomer()

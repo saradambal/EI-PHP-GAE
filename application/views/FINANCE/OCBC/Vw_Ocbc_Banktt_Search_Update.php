@@ -1,5 +1,10 @@
+<!--********************************************OCBC BANK TT SEARCH/UPDATE*******************************************-->
+<!--*******************************************FILE DESCRIPTION***************************************************-->
+<!--VER 6.6 -SD:05/06/2015 ED:05/06/2015 GETTING HEADER FILE FROM LIB-->
+<!--VER 0.02- SD:04/06/2015 ED:04/06/2015,changed Controller Model and View names in ver0.02-->
+<!--VER 0.01-INITIAL VERSION-SD:18/05/2015 ED:18/05/2015 in ver0.01-->
 <?php
-require_once "EI_HDR.php";
+require_once('application/libraries/EI_HDR.php');
 ?>
 <style>
     .errormsg{
@@ -9,6 +14,7 @@ require_once "EI_HDR.php";
 <script>
     $(document).ready(function(){
         $('#BankTT_Updation_Form').hide();
+        var controller_url="<?php echo base_url(); ?>" + '/index.php/FINANCE/OCBC/Ctrl_Ocbc_Banktt_Search_Update/' ;
         var Allunits;
         var SRC_ErrorMsg;
         var modelnames;
@@ -27,10 +33,9 @@ require_once "EI_HDR.php";
         });
         $.ajax({
             type: "POST",
-            url: "/index.php/Ctrl_Ocbc_Banktt_Search_Update/Banktt_initialdatas",
+            url: controller_url+"Banktt_initialdatas",
             data:{'ErrorList':'1,2,4,6,45,247,385,401'},
             success: function(data){
-                $('.preloader').hide();
                 var value=JSON.parse(data);
                 var searchoption=value[0];
                 Allunits=value[2];
@@ -200,7 +205,7 @@ require_once "EI_HDR.php";
             {
                 $.ajax({
                     type: "POST",
-                    url: '/index.php/Ctrl_Ocbc_Banktt_Search_Update/Banktt_getAccname',
+                    url: controller_url+"Banktt_getAccname",
                     success: function(data){
                         var value_array=JSON.parse(data);
                         var appenddata='<BR><h4 style="color:#498af3;">ACCOUNT NAME SEARCH</h4><BR>';
@@ -274,7 +279,7 @@ require_once "EI_HDR.php";
             {
                 $.ajax({
                     type: "POST",
-                    url: '/index.php/Ctrl_Ocbc_Banktt_Search_Update/Banktt_customer',
+                    url: controller_url+"Banktt_customer",
                     data:{Unit:unit},
                     success: function(data){
                         var valuearray=JSON.parse(data);
@@ -444,33 +449,33 @@ require_once "EI_HDR.php";
             }
             $.ajax({
                 type: "POST",
-                url: '/index.php/Ctrl_Ocbc_Banktt_Search_Update/Banktt_Search_Details',
+                url: controller_url+"Banktt_Search_Details",
                 data:inputdata,
                 success: function(data){
                     var valuearray=JSON.parse(data);
                     var tabledata="<table id='Banktt_Datatable' border=1 cellspacing='0' data-class='table'  class='srcresult table' style='width:2500px'>";
                     tabledata+="<thead class='headercolor'><tr class='head' style='text-align:center'>";
-                    tabledata+="<th style='width:80px !important;text-align:center;vertical-align: top'>EDIT/UPDATE</th>";
-                    tabledata+="<th style='width:130px !important;text-align:center;vertical-align: top'>TRANSACTION TYPE<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='width:100px !important;text-align:center;vertical-align: top'>DATE<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='width:200px !important;text-align:center;vertical-align: top'>ACCOUNT NAME<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='width:200px !important;text-align:center;vertical-align: top'>ACCOUNT NO<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='width:120px !important;text-align:center;vertical-align: top'>AMOUNT<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='width:100px !important;text-align:center;vertical-align: top'>UNIT</th>";
-                    tabledata+="<th style='width:200px !important;text-align:center;vertical-align: top'>CUSTOMER<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='width:100px !important;text-align:center;vertical-align: top'>STATUS<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='width:150px !important;text-align:center;vertical-align: top'>DEBITED / REJECTED DATE<span class='labelrequired'><em>*</em></span></th>";
-                    tabledata+="<th style='width:120px !important;text-align:center;vertical-align: top'>BANK CODE</th>";
-                    tabledata+="<th style='width:120px !important;text-align:center;vertical-align: top'>BRANCH CODE</th>";
-                    tabledata+="<th style='width:200px !important;text-align:center;vertical-align: top'>BANK ADDRESS</th>";
-                    tabledata+="<th style='width:150px !important;text-align:center;vertical-align: top'>SWIFT CODE</th>";
-                    tabledata+="<th style='width:150px !important;text-align:center;vertical-align: top'>CHARGES TO</th>";
-                    tabledata+="<th style='width:200px !important;text-align:center;vertical-align: top'>CUST REF</th>";
-                    tabledata+="<th style='width:200px !important;text-align:center;vertical-align: top'>INV DETAILSS</th>";
-                    tabledata+="<th style='width:200px !important;text-align:center;vertical-align: top'>COMMENTS</th>";
-                    tabledata+="<th style='width:150px !important;text-align:center;vertical-align: top'>CREATED BY</th>";
-                    tabledata+="<th style='width:150px !important;text-align:center;vertical-align: top'>USERSTAMP</th>";
-                    tabledata+="<th style='width:150px !important;text-align:center;vertical-align: top'>TIMESTAMP</th>";
+                    tabledata+="<th style='width:80px !important;'>EDIT/UPDATE</th>";
+                    tabledata+="<th style='width:130px !important;'>TRANSACTION TYPE<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:100px !important;'>DATE<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:200px !important;'>ACCOUNT NAME<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:200px !important;'>ACCOUNT NO<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:120px !important;'>AMOUNT<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:100px !important;'>UNIT</th>";
+                    tabledata+="<th style='width:200px !important;'>CUSTOMER<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:100px !important;'>STATUS<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:150px !important;'>DEBITED / REJECTED DATE<span class='labelrequired'><em>*</em></span></th>";
+                    tabledata+="<th style='width:120px !important;'>BANK CODE</th>";
+                    tabledata+="<th style='width:120px !important;'>BRANCH CODE</th>";
+                    tabledata+="<th style='width:200px !important;'>BANK ADDRESS</th>";
+                    tabledata+="<th style='width:150px !important;'>SWIFT CODE</th>";
+                    tabledata+="<th style='width:150px !important;'>CHARGES TO</th>";
+                    tabledata+="<th style='width:200px !important;'>CUST REF</th>";
+                    tabledata+="<th style='width:200px !important;'>INV DETAILSS</th>";
+                    tabledata+="<th style='width:200px !important;'>COMMENTS</th>";
+                    tabledata+="<th style='width:150px !important;'>CREATED BY</th>";
+                    tabledata+="<th style='width:150px !important;'>USERSTAMP</th>";
+                    tabledata+="<th style='width:150px !important;'>TIMESTAMP</th>";
                     tabledata+="</tr></thead><tbody>";
                     for(var i=0;i<valuearray.length;i++)
                     {
@@ -494,27 +499,27 @@ require_once "EI_HDR.php";
                         if(valuearray[i].BT_COMMENTS==null){var comments='';}else{comments=valuearray[i].BT_COMMENTS;}
                         if(valuearray[i].BANK_TRANSFER_CREATED_BY==null){var createdby='';}else{createdby=valuearray[i].BANK_TRANSFER_CREATED_BY;}
                         tabledata+='<tr id='+valuearray[i].BT_ID+'>' +
-                            "<td style='width:80px !important;vertical-align: middle'><div class='col-lg-2'><span style='display: block;color:green' title='Edit' class='glyphicon glyphicon-edit Banktt_editbutton' id="+edit+"></div></td>" +
-                            "<td style='width:130px !important;vertical-align: middle;text-align: center'>"+valuearray[i].BANK_TRANSFER_TYPE+"</td>" +
-                            "<td style='width:100px !important;vertical-align: middle;text-align: center' >"+valuearray[i].BT_DATE+"</td>" +
-                            "<td style='width:200px !important;vertical-align: middle'>"+accname+"</td>" +
-                            "<td style='width:200px !important;vertical-align: middle'>"+accno+"</td>" +
-                            "<td style='width:120px !important;vertical-align: middle;text-align: center'>"+valuearray[i].BT_AMOUNT+"</td>" +
-                            "<td style='width:100px !important;vertical-align: middle;text-align: center'>"+unit+"</td>" +
-                            "<td style='width:200px !important;vertical-align: middle;text-align: center'>"+customer+"</td>" +
-                            "<td style='width:100px !important;vertical-align: middle;text-align: center'>"+status+"</td>" +
-                            "<td style='width:150px !important;vertical-align: middle'>"+debitedon+"</td>" +
-                            "<td style='width:120px !important;vertical-align: middle'>"+bankcode+"</td>" +
-                            "<td style='width:120px !important;vertical-align: middle'>"+branchcode+"</td>" +
-                            "<td style='width:200px !important;vertical-align: middle'>"+bankaddress+"</td>" +
-                            "<td style='width:150px !important;vertical-align: middle'>"+swiftcode+"</td>" +
-                            "<td style='width:150px !important;vertical-align: middle'>"+chargesto+"</td>" +
-                            "<td style='width:200px !important;vertical-align: middle'>"+custoref+"</td>" +
-                            "<td style='width:200px !important;vertical-align: middle'>"+invdetails+"</td>" +
-                            "<td style='width:200px !important;vertical-align: middle'>"+comments+"</td>" +
-                            "<td style='width:150px !important;vertical-align: middle'>"+createdby+"</td>" +
-                            "<td style='width:150px !important;vertical-align: middle'>"+valuearray[i].ULD_LOGINID+"</td>" +
-                            "<td style='width:150px !important;vertical-align: middle'>"+valuearray[i].BT_TIME_STAMP+"</td>" +
+                            "<td style='width:80px !important;'><div class='col-lg-2'><span style='display: block;color:green' title='Edit' class='glyphicon glyphicon-edit Banktt_editbutton' id="+edit+"></div></td>" +
+                            "<td style='width:130px !important;text-align: center' nowrap>"+valuearray[i].BANK_TRANSFER_TYPE+"</td>" +
+                            "<td style='width:100px !important;text-align: center'nowrap >"+valuearray[i].BT_DATE+"</td>" +
+                            "<td style='width:200px !important;' nowrap>"+accname+"</td>" +
+                            "<td style='width:150px !important;' nowrap>"+accno+"</td>" +
+                            "<td style='width:120px !important;text-align: center' nowrap>"+valuearray[i].BT_AMOUNT+"</td>" +
+                            "<td style='width:100px !important;text-align: center' nowrap>"+unit+"</td>" +
+                            "<td style='width:200px !important;text-align: center' nowrap>"+customer+"</td>" +
+                            "<td style='width:100px !important;text-align: center' nowrap>"+status+"</td>" +
+                            "<td style='width:150px !important;' nowrap>"+debitedon+"</td>" +
+                            "<td style='width:120px !important;' nowrap>"+bankcode+"</td>" +
+                            "<td style='width:120px !important;' nowrap>"+branchcode+"</td>" +
+                            "<td nowrap>"+bankaddress+"</td>" +
+                            "<td style='width:150px !important;' nowrap>"+swiftcode+"</td>" +
+                            "<td style='width:150px !important;' nowrap>"+chargesto+"</td>" +
+                            "<td style='width:200px !important;' nowrap>"+custoref+"</td>" +
+                            "<td nowrap>"+invdetails+"</td>" +
+                            "<td nowrap>"+comments+"</td>" +
+                            "<td style='width:150px !important;' nowrap>"+createdby+"</td>" +
+                            "<td style='width:150px !important;' nowrap>"+valuearray[i].ULD_LOGINID+"</td>" +
+                            "<td style='width:150px !important;' nowrap>"+valuearray[i].BT_TIME_STAMP+"</td>" +
                             "</tr>";
                     }
                     tabledata+="</body>";
@@ -732,7 +737,7 @@ require_once "EI_HDR.php";
             var FormElements=$('#BankTT_Updation_Form').serialize();
             $.ajax({
                 type: "POST",
-                url: "/index.php/Ctrl_Ocbc_Banktt_Search_Update/Banktt_Update_Save",
+                url: controller_url+"Banktt_Update_Save",
                 data:FormElements,
                 success: function(data){
                     alert(data)

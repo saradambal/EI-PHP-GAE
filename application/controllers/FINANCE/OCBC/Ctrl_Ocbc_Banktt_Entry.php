@@ -1,30 +1,30 @@
 <?php
-include 'GET_USERSTAMP.php';
 //require_once 'google/appengine/api/mail/Message.php';
 //use google\appengine\api\mail\Message;
-$UserStamp=$UserStamp;
 class Ctrl_Ocbc_Banktt_Entry extends CI_Controller
 {
+    function __construct() {
+        parent::__construct();
+        $this->load->model('FINANCE/OCBC/Mdl_Ocbc_Banktt_Entry');
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+    }
     public function index()
     {
         $this->load->view('FINANCE/OCBC/Vw_Ocbc_Banktt_Entry');
     }
     public function Initialdata()
     {
-        $this->load->model('FINANCE/OCBC/Mdl_Ocbc_Banktt_Entry');
         $query=$this->Mdl_Ocbc_Banktt_Entry->Initial_data();
         echo json_encode($query);
     }
     public function Customername(){
         $unitno= $this->input->post('unitno');
-        $this->load->model('FINANCE/OCBC/Mdl_Ocbc_Banktt_Entry');
         $query=$this->Mdl_Ocbc_Banktt_Entry->Customer_name($unitno);
         echo json_encode($query);
     }
     public function Banktt_Entry_Save()
     {
-        global $UserStamp;
-        $this->load->model('FINANCE/OCBC/Mdl_Ocbc_Banktt_Entry');
+        $UserStamp=$this->Mdl_eilib_common_function->getSessionUserStamp();
         $Confirmmessage=$this->Mdl_Ocbc_Banktt_Entry->Banktt_EntrySave($UserStamp);
         if($Confirmmessage[0]==1)
         {

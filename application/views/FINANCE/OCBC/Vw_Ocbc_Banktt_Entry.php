@@ -1,6 +1,12 @@
+<!--********************************************OCBC BANK TT ENTRY*******************************************-->
+<!--*******************************************FILE DESCRIPTION***************************************************-->
+<!--VER 6.6 -SD:05/06/2015 ED:05/06/2015 GETTING HEADER FILE FROM LIB-->
+<!--VER 0.02- SD:04/06/2015 ED:04/06/2015,changed Controller Model and View names in ver0.02-->
+<!--VER 0.01-INITIAL VERSION-SD:18/05/2015 ED:18/05/2015 in ver0.01-->
 <?php
-require_once "EI_HDR.php";
+require_once('application/libraries/EI_HDR.php');
 ?>
+
 <style>
     .errormsg{
         padding-top:12px;
@@ -9,6 +15,7 @@ require_once "EI_HDR.php";
 <script>
 $(document).ready(function(){
     $('.preloader').show();
+    var controller_url="<?php echo base_url(); ?>" + '/index.php/FINANCE/OCBC/Ctrl_Ocbc_Banktt_Entry/' ;
     $(".date-picker").datepicker({
         dateFormat:"dd-mm-yy",
         changeYear: true,
@@ -66,7 +73,7 @@ $(document).ready(function(){
     var errormsg;
     $.ajax({
         type: "POST",
-        url: "/index.php/Ctrl_Ocbc_Banktt_Entry/Initialdata",
+        url: controller_url+"Initialdata",
         success: function(data){
             var value=JSON.parse(data);
             $('.preloader').hide();
@@ -148,7 +155,7 @@ $(document).ready(function(){
             $('.preloader').show();
             $.ajax({
                 type: "POST",
-                url: "/index.php/Ctrl_Ocbc_Banktt_Entry/Customername",
+                url: controller_url+"Customername",
                 data:"unitno="+ unitno,
                 success: function(data){
                     $('.preloader').hide();
@@ -394,7 +401,7 @@ $(document).ready(function(){
         var FormElements=$('#banktt_entry_form').serialize();
         $.ajax({
             type: "POST",
-            url: "/index.php/Ctrl_Ocbc_Banktt_Entry/Banktt_Entry_Save",
+            url: controller_url+"Banktt_Entry_Save",
             data:FormElements,
             success: function(data){
                 var returnvalue=JSON.parse(data);
