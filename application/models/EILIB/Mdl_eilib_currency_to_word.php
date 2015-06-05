@@ -5,7 +5,7 @@
 //VER 0.01-SD:12/05/2015 ED:12/02/2015,COMPLETED CURRENCY TO WORD
 //*******************************************************************************************************//
 class Mdl_eilib_currency_to_word extends CI_Model {
-    public function test($amt){
+    public function currency_To_Word($amt){
         $amtSplit=explode('.',$amt);
         $dollar= $this->toText($amtSplit[0]);
         $cent= $this->toText($amtSplit[1]);
