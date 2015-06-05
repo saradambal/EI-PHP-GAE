@@ -8,7 +8,7 @@
 <!--HTML TAG START-->
 <?php
 
-include "Header.php";
+include "EI_HDR.php";
 
 ?>
 

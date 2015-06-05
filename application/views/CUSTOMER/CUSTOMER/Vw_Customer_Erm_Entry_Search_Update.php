@@ -1,6 +1,6 @@
 <html>
 <head>
-    <?php include 'Header.php'; ?>
+    <?php include 'EI_HDR.php'; ?>
 </head>
 <script>
 var ErrorControl ={AmountCompare:'InValid'}

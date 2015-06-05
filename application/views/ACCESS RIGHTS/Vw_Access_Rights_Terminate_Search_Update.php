@@ -6,7 +6,7 @@
 //VER 0.01-INITIAL VERSION,SD:15/05/2015,ED:19/05/2015-->
 <?php
 
-include "Header.php";
+include "EI_HDR.php";
 
 ?>
 

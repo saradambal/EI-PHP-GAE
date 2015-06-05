@@ -1,5 +1,5 @@
 <?PHP
-require_once('Header.php');
+require_once('EI_HDR.php');
 ?>
 <!--SCRIPT TAG START-->
 <script>

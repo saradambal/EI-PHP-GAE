@@ -524,14 +524,14 @@ try {
     {
         if((($yearchk>0)||($monthschk>0)||(($monthchk>0)&&($daychk>0)))&&($rent_check=='true'))//greater than a month,prorated
         {
-            $proratedrent=$this->Mdl_eilib_prorated_calc->sMonthProratedCalc($check_in_date,$rent);
+            $proratedrent=$this->ProratedCalc->sMonthProratedCalc($check_in_date,$rent);
             if($proratedrent!=0)
             {
-                $flag_paraAlign=0;
+                $flagProratedRentCkout=$proratedrent.'^~^'.$LastMonthformat;
             }
             else
             {
-                $flag_paraAlign=1;
+                $flagProratedRentCkout=1;
             }
         }
         else if((($yearchk>0)||($monthschk>0)||(($monthchk>0)&&($daychk>0)))&&($rent_check=='false'))//greater than a month,non prorated
@@ -545,11 +545,11 @@ try {
                 $proratedrent=$this->Mdl_eilib_prorated_calc->wMonthProratedCalc($check_in_date,$check_out_date,$rent);
                 if($proratedrent!='0.00')
                 {
-                    $flag_paraAlign_thrd=0;
+                    $flagProratedRentCkout=$proratedrent.'^~^'.$cexdd;
                 }
                 else
                 {
-                    $flag_paraAlign_thrd=1;
+                    $flagProratedRentCkout=1;
                 }
             }
             else if((date("Y", $check_in_dated_lastmonth)==date("Y", $check_out_dated_lastmonth))||(date("m", $check_in_dated_lastmonth)==date("m", $check_out_dated_lastmonth)))
@@ -559,11 +559,11 @@ try {
                 $proratedrent=sprintf("%01.2f", (floatval($proratedsmonth)+floatval($proratedemonth)));
                 if($proratedrent!='0.00')
                 {
-                    $flag_paraAlign_four=0;
+                    $flagProratedRentCkout=$proratedrent.'^~^'.$cexdd;
                 }
                 else
                 {
-                    $flag_paraAlign_four=1;
+                    $flagProratedRentCkout=1;
                 }
             }
         }
@@ -577,16 +577,32 @@ try {
         {
             if($rent_check=='false')
             {
-                $flag_paraAlign_five=1;
+                $flagProratedRentCkout=1;
             }
         }
         //GREATER THAN A MONTH
         else
         {
             $proratedrent= $this->Mdl_eilib_prorated_calc->sMonthProratedCalc($check_in_date,$rent);
+            if($proratedrent!=0)
+                if($proratedrent!=0)
+                {
+                    if($rent_check=='true')
+                    {
+                        $flagProratedRentCkout=$proratedrent.'^~^0';
+                    }
+                    else if($rent_check=='false')
+                    {
+                        $flagProratedRentCkout=1;
+                    }
+                }
+                else
+                {
+                    $flagProratedRentCkout=1;
+                }
         }
         $url= $this->Mdl_eilib_common_function->getUrlAccessGasScript();
-        $data = array('pro_rated_lineno'=>$pro_rated_lineno,'prlbl1'=>$prlbl1,'prlbl2'=>$prlbl2,'LastMonthformat'=>$LastMonthformat,'DEPOSITEword'=>$DEPOSITEword,'ntc_date1'=>$ntc_date1,'todaydat'=>$todaydat,'todaydatestring'=>$todaydatestring,'finalep_pass'=>$finalep_pass,
+        $data = array('flagProratedRentCkout'=>$flagProratedRentCkout,'pro_rated_lineno'=>$pro_rated_lineno,'prlbl1'=>$prlbl1,'prlbl2'=>$prlbl2,'LastMonthformat'=>$LastMonthformat,'DEPOSITEword'=>$DEPOSITEword,'ntc_date1'=>$ntc_date1,'todaydat'=>$todaydat,'todaydatestring'=>$todaydatestring,'finalep_pass'=>$finalep_pass,
             'LastMonthformat'=>$LastMonthformat,'flag_paraAlign'=>$flag_paraAlign,'flag_paraAlign_sec'=>$flag_paraAlign_sec,'flag_paraAlign_thrd'=>$flag_paraAlign_thrd,'flag_paraAlign_four'=>$flag_paraAlign_four,'flag_paraAlign_five'=>$flag_paraAlign_five,
             'cexdd'=>$cexdd,'check_in_dated'=>$check_in_dated,'noticeSt'=>$noticeSt,'address1value'=>$address1value,'cardno'=>$cardno,'fixedstmtfetch'=>$fixedstmtfetch,'noepcontlineno'=>$noepcontlineno,'elec_fetch'=>$elec_fetch,'dryclean_fetch'=>$dryclean_fetch,
             'checkoutfee_fetch'=>$checkoutfee_fetch,'PROCESSno'=>$PROCESSno,'DEPOSITno'=>$DEPOSITno,'elec_fetch'=> $elec_fetch,'dryclean_fetch'=> $dryclean_fetch,'checkoutfee_fetch'=> $checkoutfee_fetch,'PROCESSno'=> $PROCESSno,'DEPOSITno'=> $DEPOSITno,'weblogin'=>$webloginfetch,'flag'=>1,'cust_config_array' => $cust_config_array[10], 'RENTword' => $RENTword, 'PROCESSword' => $PROCESSword,'DEPOSITword'=>$DEPOSITword, 'proratedrent' => "shld present in word", 'proratedsmonth' => "2014-09-09"

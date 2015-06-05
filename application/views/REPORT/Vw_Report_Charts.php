@@ -1,5 +1,5 @@
 <?php
-require_once "Header.php";
+require_once "EI_HDR.php";
 require_once "./application/libraries/Chart.php";
 ?>
 <html>
