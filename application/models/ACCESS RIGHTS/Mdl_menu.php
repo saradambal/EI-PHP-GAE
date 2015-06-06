@@ -1,8 +1,6 @@
 <?php
 class Mdl_menu extends CI_Model{
-
     public function fetch_data($USERSTAMP){
-        global  $USERSTAMP;
         $this->db->distinct();
         $this->db->select("MP_MNAME");
         $this->db->order_by("MP_MNAME", "ASC");
@@ -56,8 +54,8 @@ class Mdl_menu extends CI_Model{
         }
 
       //LOADING LOGO AND CALENDER
-        $this->load->model("EILIB/Common_function");
-        $logocalender=$this->Common_function->getLogoCalendar();
+        $this->load->model("EILIB/Mdl_eilib_common_function");
+        $logocalender=$this->Mdl_eilib_common_function->getLogoCalendar();
 //        print_r($logocalender);
 //        exit;
 

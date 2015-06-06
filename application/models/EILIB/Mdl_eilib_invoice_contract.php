@@ -7,6 +7,7 @@
  */
 //******************************************INVOICE AND CONTRACT********************************************//
 //DONE BY:SARADAMBAL
+//VER 7.1-SD:06-06-2015 ED:06-06-2015,CHANGES IN RETURN VALUES FOR INVOICE AND CONTRACT
 //VER 5.5-SD:03/06/2015 ED:03/06/2015,CHANGED FILE NAME AND UPDATED URL FOR CONTRACT
 //VER 0.01-SD:22/05/2015 ED:06/02/2015,COMPLETED INVOICE AND CONTRACT
 //*******************************************************************************************************//
@@ -347,11 +348,12 @@ class Mdl_eilib_invoice_contract extends CI_Model{
 //CUSTOMER CONTRACT
     public   function CUST_contract($service,$unitno,$checkindate,$checkoutdate,$companyname,$customername,$noticeperiod,$passportno,$passportdate,$epno,$epdate,$noticedate,$lp,$cardno,$rent,$airquartfee,$airfixedfee,$electcap,$dryclean,$chkoutfee,$procfee,$deposit,$waived,$roomtype,$rent_check,$formname,$sendmailid,$docowner) {
         try {
-            $todaydatestring =  date("Y-M-d");$flagProratedRentCkout=0;
+            $todaydatestring =  date("d-M-Y");$flagProratedRentCkout=0;
             $flag_paraAlign='';$flag_paraAlign_sec=''; $flag_paraAlign_thrd=''; $flag_paraAlign_four=''; $flag_paraAlign_five='';$noepcontlineno='';
             $this->load->model('EILIB/Mdl_eilib_common_function');
             $this->load->model('EILIB/Mdl_eilib_currency_to_word');
             $this->load->model('EILIB/Mdl_eilib_prorated_calc');
+
             $fileid= $this->Mdl_eilib_common_function->CUST_FileId_invoiceTem();
             $parentId= $this->Mdl_eilib_common_function->CUST_TargetFolderId();
             $url= $this->Mdl_eilib_common_function->getUrlAccessGasScript();
@@ -363,13 +365,13 @@ class Mdl_eilib_invoice_contract extends CI_Model{
             for($s=1;$s<count($cust_config_array);$s++){
                 $cust_config_array_concate.='^~^'.$cust_config_array[$s];
             }
-
             $rentstring = $rent;//.toString();
-            $RENTword= $this->Mdl_eilib_currency_to_word->currency_To_Word($rentstring);
+            if($rentstring!='null' )
+                $RENTword= $this->Mdl_eilib_currency_to_word->currency_To_Word($rentstring);
             $quartaircon_fetch=$airquartfee;
             $fixedaircon_fetch=$airfixedfee;
             $electricity=$electcap;
-            if($electricity==null)
+            if($electricity=='null')
             {
                 $elec_fetch="00.00";
             }
@@ -378,7 +380,7 @@ class Mdl_eilib_invoice_contract extends CI_Model{
                 $elec_fetch=$electricity;
             }
             $dryclean=$dryclean;
-            if($dryclean==null)
+            if($dryclean=='null')
             {
                 $dryclean_fetch="00.00";
             }
@@ -387,7 +389,7 @@ class Mdl_eilib_invoice_contract extends CI_Model{
                 $dryclean_fetch=$dryclean;
             }
             $checkout=$chkoutfee;
-            if($checkout==null)
+            if($checkout=='null')
             {
                 $checkoutfee_fetch="00.00";
             }
@@ -406,7 +408,7 @@ class Mdl_eilib_invoice_contract extends CI_Model{
                 $prostring =  $PROCESSno;//.toString();
                 $PROCESSword= $this->Mdl_eilib_currency_to_word->currency_To_Word($prostring);
             }
-            if($deposit =='null')
+            if($deposit == 'null')
             {
                 $DEPOSITno="00.00";
                 $DEPOSITEword="  ";
@@ -418,13 +420,13 @@ class Mdl_eilib_invoice_contract extends CI_Model{
                 $DEPOSITEword= $this->Mdl_eilib_currency_to_word->currency_To_Word($depstring);
             }
             $todaydat =date('d-m-Y');
-            $dateStringCheckin=strtotime($checkindate);
-            $check_in_dated_lastmonth = strtotime ("-1 month",$dateStringCheckin);
+            $check_in_dated_lastmonth=strtotime($checkindate);
+//            $check_in_dated_lastmonth = strtotime ("-1 month",$dateStringCheckin);
             $check_in_date= date("Y-m-d",$check_in_dated_lastmonth);
             $check_in_dated=date("d-m-Y",$check_in_dated_lastmonth);
             $datecheckedin = intval(date("d", $check_in_dated_lastmonth));
-            $dateStringCheckOut=strtotime($checkindate);
-            $check_out_dated_lastmonth = strtotime ("+1 month",$dateStringCheckOut);
+            $check_out_dated_lastmonth=strtotime($checkoutdate);
+//            $check_out_dated_lastmonth = strtotime ("+1 month",$dateStringCheckOut);
             $check_out_date= date("Y-m-d",$check_out_dated_lastmonth);
             $cexdd=date("d-m-Y",$check_out_dated_lastmonth);
             $datecheckedin = intval(date("d", $check_out_dated_lastmonth));
@@ -444,7 +446,7 @@ class Mdl_eilib_invoice_contract extends CI_Model{
             {
                 $noticeSt=" ";
             }
-            if ($webloginfetch!=null)
+            if ($webloginfetch!='null')
             {
                 strpos($webloginfetch,"T1")==false?$indext1=-1:$indext1=strpos($webloginfetch,"T1");
                 strpos($webloginfetch,"T2")==false?$indext2=-1:$indext2=strpos($webloginfetch,"YT2ar");
@@ -480,7 +482,7 @@ class Mdl_eilib_invoice_contract extends CI_Model{
             {
                 $cardno=$cardno;
             }
-            if($fixedaircon_fetch!=null)
+            if($fixedaircon_fetch!='null')
             {
                 $fixedstmtfetch=$cust_config_array[16];
                 $fixedstmtfetch=str_replace("AIRFIXED",$fixedaircon_fetch,$fixedstmtfetch);
@@ -525,7 +527,7 @@ class Mdl_eilib_invoice_contract extends CI_Model{
             {
                 $epdate="";
             }
-            if($noticeperiod==null)
+            if($noticeperiod=='null')
             {
                 $noticeperiod="";
             }
@@ -559,13 +561,11 @@ class Mdl_eilib_invoice_contract extends CI_Model{
             strpos($lp,"Months")==false?$monthschk=-1:$monthschk=strpos($lp,"Months");
             strpos($lp,"Month")==false?$monthchk=-1:$monthchk=strpos($lp,"Month");
             strpos($lp,"Day")==false?$daychk=-1:$daychk=strpos($lp,"Day");
-
             if($formname=="EXTENSION")
             {
                 if((($yearchk>0)||($monthschk>0)||(($monthchk>0)&&($daychk>0)))&&($rent_check=='true'))//greater than a month,prorated
                 {
                     $proratedrent=$this->Mdl_eilib_prorated_calc->sMonthProratedCalc($check_in_date,$rent);
-                    echo $proratedrent;
                     if($proratedrent!=0)
                     {
                         $flagProratedRentCkout=$proratedrent.'^~^'.$LastMonthformat;
@@ -609,32 +609,42 @@ class Mdl_eilib_invoice_contract extends CI_Model{
                     }
                 }
             }
-
-            else {
-                $prlbl1 = str_replace("checkin", $check_in_dated, $pro_lbl);
-                $prlbl2 = str_replace("prochkout", $LastMonthformat, $prlbl1);
+            else
+            {
+                $prlbl1= str_replace("checkin",$check_in_dated, $pro_lbl);
+                $prlbl2= str_replace("prochkout",$LastMonthformat, $prlbl1);
                 //LESS THAN EQUAL TO A MONTH
-                if (((($yearchk < 0) && ($monthschk < 0) && ($daychk > 0) && ($monthchk < 0)) || (($yearchk < 0) && ($monthschk < 0) && ($daychk < 0) && ($monthchk > 0)))) {
-                    if ($rent_check == 'false') {
-                        $flagProratedRentCkout = 1;
+                if(((($yearchk<0)&&($monthschk<0)&&($daychk>0)&&($monthchk<0))||(($yearchk<0)&&($monthschk<0)&&($daychk<0)&&($monthchk>0))))
+                {
+                    if($rent_check=='false')
+                    {
+                        $flagProratedRentCkout=1;
                     }
-                } //GREATER THAN A MONTH
-                else {
-                    $proratedrent = $this->Mdl_eilib_prorated_calc->sMonthProratedCalc($check_in_date, $rent);
-                    if ($proratedrent != 0)
-                        if ($proratedrent != 0) {
-                            if ($rent_check == 'true') {
-                                $flagProratedRentCkout = $proratedrent . '^~^0';
-                            } else if ($rent_check == 'false') {
-                                $flagProratedRentCkout = 1;
-                            }
-                        } else {
-                            $flagProratedRentCkout = 1;
-                        }
                 }
-            }
-
+                //GREATER THAN A MONTH
+                else
+                {
+                    $proratedrent= $this->Mdl_eilib_prorated_calc->sMonthProratedCalc($check_in_date,$rent);
+                    if($proratedrent!=0)
+                        if($proratedrent!=0)
+                        {
+                            if($rent_check=='true')
+                            {
+                                $flagProratedRentCkout=$proratedrent.'^~^0';
+                            }
+                            else if($rent_check=='false')
+                            {
+                                $flagProratedRentCkout=1;
+                            }
+                        }
+                        else
+                        {
+                            $flagProratedRentCkout=1;
+                        }
+                }}
             $url= $this->Mdl_eilib_common_function->getUrlAccessGasScript();
+//                $url="https://script.google.com/macros/s/AKfycbyv58HZU2XsR2kbCMWZjNzMWSmOwoE7xsg_fesXktGk4Kj574u1/exec";
+
             $parentId= $this->Mdl_eilib_common_function->CUST_TargetFolderId();
 //                $parentId= "0Bzvv-O9jT9r_fml4MUR6MWpVNklORHlLYTg4VEVjaWxIR2JlcGpEclZoTWQ3WHV5dGgwQzQ";
 
@@ -644,8 +654,9 @@ class Mdl_eilib_invoice_contract extends CI_Model{
 //                $filecontent=$this->downloadFile($service, $file);
 ////                $mimeType=$file->getMimeType();
 //                $newfile=$this->insertFile($service, $title, $description, $parentId, "test", $filecontent);
-
-//                exit;
+//                echo 'test'.$newfile->alternateLink.'***'.$newfile->id;
+//                echo 'line'.$noepcontlineno.'ppp'.$pro_rated_lineno;
+////                exit;
             $data = array('flagProratedRentCkout'=>$flagProratedRentCkout,'pro_rated_lineno'=>$pro_rated_lineno,'prlbl1'=>$prlbl1,'prlbl2'=>$prlbl2,'LastMonthformat'=>$LastMonthformat,'DEPOSITEword'=>$DEPOSITEword,'ntc_date1'=>$ntc_date1,'todaydat'=>$todaydat,'todaydatestring'=>$todaydatestring,'finalep_pass'=>$finalep_pass,
                 'LastMonthformat'=>$LastMonthformat,'flag_paraAlign'=>$flag_paraAlign,'flag_paraAlign_sec'=>$flag_paraAlign_sec,'flag_paraAlign_thrd'=>$flag_paraAlign_thrd,'flag_paraAlign_four'=>$flag_paraAlign_four,'flag_paraAlign_five'=>$flag_paraAlign_five,
                 'cexdd'=>$cexdd,'check_in_dated'=>$check_in_dated,'noticeSt'=>$noticeSt,'address1value'=>$address1value,'cardno'=>$cardno,'fixedstmtfetch'=>$fixedstmtfetch,'noepcontlineno'=>$noepcontlineno,'elec_fetch'=>$elec_fetch,'dryclean_fetch'=>$dryclean_fetch,
@@ -664,34 +675,20 @@ class Mdl_eilib_invoice_contract extends CI_Model{
             curl_setopt($ch, CURLOPT_POST, true);
             curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
             curl_setopt($ch, CURLOPT_ENCODING, "gzip,deflate");
-            try {
-                $response = curl_exec($ch);
-            }
-            catch(Exception $e){
-                echo   $e->getMessage();
-            }
+            $response = curl_exec($ch);
             curl_close($ch);
             $file = new Google_Service_Drive_DriveFile();
             $parent = new Google_Service_Drive_ParentReference();
             $parent->setId($parentId);
             $file->setParents(array($parent));
-            try {
-                $service->files->patch($response, $file);
-            }
-            catch(Exception $e){
-                return   $e->getMessage();
-            }
+            $service->files->patch($response, $file);
+            $file = $service->files->get($response);
+            return [1,$response,$file->embedLink];
+        } catch (Exception $ex) {
+            return [0];
         }
-        catch (Exception $ex) {
-            return $ex->getMessage();
-        }
-//        $file = $service->files->get($response);
-////        $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
-//        return [$response,$file->embedLink];
-
-        $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
-        return $response;
-    }
+//        $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
+        return $response;    }
 //GET INVOICE ID ,CONTRACT ID ,SERIAL NO,INVOIC DATE
     public function CUST_invoice_contractreplacetext()
     {
@@ -724,305 +721,297 @@ class Mdl_eilib_invoice_contract extends CI_Model{
 //FUNCTION TO CREATE INVOICE
     public  function CUST_invoice($UserStamp,$service,$unit,$customername,$companyname,$invoiceid,$invoicesno,$invoicedate,$rent,$process,$deposit,$sdate,$edate,$roomtype,$Leaseperiod,$rentcheck,$sendmailid,$docowner,$formname,$waived,$custid)
     {
-        $sum='';
-        $invoiceidcode=$invoiceid;
-        $Slno=$invoicesno;
-        $Sdate=$invoicedate;
-        $tenant_fetch=$customername;
-        $unit_fetch=$unit;
-        $company_fetch=$companyname;
-        if($company_fetch==null||$company_fetch=="")
-        { $company_fetch=' ';}
-        $checkin_fetch=$sdate;
-        $checkout_fetch=$edate;
-        $deposit=$deposit;
-        if($deposit==null)
-        {  $A3='00.00';  }  else  {    $A3=$deposit;  }
-        $process=$process;
-        if($process==null||$waived!="")
-        {$A4='00.00';}else{$A4=$process;}
-        $A5=$rent;
-        $lease_fetch=$Leaseperiod;
-        $SdateD = $Sdate;
-        $sysdate =date('d-m-Y');
-        $todaydatc = date('Y-m-d');// Utilities.formatDate(new Date(sysdate), TimeZone, "yyyy/MM/dd");
-        $todaysDate=strtotime($todaydatc);
-        $todaydat = date('d-m-Y');//Utilities.formatDate(new Date(), TimeZone, "dd/MM/yyyy");
-        $todaydatR =date('m-d-Y');// Utilities.formatDate(new Date(), TimeZone, "MM/dd/yyyy");
-        $this->load->model('EILIB/Mdl_eilib_common_function');
-        if(strtotime($SdateD) == strtotime("today"))
-        {
-            $Slno++;
-            if(0>=$Slno && $Slno<=9){
-                $Slno= (String)("00".$Slno);
-            }
-            else if(10>=$Slno && $Slno<=99){
-                $Slno= "0".$Slno;
-            }
-            $this->Mdl_eilib_common_function->CUST_invoicesearialnoupdation($Slno,$UserStamp);
-        }
-        else
-        {
-            $Slno = 1;
-            if($Slno==1){
-                $Slno= (String)("00".$Slno);
-            }
-            $todaydatc = date("d/m/Y");// Utilities.formatDate(new Date(sysdate), TimeZone, "dd/MM/yyyy");
-            $cc_invoicedate = date("Y/m/d");//  Utilities.formatDate(new Date(sysdate), TimeZone, "yyyy/MM/dd");
-            $this->Mdl_eilib_common_function->CUST_invoiceserialandinvoicedateupdation($Slno, $cc_invoicedate,$UserStamp);
-        }
-        $todaydatestring =  date("Y-M-d");
-        $pc = floatval($A3); // processing cost to float
-        $ren = floatval($A5); // rent amount to float
-        $das = floatval($A4); // deposite amount to float
-        $date_fetch=strtotime($checkin_fetch);
-        $check_in_dated_minus = strtotime ("-1 month",$date_fetch);
-        $check_in_date= date("Y-m-d",$check_in_dated_minus);
-
-        $dateStringCheckin=strtotime($check_in_date);
-        $check_in_dated_lastmonth = strtotime ("+1 month",$dateStringCheckin);
-        $check_in_date1= date("Y-M-d",$check_in_dated_lastmonth);
-
-        $dateStringCheckOut=strtotime($checkout_fetch);
-        $check_out_dated_lastmonth = strtotime ("-1 month",$dateStringCheckOut);
-        $check_out_date= date("Y-m-d",$check_out_dated_lastmonth);
-        $check_out_date1= date("Y-M-d",$check_out_dated_lastmonth);
-// to generate last date of a month
-        $curr_date = 0;
-        $curr_month = intval(date("m", $check_in_dated_minus));
-        $curr_month++;
-        $curr_year = intval(date("Y", $check_in_dated_minus));
-        $cdate1="";
-        $cdate2="";
-        strpos($lease_fetch,"Year")==false?$yearchk=-1:$yearchk=strpos($lease_fetch,"Year");
-        strpos($lease_fetch,"Months")==false?$monthschk=-1:$monthschk=strpos($lease_fetch,"Months");
-        strpos($lease_fetch,"Month")==false?$monthchk=-1:$monthchk=strpos($lease_fetch,"Month");
-        strpos($lease_fetch,"Day")==false?$daychk=-1:$daychk=strpos($lease_fetch,"Day");
-        $check_in_dated_lastmonth = strtotime ("+1 month",$dateStringCheckin);
-        $LastMonth= date("Y-m-d",$check_in_dated_lastmonth);
-        $rent_check=$rentcheck;
-        $this->load->model('EILIB/Mdl_eilib_invoice_contract');
-        $nonPror_monthCal=    $this->Mdl_eilib_invoice_contract->nonproratedmonthcalculation($check_in_date,$check_out_date);
-        $prorated_monthCal=    $this->Mdl_eilib_invoice_contract->proratedmonthcalculation($check_in_date,$check_out_date);
-        $Pror_monthCal_concate_start='';$Pror_monthCal_concate_end='';
-        $this->load->model('EILIB/Mdl_eilib_prorated_calc');
-        $proratedrent=$this->Mdl_eilib_prorated_calc->wMonthProratedCalc($check_in_date,$check_out_date,$rent);
-        $proratedsmonth=$this->Mdl_eilib_prorated_calc->sMonthProratedCalc($check_in_date,$rent);
-        $proratedemonth=$this->Mdl_eilib_prorated_calc->eMonthProratedCalc($check_out_date,$rent);
-        $month_calculation=$this->nonproratedmonthcalculation(  $check_in_date,  $check_out_date);
-        $startdate_array=  $month_calculation[0];
-        $enddate_array=  $month_calculation[1];
-        if(  $formname=="CREATION" ||   $formname=="RECHECKIN")
-        {
-            if((  $yearchk>0)||(  $monthschk>0)||((  $monthchk>0)&&(  $daychk>0)))
+        try {
+            $sum='';
+            $invoiceidcode=$invoiceid;
+            $Slno=$invoicesno;
+            $Sdate=$invoicedate;
+            $tenant_fetch=$customername;
+            $unit_fetch=$unit;
+            $company_fetch=$companyname;
+            if($company_fetch==null||$company_fetch=="")
+            { $company_fetch=' ';}
+            $checkin_fetch=$sdate;
+            $checkout_fetch=$edate;
+            $deposit=$deposit;
+            if($deposit==null)
+            {  $A3='00.00';  }  else  {    $A3=$deposit;  }
+            $process=$process;
+            if($process==null||$waived!="")
+            {$A4='00.00';}else{$A4=$process;}
+            $A5=$rent;
+            $lease_fetch=$Leaseperiod;
+            $SdateD = $Sdate;
+            $sysdate =date('d-m-Y');
+            $todaydatc = date('Y-m-d');// Utilities.formatDate(new Date(sysdate), TimeZone, "yyyy/MM/dd");
+            $todaysDate=strtotime($todaydatc);
+            $todaydat = date('d-m-Y');//Utilities.formatDate(new Date(), TimeZone, "dd/MM/yyyy");
+            $todaydatR =date('m-d-Y');// Utilities.formatDate(new Date(), TimeZone, "MM/dd/yyyy");
+            $this->load->model('EILIB/Mdl_eilib_common_function');
+            if(strtotime($SdateD) == strtotime("today"))
             {
-                if(  $rent_check=='false')
-                {
-                    $proratedrentflag=1;
-                    $month_calculation=$this->nonproratedmonthcalculation(  $check_in_date,  $check_out_date);
-                    $startdate_array=  $month_calculation[0];
-                    $enddate_array=  $month_calculation[1];
-                    $length=  count($startdate_array);
+                $Slno++;
+                if(0>=$Slno && $Slno<=9){
+                    $Slno= (String)("00".$Slno);
                 }
-                else{
-                    $proratedrentflag=2;
-                    $month_calculation=$this->proratedmonthcalculation($check_in_date,$check_out_date);
-                    $startdate_array=$month_calculation[0];
-                    $enddate_array=$month_calculation[1];
-                    $length=count($startdate_array);
+                else if(10>=$Slno && $Slno<=99){
+                    $Slno= "0".$Slno;
                 }
+                $this->Mdl_eilib_common_function->CUST_invoicesearialnoupdation($Slno,$UserStamp);
             }
             else
             {
-                $length=1;
-                $proratedrentflag=0;
-                $cdate1=$check_in_date1;
-                $cdate2=$check_out_date1;
-                $sum1 = $das+$pc+floatval($A5);
-                $sum = number_format($sum1,2,'.','');
+                $Slno = 1;
+                if($Slno==1){
+                    $Slno= (String)("00".$Slno);
+                }
+                $todaydatc = date("d/m/Y");// Utilities.formatDate(new Date(sysdate), TimeZone, "dd/MM/yyyy");
+                $cc_invoicedate = date("Y/m/d");//  Utilities.formatDate(new Date(sysdate), TimeZone, "yyyy/MM/dd");
+                $this->Mdl_eilib_common_function->CUST_invoiceserialandinvoicedateupdation($Slno, $cc_invoicedate,$UserStamp);
             }
-        }
-        else if( $formname=="EXTENSION")//extension....
-        {
-            if((( $yearchk>0)||( $monthschk>0)||(( $monthchk>0)&&( $daychk>0)))&&( $rent_check=='true'))//greater than a month-rent check true
+            $todaydatestring =  date("d-M-Y");
+            $pc = floatval($A3); // processing cost to float
+            $ren = floatval($A5); // rent amount to float
+            $das = floatval($A4); // deposite amount to float
+            $check_in_dated_minus=strtotime($checkin_fetch);
+//        $check_in_dated_minus = strtotime ("-1 month",$date_fetch);
+            $check_in_date= date("Y-m-d",$check_in_dated_minus);
+
+            $dateStringCheckin=strtotime($check_in_date);
+            $check_in_dated_lastmonth = strtotime ("+1 month",$dateStringCheckin);
+            $check_in_date1= date("d-M-Y",$check_in_dated_lastmonth);
+
+            $check_out_dated_lastmonth=strtotime($checkout_fetch);
+//        $check_out_dated_lastmonth = strtotime ("-1 month",$dateStringCheckOut);
+            $check_out_date= date("Y-m-d",$check_out_dated_lastmonth);
+            $check_out_date1= date("d-M-Y",$check_out_dated_lastmonth);
+// to generate last date of a month
+            $curr_date = 0;
+            $curr_month = intval(date("m", $check_in_dated_minus));
+            $curr_month++;
+            $curr_year = intval(date("Y", $check_in_dated_minus));
+            $cdate1="";
+            $cdate2="";
+            strpos($lease_fetch,"Year")==false?$yearchk=-1:$yearchk=strpos($lease_fetch,"Year");
+            strpos($lease_fetch,"Months")==false?$monthschk=-1:$monthschk=strpos($lease_fetch,"Months");
+            strpos($lease_fetch,"Month")==false?$monthchk=-1:$monthchk=strpos($lease_fetch,"Month");
+            strpos($lease_fetch,"Day")==false?$daychk=-1:$daychk=strpos($lease_fetch,"Day");
+            $check_in_dated_lastmonth = strtotime ("+1 month",$dateStringCheckin);
+            $LastMonth= date("Y-m-d",$check_in_dated_lastmonth);
+            $rent_check=$rentcheck;
+            $this->load->model('EILIB/Mdl_eilib_invoice_contract');
+            $nonPror_monthCal=    $this->Mdl_eilib_invoice_contract->nonproratedmonthcalculation($check_in_date,$check_out_date);
+            $prorated_monthCal=    $this->Mdl_eilib_invoice_contract->proratedmonthcalculation($check_in_date,$check_out_date);
+            $Pror_monthCal_concate_start='';$Pror_monthCal_concate_end='';
+            $this->load->model('EILIB/Mdl_eilib_prorated_calc');
+            $proratedrent=$this->Mdl_eilib_prorated_calc->wMonthProratedCalc($check_in_date,$check_out_date,$rent);
+            $proratedsmonth=$this->Mdl_eilib_prorated_calc->sMonthProratedCalc($check_in_date,$rent);
+            $proratedemonth=$this->Mdl_eilib_prorated_calc->eMonthProratedCalc($check_out_date,$rent);
+            $month_calculation=$this->nonproratedmonthcalculation(  $check_in_date,  $check_out_date);
+            $startdate_array=  $month_calculation[0];
+            $enddate_array=  $month_calculation[1];
+            if(  $formname=="CREATION" ||   $formname=="RECHECKIN")
             {
-                $proratedrentflag=2;
-                $month_calculation=$this->proratedmonthcalculation( $check_in_date, $check_out_date);
-                $startdate_array= $month_calculation[0];
-                $enddate_array= $month_calculation[1];
-                $length=count( $startdate_array);
-            }
-            else if((( $yearchk>0)||( $monthschk>0)||(( $monthchk>0)&&( $daychk>0)))&&( $rent_check=='false'))//greater than a month-rent check false
-            {
-                $proratedrentflag=1;
-                $month_calculation=$this->nonproratedmonthcalculation( $check_in_date, $check_out_date);
-                $startdate_array= $month_calculation[0];
-                $enddate_array= $month_calculation[1];
-                $length=count($startdate_array);
-            }
-            else if(((( $yearchk<0)&&( $monthschk<0)&&( $daychk>0)&&( $monthchk<0))||(( $yearchk<0)&&( $monthschk<0)&&( $daychk<0)&&( $monthchk>0)))&&( $rent_check=='true'))//less than or equal to a month
-            {
-                $length=1;
-                $proratedrentflag=0;
-                $cdate1= $check_in_date1;
-                $cdate2= $check_out_date1;
-                if((date("Y", $check_in_dated_minus)==date("Y", $check_out_dated_lastmonth)) &&(date("m", $check_in_dated_minus)==date("m", $check_out_dated_lastmonth)))
+                if((  $yearchk>0)||(  $monthschk>0)||((  $monthchk>0)&&(  $daychk>0)))
                 {
-                    $proratedrent=$this->Mdl_eilib_prorated_calc->wMonthProratedCalc($check_in_date,$check_out_date,$A5);
-                    $sum1 = $das+$pc+floatval($proratedrent);
+                    if(  $rent_check=='false')
+                    {
+                        $proratedrentflag=1;
+                        $month_calculation=$this->nonproratedmonthcalculation(  $check_in_date,  $check_out_date);
+                        $startdate_array=  $month_calculation[0];
+                        $enddate_array=  $month_calculation[1];
+                        $length=  count($startdate_array);
+                    }
+                    else{
+                        $proratedrentflag=2;
+                        $month_calculation=$this->proratedmonthcalculation($check_in_date,$check_out_date);
+                        $startdate_array=$month_calculation[0];
+                        $enddate_array=$month_calculation[1];
+                        $length=count($startdate_array);
+                    }
+                }
+                else
+                {
+                    $length=1;
+                    $proratedrentflag=0;
+                    $cdate1=$check_in_date1;
+                    $cdate2=$check_out_date1;
+                    $sum1 = $das+$pc+floatval($A5);
                     $sum = number_format($sum1,2,'.','');
                 }
-                else if((date("Y", $check_in_dated_minus)!=date("Y", $check_out_dated_lastmonth)) &&(date("m", $check_in_dated_minus)!=date("m", $check_out_dated_lastmonth)))
+            }
+            else if( $formname=="EXTENSION")//extension....
+            {
+                if((( $yearchk>0)||( $monthschk>0)||(( $monthchk>0)&&( $daychk>0)))&&( $rent_check=='true'))//greater than a month-rent check true
                 {
-                    $proratedsmonth=$this->Mdl_eilib_prorated_calc->sMonthProratedCalc($check_in_date,$A5);
-                    $proratedemonth=$this->Mdl_eilib_prorated_calc->eMonthProratedCalc($check_out_date,$A5);
-                    $proratedrent = number_format(floatval($proratedsmonth)+floatval($proratedemonth),2,'.','');
-                    if($proratedrent!='0.00')
+                    $proratedrentflag=2;
+                    $month_calculation=$this->proratedmonthcalculation( $check_in_date, $check_out_date);
+                    $startdate_array= $month_calculation[0];
+                    $enddate_array= $month_calculation[1];
+                    $length=count( $startdate_array);
+                }
+                else if((( $yearchk>0)||( $monthschk>0)||(( $monthchk>0)&&( $daychk>0)))&&( $rent_check=='false'))//greater than a month-rent check false
+                {
+                    $proratedrentflag=1;
+                    $month_calculation=$this->nonproratedmonthcalculation( $check_in_date, $check_out_date);
+                    $startdate_array= $month_calculation[0];
+                    $enddate_array= $month_calculation[1];
+                    $length=count($startdate_array);
+                }
+                else if(((( $yearchk<0)&&( $monthschk<0)&&( $daychk>0)&&( $monthchk<0))||(( $yearchk<0)&&( $monthschk<0)&&( $daychk<0)&&( $monthchk>0)))&&( $rent_check=='true'))//less than or equal to a month
+                {
+                    $length=1;
+                    $proratedrentflag=0;
+                    $cdate1= $check_in_date1;
+                    $cdate2= $check_out_date1;
+                    if((date("Y", $check_in_dated_minus)==date("Y", $check_out_dated_lastmonth)) &&(date("m", $check_in_dated_minus)==date("m", $check_out_dated_lastmonth)))
                     {
+                        $proratedrent=$this->Mdl_eilib_prorated_calc->wMonthProratedCalc($check_in_date,$check_out_date,$A5);
                         $sum1 = $das+$pc+floatval($proratedrent);
-                        $sum = number_format($sum1,2,'.','');            }
+                        $sum = number_format($sum1,2,'.','');
+                    }
+                    else if((date("Y", $check_in_dated_minus)!=date("Y", $check_out_dated_lastmonth)) &&(date("m", $check_in_dated_minus)!=date("m", $check_out_dated_lastmonth)))
+                    {
+                        $proratedsmonth=$this->Mdl_eilib_prorated_calc->sMonthProratedCalc($check_in_date,$A5);
+                        $proratedemonth=$this->Mdl_eilib_prorated_calc->eMonthProratedCalc($check_out_date,$A5);
+                        $proratedrent = number_format(floatval($proratedsmonth)+floatval($proratedemonth),2,'.','');
+                        if($proratedrent!='0.00')
+                        {
+                            $sum1 = $das+$pc+floatval($proratedrent);
+                            $sum = number_format($sum1,2,'.','');            }
+                        else
+                        {
+                            $sum1 = $das+$pc+$ren;
+                            $sum = number_format($sum1,2,'.','');            }
+                    }
+                }
+            }
+            $arrCheckDateAmtConcate="";$singlemonth='';$reminingmonths='';
+            if($proratedrentflag==2)  /////////rent check true greater than month PRORATED
+            {
+                $sumamount=$das+$pc;
+                $reminingmonths=0;
+                for($i=0;$i<$length;$i++)
+                {
+                    $startdate=$startdate_array[$i];
+                    $enddate=$enddate_array[$i];
+                    if(date("d", strtotime($startdate))!=1 && $i==0){$amount=$this->Mdl_eilib_prorated_calc->sMonthProratedCalc($check_in_date,$A5);}else{$amount=$A5;}
+                    if($i==$length-1)
+                    {
+                        $date = new DateTime();
+                        $date->setDate(date("Y", strtotime($enddate)),(intval(date("m", strtotime($enddate)))+1),date("d", strtotime($enddate)));
+                        $finaldate=$date->format('Y-m-d');
+                        if(date("d", strtotime($enddate))==date("d", strtotime($finaldate))-1)
+                        {$amount=$A5;}else{$amount=$this->Mdl_eilib_prorated_calc->eMonthProratedCalc($check_out_date,$A5);}
+                    }
+                    $checkdate1= date("d-M-Y",strtotime($startdate));
+                    $checkdate2= date("d-M-Y",strtotime($enddate));
+                    if($i==0)
+                        $arrCheckDateAmtConcate.= $amount.'^^'.$checkdate1.'^^'.$checkdate2;
+                    else
+                        $arrCheckDateAmtConcate.= '^~^'.$amount.'^^'.$checkdate1.'^^'.$checkdate2;
+                    if($i==0)
+                    {
+                        $singlemonth= number_format(floatval($sumamount)+floatval($amount),2,'.','');
+
+                    }
                     else
                     {
-                        $sum1 = $das+$pc+$ren;
-                        $sum = number_format($sum1,2,'.','');            }
-                }
-            }
-        }
-        $arrCheckDateAmtConcate="";$singlemonth='';$reminingmonths='';
-        if($proratedrentflag==2)  /////////rent check true greater than month PRORATED
-        {
-            $sumamount=$das+$pc;
-            $reminingmonths=0;
-            for($i=0;$i<$length;$i++)
-            {
-                $startdate=$startdate_array[$i];
-                $enddate=$enddate_array[$i];
-                if(date("d", strtotime($startdate))!=1 && $i==0){$amount=$this->Mdl_eilib_prorated_calc->sMonthProratedCalc($check_in_date,$A5);}else{$amount=$A5;}
-                if($i==$length-1)
-                {
-                    $date = new DateTime();
-                    $date->setDate(date("Y", strtotime($enddate)),(intval(date("m", strtotime($enddate)))+1),date("d", strtotime($enddate)));
-                    $finaldate=$date->format('Y-m-d');
-                    if(date("d", strtotime($enddate))==date("d", strtotime($finaldate))-1)
-                    {$amount=$A5;}else{$amount=$this->Mdl_eilib_prorated_calc->eMonthProratedCalc($check_out_date,$A5);}
-                }
-                $checkdate1= date("Y-M-d",strtotime($startdate));
-                $checkdate2= date("Y-M-d",strtotime($enddate));
-                if($i==0)
-                    $arrCheckDateAmtConcate.= $amount.'^^'.$checkdate1.'^^'.$checkdate2;
-                else
-                    $arrCheckDateAmtConcate.= '^~^'.$amount.'^^'.$checkdate1.'^^'.$checkdate2;
-                if($i==0)
-                {
-                    $singlemonth= number_format(floatval($sumamount)+floatval($amount),2,'.','');
-
-                }
-                else
-                {
-                    $reminingmonths=floatval($reminingmonths)+floatval($amount);
-                    $reminingmonths= number_format($reminingmonths,2,'.','');
-                }
-            }
-        }
-        if($proratedrentflag==1)   ////NONPRORATED
-        {
-            $sumamount=$das+$pc;
-            $reminingmonths=0;
-            for($i=0;$i<$length;$i++)
-            {
-                $startdate=$startdate_array[$i];
-                $enddate=$enddate_array[$i];
-                $amount=$A5;
-                if($i==$length-1)
-                {
-                    if(date('Y',strtotime($startdate))==date('Y',strtotime($enddate)) &&date('m',strtotime($startdate))==date('m',strtotime($enddate)))
-                    {
-                        $amount=$this->wMonthProratedCalc($startdate,$enddate,$A5);
-                    }
-                    else if(date('Y',strtotime($startdate))!=date('Y',strtotime($enddate)) ||date('m',strtotime($startdate))!=date('m',strtotime($enddate)))
-                    {
-                        $proratedsmonth=$this->Mdl_eilib_prorated_calc->sMonthProratedCalc($startdate,$A5);
-                        $proratedemonth=$this->Mdl_eilib_prorated_calc->eMonthProratedCalc($enddate,$A5);
-                        $amount=number_format(floatval($proratedsmonth)+floatval($proratedemonth),2,'.','');
+                        $reminingmonths=floatval($reminingmonths)+floatval($amount);
+                        $reminingmonths= number_format($reminingmonths,2,'.','');
                     }
                 }
-                $checkdate1= date("Y-M-d",strtotime($startdate));
-                $checkdate2=date("Y-M-d",strtotime($enddate));
-                if($i==0)
-                    $arrCheckDateAmtConcate.= $amount.'^^'.$checkdate1.'^^'.$checkdate2;
-                else
-                    $arrCheckDateAmtConcate.= '^~^'.$amount.'^^'.$checkdate1.'^^'.$checkdate2;
-                $sum = number_format($sumamount,2,'.','');
-                if($i==0)
+            }
+            if($proratedrentflag==1)   ////NONPRORATED
+            {
+                $sumamount=$das+$pc;
+                $reminingmonths=0;
+                for($i=0;$i<$length;$i++)
                 {
-                    $singlemonth= number_format(floatval($sumamount)+floatval($amount),2,'.','');
-                }
-                else
-                {
-                    $reminingmonths= number_format(floatval($reminingmonths)+floatval($reminingmonths),2,'.','');
+                    $startdate=$startdate_array[$i];
+                    $enddate=$enddate_array[$i];
+                    $amount=$A5;
+                    if($i==$length-1)
+                    {
+                        if(date('Y',strtotime($startdate))==date('Y',strtotime($enddate)) &&date('m',strtotime($startdate))==date('m',strtotime($enddate)))
+                        {
+                            $amount=$this->Mdl_eilib_prorated_calc->wMonthProratedCalc($startdate,$enddate,$A5);
+                        }
+                        else if(date('Y',strtotime($startdate))!=date('Y',strtotime($enddate)) ||date('m',strtotime($startdate))!=date('m',strtotime($enddate)))
+                        {
+                            $proratedsmonth=$this->Mdl_eilib_prorated_calc->sMonthProratedCalc($startdate,$A5);
+                            $proratedemonth=$this->Mdl_eilib_prorated_calc->eMonthProratedCalc($enddate,$A5);
+                            $amount=number_format(floatval($proratedsmonth)+floatval($proratedemonth),2,'.','');
+                        }
+                    }
+                    $checkdate1= date("d-M-Y",strtotime($startdate));
+                    $checkdate2=date("d-M-Y",strtotime($enddate));
+                    if($i==0)
+                        $arrCheckDateAmtConcate.= $amount.'^^'.$checkdate1.'^^'.$checkdate2;
+                    else
+                        $arrCheckDateAmtConcate.= '^~^'.$amount.'^^'.$checkdate1.'^^'.$checkdate2;
+                    $sum = number_format($sumamount,2,'.','');
+                    if($i==0)
+                    {
+                        $singlemonth= number_format(floatval($sumamount)+floatval($amount),2,'.','');
+                    }
+                    else
+                    {
+                        $reminingmonths= number_format(floatval($reminingmonths)+floatval($reminingmonths),2,'.','');
+                    }
                 }
             }
-        }
-        if($formname=="EXTENSION")
-        {
-            $replaceSum=$sum;
-        }
-        else
-        {
-            $pcanddep=floatval($das)+floatval($pc)+floatval($A5);
-            $replaceSum=  number_format($pcanddep,2,'.','');
-        }
-        if($company_fetch==" ")
-        {
-            $companyTemp="company/";
-        }
-        else
-        {
-            $companyTemp="company";
-        }
-        $data = array(
-            'arrCheckDateAmtConcate'=>$arrCheckDateAmtConcate,'singlemonth'=>$singlemonth,'reminingmonths'=>$reminingmonths, 'companyTemp'=>$companyTemp, 'replaceSum'=>$replaceSum, 'todaydat'=>$todaydat,'todaydatestring'=>$todaydatestring,'A3'=>$A3,'A4'=>$A4,'das'=>$das,'pc'=>$pc,'A5'=>$A5,'sum'=>$sum,'cdate1'=>$cdate1,'cdate2'=>$cdate2,'todaysDate'=>$todaysDate,'Slno'=>$Slno,'tenant_fetch' => $tenant_fetch,'length'=>$length,'proratedrentflag'=>$proratedrentflag,
-            'nonPror_monthCal'=>$nonPror_monthCal,'flag'=>2,'prorated_monthCal' => $prorated_monthCal, 'proratedrent' => $proratedrent, 'proratedsmonth' => $proratedsmonth,'proratedemonth'=>$proratedemonth,
-            'unit' => $unit, 'customername' => $customername
-        , 'companyname' =>$company_fetch, 'invoiceid' => $invoiceid,'invoicesno' => $invoicesno, 'invoicedate' => $invoicedate,
-            'rent' => $rent, 'process' => $process, 'deposit' => $deposit,'sdate'=>$sdate,'edate'=>$edate,'roomtype'=>$roomtype,
-            'Leaseperiod'=>$Leaseperiod,'Leaseperiod'=>$Leaseperiod,'rentcheck'=>$rentcheck,'docowner'=>$docowner,'formname'=>$formname,
-            'waived'=>$waived,'custid'=>$custid );
-        $url= $this->Mdl_eilib_common_function->getUrlAccessGasScript();
-//$url="https://script.google.com/macros/s/AKfycbyv58HZU2XsR2kbCMWZjNzMWSmOwoE7xsg_fesXktGk4Kj574u1/exec";
-        $ch = curl_init();
-        $data=http_build_query($data);
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            if($formname=="EXTENSION")
+            {
+                $replaceSum=$sum;
+            }
+            else
+            {
+                $pcanddep=floatval($das)+floatval($pc)+floatval($A5);
+                $replaceSum=  number_format($pcanddep,2,'.','');
+            }
+            if($company_fetch==" ")
+            {
+                $companyTemp="company/";
+            }
+            else
+            {
+                $companyTemp="company";
+            }
+            $data = array(
+                'arrCheckDateAmtConcate'=>$arrCheckDateAmtConcate,'singlemonth'=>$singlemonth,'reminingmonths'=>$reminingmonths, 'companyTemp'=>$companyTemp, 'replaceSum'=>$replaceSum, 'todaydat'=>$todaydat,'todaydatestring'=>$todaydatestring,'A3'=>$A3,'A4'=>$A4,'das'=>$das,'pc'=>$pc,'A5'=>$A5,'sum'=>$sum,'cdate1'=>$cdate1,'cdate2'=>$cdate2,'todaysDate'=>$todaysDate,'Slno'=>$Slno,'tenant_fetch' => $tenant_fetch,'length'=>$length,'proratedrentflag'=>$proratedrentflag,
+                'nonPror_monthCal'=>$nonPror_monthCal,'flag'=>2,'prorated_monthCal' => $prorated_monthCal, 'proratedrent' => $proratedrent, 'proratedsmonth' => $proratedsmonth,'proratedemonth'=>$proratedemonth,
+                'unit' => $unit, 'customername' => $customername
+            , 'companyname' =>$company_fetch, 'invoiceid' => $invoiceid,'invoicesno' => $invoicesno, 'invoicedate' => $invoicedate,
+                'rent' => $rent, 'process' => $process, 'deposit' => $deposit,'sdate'=>$sdate,'edate'=>$edate,'roomtype'=>$roomtype,
+                'Leaseperiod'=>$Leaseperiod,'Leaseperiod'=>$Leaseperiod,'rentcheck'=>$rentcheck,'docowner'=>$docowner,'formname'=>$formname,
+                'waived'=>$waived,'custid'=>$custid );
+            $url= $this->Mdl_eilib_common_function->getUrlAccessGasScript();
+            $ch = curl_init();
+            $data=http_build_query($data);
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
 // This is what solved the issue (Accepting gzip encoding)
-        curl_setopt($ch, CURLOPT_ENCODING, "gzip,deflate");
-        try {
+            curl_setopt($ch, CURLOPT_ENCODING, "gzip,deflate");
             $response = curl_exec($ch);
-        }
-        catch(Exception $e){
-            echo   $e->getMessage();
-        }
-        curl_close($ch);
-        $parentId= $this->Mdl_eilib_common_function->CUST_TargetFolderId();
-        $file = new Google_Service_Drive_DriveFile();
-        $parent = new Google_Service_Drive_ParentReference();
-        $parent->setId($parentId);
-        $file->setParents(array($parent));
-        try {
+            curl_close($ch);
+            $parentId= $this->Mdl_eilib_common_function->CUST_TargetFolderId();
+            $file = new Google_Service_Drive_DriveFile();
+            $parent = new Google_Service_Drive_ParentReference();
+            $parent->setId($parentId);
+            $file->setParents(array($parent));
             $service->files->patch($response, $file);
+            $file = $service->files->get($response);
+//        $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
+            return [1,$response,$file->embedLink,"INV".$todaysDate.$Slno];
         }
         catch(Exception $e) {
-            echo $e->getMessage();
+            return [1];
         }
-//        $file = $service->files->get($response);
-////        $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
-//        return [$response,$file->embedLink];
-        $this->CUST_SetDocOwner($service,$response,$docowner,$sendmailid);
-        return $response;
     }
 //MAIL PART FOR CONTRACT AND INVOICE
     public function mailInvoiceContract($sender,$reciver,$subject,$body,$fileData,$title){
