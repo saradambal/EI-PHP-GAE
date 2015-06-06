@@ -1,7 +1,7 @@
 <?php
 require_once('application/libraries/EI_HDR.php');
 //******************************************Deposit_Calculations********************************************//
-//VER 0.03-SD:02/06/2015 ED:02/06/2015,moved to folder and changed filename eilib file name
+//VER 0.03-SD:02/06/2015 ED:03/06/2015,moved to folder and changed filename eilib file name
 //VER 0.02-SD:28/05/2015 ED:04/06/2015,did the ss part for deposit calculation and ss insert part
 //VER 0.01-SD:25/05/2015 ED:26/05/2015,completed form design and validation without ss part
 //*******************************************************************************************************//
@@ -61,9 +61,8 @@ require_once('application/libraries/EI_HDR.php');
                     url: ctrl_DDCalculation_url+'/DDC_Dep_Cal_submit',
                     data: formelement,
                     success: function(calcdata) {
-                        alert(calcdata)
                         var calc_values=JSON.parse(calcdata);
-//                        DDC_conformationmsg(calc_values);
+                        DDC_conformationmsg(calc_values);
                     },
                     error:function(data){
                         var errordata=(JSON.stringify(data));
@@ -78,10 +77,14 @@ require_once('application/libraries/EI_HDR.php');
                     var DDC_errorAarray_ss=DDC_errorAarray[17].EMC_DATA.replace('[SS]', DDC_conformationmsgvalue[1]);
                     show_msgbox("DEPOSIT DEDUCTION CALCULATIONS",DDC_errorAarray_ss,'error',false);
                 }
+                else if(DDC_conformationmsgvalue[0]=='Get_access'){
+                    show_msgbox("DEPOSIT DEDUCTION CALCULATIONS",DDC_errorAarray[18],'error',false);
+                }
                 else{
                     if((DDC_conformationmsgvalue[0]==0)){
-                        if(DDC_conformationmsgvalue[0]==0)
-                            show_msgbox("DEPOSIT DEDUCTION CALCULATIONS",DDC_errorAarray[15].EMC_DATA,'error',false);
+                        if(DDC_conformationmsgvalue[0]==0) {
+                            show_msgbox("DEPOSIT DEDUCTION CALCULATIONS", DDC_errorAarray[15].EMC_DATA, 'error', false);
+                        }
                     }
                     else{
                         $("#DDC_btn_sbutton").hide();

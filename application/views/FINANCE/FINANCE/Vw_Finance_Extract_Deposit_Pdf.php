@@ -19,6 +19,7 @@ require_once('application/libraries/EI_HDR.php');
             var DDE_tableerrorarray=[];
             var DDE_glb_samename=[];
             var DDE_flg_checkbox=1;
+            var shturl='';
         // initial data
             $.ajax({
                 type: "POST",
@@ -285,7 +286,8 @@ require_once('application/libraries/EI_HDR.php');
                 }
                 else{
                     montharray=month.montharray;
-                    DDE_tableerrorarray=month.DDE_tableerrorarray;
+                    shturl=month.shturl;
+                    //DDE_tableerrorarray=month.DDE_tableerrorarray;
                     srtemailarray=month.srtemailarray;
                     if(((month.srtemailarray).length!=0)&&(montharray.length!=0 && montharray!=undefined && montharray.length!=""))
                     {

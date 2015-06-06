@@ -1476,15 +1476,16 @@ require_once('application/libraries/EI_HDR.php');
                 }
             });
         // CLICK EVENT FOR INLINE EDIT FOR STAMP TYPE AND ROOM TYPE
-            var previous_id;var tdvalue;
+            var previous_id;var tdvalue;var rid;
             $(document).on('click','.data',function(){
                 if(previous_id!=undefined){
-                    $('#'+previous_id).replaceWith("<td class='data' id='"+previous_id+"' >"+tdvalue+"</td>");
+                    $('#'+previous_id).replaceWith("<td class='data' id='"+rid+'_'+previous_id+"' >"+tdvalue+"</td>");
                 }
                 var cid = $(this).attr('id');
                 var splittedcid=cid.split('_');
                 var rowcid=splittedcid[0];
                 var primcid=splittedcid[1];
+                rid=rowcid
                 previous_id=primcid;
                 editrowid=primcid;
                 tdvalue=$(this).text();
@@ -1869,6 +1870,7 @@ require_once('application/libraries/EI_HDR.php');
                     success: function(successdata) {
                         var success_data=JSON.parse(successdata);
                         USU_success_flex(success_data);
+                        rid=undefined;
                     },
                     error:function(data){
                         var errordata=(JSON.stringify(data));
