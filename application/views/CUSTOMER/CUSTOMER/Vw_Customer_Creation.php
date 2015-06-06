@@ -457,7 +457,7 @@ $(document).ready(function() {
                         var startdateperiod = value_array[2][0].CCN_DATA;
                         var customerstartdate = DB_beforedateCalculation(startdateperiod);
                         var unitenddate = data.UD_END_DATE;
-                        var unit_enddate = DB_dateCalculation(unitenddate);
+                        var unit_enddate = DB_dateCalculationMinusone(unitenddate);
                         if (customerstartdate > unit_startdate) {
                             $('#CCRE_Startdate').datepicker("option", "minDate", customerstartdate);
                             $('#CCRE_Startdate').datepicker("option", "maxDate", unit_enddate);
@@ -496,6 +496,11 @@ $(document).ready(function() {
     function DB_dateCalculation(inputdate) {
         var inputdate = inputdate.split('-');
         var newunitstartdate = new Date(inputdate[0], inputdate[1] - 1, inputdate[2]);
+        return newunitstartdate;
+    }
+    function DB_dateCalculationMinusone(inputdate) {
+        var inputdate = inputdate.split('-');
+        var newunitstartdate = new Date(inputdate[0], inputdate[1] - 1, inputdate[2]-1);
         return newunitstartdate;
     }
 
@@ -959,7 +964,6 @@ $(document).ready(function() {
         var xmlhttp = new XMLHttpRequest();
         xmlhttp.onreadystatechange = function () {
             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-                alert(xmlhttp.responseText)
                 var msg_alert = JSON.parse(xmlhttp.responseText);
                 $('.preloader').hide();
                 if (msg_alert == 1) {
@@ -1028,6 +1032,7 @@ $(document).ready(function() {
         $('#CCRE_Rent').removeClass('invalid');
         $('input:checkbox[name=CCRE_process_waived]').attr("checked", false);
         $('input:checkbox[name=CCRE_lbl_waived]').attr("checked", false);
+        $('#CC_fileupload').val('');
     }
 
     $(document).on('change', '.proratedcheck', function () {

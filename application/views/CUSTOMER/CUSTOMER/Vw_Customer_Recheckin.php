@@ -1,6 +1,6 @@
 <html>
 <head>
-    <?php include 'EI_HDR.php'; ?>
+    <?php require_once('application/libraries/EI_HDR.php'); ?>
 </head>
 <script>
 $(document).ready(function() {
@@ -20,11 +20,12 @@ $(document).ready(function() {
     $("#CCRE_Quarterly_fee").hide().val('');
     $("#CCRE_Fixedaircon_fee").hide().val('');
     $('#CCRE_CustomerId').hide();
+    var controller_url="<?php echo base_url(); ?>" + '/index.php/CUSTOMER/CUSTOMER/Ctrl_Customer_Recheckin/' ;
     var timearray;
     var errormsg
     $.ajax({
         type: "POST",
-        url: '/index.php/Ctrl_Customer_Recheckin/Customer_Initaildatas',
+        url: controller_url+"Customer_Initaildatas",
         data:{"Formname":'CustomerCreation',"ErrorList":'1,2,6,33,34,35,36,37,321,324,339,342,343,344,345,346,347,348,400,443,444,458,459,460,461'},
         success: function(data){
             $('.preloader').hide();
@@ -116,7 +117,7 @@ var CustomernameDetails;
             $('#CustomeremptyErrormsg').show();
             $.ajax({
                 type: "POST",
-                url: '/index.php/Ctrl_Customer_Recheckin/Recheckin_Customer',
+                url: controller_url+"Recheckin_Customer",
                 data:{"Unit":unitno},
                 success: function(data){
                     var value_array=JSON.parse(data);
@@ -211,7 +212,7 @@ var CustomernameDetails;
         var unitno=$('#CRC_AllUnits').val();
                $.ajax({
                    type: "POST",
-                   url: '/index.php/Ctrl_Customer_Recheckin/Recheckin_Customer_PersonalDetails',
+                   url: controller_url+"Recheckin_Customer_PersonalDetails",
                    data:{"Unit":unitno,Customerid:customerid,Recver:Recver},
                    success: function(data){
                        var valuearray=JSON.parse(data);
@@ -267,7 +268,7 @@ var CustomernameDetails;
         var newdate=new Date(string[2],string[1]-1,string[0])
         return newdate;
     }
-    $(document).on('change blur','#CRC_Form_CustomerCreation',function(){
+    $(document).on('change blur','#CRC_Form_CustomerRecheckin',function(){
         /******POSATAL CODE************/
         var postalcode=$('#CCRE_CompanyPostalCode').val();
         if(postalcode!=""){if(postalcode.length>=5){var postalflag=1;$('#CCRE_lbl_postalerrormsg').hide();$('#CCRE_CompanyPostalCode').removeClass('invalid');}else{postalflag=0;$('#CCRE_lbl_postalerrormsg').show();$('#CCRE_CompanyPostalCode').addClass('invalid');}}else{$('#CCRE_lbl_postalerrormsg').hide();postalflag=1;$('#CCRE_CompanyPostalCode').removeClass('invalid');}
@@ -437,7 +438,7 @@ var CustomernameDetails;
         {
             $.ajax({
                 type: "POST",
-                url: '/index.php/Ctrl_Customer_Recheckin/CustomerRoomTypeLoad',
+                url: controller_url+"CustomerRoomTypeLoad",
                 data:{"Unit":Unit},
                 success: function(data){
                     var value_array=JSON.parse(data);
@@ -470,7 +471,7 @@ var CustomernameDetails;
                         var startdateperiod=value_array[2][0].CCN_DATA;
                         var customerstartdate=DB_beforedateCalculation(startdateperiod);
                         var unitenddate=data.UD_END_DATE;
-                        var unit_enddate=DB_dateCalculation(unitenddate);
+                        var unit_enddate=DB_dateCalculationminusone(unitenddate);
                         var Customer_enddate=DB_dateCalculationplueone(RecheckinSD);
                         var datearray=[customerstartdate,unit_startdate,Customer_enddate]
                         var maxDate=new Date(Math.max.apply(null,datearray));
@@ -505,6 +506,12 @@ var CustomernameDetails;
     {
         var inputdate=inputdate.split('-');
         var newunitstartdate=new Date(inputdate[0],inputdate[1]-1,inputdate[2]);
+        return newunitstartdate;
+    }
+    function DB_dateCalculationminusone(inputdate)
+    {
+        var inputdate=inputdate.split('-');
+        var newunitstartdate=new Date(inputdate[0],inputdate[1]-1,inputdate[2]-1);
         return newunitstartdate;
     }
     function DB_dateCalculationplueone(inputdate)
@@ -647,7 +654,7 @@ var CustomernameDetails;
                 var Unit=$('#CCRE_UnitNo').val();
                 $.ajax({
                     type: "POST",
-                    url: '/index.php/Ctrl_Customer_Recheckin/UnitCardNumbers',
+                    url: controller_url+"UnitCardNumbers",
                     data:{"Unit":Unit},
                     success: function(data){
                         var value_array=JSON.parse(data);
@@ -1029,17 +1036,14 @@ var CustomernameDetails;
         }
         return CCRE_timelist;
     }
-
-    $('#CCRE_btn_savebutton').on('click',function(){
+    $('#CCRE_btn_savebutton').on('click', function () {
         $('.preloader').show();
-        var FormElements=$('#CRC_Form_CustomerCreation').serialize();
-        $.ajax({
-            type: "POST",
-            url: "/index.php/Ctrl_Customer_Recheckin/CustomerRecheckinSave",
-            data:FormElements,
-            success: function(data){
+        var FormElements = document.getElementById("CRC_Form_CustomerRecheckin");
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
                 $('.preloader').hide();
-                var returnvalue=JSON.parse(data);
+                var returnvalue=JSON.parse(xmlhttp.responseText);
                 var allunits=returnvalue[1];
                 var options ='<option value="">SELECT</option>';
                 for (var i = 0; i < allunits.length; i++)
@@ -1049,23 +1053,23 @@ var CustomernameDetails;
                 }
                 $('#CRC_AllUnits').html(options);
                 $('#CRC_AllCustomers').prop('disabled',true);
-                var options ='<option value="">SELECT</option>';
-                $('#CRC_AllCustomers').html(options);
-                if(returnvalue[0]==1)
-                {
-                    show_msgbox("CUSTOMER RECHECKIN",errormsg[7].EMC_DATA,"success",false);
+                var CUSTOMERoptions ='<option value="">SELECT</option>';
+                $('#CRC_AllCustomers').html(CUSTOMERoptions);
+                if (returnvalue[0]==1) {
+                    $('.preloader').hide();
+                    show_msgbox("CUSTOMER RECHECKIN", errormsg[7].EMC_DATA, "success", false);
                     Reset();
                 }
-                else
-                {
-                    show_msgbox("CUSTOMER RECHECKIN",returnvalue,"success",false);
+                else {
+                    $('.preloader').hide();
+                    show_msgbox("CUSTOMER RECHECKIN", msg_alert, "success", false);
                 }
-                $('.preloader').hide();
-            },
-            error: function(data){
-                alert('error in getting'+JSON.stringify(data));
             }
-        });
+        }
+//        var custurl=controller_url+"UnitCardNumbers",
+        var option = 'SAVE';
+        xmlhttp.open("POST",controller_url+"CustomerRecheckinSave", true);
+        xmlhttp.send(new FormData(FormElements));
     });
     $(document).on('change blur','.Customernamechange',function(){
         var appenddata='';
@@ -1088,7 +1092,7 @@ var CustomernameDetails;
         $('#CCRE_Cardnumber').prop('checked', false);
         $('#CCRE_Nullcard').prop('checked', false);
         $("#CCRE_btn_savebutton").attr("disabled", "disabled");
-        $('#CRC_Form_CustomerCreation')[0].reset();
+        $('#CRC_Form_CustomerRecheckin')[0].reset();
         $('#CCRE_lbl_emailiderrormsg').hide();
         $('#CCRE_lbl_mobileerrormsg').hide();
         $('#CCRE_lbl_intlmobileerrormsg').hide();
@@ -1118,7 +1122,50 @@ var CustomernameDetails;
         $('#CCRE_ProcessingFee').removeClass('invalid');
         $('#CCRE_Rent').removeClass('invalid');
         $('#RecheckinForm').hide();
+        $('#CC_fileupload').val('');
+        $('input:checkbox[name=CCRE_process_waived]').attr("checked", false);
+        $('input:checkbox[name=CCRE_lbl_waived]').attr("checked", false);
     }
+    $(document).on('change', '.fileextensionchk', function () {
+        var filename = $('#CC_fileupload').val();
+        var valid_extensions = /(\.pdf)$/i;
+        if (valid_extensions.test(filename)) {
+        }
+        else {
+            show_msgbox("CUSTOMER RECHECKIN", 'UPLOAD ONLY PDF FILES', "success", false);
+            $('#CC_fileupload').val('');
+        }
+    });
+    $(document).on('change', '.proratedcheck', function () {
+        var startdate = $('#CCRE_Startdate').val();
+        var enddate = $('#CCRE_Enddate').val();
+        var Rent = $('#CCRE_Rent').val();
+        if (startdate != '' && enddate != '' && Rent != '') {
+            $.ajax({
+                type: "POST",
+                url: controller_url+"Prorated_check",
+                data: {SD: startdate, ED: enddate},
+                success: function (data) {
+                    if (data != 'true') {
+                        $('input:checkbox[name=CCRE_Rent_Prorated]').attr('checked', false);
+                        $('input:checkbox[name=CCRE_Rent_Prorated]').attr("disabled", 'disabled');
+                    }
+                    else {
+                        $('input:checkbox[name=CCRE_Rent_Prorated]').attr('checked', true);
+                        $('input:checkbox[name=CCRE_Rent_Prorated]').removeAttr("disabled");
+                    }
+                    $('.preloader').hide();
+                },
+                error: function (data) {
+                    alert('error in getting' + JSON.stringify(data));
+                }
+            });
+        }
+        else {
+            $('input:checkbox[name=CCRE_Rent_Prorated]').attr('checked', false);
+            $('input:checkbox[name=CCRE_Rent_Prorated]').attr("disabled", 'disabled');
+        }
+    });
 });
 </script>
 <body>
@@ -1128,7 +1175,7 @@ var CustomernameDetails;
 <div class="row title text-center"><h4><b>CUSTOMER RECHECKIN</b></h4></div>
    <div class ='row content'>
       <div class="panel-body">
-<!--         <form id="CRC_Form_CustomerCreation" class="form-horizontal" role="form">-->
+<!--         <form id="CRC_Form_CustomerRecheckin" class="form-horizontal" role="form">-->
          <div style="padding-left: 20px">
             <div class="row form-group">
                 <div class="col-md-3">
@@ -1155,7 +1202,7 @@ var CustomernameDetails;
          </div>
             <br>
             <div id="RecheckinForm" hidden>
-             <form id="CRC_Form_CustomerCreation" class="form-horizontal" role="form">
+             <form id="CRC_Form_CustomerRecheckin" class="form-horizontal" role="form">
                  <div class="row form-group">
                     <div class="col-md-3">
                         <label>FIRST NAME<span class="labelrequired"><em>*</em></span></label>
@@ -1339,7 +1386,7 @@ var CustomernameDetails;
                     <div class="col-md-8">
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <input class="form-control prorated startdatevalidate datemandtry noticedate" name="CCRE_Startdate"  style="max-width:120px;" id="CCRE_Startdate" placeholder="Check In Date"/>
+                            <input class="form-control prorated startdatevalidate datemandtry noticedate proratedcheck" name="CCRE_Startdate"  style="max-width:120px;" id="CCRE_Startdate" placeholder="Check In Date"/>
                         </div>
                        <div id="startdatediv" hidden>
                         <div class="col-md-1">
@@ -1371,7 +1418,7 @@ var CustomernameDetails;
                     <div class="col-md-8">
                     <div class="row form-group">
                         <div class="col-md-3">
-                            <input class="form-control noticedate datemandtry" name="CCRE_Enddate"  style="max-width:120px;" id="CCRE_Enddate" placeholder="Check Out Date"/>
+                            <input class="form-control noticedate datemandtry proratedcheck" name="CCRE_Enddate"  style="max-width:120px;" id="CCRE_Enddate" placeholder="Check Out Date"/>
                         </div>
                         <div class="col-md-1">
                             <label>FROM</label>
@@ -1474,7 +1521,7 @@ var CustomernameDetails;
                     <div class="col-md-6">
                         <div class="row form-group">
                             <div class="col-md-3">
-                                <input class="form-control CCRE_amtonlyvalidationmaxdigit" name="CCRE_Rent" maxlength="7"  style="max-width:100px;" id="CCRE_Rent" placeholder="0.00">
+                                <input class="form-control CCRE_amtonlyvalidationmaxdigit proratedcheck" name="CCRE_Rent" maxlength="7"  style="max-width:100px;" id="CCRE_Rent" placeholder="0.00">
                             </div>
                             <div class="col-md-1">
                                 <input id="CCRE_Rent_Prorated" type="checkbox" name="CCRE_Rent_Prorated">
@@ -1533,6 +1580,14 @@ var CustomernameDetails;
                         <textarea class="form-control autogrowcomments" name="CCRE_Comments"  id="CCRE_Comments" placeholder="Comments"></textarea>
                     </div>
                 </div>
+                 <div class="row form-group">
+                     <div class="col-md-3">
+                         <label>FILE UPLOAD</label>
+                     </div>
+                     <div class="col-md-3">
+                         <input type="file" id="CC_fileupload" name="CC_fileupload" class="form-control fileextensionchk" />
+                     </div>
+                 </div>
                 <div class="row form-group">
                     <div class="col-lg-offset-2 col-lg-3">
                         <input type="button" id="CCRE_btn_savebutton" class="btn" value="CREATE" disabled>         <input type="button" id="CustomerCreation_Reset" class="btn" value="RESET">

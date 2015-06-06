@@ -67,7 +67,6 @@ class Mdl_finance_outstanding_payee_list extends CI_Model
                     return $returnMessage;
                 } else {
                     $flag = 1;
-                    set_time_limit(0);
                     $period = $_POST['FIN_OPL_db_period'];
                     $activecclist = "CALL SP_ACTIVE_CUSTOMERLIST('$period','$UserStamp',@TEMP_OPL_ACTIVECUSTOMER_TABLE,@TEMP_OPL_SORTEDACTIVECUSTOMER_TABLE)";
                     $this->db->query($activecclist);

@@ -1,7 +1,7 @@
 <?php
 error_reporting(0);
-//require_once 'google/appengine/api/mail/Message.php';
-//use google\appengine\api\mail\Message;
+require_once 'google/appengine/api/mail/Message.php';
+use google\appengine\api\mail\Message;
 Class Ctrl_Finance_Outstanding_Payee_list extends CI_Controller
 {
     function __construct() {

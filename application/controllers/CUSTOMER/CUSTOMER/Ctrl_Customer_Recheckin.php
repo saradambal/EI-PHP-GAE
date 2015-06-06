@@ -1,16 +1,21 @@
 <?php
-include 'GET_USERSTAMP.php';
-include 'GET_CONFIG.php';
-$UserStamp=$UserStamp;
+error_reporting(0);
+require_once 'google/appengine/api/mail/Message.php';
+use google\appengine\api\mail\Message;
 Class Ctrl_Customer_Recheckin extends CI_Controller
 {
+    function __construct() {
+        parent::__construct();
+        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_creation');
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $this->load->model('EILIB/Mdl_eilib_quarter_calc');
+    }
     public function Index()
     {
         $this->load->view('CUSTOMER/CUSTOMER/Vw_Customer_Recheckin');
     }
     public function Customer_Initaildatas()
     {
-        $this->load->model('EILIB/Mdl_eilib_common_function');
         $formname=$_REQUEST['Formname'];
         $errorlist=$_REQUEST['ErrorList'];
         $unit = $this->Mdl_eilib_common_function->getAllActiveUnits();
@@ -26,7 +31,6 @@ Class Ctrl_Customer_Recheckin extends CI_Controller
     }
     public function CustomerRoomTypeLoad()
     {
-        $this->load->model('EILIB/Mdl_eilib_common_function');
         $unit=$_REQUEST['Unit'];
         $RoomType=$this->Mdl_eilib_common_function->getUnitRoomType($unit);
         $UnitDates=$this->Mdl_eilib_common_function->getUnit_Start_EndDate($unit);
@@ -36,7 +40,6 @@ Class Ctrl_Customer_Recheckin extends CI_Controller
     }
     public function UnitCardNumbers()
     {
-        $this->load->model('EILIB/Mdl_eilib_common_function');
         $unit=$_REQUEST['Unit'];
         $CardNumbers=$this->Mdl_eilib_common_function->CUST_getunitCardNo($unit);
         echo json_encode($CardNumbers);
@@ -44,7 +47,6 @@ Class Ctrl_Customer_Recheckin extends CI_Controller
     public function Recheckin_Customer()
     {
         $unit=$_REQUEST['Unit'];
-        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_creation');
         $customername=$this->Mdl_customer_creation->getRecheckinCustomer($unit);
         echo json_encode($customername);
     }
@@ -52,36 +54,41 @@ Class Ctrl_Customer_Recheckin extends CI_Controller
     {
         $customerid=$_REQUEST['Customerid'];
         $Recver=$_REQUEST['Recver'];
-        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_creation');
         $CustomerPersonalDetails=$this->Mdl_customer_creation->getRecheckinCustomer_PersonalDetails($customerid,$Recver);
         $CustomerEnddate=$this->Mdl_customer_creation->getRecheckin_Enddates($customerid,$Recver);
         $ReturnValue=array($CustomerPersonalDetails,$CustomerEnddate);
         echo json_encode($ReturnValue);
     }
+    public function Prorated_check()
+    {
+        $Startdate=$_POST['SD'];
+        $Enddate=$_POST['ED'];
+        $Prorated=$this->Mdl_eilib_common_function->CUST_chkProrated($Startdate,$Enddate);
+        echo $Prorated;
+    }
     public function CustomerRecheckinSave()
     {
-        global $UserStamp;
-        global $ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token;
+        $UserStamp=$this->Mdl_eilib_common_function->getSessionUserStamp();
         $Startdate=$_POST['CCRE_Startdate'];
         $Enddate=$_POST['CCRE_Enddate'];
-        $this->load->model('EILIB/Mdl_eilib_common_function');
-        $AllUnit =$this->Mdl_eilib_common_function->getRecheckinCustomerUnit();
+        $Sendmailid = $_POST['CCRE_MailList'];
         $Leaseperiod=$this->Mdl_eilib_common_function->getLeasePeriod($Startdate,$Enddate);
-        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_creation');
-        $Create_confirm=$this->Mdl_customer_creation->Customer_Recheckin_Save($UserStamp,$Leaseperiod);
+        $Q_Startdate=date('Y-m-d',strtotime($Startdate));
+        $Q_Enddate=date('Y-m-d',strtotime($Enddate));
+        $Quoters=$this->Mdl_eilib_quarter_calc->quarterCalc(new DateTime($Q_Startdate),new DateTime($Q_Enddate));
+        $this->load->library('Google');
+        $Create_confirm=$this->Mdl_customer_creation->Customer_Recheckin_Save($UserStamp,$Leaseperiod,$Quoters);
+        $AllUnit =$this->Mdl_eilib_common_function->getRecheckinCustomerUnit();
         if($Create_confirm[0]==1)
         {
-            $this->load->library('Google');
-            $this->load->model('EILIB/Mdl_eilib_calender');
-            $cal= $this->Mdl_eilib_calender->createCalendarService($ClientId,$ClientSecret,$RedirectUri,$DriveScopes,$CalenderScopes,$Refresh_Token);
-            $this->Calender->CUST_customercalendercreation($cal,$Create_confirm[1],$Create_confirm[2],$Create_confirm[3],$Create_confirm[4],$Create_confirm[5],$Create_confirm[6],$Create_confirm[7],$Create_confirm[8],$Create_confirm[9],$Create_confirm[10],$Create_confirm[11],$Create_confirm[12],$Create_confirm[13],$Create_confirm[14],$Create_confirm[15],'');
-            $message=$Create_confirm[0];
+            $message1 = new Message();
+            $message1->setSender($Create_confirm[3].'<'.$UserStamp.'>');
+            $message1->addTo($Sendmailid);
+            $message1->setSubject($Create_confirm[1]);
+            $message1->setHtmlBody($Create_confirm[2]);
+            $message1->send();
         }
-        else
-         {
-            $message=$Create_confirm;
-         }
-        $Returnvalue=array($message,$AllUnit);
-        echo json_encode($Returnvalue);
+        $Returnvalue=array($Create_confirm[0],$AllUnit);
+        echo json_encode($Create_confirm);
     }
 }

@@ -1,9 +1,9 @@
 <?php
-include "GET_USERSTAMP.php";
-$USERSTAMP=$UserStamp;
-//echo $USERSTAMP;
 class Ctrl_Menu extends CI_Controller{
-
+    function __construct() {
+        parent::__construct();
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+    }
     public function index()
     {
         $this->load->helper('form');
@@ -11,15 +11,14 @@ class Ctrl_Menu extends CI_Controller{
     }
     public function Initaildatas()
     {
-        $this->load->model('EILIB/Common_function');
         $formname=$_REQUEST['Formname'];
         $errorlist=$_REQUEST['ErrorList'];
-        $ErrorMessage= $this->Common_function->getErrorMessageList($errorlist);
+        $ErrorMessage= $this->Mdl_eilib_common_function->getErrorMessageList($errorlist);
         echo json_encode($ErrorMessage);
     }
     public function fetchdata()
     {
-        global $USERSTAMP;
+        $USERSTAMP=$this->Mdl_eilib_common_function->getSessionUserStamp();
         $this->load->model('ACCESS RIGHTS/Mdl_menu');
         $menu_data=$this->Mdl_menu->fetch_data($USERSTAMP);
         echo $menu_data;

@@ -1,5 +1,7 @@
 <?php
 error_reporting(0);
+require_once 'google/appengine/api/mail/Message.php';
+use google\appengine\api\mail\Message;
 Class Ctrl_Customer_Creation extends CI_Controller
 {
     function __construct() {
@@ -47,12 +49,23 @@ Class Ctrl_Customer_Creation extends CI_Controller
         $this->load->library('Google');
         $Startdate=$_POST['CCRE_Startdate'];
         $Enddate=$_POST['CCRE_Enddate'];
+        $Sendmailid = $_POST['CCRE_MailList'];
+        $CCoption = $_POST['CCRE_Option'];
         $Leaseperiod=$this->Mdl_eilib_common_function->getLeasePeriod($Startdate,$Enddate);
         $Q_Startdate=date('Y-m-d',strtotime($Startdate));
         $Q_Enddate=date('Y-m-d',strtotime($Enddate));
         $Quoters=$this->Mdl_eilib_quarter_calc->quarterCalc(new DateTime($Q_Startdate),new DateTime($Q_Enddate));
         $Create_confirm=$this->Mdl_customer_creation->Customer_Creation_Save($UserStamp,$Leaseperiod,$Quoters);
-        echo json_encode($Create_confirm);
+        if($Create_confirm[0]==1)
+        {
+            $message1 = new Message();
+            $message1->setSender($Create_confirm[3].'<'.$UserStamp.'>');
+            $message1->addTo($Sendmailid);
+            $message1->setSubject($Create_confirm[1]);
+            $message1->setHtmlBody($Create_confirm[2]);
+            $message1->send();
+        }
+        echo json_encode($Create_confirm[0]);
     }
 
     public function Prorated_check()

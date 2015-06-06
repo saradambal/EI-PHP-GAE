@@ -1,6 +1,6 @@
 <html>
 <head>
-    <?php include 'EI_HDR.php'; ?>
+    <?php require_once('application/libraries/EI_HDR.php'); ?>
 </head>
 <script>
 var ErrorControl ={AmountCompare:'InValid'}
@@ -13,6 +13,7 @@ var ErrorControl ={AmountCompare:'InValid'}
             changeMonth: true
         });
         $('.preloader').hide();
+        var controller_url="<?php echo base_url(); ?>" + '/index.php/CUSTOMER/CUSTOMER/Ctrl_Customer_Erm_Entry_Search_Update/' ;
         $('#ERM_Entry_Others').hide();
         $('.autogrowcomments').autogrow({onInitialize: true});
         $("#ERM_Entry_Contactno").doValidation({rule:'numbersonly',prop:{realpart:20,leadzero:true}});
@@ -53,7 +54,7 @@ var ErrorControl ={AmountCompare:'InValid'}
 
               $.ajax({
                   type: "POST",
-                  url: '/index.php/Ctrl_Customer_Erm_Entry_Search_Update/ERM_InitialDataLoad',
+                  url: controller_url+"ERM_InitialDataLoad",
                   data:{"Formname":'ERM_Entry',"ErrorList":'1,2,3,6,36,382,400'},
                   success: function(data){
                       var value_array=JSON.parse(data);
@@ -87,7 +88,7 @@ var ErrorControl ={AmountCompare:'InValid'}
               $('#ERM_SRC_SearchOption').val('SELECT');
               $.ajax({
                   type: "POST",
-                  url: '/index.php/Ctrl_Customer_Erm_Entry_Search_Update/ERM_SRC_InitialDataLoad',
+                  url: controller_url+"ERM_SRC_InitialDataLoad",
                   data:{"Formname":'ERM_SRC_UPDATE',"ErrorList":'1,2,4,5,6,36,45,170,315,383,384,385,401'},
                   success: function(data){
                       var value_array=JSON.parse(data);
@@ -181,7 +182,7 @@ var ErrorControl ={AmountCompare:'InValid'}
             var FormElements=$('#ERM_Form_Entry').serialize();
             $.ajax({
                 type: "POST",
-                url: "/index.php/Ctrl_Customer_Erm_Entry_Search_Update/ERM_Entry_Save",
+                url: controller_url+"ERM_Entry_Save",
                 data:FormElements,
                 success: function(data){
                     var returnflag=JSON.parse(data);
@@ -235,7 +236,7 @@ var ErrorControl ={AmountCompare:'InValid'}
             {
                 $.ajax({
                     type: "POST",
-                    url: '/index.php/Ctrl_Customer_Erm_Entry_Search_Update/CustomerName',
+                    url: controller_url+"CustomerName",
                     success: function(data){
                         var value_array=JSON.parse(data);
                         var appenddata='<BR><h4 style="color:#498af3;">CUSTOMER NAME SEARCH</h4><BR>';
@@ -265,7 +266,7 @@ var ErrorControl ={AmountCompare:'InValid'}
           {
               $.ajax({
                   type: "POST",
-                  url: '/index.php/Ctrl_Customer_Erm_Entry_Search_Update/CustomerContact',
+                  url: controller_url+"CustomerContact",
                   success: function(data){
                       var value_array=JSON.parse(data);
                       var appenddata='<BR><h4 style="color:#498af3;">CONTACT NUMBER SEARCH</h4><BR>';
@@ -298,7 +299,7 @@ var ErrorControl ={AmountCompare:'InValid'}
           {
               $.ajax({
                   type: "POST",
-                  url: '/index.php/Ctrl_Customer_Erm_Entry_Search_Update/Userstamp',
+                  url: controller_url+"Userstamp",
                   success: function(data){
                       var value_array=JSON.parse(data);
 
@@ -553,7 +554,7 @@ var ErrorControl ={AmountCompare:'InValid'}
          $("#ERM_src_btn_search").attr("disabled", "disabled");
          $.ajax({
              type: "POST",
-             url: '/index.php/Ctrl_Customer_Erm_Entry_Search_Update/ERM_SearchOption',
+             url: controller_url+"ERM_SearchOption",
              data:data,
              success: function(data){
                  var value_array=JSON.parse(data);
@@ -581,7 +582,7 @@ var ErrorControl ={AmountCompare:'InValid'}
                     var edit="Editid_"+value_array[i].ERM_ID;
                     var del="Deleteid_"+value_array[i].ERM_ID;
                     if(value_array[i].NC_DATA==null){var nationality='';}else{nationality=value_array[i].NC_DATA;}
-                     if(value_array[i].ERM_NO_OF_GUESTS==null){var guest='';}else{guest=value_array[i].ERM_NO_OF_GUESTS;}
+                     if(value_array[i].ERM_NO_OF_GUESTS==null || value_array[i].ERM_NO_OF_GUESTS=='null'){var guest='';}else{guest=value_array[i].ERM_NO_OF_GUESTS;}
                      if(value_array[i].ERM_AGE==null){var age='';}else{age=value_array[i].ERM_AGE;}
                      if(value_array[i].ERM_CONTACT_NO==null){var contact='';}else{contact=value_array[i].ERM_CONTACT_NO;}
                      if(value_array[i].ERM_EMAIL_ID==null){var mail='';}else{mail=value_array[i].ERM_EMAIL_ID;}
@@ -636,7 +637,7 @@ var ErrorControl ={AmountCompare:'InValid'}
             $(".preloader").show();
             $.ajax({
                 type: "POST",
-                url: "/index.php/Ctrl_Customer_Erm_Entry_Search_Update/ERM_Deletion_Details",
+                url: controller_url+"ERM_Deletion_Details",
                 data:{Rowid:deleterowid},
                 success: function(data){
                     $('.preloader').hide();
@@ -788,7 +789,7 @@ var ErrorControl ={AmountCompare:'InValid'}
             var data={RowId:selectedrowid,Name:customername,Rent:Rent,Movingdate:movingdate,Minstay:minimumstay,Occupation:occupation,Nation:Nationality,Guests:guests,Age:age,Contactno:Contactno,Emailid:Emailid,Comments:comments}
             $.ajax({
                 type: "POST",
-                url: "/index.php/Ctrl_Customer_Erm_Entry_Search_Update/ERM_Updation_Details",
+                url: controller_url+"ERM_Updation_Details",
                 data:data,
                 success: function(msg){
                     var value_array=JSON.parse(msg);

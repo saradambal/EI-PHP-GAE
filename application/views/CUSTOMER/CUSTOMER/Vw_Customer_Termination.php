@@ -44,7 +44,10 @@ td, th {
                 $('.preloader').hide();
                 var result=JSON.parse(res);
                 CTERM_getErrMsgCalTime_result(result)
-             }
+             },
+            error: function (data) {
+                alert('error in getting' + JSON.stringify(data));
+            }
         });
 //FUNCTION TO SET CALENDAR EVENT TIME RESULT
         function CTERM_getErrMsgCalTime_result(cterm_errtime)
@@ -80,6 +83,9 @@ td, th {
                         $('.preloader').hide();
                         var result=JSON.parse(res);
                         CTERM_getCustomerName_result(result)
+                    },
+                    error: function (data) {
+                        alert('error in getting' + JSON.stringify(data));
                     }
                 });
             }
@@ -93,6 +99,9 @@ td, th {
                         $('.preloader').hide();
                         var result=JSON.parse(res);
                         CTERM_getCustomerName_result(result)
+                    },
+                    error: function (data) {
+                        alert('error in getting' + JSON.stringify(data));
                     }
                 });
             }
@@ -106,6 +115,9 @@ td, th {
                         $('.preloader').hide();
                         var result=JSON.parse(res);
                         CTERM_getCustomerName_result(result)
+                    },
+                    error: function (data) {
+                        alert('error in getting' + JSON.stringify(data));
                     }
                 });
             }
@@ -162,6 +174,9 @@ td, th {
                     success: function(res) {
                         var result=JSON.parse(res);
                         CTERM_getCustomerId_result(result)
+                    },
+                    error: function (data) {
+                        alert('error in getting' + JSON.stringify(data));
                     }
                 });
             }
@@ -188,6 +203,9 @@ td, th {
                         $('.preloader').hide();
                         var result=JSON.parse(res);
                         CTERM_getCustomerdtls_result(result)
+                    },
+                    error: function (data) {
+                        alert('error in getting' + JSON.stringify(data));
                     }
                 });
                 $('#CTERM_div_custid').hide();
@@ -285,6 +303,9 @@ td, th {
                     $('.preloader').hide();
                     var result=JSON.parse(res);
                     CTERM_getCustomerdtls_result(result)
+                },
+                error: function (data) {
+                    alert('error in getting' + JSON.stringify(data));
                 }
             });
         }
@@ -306,6 +327,9 @@ td, th {
                     success: function(res) {
                         $('.preloader').hide();
                         CTERM_UpdatePtd_result(res)
+                    },
+                    error: function (data) {
+                        alert('error in getting' + JSON.stringify(data));
                     }
                 });
             }
@@ -415,7 +439,7 @@ td, th {
                                 {
                                     cterm_ptdd[j]="";
                                 }
-                                CTERM_table='<tr id='+CTERM_cardrow+'   hidden><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="hidden" name="CTERM_hidden_cardnos" id='+CTERM_hidden_cardnos+' value='+CTERM_cardvalue+'><input type="checkbox" name="CTERM_cb_cardnos" id='+CTERM_chkboxid+' value='+CTERM_cardvalue+' class="CTERM_validate_ptd CTERM_getminptdd"></td><td>'+CTERM_cardnos[j]+'</td><td><td>'+CTERM_cards+'</td><td>'+cterm_stdate1[j]+'</td><td><input type=hidden name="CTERM_hidden_sdate" id='+CTERM_hidden_sdate+' value='+cterm_stdate1[j]+' class="CTERM_validate_ptd"  ><input type=text name="CTERM_db_ptddate" id='+CTERM_db_ptddate+' value="'+cterm_ptdd[j]+'" class="CTERM_validate_ptd CTERM_getminptdd datemandtry form-control" style="width:100px;" readonly><input type=text name="CTERM_hidden_ptddate" id='+CTERM_hidden_ptddate+' value="'+cterm_ptdd[j]+'" class="CTERM_validate_ptd form-control"  style="display:none;"><td><label id='+cterm_ptderr+' class="errormsg"></label><td><select id='+CTERM_lb_ptdfrmtime+' name="CTERM_lb_ptdfrmtime" class="CTERM_class_timelb CTERM_validate_ptd form-control" hidden style="width:100px"></select></td><td><label id='+cterm_totimelbl+' style="float:left;" hidden>TO</label><select id='+CTERM_lb_ptdtotime+' name="CTERM_lb_ptdtotime"  class="form-control" hidden style="width:100px"></select></td></tr>'
+                                CTERM_table='<tr id='+CTERM_cardrow+'   hidden><td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="hidden" name="CTERM_hidden_cardnos" id='+CTERM_hidden_cardnos+' value='+CTERM_cardvalue+'><input type="checkbox" name="CTERM_cb_cardnos" id='+CTERM_chkboxid+' value='+CTERM_cardvalue+' class="CTERM_validate_ptd CTERM_getminptdd"></td><td>'+CTERM_cardnos[j]+'</td><td><td>'+CTERM_cards+'</td><td>'+cterm_stdate1[j]+'</td><td><input type=hidden name="CTERM_hidden_sdate" id='+CTERM_hidden_sdate+' value='+cterm_stdate1[j]+' class="CTERM_validate_ptd"  ><input type=text name="CTERM_db_ptddate" id='+CTERM_db_ptddate+' value="'+cterm_ptdd[j]+'" class="CTERM_validate_ptd CTERM_getminptdd datemandtry form-control" style="width:100px;" readonly><input type=text name="CTERM_hidden_ptddate" id='+CTERM_hidden_ptddate+' value="'+cterm_ptdd[j]+'" class="CTERM_validate_ptd form-control"  style="display:none;"><td><label id='+cterm_ptderr+' class="errormsg"></label><td><select id='+CTERM_lb_ptdfrmtime+' name="CTERM_lb_ptdfrmtime[]" class="CTERM_class_timelb CTERM_validate_ptd form-control" hidden style="width:100px"></select></td><td><label id='+cterm_totimelbl+' style="float:left;" hidden>TO</label><select id='+CTERM_lb_ptdtotime+' name="CTERM_lb_ptdtotime[]"  class="form-control" hidden style="width:100px"></select></td></tr>'
                                 var CTERM_frmtime='<option>SELECT</option>';
                                 for(var k=0;k<CTERM_ptdfrmtime.length;k++)
                                 {
@@ -605,6 +629,9 @@ td, th {
                     $('.preloader').hide();
                         var result=JSON.parse(res);
                         CTERM_getMinPTD_result(result)
+                },
+                error: function (data) {
+                    alert('error in getting' + JSON.stringify(data));
                 }
             });
         });
@@ -998,6 +1025,9 @@ td, th {
                     alert(res)
                     $('.preloader').hide();
                         CTERM_UpdatePtd_result(res)
+                },
+                error: function (data) {
+                    alert('error in getting' + JSON.stringify(data));
                 }
             });
        });
@@ -1026,6 +1056,9 @@ td, th {
                         $('.preloader').hide();
                         var result=JSON.parse(res);
                         CTERM_getCustomerName_result(result)
+                    },
+                    error: function (data) {
+                        alert('error in getting' + JSON.stringify(data));
                     }
                 });
                 show_msgbox("BIZ EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE",sucessmsg,"success",false);

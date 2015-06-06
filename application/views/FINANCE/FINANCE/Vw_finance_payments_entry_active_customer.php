@@ -4,7 +4,7 @@
 <!--VER 0.01-INITIAL VERSION-SD:11/05/2015 ED:11/05/2015 in ver0.01-->
 <html>
 <head>
-    <?php include 'EI_HDR.php'; ?>
+    <?php require_once('application/libraries/EI_HDR.php'); ?>
 </head>
 <script>
     $(document).ready(function() {

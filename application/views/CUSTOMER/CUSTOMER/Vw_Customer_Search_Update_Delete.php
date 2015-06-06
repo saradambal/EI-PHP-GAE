@@ -1,6 +1,6 @@
 <html>
 <head>
-    <?php include 'EI_HDR.php'; ?>
+    <?php require_once('application/libraries/EI_HDR.php'); ?>
 </head>
 <script>
  $(document).ready(function() {
@@ -22,9 +22,10 @@
      var emaillist;
      var ccoption;
      var prorated;
+     var controller_url="<?php echo base_url(); ?>" + '/index.php/CUSTOMER/CUSTOMER/Ctrl_Customer_Search_Update_Delete/' ;
      $.ajax({
          type: "POST",
-         url: '/index.php/Ctrl_Customer_Search_Update_Delete/CC_SRC_InitialDataLoad',
+         url: controller_url+"CC_SRC_InitialDataLoad",
          data:{"Formname":'CustomerCreation',"ErrorList":'1,2,33,34,35,36,37,104,315,339,342,343,344,345,346,347,348,385,440,441,442,443,444,458,459,460,461'},
          success: function(data){
              $('.preloader').hide();
@@ -85,7 +86,7 @@
          {
              $.ajax({
                  type: "POST",
-                 url: '/index.php/Ctrl_Customer_Search_Update_Delete/CustomerName',
+                 url: controller_url+"CustomerName",
                  success: function(data){
 
                      var value_array=JSON.parse(data);
@@ -116,7 +117,7 @@
          {
              $.ajax({
                  type: "POST",
-                 url: '/index.php/Ctrl_Customer_Search_Update_Delete/CustomerCardNos',
+                 url: controller_url+"CustomerCardNos",
                  success: function(data){
                      var value_array=JSON.parse(data);
                      var appenddata='<h4 style="color:#498af3;">CARD NUMBER SEARCH</h4><br>';
@@ -148,7 +149,7 @@
          {
              $.ajax({
                  type: "POST",
-                 url: '/index.php/Ctrl_Customer_Search_Update_Delete/CustomerCompnameName',
+                 url: controller_url+"CustomerCompnameName",
                  success: function(data){
                      var value_array=JSON.parse(data);
                      var appenddata='<h4 style="color:#498af3;">COMPANY NAME SEARCH</h4><br>';
@@ -236,7 +237,7 @@
          {
              $.ajax({
                  type: "POST",
-                 url: '/index.php/Ctrl_Customer_Search_Update_Delete/AllUnits',
+                 url: controller_url+"AllUnits",
                  success: function(data){
                      var value_array=JSON.parse(data);
                      var appenddata='<h4 style="color:#498af3;">UNIT NUMBER SEARCH</h4><br>';
@@ -265,7 +266,7 @@
          {
              $.ajax({
                  type: "POST",
-                 url: '/index.php/Ctrl_Customer_Search_Update_Delete/AllRoomtype',
+                 url: controller_url+"AllRoomtype",
                  success: function(data){
                      var value_array=JSON.parse(data);
                      var appenddata='<h4 style="color:#498af3;">ROOMTYPE SEARCH</h4><br>';
@@ -294,7 +295,7 @@
          {
              $.ajax({
                  type: "POST",
-                 url: '/index.php/Ctrl_Customer_Search_Update_Delete/AllEmails',
+                 url: controller_url+"AllEmails",
                  success: function(data){
                      var value_array=JSON.parse(data);
                      var appenddata='<h4 style="color:#498af3;">EMAIL ID SEARCH</h4><br>';
@@ -325,7 +326,7 @@
          {
              $.ajax({
                  type: "POST",
-                 url: '/index.php/Ctrl_Customer_Search_Update_Delete/AllEPNumbers',
+                 url: controller_url+"AllEPNumbers",
                  success: function(data){
                      var value_array=JSON.parse(data);
                      var appenddata='<h4 style="color:#498af3;">EP NUMBER SEARCH</h4><br>';
@@ -356,7 +357,7 @@
          {
              $.ajax({
                  type: "POST",
-                 url: '/index.php/Ctrl_Customer_Search_Update_Delete/AllPassPortNumbers',
+                 url: controller_url+"AllPassPortNumbers",
                  success: function(data){
                      var value_array=JSON.parse(data);
                      var appenddata='<h4 style="color:#498af3;">PASSPORT NUMBER SEARCH</h4><br>';
@@ -387,7 +388,7 @@
          {
              $.ajax({
                  type: "POST",
-                 url: '/index.php/Ctrl_Customer_Search_Update_Delete/AllMobileNumbers',
+                 url: controller_url+"AllMobileNumbers",
                  success: function(data){
                      var value_array=JSON.parse(data);
                      var appenddata='<h4 style="color:#498af3;">MOBILE NUMBER SEARCH</h4><br>';
@@ -418,7 +419,7 @@
          {
              $.ajax({
                  type: "POST",
-                 url: '/index.php/Ctrl_Customer_Search_Update_Delete/AllIntMobileNumbers',
+                 url: controller_url+"AllIntMobileNumbers",
                  success: function(data){
                      var value_array=JSON.parse(data);
                      var appenddata='<h4 style="color:#498af3;">INTL MOBILE NUMBER SEARCH</h4><br>';
@@ -449,7 +450,7 @@
          {
              $.ajax({
                  type: "POST",
-                 url: '/index.php/Ctrl_Customer_Search_Update_Delete/AllOfficeNumbers',
+                 url: controller_url+"AllOfficeNumbers",
                  success: function(data){
                      var value_array=JSON.parse(data);
                      var appenddata='<h4 style="color:#498af3;">OFFICE NUMBER SEARCH</h4><br>';
@@ -480,7 +481,7 @@
          {
              $.ajax({
                  type: "POST",
-                 url: '/index.php/Ctrl_Customer_Search_Update_Delete/AllComments',
+                 url: controller_url+"AllComments",
                  success: function(data){
                      var value_array=JSON.parse(data);
                      var appenddata='<h4 style="color:#498af3;">COMMENTS SEARCH</h4><br>';
@@ -865,7 +866,7 @@
          }
          $.ajax({
              type: "POST",
-             url: '/index.php/Ctrl_Customer_Search_Update_Delete/SearchDataResults',
+             url: controller_url+"SearchDataResults",
              data:data,
              success: function(data){
                  var value_array=JSON.parse(data);
@@ -1101,7 +1102,7 @@
         $('.preloader').show();
         $.ajax({
             type: "POST",
-            url: '/index.php/Ctrl_Customer_Search_Update_Delete/SelectCustomerResults',
+            url: controller_url+"SelectCustomerResults",
             data:{customerid:customerid,LP:leaseperiod,Unit:unitno},
             success: function(data){
             var value_array=JSON.parse(data);
@@ -1660,9 +1661,10 @@
          var unit=$('#CCRE_SRC_UnitNo').val();
          $("#CSRC_btn_Updatebutton").attr("disabled", "disabled");
          $('.preloader').show();
+
          $.ajax({
              type: "POST",
-             url: '/index.php/Ctrl_Customer_Search_Update_Delete/CustomerRoomTypeLoad',
+             url: controller_url+"CustomerRoomTypeLoad",
              data:{Unit:unit},
              success: function(data){
                  $('.preloader').hide();
@@ -1719,7 +1721,49 @@
          var newunitstartdate=new Date(inputdate[0],inputdate[1]-1,inputdate[2]-1);
          return newunitstartdate;
      }
+//     $(document).on('click','#CSRC_btn_Updatebutton', function (){
+//         $('#CCRE_SRC_UnitNo').prop('disabled', false);
+//         $('#CCRE_SRC_SDStarttime').prop('disabled', false);
+//         $('#CCRE_SRC_SDEndtime').prop('disabled', false);
+//         $('#CCRE_SRC_EDStarttime').prop('disabled', false);
+//         $('#CCRE_SRC_EDEndtime').prop('disabled', false);
+//         $('#CCRE_SRC_Startdate').prop('disabled', false);
+//         $('#CCRE_SRC_Enddate').prop('disabled', false);
+//         $('#CCRE_SRC_NoticePeriodDate').prop('disabled', false);
+//         var FormElement=document.getElementById("CCRE_Form_CustomerSearch");
+//         var FormElement=$('#CCRE_Form_CustomerSearch').serialize();
+////         alert(FormElement);
+//         $.ajax({
+//                type: "POST",
+//                url: controller_url+"CustomerDetailsUpdate",
+//                data:FormElement,
+//                success: function(data){
+//                   if(data==1)
+//                   {
+//                       $('#CC_SEARCH_DataTable').hide();
+//                       $('#CSRC_updation_form').hide();
+//                       show_msgbox("CUSTOMER SEARCH/UPDATE",errormsg[18].EMC_DATA,"success",false);
+//                   }
+//                    else
+//                   {
+//                       $('#CCRE_SRC_UnitNo').prop('disabled', true);
+//                       $('#CCRE_SRC_SDStarttime').prop('disabled', true);
+//                       $('#CCRE_SRC_SDEndtime').prop('disabled', true);
+//                       $('#CCRE_SRC_EDStarttime').prop('disabled', true);
+//                       $('#CCRE_SRC_EDEndtime').prop('disabled', true);
+//                       $('#CCRE_SRC_Startdate').prop('disabled', true);
+//                       $('#CCRE_SRC_Enddate').prop('disabled', true);
+//                       $('#CCRE_SRC_NoticePeriodDate').prop('disabled', true);
+//                       show_msgbox("CUSTOMER CREATION",data,"success",false);
+//                   }
+//                },
+//                error: function(data){
+//                    alert('error in getting'+JSON.stringify(data));
+//                }
+//        });
+//     });
      $(document).on('click','#CSRC_btn_Updatebutton', function (){
+         $('.preloader').show();
          $('#CCRE_SRC_UnitNo').prop('disabled', false);
          $('#CCRE_SRC_SDStarttime').prop('disabled', false);
          $('#CCRE_SRC_SDEndtime').prop('disabled', false);
@@ -1728,37 +1772,32 @@
          $('#CCRE_SRC_Startdate').prop('disabled', false);
          $('#CCRE_SRC_Enddate').prop('disabled', false);
          $('#CCRE_SRC_NoticePeriodDate').prop('disabled', false);
-         var FormElement=document.getElementById("CCRE_Form_CustomerSearch");
-         var FormElement=$('#CCRE_Form_CustomerSearch').serialize();
-//         alert(FormElement);
-         $.ajax({
-                type: "POST",
-                url: "/index.php/Ctrl_Customer_Search_Update_Delete/CustomerDetailsUpdate",
-                data:FormElement,
-                success: function(data){
-                   if(data==1)
-                   {
-                       $('#CC_SEARCH_DataTable').hide();
-                       $('#CSRC_updation_form').hide();
-                       show_msgbox("CUSTOMER CREATION",errormsg[18].EMC_DATA,"success",false);
-                   }
-                    else
-                   {
-                       $('#CCRE_SRC_UnitNo').prop('disabled', true);
-                       $('#CCRE_SRC_SDStarttime').prop('disabled', true);
-                       $('#CCRE_SRC_SDEndtime').prop('disabled', true);
-                       $('#CCRE_SRC_EDStarttime').prop('disabled', true);
-                       $('#CCRE_SRC_EDEndtime').prop('disabled', true);
-                       $('#CCRE_SRC_Startdate').prop('disabled', true);
-                       $('#CCRE_SRC_Enddate').prop('disabled', true);
-                       $('#CCRE_SRC_NoticePeriodDate').prop('disabled', true);
-                       show_msgbox("CUSTOMER CREATION",data,"success",false);
-                   }
-                },
-                error: function(data){
-                    alert('error in getting'+JSON.stringify(data));
-                }
-        });
+         var FormElements = document.getElementById("CCRE_Form_CustomerSearch");
+         var xmlhttp = new XMLHttpRequest();
+         xmlhttp.onreadystatechange = function () {
+             if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                 var msg_alert = JSON.parse(xmlhttp.responseText);
+                 $('.preloader').hide();
+                 if (msg_alert == 1) {
+                     $('#CC_SEARCH_DataTable').hide();
+                     $('#CSRC_updation_form').hide();
+                     show_msgbox("CUSTOMER SEARCH/UPDATE",errormsg[18].EMC_DATA,"success",false);
+                 }
+                 else {
+                     $('#CCRE_SRC_UnitNo').prop('disabled', true);
+                     $('#CCRE_SRC_SDStarttime').prop('disabled', true);
+                     $('#CCRE_SRC_SDEndtime').prop('disabled', true);
+                     $('#CCRE_SRC_EDStarttime').prop('disabled', true);
+                     $('#CCRE_SRC_EDEndtime').prop('disabled', true);
+                     $('#CCRE_SRC_Startdate').prop('disabled', true);
+                     $('#CCRE_SRC_Enddate').prop('disabled', true);
+                     $('#CCRE_SRC_NoticePeriodDate').prop('disabled', true);
+                     show_msgbox("CUSTOMER SEARCH/UPDATE",data,"success",false);
+                 }
+             }
+         }
+         xmlhttp.open("POST",controller_url+"CustomerDetailsUpdate", true);
+         xmlhttp.send(new FormData(FormElements));
      });
      $(document).on('change','#CCRE_SRC_SDStarttime',function(){
          var fromtime=$('#CCRE_SRC_SDStarttime').val();
@@ -1813,6 +1852,46 @@
          }
          return CCRE_timelist;
      }
+     $(document).on('change', '.proratedcheck', function () {
+         var startdate = $('#CCRE_SRC_Startdate').val();
+         var enddate = $('#CCRE_SRC_Enddate').val();
+         var Rent = $('#CCRE_Rent').val();
+         if (startdate != '' && enddate != '' && Rent != '') {
+             $.ajax({
+                 type: "POST",
+                 url: controller_url+"Prorated_check",
+                 data: {SD: startdate, ED: enddate},
+                 success: function (data) {
+                     if (data != 'true') {
+                         $('input:checkbox[name=CCRE_Rent_Prorated]').attr('checked', false);
+                         $('input:checkbox[name=CCRE_Rent_Prorated]').attr("disabled", 'disabled');
+                     }
+                     else {
+                         $('input:checkbox[name=CCRE_Rent_Prorated]').attr('checked', true);
+                         $('input:checkbox[name=CCRE_Rent_Prorated]').removeAttr("disabled");
+                     }
+                     $('.preloader').hide();
+                 },
+                 error: function (data) {
+                     alert('error in getting' + JSON.stringify(data));
+                 }
+             });
+         }
+         else {
+             $('input:checkbox[name=CCRE_Rent_Prorated]').attr('checked', false);
+             $('input:checkbox[name=CCRE_Rent_Prorated]').attr("disabled", 'disabled');
+         }
+     });
+     $(document).on('change', '.fileextensionchk', function () {
+         var filename = $('#CC_fileupload').val();
+         var valid_extensions = /(\.pdf)$/i;
+         if (valid_extensions.test(filename)) {
+         }
+         else {
+             show_msgbox("CUSTOMER CREATION", 'UPLOAD ONLY PDF FILES', "success", false);
+             $('#CC_fileupload').val('');
+         }
+     });
  });
 </script>
 <body>
@@ -2014,7 +2093,7 @@
                                     <div class="col-md-8">
                                         <div class="row form-group">
                                             <div class="col-md-3">
-                                                <input class="form-control prorated startdatevalidate datemandtry noticedate" name="CCRE_SRC_Startdate"  style="max-width:105px;" id="CCRE_SRC_Startdate"/>
+                                                <input class="form-control prorated startdatevalidate datemandtry noticedate proratedcheck" name="CCRE_SRC_Startdate"  style="max-width:105px;" id="CCRE_SRC_Startdate"/>
                                             </div>
 
                                                 <div class="col-md-1">
@@ -2043,7 +2122,7 @@
                                     <div class="col-md-8">
                                         <div class="row form-group">
                                             <div class="col-md-3">
-                                                <input class="form-control noticedate datemandtry Enddatevalidate" name="CCRE_SRC_Enddate"  style="max-width:105px;" id="CCRE_SRC_Enddate"/>
+                                                <input class="form-control noticedate datemandtry Enddatevalidate proratedcheck" name="CCRE_SRC_Enddate"  style="max-width:105px;" id="CCRE_SRC_Enddate"/>
                                             </div>
                                             <div class="col-md-1">
                                                 <label>FROM</label>
@@ -2069,7 +2148,7 @@
                                         <label>NOTICE PERIOD</label>
                                     </div>
                                     <div class="col-md-3">
-                                        <input class="form-control" name="CCRE_SRC_NoticePeriod" maxlength="1" style="max-width:70px;" id="CCRE_SRC_NoticePeriod"/>
+                                        <input class="form-control" name="CCRE_SRC_NoticePeriod" maxlength="1" style="max-width:70px;" id="CCRE_SRC_NoticePeriod" placeholder="NP"/>
                                     </div>
                                 </div>
                                 <div class="row form-group">
@@ -2144,14 +2223,18 @@
                                     <div class="col-md-6">
                                         <div class="row form-group">
                                             <div class="col-md-3">
-                                                <input class="form-control CCRE_amtonlyvalidationmaxdigit" name="CCRE_SRC_Rent" maxlength="7"  style="max-width:100px;" id="CCRE_SRC_Rent" placeholder="0.00">
+                                                <input class="form-control CCRE_amtonlyvalidationmaxdigit proratedcheck" name="CCRE_SRC_Rent" maxlength="7"  style="max-width:100px;" id="CCRE_SRC_Rent" placeholder="0.00">
                                             </div>
                                             <div class="col-md-1">
-                                                <input id="CCRE_Rent_Prorated" type="checkbox" name="CCRE_Rent_Prorated"><label id="CCRE_lbl_prorated"></label>
+                                                <input id="CCRE_Rent_Prorated" type="checkbox" name="CCRE_Rent_Prorated">
                                             </div>
+                                            <div>
+                                                <label id="CCRE_lbl_prorated"></label>
+                                            </div>
+                                            <div class="col-md-3"><label id="CSRC_lbl_renterrormsg" class="errormsg" hidden></label></div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3"><label id="CSRC_lbl_renterrormsg" class="errormsg" hidden></label></div>
+
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-3">
@@ -2163,11 +2246,15 @@
                                                 <input class="form-control CCRE_processamtonlyvalidationmaxdigit" name="CCRE_SRC_ProcessingFee"  style="max-width:100px;" id="CCRE_SRC_ProcessingFee" placeholder="0.00">
                                             </div>
                                             <div class="col-md-1">
-                                                <input type="checkbox" name="CCRE_process_waived" id="CCRE_process_waived"><label id="CCRE_lbl_waived"></label>
+                                                <input type="checkbox" name="CCRE_process_waived" id="CCRE_process_waived">
                                             </div>
+                                            <div >
+                                                <label id="CCRE_lbl_waived"></label>
+                                            </div>
+                                            <div class="col-md-3"><label id="CSRC_lbl_processerrormsg" class="errormsg" hidden></label></div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3"><label id="CSRC_lbl_processerrormsg" class="errormsg" hidden></label></div>
+
                                 </div>
                                 <div class="row form-group">
                                     <div class="col-md-3">
@@ -2197,7 +2284,14 @@
                                         <textarea class="form-control" name="CCRE_SRC_Comments"  id="CCRE_SRC_Comments"></textarea>
                                     </div>
                                 </div>
-
+                                <div class="row form-group">
+                                    <div class="col-md-3">
+                                        <label>FILE UPLOAD</label>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <input type="file" id="CC_fileupload" name="CC_fileupload" class="form-control fileextensionchk" />
+                                    </div>
+                                </div>
                                 <div class="row form-group">
                                     <div class="col-lg-offset-2 col-lg-3">
                                         <input type="button" id="CSRC_btn_Updatebutton" class="btn" value="UPDATE" disabled>         <input type="button" id="CustomerSearch_Reset" class="btn" value="CANCEL">

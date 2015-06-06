@@ -635,9 +635,9 @@ class Mdl_Customer_Extension extends CI_Model{
                   else
                   {
                       $accessflag=1;
-                      $CEXTN_accesscard=$CEXTN_card_array;
-                      $CEXTN_customercard=$CEXTN_card_array;
-                      $CEXTN_guestcard=$CEXTN_card_array.", ";
+                      $CEXTN_accesscard=$CEXTN_card_array[0];
+                      $CEXTN_customercard=$CEXTN_card_array[0];
+                      $CEXTN_guestcard=$CEXTN_card_array[0].", ";
                   }
               }
               else
@@ -664,27 +664,37 @@ class Mdl_Customer_Extension extends CI_Model{
           $this->db->query($CEXTN_save);
 //      CEXTN_savestmt.execute("CALL SP_CUSTOMER_EXTENSION_INSERT("+CEXTN_hidden_custid+","+CEXTN_tb_compname+","+CEXTN_tb_compaddr+","+CEXTN_tb_comppostcode+","+CEXTN_tb_officeno+","+CEXTN_unitno+","+CEXTN_chksameunit+",'"+CEXTN_roomtype+"','"+CEXTN_lb_chkinfromtime+"','"+CEXTN_lb_chkintotime+"','"+CEXTN_lb_chkoutfromtime+"','"+CEXTN_lb_chkouttotime+"','"+CEXTN_Leaseperiod+"',"+CEXTN_quators+",'"+CEXTN_waivedvalue+"','"+CEXTN_proratedvalue+"',"+CEXTN_tb_noticeperiod+","+CEXTN_db_noticeperioddate+","+CEXTN_rentamt+","+CEXTN_depositamt+","+CEXTN_profeeamt+","+CEXTN_tb_fixedairfee+","+CEXTN_tb_airquarterfee+","+CEXTN_tb_electcapfee+","+CEXTN_tb_chkoutcleanfee+","+CEXTN_tb_curtaindryfee+",'"+CEXTN_accesscard+"','"+CEXTN_db_chkindate+"','"+UserStamp+"','"+CEXTN_db_chkindate+"','"+CEXTN_db_chkoutdate+"','"+CEXTN_guestcard+"','"+CEXTN_tb_nation+"',"+CEXTN_tb_mobileno+","+CEXTN_tb_intmobileno+",'"+CEXTN_tb_emailid+"',"+CEXTN_tb_passno+","+CEXTN_db_passdate+","+CEXTN_db_dob+","+CEXTN_tb_epno+","+CEXTN_db_epdate+",'"+CEXTN_ta_comments+"','"+CEXTN_sameamntflag+"',@EXTNFLAG,@TEMP_OUT_EXT_CARNOTBLNAME,@TEMP_OUT_EXTN_CLPDTLSTTBLNAME,@TEMP_OUT_EXTN_FEEDTLTBLNAME,@PAY_CHK_MSG)");
 //      CEXTN_savestmt.close();
-      $CEXTN_saveflag=0;
-      $CEXTN_finalarr=$this->CEXTN_ReturnFlagGetExtnFormTempTables();
-      $CEXTN_saveflag=$CEXTN_finalarr[0];
+      $CEXTN_saveflag=1;
+//      $CEXTN_finalarr=$this->CEXTN_ReturnFlagGetExtnFormTempTables();
+//      $CEXTN_saveflag=$CEXTN_finalarr[0];
       if($CEXTN_saveflag==1)
       {
+          $filetempname = $_FILES['CEXTN_fileupload']['tmp_name'];
+          $filename = $_FILES['CEXTN_fileupload']['name'];
+          $filename = $CEXTN_unitno . '-' . $CEXTN_hidden_custid . '-' . $CEXTN_tb_firstname . ' ' . $CEXTN_tb_lastname;
+          $mimetype = 'application/pdf';
+          $this->load->model('EILIB/Mdl_eilib_common_function');
+          $service = $this->Mdl_eilib_common_function->get_service_document();
+
+          if ($filetempname != '')
+          {
+              $this->Mdl_eilib_common_function->Customer_FileUpload($service, $filename, 'PersonalDetails', '0B1AhtyM5U79zREp5QkpiYmphODg', $mimetype, $filetempname);
+          }
+
           $this->load->model('EILIB/Mdl_eilib_calender');
           $cal_service=$this->Mdl_eilib_calender->createCalendarService();
           $CEXTN_TargetFolderId=$this->Mdl_eilib_common_function->CUST_TargetFolderId();//GET TARGER FOLDER ID
           $docowner=$this->Mdl_eilib_common_function->CUST_documentowner($UserStamp);//get doc owner
 //          $CEXTN_CALEVENTS=$this->Mdl_eilib_common_function->CTermExtn_GetCalevent($CEXTN_hidden_custid);
           //CALL CALENDAR EVENT FUNCTION FROM EILIB
-//          $cal_flag=$this->Mdl_eilib_calender->CTermExtn_Calevent($cal_service,$CEXTN_hidden_custid,"",$CEXTN_formname,"");
+          $cal_flag=$this->Mdl_eilib_calender->CTermExtn_Calevent($cal_service,$CEXTN_hidden_custid,"",$CEXTN_formname,"");
 //          $this->db->trans_commit();
-//          return $cal_flag;
-//
-//          exit;
-          $cust_config_array=array();
-          $cust_config_array=$this->Mdl_eilib_common_function->CUST_invoice_contractreplacetext();
-          $CEXTN_invoiceid=$cust_config_array[9];
-          $CEXTN_invoicesno=$cust_config_array[0];
-          $CEXTN_invoicedate=$cust_config_array[1];
+
+            $cust_config_array=array();
+            $cust_config_array=$this->Mdl_eilib_common_function->CUST_invoice_contractreplacetext();
+            $CEXTN_invoiceid=$cust_config_array[9];
+            $CEXTN_invoicesno=$cust_config_array[0];
+            $CEXTN_invoicedate=$cust_config_array[1];
             if($CEXTN_rent_check!="")
             {
                 $CEXTN_rent_check='true';
@@ -693,24 +703,13 @@ class Mdl_Customer_Extension extends CI_Model{
             {
                 $CEXTN_rent_check='false';
             }
-
-
-        //CONTRACT N INVOICE
+          //CONTRACT N INVOICE
           $service=$this->Mdl_eilib_common_function->get_service_document();
-//print_r($service);
-//          CUST_contract(,0422,2015-09-30,2015-10-31,BRANDSCREEN PTE LTD,NIRAJ NAGPAL,,431254626,31-08-2017,G5393423X,14-05-2016,,1Months 1 Days,3095,2000.00,100.00,null,'250.00','100.00','50.00',null,null,,COMMON RM1,true,kumar.r@ssomens.com,'EXTENSION',0Bzvv-O9jT9r_fmhRYmU4ejJLbFpPaDEyX092OWQwNjFjbEVIT21jei16R1AwRWFxWkFET2c,kumar.r@ssomens.com)
-//          echo "CUST_contract($service,$CEXTN_unitno,$CEXTN_db_chkindate,$CEXTN_db_chkoutdate,$CEXTN_tb_contrcompname,$CEXTN_continvoicecustomename,$CEXTN_contractnoticeperiod,$CEXTN_tb_contrpassno,$CEXTN_tb_contrpassdate,$CEXTN_tb_contrepno,$CEXTN_tb_contrepdate,$CEXTN_tb_contrnoticedate,$CEXTN_Leaseperiod,$CEXTN_customercard,$CEXTN_rentamt,$CEXTN_tb_airquarterfee,$CEXTN_tb_fixedairfee,$CEXTN_tb_electcapfee,$CEXTN_tb_curtaindryfee,$CEXTN_tb_chkoutcleanfee,$CEXTN_profeeamt,$CEXTN_depositamt,$CEXTN_waivedvalue,$CEXTN_roomtype,$CEXTN_rent_check,'EXTENSION',$CEXTN_lb_emailid,$docowner)";
           $this->load->model('EILIB/Mdl_eilib_invoice_contract');
-          if($CEXTN_radio_amt=="CEXTN_radio_sameamt")
-        {
-
-//            CUST_contract($service,$unitno,$checkindate,$checkoutdate,$companyname,$customername,$noticeperiod,$passportno,$passportdate,$epno,$epdate,                                                  $noticedate,$lp,$cardno,$rent,                                                   $airquartfee,$airfixedfee,$electcap,$dryclean,$chkoutfee,                                                $procfee,$deposit,$waived,$roomtype,$rent_check,$formname,$sendmailid,$docowner) {
-
-            $contract=$this->Mdl_eilib_invoice_contract->CUST_contract($service,$CEXTN_unitno,$CEXTN_db_chkindate,$CEXTN_db_chkoutdate,$CEXTN_tb_contrcompname,$CEXTN_continvoicecustomename,$CEXTN_contractnoticeperiod,$CEXTN_tb_contrpassno,$CEXTN_tb_contrpassdate,$CEXTN_tb_contrepno,$CEXTN_tb_contrepdate,$CEXTN_tb_contrnoticedate,$CEXTN_Leaseperiod,$CEXTN_customercard,$CEXTN_rentamt,$CEXTN_tb_airquarterfee,$CEXTN_tb_fixedairfee,$CEXTN_tb_electcapfee,$CEXTN_tb_curtaindryfee,$CEXTN_tb_chkoutcleanfee,$CEXTN_profeeamt,$CEXTN_depositamt,$CEXTN_waivedvalue,$CEXTN_roomtype,$CEXTN_rent_check,"EXTENSION",$CEXTN_lb_emailid,$docowner);
-
-        }
-        else
-        {
+          if($CEXTN_radio_amt=="CEXTN_radio_sameamt"){
+               $contract=$this->Mdl_eilib_invoice_contract->CUST_contract($service,$CEXTN_unitno,$CEXTN_db_chkindate,$CEXTN_db_chkoutdate,$CEXTN_tb_contrcompname,$CEXTN_continvoicecustomename,$CEXTN_contractnoticeperiod,$CEXTN_tb_contrpassno,$CEXTN_tb_contrpassdate,$CEXTN_tb_contrepno,$CEXTN_tb_contrepdate,$CEXTN_tb_contrnoticedate,$CEXTN_Leaseperiod,$CEXTN_customercard,$CEXTN_rentamt,$CEXTN_tb_airquarterfee,$CEXTN_tb_fixedairfee,$CEXTN_tb_electcapfee,$CEXTN_tb_curtaindryfee,$CEXTN_tb_chkoutcleanfee,$CEXTN_profeeamt,$CEXTN_depositamt,$CEXTN_waivedvalue,$CEXTN_roomtype,$CEXTN_rent_check,"EXTENSION",$CEXTN_lb_emailid,$docowner);
+          }
+          else{
             $contract=$this->Mdl_eilib_invoice_contract->CUST_contract($service,$CEXTN_unitno,$CEXTN_db_chkindate,$CEXTN_db_chkoutdate,$CEXTN_tb_contrcompname,$CEXTN_continvoicecustomename,$CEXTN_contractnoticeperiod,$CEXTN_tb_contrpassno,$CEXTN_tb_contrpassdate,$CEXTN_tb_contrepno,$CEXTN_tb_contrepdate,$CEXTN_tb_contrnoticedate,$CEXTN_Leaseperiod,$CEXTN_customercard,$CEXTN_rentamt,$CEXTN_tb_airquarterfee,$CEXTN_tb_fixedairfee,$CEXTN_tb_electcapfee,$CEXTN_tb_curtaindryfee,$CEXTN_tb_chkoutcleanfee,$CEXTN_profeeamt,$CEXTN_depositamt,$CEXTN_waivedvalue,$CEXTN_roomtype,$CEXTN_rent_check,"EXTENSION",$CEXTN_lb_emailid,$docowner);
 
 //            CUST_invoice($UserStamp,$service,$unit,$customername,$companyname,$invoiceid,$invoicesno,$invoicedate,$rent,$process,$deposit,$sdate,$edate,$roomtype,$Leaseperiod,$rentcheck,$sendmailid,$docowner,$formname,$waived,$custid)
@@ -723,7 +722,7 @@ class Mdl_Customer_Extension extends CI_Model{
 
 //      $this->CEXTN_DropTempTables($CEXTN_finalarr[1]);
           $this->db->trans_commit();//CEXTN_saveconn.commit();
-          return $CEXTN_saveflag."_".$CEXTN_finalarr[2];
+          return $CEXTN_saveflag."_".$CEXTN_finalarr[2]."_".$cal_flag;
     }
       catch(Exception $err)
       {

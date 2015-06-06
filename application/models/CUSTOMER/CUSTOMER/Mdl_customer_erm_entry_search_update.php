@@ -55,6 +55,7 @@ class Mdl_customer_erm_entry_search_update extends CI_Model
         $this->db->select('ERM_CUST_NAME');
         $this->db->from('ERM_ENTRY_DETAILS');
         $this->db->order_by("ERM_CUST_NAME", "ASC");
+        $this->db->distinct();
         $query = $this->db->get();
         return $query->result();
     }

@@ -276,7 +276,6 @@ class Mdl_customer_termination extends CI_Model{
             }
             else if($CTERM_radio_termoption=="CTERM_radio_activecust")
             {
-
                 $CTERM_find=(strlen(strstr($CTERM_hidden_finalcards,",")));
                 if($CTERM_find>0)
                 {
@@ -305,7 +304,6 @@ class Mdl_customer_termination extends CI_Model{
                 $CTERM_ptdcaletime="";
                 if($CTERM_cb_cardnos!='undefined')
                 {
-//                    $CTERM_find=(strlen(strstr($CTERM_cb_cardnos,",")));
                     if(count($CTERM_cb_cardnos)>1)
                     {
                         for($i=0;$i<count($CTERM_cb_cardnos);$i++)
@@ -316,8 +314,8 @@ class Mdl_customer_termination extends CI_Model{
                             if($CTERM_cardlbl==$CTERM_lb_custname)
                             {
                                 $CTERM_customerptd=$CTERM_ptd;
-                                $CTERM_findtime=(strlen(strstr($CTERM_lb_ptdfrmtime,",")));
-                                if($CTERM_findtime>0)
+                                $CTERM_findtime=count($CTERM_lb_ptdfrmtime);
+                                if($CTERM_findtime>1)
                                 {
                                     for($ll=0;$ll<count($CTERM_lb_ptdfrmtime);$ll++)
                                     {
@@ -325,28 +323,28 @@ class Mdl_customer_termination extends CI_Model{
                                         {
                                             $CTERM_ptdsttime="'$CTERM_lb_ptdfrmtime[$ll]'";
                                             $CTERM_ptdcalstime=$CTERM_lb_ptdfrmtime[$ll];
-                                            $CTERM_findtotime=(strlen(strstr($CTERM_lb_ptdtotime,",")));
-                                            if($CTERM_findtotime>0)
+                                            $CTERM_findtotime=count($CTERM_lb_ptdtotime);
+                                            if($CTERM_findtotime>1)
                                             {
                                                 $CTERM_ptdedtime="'$CTERM_lb_ptdtotime[$ll]'";
                                                 $CTERM_ptdcaletime=$CTERM_lb_ptdtotime[$ll];
                                             }
                                             else
                                             {
-                                                $CTERM_ptdedtime="'$CTERM_lb_ptdtotime'";
-                                                $CTERM_ptdcaletime=$CTERM_lb_ptdtotime;
+                                                $CTERM_ptdedtime="'$CTERM_lb_ptdtotime[0]'";
+                                                $CTERM_ptdcaletime=$CTERM_lb_ptdtotime[0];
                                             }
                                         }
                                     }
                                 }
                                 else
                                 {
-                                    if($CTERM_lb_ptdfrmtime!="SELECT")
+                                    if($CTERM_lb_ptdfrmtime[0]!="SELECT")
                                     {
-                                        $CTERM_ptdsttime="'$CTERM_lb_ptdfrmtime'";
-                                        $CTERM_ptdedtime="'$CTERM_lb_ptdtotime'";
-                                        $CTERM_ptdcalstime=$CTERM_lb_ptdfrmtime;
-                                        $CTERM_ptdcaletime=$CTERM_lb_ptdtotime;
+                                        $CTERM_ptdsttime="'$CTERM_lb_ptdfrmtime[0]'";
+                                        $CTERM_ptdedtime="'$CTERM_lb_ptdtotime[0]'";
+                                        $CTERM_ptdcalstime=$CTERM_lb_ptdfrmtime[0];
+                                        $CTERM_ptdcaletime=$CTERM_lb_ptdtotime[0];
                                     }
                                 }
                                 if($CTERM_accesscard=="")
@@ -383,6 +381,7 @@ class Mdl_customer_termination extends CI_Model{
                                 }
                             }
                         }
+
                     }
                     else
                     {
@@ -393,8 +392,8 @@ class Mdl_customer_termination extends CI_Model{
                         if($CTERM_cardlbl==$CTERM_lb_custname)
                         {
                             $CTERM_customerptd=$CTERM_ptd;
-                            $CTERM_findtime=(strlen(strstr($CTERM_lb_ptdfrmtime,",")));
-                            if($CTERM_findtime>0)
+                            $CTERM_findtime=count($CTERM_lb_ptdfrmtime);
+                            if($CTERM_findtime>1)
                             {
                                 for($ll=0;$ll<count($CTERM_lb_ptdfrmtime);$ll++)
                                 {
@@ -402,29 +401,28 @@ class Mdl_customer_termination extends CI_Model{
                                     {
                                         $CTERM_ptdsttime="'$CTERM_lb_ptdfrmtime[$ll]'";
                                         $CTERM_ptdcalstime=$CTERM_lb_ptdfrmtime[$ll];
-                                        $CTERM_findtotime=(strlen(strstr($CTERM_lb_ptdtotime,",")));
-                                        if($CTERM_findtotime!=-1)
+                                        $CTERM_findtotime=count($CTERM_lb_ptdtotime);
+                                        if($CTERM_findtotime>1)
                                         {
                                             $CTERM_ptdedtime="'$CTERM_lb_ptdtotime[$ll]'";
                                             $CTERM_ptdcaletime=$CTERM_lb_ptdtotime[$ll];
                                         }
                                         else
                                         {
-                                            $CTERM_ptdedtime="'$CTERM_lb_ptdtotime'";
-                                            $CTERM_ptdcaletime=$CTERM_lb_ptdtotime;
+                                            $CTERM_ptdedtime="'$CTERM_lb_ptdtotime[0]'";
+                                            $CTERM_ptdcaletime=$CTERM_lb_ptdtotime[0];
                                         }
                                     }
                                 }
-
                             }
                             else
                             {
-                                if($CTERM_lb_ptdfrmtime!="SELECT")
+                                if($CTERM_lb_ptdfrmtime[0]!="SELECT")
                                 {
-                                    $CTERM_ptdsttime="'$CTERM_lb_ptdfrmtime'";
-                                    $CTERM_ptdedtime="'$CTERM_lb_ptdtotime'";
-                                    $CTERM_ptdcalstime=$CTERM_lb_ptdfrmtime;
-                                    $CTERM_ptdcaletime=$CTERM_lb_ptdtotime;
+                                    $CTERM_ptdsttime="'$CTERM_lb_ptdfrmtime[0]'";
+                                    $CTERM_ptdedtime="'$CTERM_lb_ptdtotime[0]'";
+                                    $CTERM_ptdcalstime=$CTERM_lb_ptdfrmtime[0];
+                                    $CTERM_ptdcaletime=$CTERM_lb_ptdtotime[0];
                                 }
                             }
                             if($CTERM_accesscard=="")
@@ -466,7 +464,6 @@ class Mdl_customer_termination extends CI_Model{
                         }
                     }
                 }
-//                return $CTERM_customerptd;
                 //CALCULATE LP N QUARTERS START
                 $CTERM_lpqrts=[];
                 $CTERM_rvlpqrts="";
@@ -587,7 +584,6 @@ class Mdl_customer_termination extends CI_Model{
                         }
                     }//END FIRST WHILE
                 }//END FIRST IF WITH CUST PTD !=""
-
                 for($l=0;$l<count($CTERM_prevrvdtls);$l++)
                 {
                     $CTERM_calptd[]=["calrv"=>$CTERM_prevrvdtls[$l]['recver'],"calptd"=>$CTERM_prevrvdtls[$l]['enddate']];
@@ -652,8 +648,10 @@ class Mdl_customer_termination extends CI_Model{
                 }
                 else{
                     $this->db->trans_rollback();
+                    $CTERM_updateflag=0;
                 }
             }
+
             return $CTERM_updateflag;
         }
         catch(Exception $e)
