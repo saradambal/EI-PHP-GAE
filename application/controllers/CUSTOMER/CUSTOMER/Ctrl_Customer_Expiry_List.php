@@ -1,6 +1,6 @@
 <?php
-//require_once 'google/appengine/api/mail/Message.php';
-//use google\appengine\api\mail\Message;
+require_once 'google/appengine/api/mail/Message.php';
+use google\appengine\api\mail\Message;
 
 /**
  * Created by PhpStorm.
@@ -43,7 +43,7 @@ class Ctrl_Customer_Expiry_List extends CI_Controller {
             $message1->addTo($CWEXP_email_id);
             $message1->setSubject($final_value[2]);
             $message1->setHtmlBody($final_value[1]);
-//            $message1->send();
+            $message1->send();
             $CWEXP_check_weekly_expiry_list='true';
             echo ($CWEXP_check_weekly_expiry_list);
         }

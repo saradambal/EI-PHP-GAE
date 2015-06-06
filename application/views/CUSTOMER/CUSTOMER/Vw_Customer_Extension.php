@@ -1,6 +1,6 @@
 <!--//*******************************************FILE DESCRIPTION*********************************************//
 /**********************************************CUSTOMER EXTENSION******************************************/
-//DONE BY:PUNITHA
+//DONE BY:safi
 //VER 0.01-INITIAL VERSION
 //*********************************************************************************************************//
 -->
@@ -344,8 +344,8 @@ $(document).ready(function()
                 else
                 {
 //get table rows lengh
-                    var tablelen=$('#CEXTN_tble_custid tr').length;
-                    $('#CEXTN_tble_custid tr').remove();
+                    var tablelen=$('#CEXTN_tble_custid > div').length;
+                    $('#CEXTN_tble_custid > div').remove();
                     for(var i=0;i<CEXTN_name_id_array.length;i++)
                     {
                         var CEXTN_result='<tr id="custid"><td> <input type=radio name="CEXTN_radiocustid" id='+CEXTN_name_id_array[i]+' value='+CEXTN_name_id_array[i]+' class="CEXTN_class_custid"></td><td>'+CEXTN_custname[0]+" "+CEXTN_custname[1]+' '+CEXTN_name_id_array[i]+'</tr>';
@@ -1545,8 +1545,8 @@ alert(JSON.stringify(data))
                 $('#CEXTN_db_chkindate').val(FormTableDateFormat(CEXTN_custdtls.cust_chkoutdate));
             }
 ////START PLACE CARD
-            $('#CTERM_tbl_sameunitsamermcust_card > div').remove();
-            $('#CTERM_tbl_sameunitdiffrmcust_card > div').remove();
+            $('#CTERM_tbl_sameunitsamermcust_card').empty();
+            $('#CTERM_tbl_sameunitdiffrmcust_card').empty();
             var CEXTN_card=[];
             CEXTN_card=CEXTN_custdtls1.cardarray;
             if(CEXTN_card.length>0&&CEXTN_card[0]!="")
@@ -1567,13 +1567,15 @@ alert(JSON.stringify(data))
                     var cardsize=CEXTN_card[i].length;
                     var CEXTN_result=CEXTN_cardlabel+' <div class="col-sm-2"><input type="text" class="form-control" name="CEXTN_tb_sameunitsamermcustcard[]" value='+CEXTN_card[i]+' size='+cardsize+' readonly ></div><div><input type="text" name="CEXTN_hidden_sameunitsamermcustcard[]"  value='+CEXTN_custlbl+' hidden/></div>';
                     var CEXTN_result1=CEXTN_cardlabel+' <div class="col-sm-2"><input type="text" class="form-control" name="CEXTN_tb_sameunitdiffrmcustcard[]" value='+CEXTN_card[i]+' size='+cardsize+' readonly></div><div><input type="text" name="CEXTN_hidden_sameunitdiffrmcustcard[]"  value='+CEXTN_custlbl+' hidden/></div>';
+                    CEXTN_result=CEXTN_result+'</div>';
+                    CEXTN_result1=CEXTN_result1+'</div>';
                     $('#CTERM_tbl_sameunitsamermcust_card').append(CEXTN_result);
                     $('#CTERM_tbl_sameunitdiffrmcust_card').append(CEXTN_result1);
                 }
                 $('#CTERM_tbl_sameunitsamermcust_card').show();
             }
-//END PLACE CARD
-//START PLACE AMT
+            //END PLACE CARD
+            //START PLACE AMT
             $('#CEXTN_tb_airquarterfee').prop("title",CEXTN_errmsgs[1].EMC_DATA)
             $('#CEXTN_tb_fixedairfee').prop("title",CEXTN_errmsgs[1].EMC_DATA);
             $('#CEXTN_tb_diffamtdep').prop("title",CEXTN_errmsgs[1].EMC_DATA);
@@ -1634,9 +1636,9 @@ alert(JSON.stringify(data))
                 $('#CEXTN_cb_sameamtwaived').prop('checked',false);
                 $("#CEXTN_hidden_sameamtwaived").val("");
             }
-//            $('#CEXTN_ta_comments').height(20);
+            //            $('#CEXTN_ta_comments').height(20);
             $("#CEXTN_ta_comments").val(CEXTN_custdtls.cust_comts);
-//SET NOTICE PERIOD DATE
+            //SET NOTICE PERIOD DATE
             if(CEXTN_custdtls.cust_noticedate!="")
             {
                 $("#CEXTN_db_noticeperioddate").val(FormTableDateFormat(CEXTN_custdtls.cust_noticedate));
@@ -1810,42 +1812,67 @@ alert(JSON.stringify(data))
         $("#CEXTN_lb_emailid").val("SELECT");
         $("#CEXTN_btn_save").attr("disabled","disabled");
     }
-//FUNCTION TO CALL SAVE FUNCTION
-    $("#CEXTN_btn_save").click(function()
-    {
-        var  newPos= adjustPosition($("#CEXTN_div_save").position(),100,150);
-        resetPreloader(newPos);
-//        $(".preloader").show();
-        var CEXTN_validinput=1;
-        var CEXTN_validoutput=CEXTN_validateinputform(CEXTN_validinput);
-        CEXTN_validatesubmitbtn(CEXTN_validoutput);
-        if(CEXTN_validoutput==1)
-        {
-            var form_element=$('#CEXTN_form').serialize();
-            $.ajax({
-                type: "POST",
-                url: controller_url+"CEXTN_SaveDetails",
-                data:form_element,
-                success: function(data){
-                    alert(data)
-                    var saveresult=JSON.parse(data);
+    $('#CEXTN_btn_save').on('click', function () {
+//        $('.preloader').show();
+        var FormElements = document.getElementById("CEXTN_form");
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                alert(xmlhttp.responseText)
+                var saveresult = JSON.parse(xmlhttp.responseText);
+                $('.preloader').hide();
+
+                    $('.preloader').hide();
                     CEXTN_SaveDetails_result(saveresult)
 
-                },
-                error: function(data){
-
-                    alert('error in getting'+JSON.stringify(data));
-
-                }
-            });
-
-//            google.script.run.withFailureHandler(onFailure).withSuccessHandler(CEXTN_SaveDetails_result).CEXTN_SaveDetails(document.getElementById("CEXTN_form"));
+//                }
+//                else {
+//                    $('.preloader').hide();
+//                    show_msgbox("CUSTOMER CREATION", msg_alert, "success", false);
+//                }
+            }
         }
-        else
-        {
-            $(".preloader").hide();
-        }
+//        var custurl=controller_url+"UnitCardNumbers",
+        var option = 'SAVE';
+        xmlhttp.open("POST",controller_url+"CEXTN_SaveDetails", true);
+        xmlhttp.send(new FormData(FormElements));
     });
+////FUNCTION TO CALL SAVE FUNCTION
+//    $("#CEXTN_btn_save").click(function()
+//    {
+//        var  newPos= adjustPosition($("#CEXTN_div_save").position(),100,150);
+//        resetPreloader(newPos);
+////        $(".preloader").show();
+//        var CEXTN_validinput=1;
+//        var CEXTN_validoutput=CEXTN_validateinputform(CEXTN_validinput);
+//        CEXTN_validatesubmitbtn(CEXTN_validoutput);
+//        if(CEXTN_validoutput==1)
+//        {
+//            var form_element=$('#CEXTN_form').serialize();
+//            $.ajax({
+//                type: "POST",
+//                url: controller_url+"CEXTN_SaveDetails",
+//                data:form_element,
+//                success: function(data){
+//                    alert(data)
+//                    var saveresult=JSON.parse(data);
+//                    CEXTN_SaveDetails_result(saveresult)
+//
+//                },
+//                error: function(data){
+//
+//                    alert('error in getting'+JSON.stringify(data));
+//
+//                }
+//            });
+//
+////            google.script.run.withFailureHandler(onFailure).withSuccessHandler(CEXTN_SaveDetails_result).CEXTN_SaveDetails(document.getElementById("CEXTN_form"));
+//        }
+//        else
+//        {
+//            $(".preloader").hide();
+//        }
+//    });
 //FUNCTION TO RETURN SAVE RESULT
     function CEXTN_SaveDetails_result(saveresult)
     {
@@ -1908,6 +1935,16 @@ alert(JSON.stringify(data))
     $("#CEXTN_btn_reset").click(function(){
         CEXTN_clearForm();
         $('#CEXTN_ta_comments').height(20);
+    });
+    $(document).on('change', '.fileextensionchk', function () {
+        var filename = $('#CEXTN_fileupload').val();
+        var valid_extensions = /(\.pdf)$/i;
+        if (valid_extensions.test(filename)) {
+        }
+        else {
+            show_msgbox("CUSTOMER EXTENSION", 'UPLOAD ONLY PDF FILES', "success", false);
+            $('#CC_fileupload').val('');
+        }
     });
 //FUNCTION TO CLEAR ERR MSG
     function CEXTN_clearerrmsg()
@@ -2027,57 +2064,57 @@ alert(JSON.stringify(data))
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3">EP EXPIRY DATE</label>
-                        <div class="col-sm-2"> <input type="text" name="CEXTN_db_epdate" id="CEXTN_db_epdate"  maxlength="10" style="width:75px;" class="datenonmandtry CEXTN_btn_validate_class form-control"/><p id="CEXTN_epdate_err" class="errormsg" ></p></div>
+                        <div class="col-sm-2"> <input type="text" name="CEXTN_db_epdate" id="CEXTN_db_epdate"  maxlength="10" style="width:110px;" class="datenonmandtry CEXTN_btn_validate_class form-control"/><p id="CEXTN_epdate_err" class="errormsg" ></p></div>
                     </div>
                     <div class="form-group">
                             <label class="col-sm-3">SAME/DIFFERENT UNIT<em>*</em></label>
-                            <div class="radio col-sm-offset-3">
-                                <label >
+                            <div class="radio col-sm-offset-3" style="padding-left: 15px">
+                                <label>
                                 <input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_sameunit" value="CEXTN_radio_sameunit" checked="checked" class="CEXTN_btn_validate_class"/>
                                 SAME UNIT & SAME ROOM </label><input type="hidden" id="CEXTN_hidden_setrmtype"/>
                             </div>
-                            <div id="CEXTN_div_sameunitsamerm" class="col-sm-offset-3">
+                            <div id="CEXTN_div_sameunitsamerm" class="col-sm-offset-3" style="padding-left: 28px">
                                 <div id="CEXTN_tble_sameunitsamerm" class="form-group">
                                     <div class="form-group">
                                         <label  class="col-sm-3">UNIT NUMBER</label>
-                                        <div class="col-sm-2"> <input type="text" name="CEXTN_tb_sameunitsamermuno" id="CEXTN_tb_sameunitsamermuno" style="width:60px;" class="rdonly form-control" readonly />
+                                        <div class="col-sm-2"> <input type="text" name="CEXTN_tb_sameunitsamermuno" id="CEXTN_tb_sameunitsamermuno" class="rdonly form-control" readonly />
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3">ROOM TYPE</label>
-                                        <div class="col-sm-2">  <input type="text" name="CEXTN_tb_sameunitsamermrmtype" id="CEXTN_tb_sameunitsamermrmtype" class="rdonly form-control" readonly />
+                                        <div class="col-sm-2"> <input type="text" name="CEXTN_tb_sameunitsamermrmtype" id="CEXTN_tb_sameunitsamermrmtype" class="rdonly form-control" readonly />
                                         </div>
                                     </div>
                                     <div id="CTERM_tbl_sameunitsamermcust_card" hidden></div>
                                 </div>
                             </div>
-                            <div class="radio col-sm-offset-3">
+                            <div class="radio col-sm-offset-3" style="padding-left: 15px">
                                 <label>
                                 <input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_sameunitdiffroom"  value="CEXTN_radio_sameunitdiffroom" class="CEXTN_btn_validate_class" />
                                 SAME UNIT & DIFFERENT ROOM</label><div id="CEXTN_div_sameunitdiffroomerr" class="errormsg"></div>
                             </div>
-                            <div id="CEXTN_div_sameunitdiffrm" hidden>
-                                <div id="CEXTN_tble_sameunitdiffrm" class="col-sm-offset-3">
+                            <div id="CEXTN_div_sameunitdiffrm" hidden class="col-sm-offset-3" style="padding-left: 28px">
+                                <div id="CEXTN_tble_sameunitdiffrm" class="form-group" >
                                     <div class="form-group">
                                         <label class="col-sm-3" id="CEXTN_lbl_sameunitdiffrmuno">UNIT NUMBER</label>
-                                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_sameunitdiffrmuno" id="CEXTN_tb_sameunitdiffrmuno" style="width:35px;" class="rdonly" readonly />
+                                        <div class="col-sm-2"><input type="text" name="CEXTN_tb_sameunitdiffrmuno" id="CEXTN_tb_sameunitdiffrmuno" style="width:60px;" class="rdonly form-control" readonly />
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <label class="col-sm-3" id="CEXTN_lbl_sameunitdiffrmrmtype">ROOM TYPE<em>*</em></label>
-                                        <div class="col-sm-2"><select name="CEXTN_lb_sameunitdiffrmrmtype" id="CEXTN_lb_sameunitdiffrmrmtype" ></select>
+                                        <div class="col-sm-2"><select name="CEXTN_lb_sameunitdiffrmrmtype" id="CEXTN_lb_sameunitdiffrmrmtype" class="form-control"></select>
                                         </div>
                                     </div>
+                                    <div id="CTERM_tbl_sameunitdiffrmcust_card" hidden></div>
                                 </div>
-                                <div id="CTERM_tbl_sameunitdiffrmcust_card" hidden></div>
                             </div>
-                        <div class="radio col-sm-offset-3">
-                            <label>
-                            <input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_diffunit" value="CEXTN_radio_diffunit" class="CEXTN_btn_validate_class" />
-                            DIFFERENT UNIT</label><div id="CEXTN_div_nodiffuniterr" class="errormsg"></div>
-                        </div>
+                            <div class="radio col-sm-offset-3" style="padding-left: 15px">
+                                <label>
+                                <input type="radio" name="CEXTN_radio_unit" id="CEXTN_radio_diffunit" value="CEXTN_radio_diffunit" class="CEXTN_btn_validate_class" />
+                                DIFFERENT UNIT</label><div id="CEXTN_div_nodiffuniterr" class="errormsg"></div>
+                            </div>
                         <div id="CEXTN_div_diffunit" hidden>
-                            <div id="CEXTN_tble_diffunit" class="col-sm-offset-3">
+                            <div id="CEXTN_tble_diffunit" class="col-sm-offset-3" style="padding-left: 28px">
                                 <div class="form-group">
                                     <label class="col-sm-3" id="CEXTN_lbl_diffunituno">UNIT NUMBER<em>*</em></label>
                                     <div class="col-sm-3"><select id="CEXTN_lb_diffunituno" name="CEXTN_lb_diffunituno" class="CEXTN_btn_validate_class form-control">
@@ -2110,8 +2147,8 @@ alert(JSON.stringify(data))
                                         <input type="radio" name="CEXTN_radio_difunitcard" id="CEXTN_radio_difunitnullcard"  value="CEXTN_radio_difunitnullcard" class="CEXTN_btn_validate_class" hidden/>
                                             NULL</label>
                                     </div>
-                        </div>
-<!--                    </div>-->
+                               </div>
+                            </div>
                         </div>
                     <div class="form-group">
                         <label class="col-sm-3">INITIAL CHECK IN DATE </label>
@@ -2155,83 +2192,87 @@ alert(JSON.stringify(data))
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3">SELECT AIRCON FEE</label>
-                        <div class="col-sm-offset-2 col-sm-3">
-                            <div class="radio ">
-                                <label>
-                                    <input type="radio" name="CEXTN_radio_airconfee" id="CEXTN_radio_quartairconfee" value="CEXTN_radio_quartairconfee" class="CEXTN_btn_validate_class"/>
-                                    QUARTERLY SERVICE FEE
-                                </label>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 " style="padding-left: 15px">
+                                <div class="radio ">
+                                    <label>
+                                        <input type="radio" name="CEXTN_radio_airconfee" id="CEXTN_radio_quartairconfee" value="CEXTN_radio_quartairconfee" class="CEXTN_btn_validate_class"/>
+                                        QUARTERLY SERVICE FEE
+                                    </label>
+                                </div>
+                                <div class="col-sm-1"><input type="text" name="CEXTN_tb_airquarterfee" id="CEXTN_tb_airquarterfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control" hidden /></div>
+                            </div>
+                            <div class="col-sm-offset-2 col-sm-3">
+                                <div class="radio">
+                                    <label><input type="radio" name="CEXTN_radio_airconfee" id="CEXTN_radio_fixedairconfee" value="CEXTN_radio_fixedairconfee" class="CEXTN_btn_validate_class "/>
+                                        FIXED AIRCON FEE
+                                    </label>
+                                </div>
+                                <div class="col-sm-1"><input type="text" name="CEXTN_tb_fixedairfee" id="CEXTN_tb_fixedairfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control" hidden/></div>
                             </div>
                         </div>
-                        <div class="col-sm-1"><input type="text" name="CEXTN_tb_airquarterfee" id="CEXTN_tb_airquarterfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control" hidden /></div>
-                        <div class="col-sm-offset-2 col-sm-3">
-                            <div class="radio">
-                                <label><input type="radio" name="CEXTN_radio_airconfee" id="CEXTN_radio_fixedairconfee" value="CEXTN_radio_fixedairconfee" class="CEXTN_btn_validate_class "/>
-                                    FIXED AIRCON FEE
-                                </label>
-                            </div>
-                        </div>
-                        <div class="col-sm-1"><input type="text" name="CEXTN_tb_fixedairfee" id="CEXTN_tb_fixedairfee" style="width:55px;" maxlength="7" class="3digitdollaronly CEXTN_btn_validate_class form-control" hidden/></div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-3">SAME/DIFFERENT AMOUNT<em>*</em></label>
-                        <div class="radio col-sm-offset-3" >
+                        <div class="radio col-sm-offset-3" style="padding-left: 15px" >
                             <label >
                                 <input type="radio" name="CEXTN_radio_amt" id="CEXTN_radio_sameamt" value="CEXTN_radio_sameamt" checked="checked" class="CEXTN_class_prowaiv CEXTN_btn_validate_class" / >
                                 SAME AMOUNT
                             </label>
                         </div>
                         <div id="CEXTN_div_sameamt">
-                            <div id="CEXTN_tble_sameamt" class="col-sm-offset-3">
+                            <div id="CEXTN_tble_sameamt" class="col-sm-offset-3" style="padding-left: 15px">
                                 <div class="form-group">
-                                    <label class="col-sm-2" id="CEXTN_lbl_sameamtdep">DEPOSIT</label>
+                                    <label class="col-sm-3" id="CEXTN_lbl_sameamtdep">DEPOSIT</label>
                                     <div class="col-sm-2">
                                         <input type="text" name="CEXTN_tb_sameamtdep" id="CEXTN_tb_sameamtdep" style="width:77px;" class="rdonly" readonly />
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label  class="col-sm-2" id="CEXTN_lbl_sameamtrent">RENT</label>
+                                    <label  class="col-sm-3" id="CEXTN_lbl_sameamtrent">RENT</label>
                                     <div class="col-sm-3">
                                         <input type="text" name="CEXTN_tb_sameamtrent" id="CEXTN_tb_sameamtrent" style="width:77px;" class="rdonly" readonly />
                                         <input type="checkbox" name="CEXTN_cb_sameamtprorated" id="CEXTN_cb_sameamtprorated" disabled /><label id="CEXTN_lbl_sameamtprorated"></label><input type="hidden" name="CEXTN_hidden_sameamtprorated" id="CEXTN_hidden_sameamtprorated" />
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2" id="CEXTN_lbl_sameamtprocost">PROCESSING COST</label>
-                                    <div class="col-sm-2">
+                                    <label class="col-sm-3" id="CEXTN_lbl_sameamtprocost">PROCESSING COST</label>
+                                    <div class="col-sm-3">
                                         <input type="text" name="CEXTN_tb_sameamtprocost" id="CEXTN_tb_sameamtprocost" style="width:77px;" class="rdonly" readonly />
                                         <input type="checkbox" name="CEXTN_cb_sameamtwaived" id="CEXTN_cb_sameamtwaived" class="CEXTN_btn_validate_class" disabled /><label id="CEXTN_lbl_sameamtwaived"></label><input type="hidden" id="CEXTN_hidden_sameamtwaived" name="CEXTN_hidden_sameamtwaived"/>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="radio col-sm-offset-3"">
+                        <div class="radio col-sm-offset-3" style="padding-left: 15px">
                             <label >
                                 <input type="radio" name="CEXTN_radio_amt" id="CEXTN_radio_diffamt"  value="CEXTN_radio_diffamt" class="CEXTN_class_prowaiv CEXTN_btn_validate_class" / >
                                 DIFFERENT AMOUNT
                             </label>
                         </div>
                         <div id="CEXTN_div_diffamt" hidden>
-                            <div id="CEXTN_tble_diffamt" class="col-sm-offset-3">
+                            <div id="CEXTN_tble_diffamt" class="col-sm-offset-3" style="padding-left: 15px">
                                 <div class="form-group">
-                                    <label class="col-sm-2" id="CEXTN_lbl_diffamtdep">DEPOSIT</label>
+                                    <label class="col-sm-3" id="CEXTN_lbl_diffamtdep">DEPOSIT</label>
                                     <div class="col-sm-2"><input type="text" name="CEXTN_tb_diffamtdep" id="CEXTN_tb_diffamtdep" style="width:77px;" class="5digitdollaronly CEXTN_btn_validate_class form-control"/>
                                         <p id="CEXTN_diffamtdeposit_err" class="errormsg"></p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2" id="CEXTN_lbl_diffamtrent">RENT<em>*</em></label>
+                                    <label class="col-sm-3" id="CEXTN_lbl_diffamtrent">RENT<em>*</em></label>
                                     <div class="col-sm-3">
                                         <input type="text" name="CEXTN_tb_diffamtrent" id="CEXTN_tb_diffamtrent" style="width:77px;" class="CEXTN_class_prowaiv 5digitdollaronly CEXTN_btn_validate_class form-control"/>
-                                        <input type="checkbox" name="CEXTN_cb_diffamtprorated" id="CEXTN_cb_diffamtprorated"  class="CEXTN_btn_validate_class" disabled/><label id="CEXTN_lbl_diffamtprorated"></label><input type="hidden" name="CEXTN_hidden_diffamtprorated" id="CEXTN_hidden_diffamtprorated" />
+                                        <input type="checkbox" name="CEXTN_cb_diffamtprorated" id="CEXTN_cb_diffamtprorated"  class="CEXTN_btn_validate_class" disabled/>
+                                        <label id="CEXTN_lbl_diffamtprorated"></label><input type="hidden" name="CEXTN_hidden_diffamtprorated" id="CEXTN_hidden_diffamtprorated" />
                                         <p id="CEXTN_diffamtrent_err" class="errormsg"></p>
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label class="col-sm-2" id="CEXTN_lbl_diffamtprocost">PROCESSING COST</label>
-                                    <div class="col-sm-2">
+                                    <label class="col-sm-3" id="CEXTN_lbl_diffamtprocost">PROCESSING COST</label>
+                                    <div class="col-sm-3">
                                         <input type="text" name="CEXTN_tb_diffamtprocost" id="CEXTN_tb_diffamtprocost" style="width:77px;" maxlength="7" class="CEXTN_class_prowaiv CEXTN_btn_validate_class form-control"/>
-                                        <input type="checkbox" name="CEXTN_cb_diffamtwaived" id="CEXTN_cb_diffamtwaived" class="CEXTN_class_prowaiv CEXTN_btn_validate_class" disabled /><label id="CEXTN_lbl_diffamtwaived"></label><input type="hidden" id="CEXTN_hidden_diffamtwaived" name="CEXTN_hidden_diffamtwaived"/>
+                                        <input type="checkbox" name="CEXTN_cb_diffamtwaived" id="CEXTN_cb_diffamtwaived" class="CEXTN_class_prowaiv CEXTN_btn_validate_class" disabled />
+                                        <label id="CEXTN_lbl_diffamtwaived"></label><input type="hidden" id="CEXTN_hidden_diffamtwaived" name="CEXTN_hidden_diffamtwaived"/>
                                         <p id="CEXTN_diffamtprofee_err" class="errormsg"></p>
                                     </div>
                                 </div>
@@ -2261,18 +2302,24 @@ alert(JSON.stringify(data))
                         <label class="col-sm-3">COMMENTS</label>
                         <div class="col-sm-4"><textarea  name="CEXTN_ta_comments" id="CEXTN_ta_comments" class="CEXTN_btn_validate_class form-control" rows="5"></textarea></div>
                     </div>
-                </div>
-                <div style="position:relative;left:105px;" id="CEXTN_div_save">
-                    <table>
-                        <tr>
-                            <td> <input  type="button" value="EXTEND" id="CEXTN_btn_save" class="btn" disabled /></td><td><input type="button" value="RESET"  id="CEXTN_btn_reset" class="btn"/></td>
-                        </tr>
-                    </table>
-                </div>
-            </div>
+                    <div class="row form-group">
+                        <div class="col-md-3">
+                            <label>FILE UPLOAD</label>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="file" id="CEXTN_fileupload" name="CEXTN_fileupload" class="form-control fileextensionchk" />
+                        </div>
+                    </div>
 
-            <input type="hidden" name="CEXTN_slctcustlbl" id="CEXTN_slctcustlbl">
-        </div>
+                    <div style="position:relative;left:105px;" id="CEXTN_div_save">
+                        <div class="row form-group">
+                            <div class="col-lg-offset-2 col-lg-3">
+                                 <input  type="button" value="EXTEND" id="CEXTN_btn_save" class="btn" disabled /><input type="button" value="RESET"  id="CEXTN_btn_reset" class="btn"/>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="CEXTN_slctcustlbl" id="CEXTN_slctcustlbl">
+
     </form>
 </div>
 </body>
