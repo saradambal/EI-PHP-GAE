@@ -1,6 +1,6 @@
 <?php
-//require_once 'google/appengine/api/mail/Message.php';
-//use google\appengine\api\mail\Message;
+require_once 'google/appengine/api/mail/Message.php';
+use google\appengine\api\mail\Message;
 class Ctrl_Ocbc_Banktt_Entry extends CI_Controller
 {
     function __construct() {

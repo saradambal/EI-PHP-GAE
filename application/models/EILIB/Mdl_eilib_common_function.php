@@ -6,6 +6,7 @@
 * Time: 5:59 PM
 */
 //******************************************COMMON FUNCTION********************************************//
+//VER 5.9-SD:05/06/2015 ED:05/06/2015,ADDED CUSTOMER FILE UPLOAD TARGET FOLDER FUNCTION DONE BY KUMAR.R
 //VER 5.9-SD:05/06/2015 ED:05/06/2015,ADDED NEW SS CREATION,FILE DELETE,FILE UPLOAD,CRUL FUNCTIONS DONE BY KUMAR.R
 //DONE BY:SARADAMBAL
 //VER 5.8 -SD:04/06/2015 ED:04/06/2015,ADDED FUNCTION TO GET USERSTAMP AND REMOVED PARAMS FOR SERVICE DOCUMENT
@@ -22,6 +23,14 @@ class Mdl_eilib_common_function extends CI_Model {
     $UserStamp=$user->getEmail();
     return $UserStamp;
 }
+    //CUSTOMER FILE UPLOAD TARGET FOLDER
+    public function getFileUploadfolder()
+    {
+        $this->db->select("CCN_DATA");
+        $this->db->from('CUSTOMER_CONFIGURATION');
+        $this->db->where('CGN_ID=96');
+        return $this->db->get()->row()->CCN_DATA;
+    }
 //FUNCTION TO GET BANK_TRANSFER_MODELS
 public function getRecheckinCustomerUnit()
 {

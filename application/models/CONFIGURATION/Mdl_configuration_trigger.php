@@ -1,13 +1,15 @@
 <?php
 error_reporting(0);
 class Mdl_configuration_trigger extends CI_Model {
-    public function getCSVfileRecords($service)
+    public function getCSVfileRecords()
     {
 //        set_time_limit(0);
         $this->db->select("OCN_DATA");
         $this->db->from('OCBC_CONFIGURATION');
         $this->db->where('CGN_ID=29');
         $query = $this->db->get()->row()->OCN_DATA;
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $service = $this->Mdl_eilib_common_function->get_service_document();
         $children1 = $service->children->listChildren($query);
         $filearray1=$children1->getItems();
         foreach ($filearray1 as $child1)
@@ -398,5 +400,46 @@ class Mdl_configuration_trigger extends CI_Model {
             }
         }
         return $array;
+    }
+    public function getMonthlyPaymentReminder()
+    {
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $PAYMENT_reminderdisplayname=$this->Mdl_eilib_common_function->Get_MailDisplayName("MONTHLY_PAYMENT_REMINDER");
+        $Reminder_emailtempquery="SELECT *FROM EMAIL_TEMPLATE_DETAILS WHERE ET_ID=11";
+        $resultset=$this->db->query($Reminder_emailtempquery);
+        foreach ($resultset->result_array() as $key=>$val)
+        {
+            $Emailsubject=$val['ETD_EMAIL_SUBJECT'];
+            $Emailbody=$val['ETD_EMAIL_BODY'];
+        }
+        $PAYMENT_reminderquery="SELECT DISTINCT CUSTOMERNAME,PAYMENT,CPD_EMAIL,UNIT_NO FROM VW_PAYMENT_CURRENT_ACTIVE_CUSTOMER WHERE CLP_ENDDATE>CURDATE() AND CLP_STARTDATE<=CURDATE()AND(CLP_PRETERMINATE_DATE IS NULL OR CLP_PRETERMINATE_DATE>CURDATE())";
+        $resultset=$this->db->query($PAYMENT_reminderquery);
+        $customer=array();
+        $payment=array();
+        $email=array();
+        $unit=array();
+        foreach ($resultset->result_array() as $key=>$val)
+        {
+            $customer[]=$val['CUSTOMERNAME'];
+            $payment[]=$val['PAYMENT'];
+            $email[]=$val['CPD_EMAIL'];
+            $unit[]=$val['UNIT_NO'];
+        }
+        $Returnvalues=array($PAYMENT_reminderdisplayname,$Emailsubject,$Emailbody,$customer,$payment,$email,$unit);
+        return $Returnvalues;
+    }
+    public function getNonPaymentReminder()
+    {
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $PAYMENT_reminderdisplayname=$this->Mdl_eilib_common_function->Get_MailDisplayName("NON PAYMENT REMINDER");
+        $Reminder_emailtempquery="SELECT *FROM EMAIL_TEMPLATE_DETAILS WHERE ET_ID=1";
+        $resultset=$this->db->query($Reminder_emailtempquery);
+        foreach ($resultset->result_array() as $key=>$val)
+        {
+            $Emailsubject=$val['ETD_EMAIL_SUBJECT'];
+            $Emailbody=$val['ETD_EMAIL_BODY'];
+        }
+        $PAYMENT_reminderquery="SELECT DISTINCT CUSTOMERNAME,CUSTOMER_ID,CPD_EMAIL,UNIT_NO,CED_REC_VER,CLP_STARTDATE,PAYMENT FROM VW_PAYMENT_CURRENT_ACTIVE_CUSTOMER WHERE CLP_ENDDATE>CURDATE() AND CLP_STARTDATE<=CURDATE()AND(CLP_PRETERMINATE_DATE IS NULL OR CLP_PRETERMINATE_DATE>CURDATE())";
+        $resultset=$this->db->query($PAYMENT_reminderquery);
     }
 }

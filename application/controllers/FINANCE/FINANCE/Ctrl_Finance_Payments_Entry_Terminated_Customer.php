@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 Class Ctrl_Finance_Payments_Entry_Terminated_Customer extends CI_Controller
 {
     function __construct() {
