@@ -125,6 +125,7 @@ td, th {
         //FUNCTION TO SET CUSTOMER NAME
         function CTERM_getCustomerName_result(CTERM_cname)
         {
+            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
             var cterm_err="";
             var CTERM_radio_termoption =$("input[name='CTERM_radio_termoption']:checked").val();
             $('#CTERM_div_custid').hide();
@@ -189,6 +190,7 @@ td, th {
         //ADD CUSTOMER ID IN THE  RADIO BUTTON
         function CTERM_getCustomerId_result(CTERM_Cid)
         {
+            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
             var CTERM_lb_custname=$('#CTERM_lb_custname').val();
             var CTERM_radio_termoption=$("input[name=CTERM_radio_termoption]:checked").val();
             var CTERM_custname=CTERM_lb_custname.split("_");
@@ -225,7 +227,7 @@ td, th {
         //FUNCTION TO SET DETAILS IN TABLE FOR THE SELECTED CUSTOMER NAME
         function CTERM_getCustomerdtls_result(result)
         {
-
+            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
             var CTERM_lb_custname=$('#CTERM_lb_custname').val();
             var CTERM_custname=CTERM_lb_custname.split("_");
             var CTERM_radio_termoption =$("input[name='CTERM_radio_termoption']:checked").val()
@@ -338,6 +340,7 @@ td, th {
         function CTERM_ShowTermForm()
         {
             $(".preloader").show();
+            $("html, body").animate({ scrollTop: $(document).height() }, "slow");
             var CTERM_radio_termoption =$("input[name='CTERM_radio_termoption']:checked").val()
             if(CTERM_radio_termoption=="CTERM_radio_activecust")
             {
@@ -1022,7 +1025,6 @@ td, th {
                 url: controller_url+"CTERM_UpdatePtd",
                 data:$('#CTERM_form').serialize()+'&Globalrecver='+Globalrecver,
                 success: function(res) {
-                    alert(res)
                     $('.preloader').hide();
                         CTERM_UpdatePtd_result(res)
                 },

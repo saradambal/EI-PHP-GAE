@@ -62,6 +62,7 @@ require_once('application/libraries/EI_HDR.php');
             $(document).on('click','.menuconfirm',function(){
                 if(Page_url!='Ctrl_Error_Page'){
                     $(".preloader").show();
+                    $('.preloaderimg').attr('src','images/Loading.gif');
                     $('#menu_frame').load("<?php echo site_url(); ?>" + "/"+Page_url+"/index");
                 }
                 else
@@ -202,7 +203,7 @@ require_once('application/libraries/EI_HDR.php');
 </div>
 <iframe src="" style="border: 0" width="1350" height="600" frameborder="0" scrolling="no"></iframe>
 <div class="wrapper">
-    <div class="preloader"><span class="Centerer"></span><img class="preloaderimg"/> </div>
+    <div class="preloader" hidden><span class="Centerer"></span><img class="preloaderimg"/> </div>
     <nav class="navbar navbar-default" id="menu_nav">
         <div class="navbar-header">
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".navbar-collapse">
