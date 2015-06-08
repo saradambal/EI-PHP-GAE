@@ -568,7 +568,7 @@ function adjustPosition(oldPosition,top,left){
 //        $('#fhead').append('<input type="button" id="focustext" style="border:none;  position:relative; top:-200px;  z-index:-50;" />');
 //});
 $(function() {
-    $('.preloaderimg').attr('src','https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif');
+    $('.preloaderimg').attr('src','images/Loading.gif');
     $(document).on('click','.messageclose',function(){
         $('#focustext').focus();
     });
