@@ -1,5 +1,5 @@
 <?php
-class Mdl_email_profile_forms extends CI_Model{
+class Mdl_email_profile_entry_search_update_delete extends CI_Model{
     //FUNCTION FOR GETTING MODEL NAME
     Public function getprofilename($EMAIL_ENTRY_searchby)
     {
@@ -22,9 +22,9 @@ class Mdl_email_profile_forms extends CI_Model{
             return $query->result();
         }
     }
-    public function fetch_data($scriptid)
+    public function fetch_data($scriptid,$timeZoneFormat)
     {
-        $this->db->select("EL_ID,EL_EMAIL_ID,ULD.ULD_LOGINID AS USERSTAMP,EP_NON_IP_FLAG,DATE_FORMAT(CONVERT_TZ(EL_TIMESTAMP,'+00:00','+05:30'), '%d-%m-%Y %T') AS TIMESTAMP");
+        $this->db->select("EL_ID,EL_EMAIL_ID,ULD.ULD_LOGINID AS USERSTAMP,EP_NON_IP_FLAG,DATE_FORMAT(CONVERT_TZ(EL_TIMESTAMP,".$timeZoneFormat."), '%d-%m-%Y %T') AS TIMESTAMP");
         $this->db->order_by("EL.EL_EMAIL_ID", "ASC");
         $this->db->from('EMAIL_LIST EL,EMAIL_PROFILE EP ,USER_LOGIN_DETAILS ULD');
         $this->db->where("EL.EP_ID='$scriptid' AND (EL.EP_ID=EP.EP_ID AND EL.ULD_ID=ULD.ULD_ID)");
@@ -58,7 +58,6 @@ class Mdl_email_profile_forms extends CI_Model{
     //FUNCTION FOR SAVE PART
     public function save_models($EP_ENTRY_profilenameid,$EP_ENTRY_emailid,$USERSTAMP)
     {
-        global  $USERSTAMP;
         $insertquery = "INSERT INTO EMAIL_LIST(ULD_ID,EP_ID,EL_EMAIL_ID) VALUES((SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP'),'$EP_ENTRY_profilenameid','$EP_ENTRY_emailid')";
         $this->db->query($insertquery);
         if ($this->db->affected_rows() > 0) {
@@ -72,8 +71,8 @@ class Mdl_email_profile_forms extends CI_Model{
     public function DeleteRecord($USERSTAMP,$rowid)
     {
         global  $USERSTAMP;
-          $this->load->model('EILIB/Common_function');
-          $deleteflag=$this->Common_function->DeleteRecord(22,$rowid,$USERSTAMP);
+          $this->load->model('EILIB/Mdl_eilib_common_function');
+          $deleteflag=$this->Mdl_eilib_common_function->DeleteRecord(22,$rowid,$USERSTAMP);
           return $deleteflag;
     }
     //FUNCTION FOR ALREADY EXIT

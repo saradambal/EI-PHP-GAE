@@ -1,30 +1,33 @@
 <!--//*******************************************FILE DESCRIPTION*********************************************//
 //***********************************************STAFF EXPENSE DETAIL ENTRY/SEARCH/UPDATE/DELETE*******************************//
+//DONE BY SARADA
+//VER 0.02-SD:08/06/2015 ED:08/06/2015 CHANGED ALL CTRL,MODEL,VIEW FILE NAME AND GET USERSTAMP AND TIME ZONE FROM EILIB
 //DONE BY:LALITHA
 //VER 0.01-INITIAL VERSION, SD:18/05/2015 ED:18/05/2015
 //************************************************************************************************************-->
 <?php
-include 'EI_HDR.php';
+require_once('application/libraries/EI_HDR.php');
 ?>
 <html>
 <head>
     <script>
-    var value_err_array=[];
-        var ET_SRC_UPD_DEL_result_array=[];
-        var ET_SRC_UPD_DEL_name;
-        var listboxoption;
-        var ErrorControl={'cpferror':null};
-    //SEARCH FORM
-    var STDTL_SEARCH_sucsval=0;
-    var ErrorControl={AmountCompare:'InValid'}
-    var STDTL_SEARCH_result_array=[];
-    var STDTL_SEARCH_commnts='';
-    var validate_flag=0;
+//    var value_err_array=[];
+//        var ET_SRC_UPD_DEL_result_array=[];
+//        var ET_SRC_UPD_DEL_name;
+//        var listboxoption;
+//        var ErrorControl={'cpferror':null};
+//    //SEARCH FORM
+//    var STDTL_SEARCH_sucsval=0;
+//    var ErrorControl={AmountCompare:'InValid'}
+//    var STDTL_SEARCH_result_array=[];
+//    var STDTL_SEARCH_commnts='';
+//    var validate_flag=0;
         //READY FUNCTION START
         $(document).ready(function() {
+            var SCTDTL_SEARH_controller_url="<?php echo base_url(); ?>" + '/index.php/EXPENSE/STAFF/Ctrl_Staff_Detail_Entry_Search_Update_Delete/' ;
             $('#spacewidth').height('0%');
             $(".preloader").hide();
-            $('#STDTL_SEARCH_lb_cpfnumber_listbox').hide();
+            $('#SCTDTL_SEARH_lb_cpfnumber_listbox').hide();
             $('#STDTL_SEARCH_lb_employeename_listbox').hide();
             var STDTL_INPUT_expensearr_employeename=[];
             var EP_SRC_UPD_DEL_namearray=[];
@@ -55,11 +58,13 @@ include 'EI_HDR.php';
             {
                 $.ajax({
                     type: "POST",
-                    'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Detail_Entry_Search_Update_Delete/STDTL_SEARCH_comments",
+                    url:SCTDTL_SEARH_controller_url+"STDTL_SEARCH_comments",
                     success: function(data){
                         $('.preloader').hide();
                         $('#STDTL_SEARCH_div_headernodata').hide();
                         STDTL_SEARCH_comments=JSON.parse(data);
+                    },error:function(data){
+                        alert(JSON.parse(data))
                     }
                 });
             }
@@ -144,8 +149,7 @@ include 'EI_HDR.php';
             // INITIAL DATA LODING
             $.ajax({
                 type: "POST",
-                'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Detail_Entry_Search_Update_Delete/Initaildatas",
-//                data:{"Formname":'EmailTemplateSearchUpdate',"ErrorList":'171,239,240,241,314,400'},
+                url:SCTDTL_SEARH_controller_url+"Initaildatas",
                 data:{"Formname":'EmailTemplateSearchUpdate',"ErrorList":'45,60,71,72,128,135,136,137,145,146,147,170,171,172,173,239,240,241,314,315,375,400,401,446'},
                 success: function(data){
                     $('.preloader').hide();
@@ -207,7 +211,7 @@ include 'EI_HDR.php';
                 var STDTL_INPUT_data=$(this).val();
                     $.ajax({
                         type: "POST",
-                        'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Detail_Entry_Search_Update_Delete/STDTL_INPUT_getempname",
+                        url:SCTDTL_SEARH_controller_url+"STDTL_INPUT_getempname",
                         data :{'STDTL_INPUT_searchby':STDTL_INPUT_data},
                         success: function(data){
                             $('.preloader').hide();
@@ -403,7 +407,8 @@ include 'EI_HDR.php';
                     var STDTL_INPUT_Cpfamt=$("#STDTL_INPUT_tb_cpfamount").val();
                     $.ajax({
                         type: "POST",
-                        'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Detail_Entry_Search_Update_Delete/STDTL_INPUT_already",
+                        url:SCTDTL_SEARH_controller_url+"STDTL_INPUT_already",
+
                         data: {'STDTL_INPUT_Cpfno': STDTL_INPUT_Cpfno},
                         success: function(data) {
                             var response=JSON.parse(data.script_name_already_exits_array)//retdata.final_array[0];
@@ -537,7 +542,7 @@ include 'EI_HDR.php';
                 var STDTL_INPUT_radioemployid=$('input:radio[name=STDTL_INPUT_radioemployid]:checked').attr('id');
                 $.ajax({
                     type: "POST",
-                    'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Detail_Entry_Search_Update_Delete/STDTL_INPUT_save",
+                    url:SCTDTL_SEARH_controller_url+"STDTL_INPUT_save",
                     data: {'STDTL_INPUT_radioemployid':STDTL_INPUT_radioemployid,'STDTL_INPUT_employeenameid': STDTL_INPUT_employeenameid,'STDTL_INPUT_cpfnumber': STDTL_INPUT_cpfnumber,'STDTL_INPUT_cpfamount': STDTL_INPUT_cpfamount,'STDTL_INPUT_levyamount': STDTL_INPUT_levyamount,'STDTL_INPUT_salaryamount': STDTL_INPUT_salaryamount,'STDTL_INPUT_comments': STDTL_INPUT_comments},
                     success: function(data) {
                         var result_value=JSON.parse(data.final_array);//retdata.final_array[0];
@@ -769,7 +774,8 @@ include 'EI_HDR.php';
                 $('.preloader').hide();
                 $.ajax({
                     type: "POST",
-                    'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Detail_Entry_Search_Update_Delete/STDTL_SEARCH_empcpfnoresult",
+                    url:SCTDTL_SEARH_controller_url+"STDTL_SEARCH_empcpfnoresult"
+
                     success: function(data){
                         cpfno=JSON.parse(data);
                         //GET STAFF CPF NUMBER
@@ -982,7 +988,7 @@ include 'EI_HDR.php';
                 var emp_last_name=emp_name[1]
                 $.ajax({
                     type: "POST",
-                    'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Detail_Entry_Search_Update_Delete/fetchdata",
+                    url:SCTDTL_SEARH_controller_url+"fetchdata"
                     data: {'STDTL_SEARCH_staffexpense_selectquery':STDTL_SEARCH_staffexpense_selectquery,'STDTL_SEARCH_cpfnumber': STDTL_SEARCH_cpfnumber,'STDTL_SEARCH_cpffrom_form':STDTL_SEARCH_cpffrom_form,'STDTL_SEARCH_cpfto_form':STDTL_SEARCH_cpfto_form,'emp_first_name':emp_first_name,'emp_last_name':emp_last_name,'STDTL_SEARCH_staffcommentstxt':STDTL_SEARCH_staffcommentstxt},
                     success: function(data) {
                         $('.preloader').hide();
@@ -1156,7 +1162,7 @@ include 'EI_HDR.php';
                     if((STDTL_SEARCH_cpfnoval.length==9) && (STDTL_SEARCH_cpfnoval!=tdvalue)){
                 $.ajax({
                     type: "POST",
-                    'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Detail_Entry_Search_Update_Delete/dataupd_exists",
+                    url:SCTDTL_SEARH_controller_url+"dataupd_exists"
                     data :{'tdvalue':STDTL_SEARCH_currentval},
                     success: function(data){
                         $('.preloader').hide();
@@ -1234,7 +1240,7 @@ include 'EI_HDR.php';
                     var data = $('#STDTL_INPUT_form_employeename').serialize();
                     $.ajax({
                         type: "POST",
-                        'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Detail_Entry_Search_Update_Delete/updatefunction",
+                        url:SCTDTL_SEARH_controller_url+"updatefunction"
                         data:{'id':combineid,'STDTL_SEARCH_cpfnumber':STDTL_SEARCH_cpfnumber,'STDTL_SEARCH_cpfamount':STDTL_SEARCH_cpf_amount,'STDTL_SEARCH_levyamount':STDTL_SEARCH_levyamount,'STDTL_SEARCH_salaryamount':STDTL_SEARCH_salaryamount,'STDTL_SEARCH_comments':STDTL_SEARCH_comments},
                         success: function(STDTL_SEARCH_updateresult) {
                             if(STDTL_SEARCH_updateresult=='true')
@@ -1268,7 +1274,7 @@ include 'EI_HDR.php';
                 $(".preloader").show();
                 $.ajax({
                     type: "POST",
-                    url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Detail_Entry_Search_Update_Delete/deleteoption",
+                    url:SCTDTL_SEARH_controller_url+"deleteoption",
                     data :{'rowid':rowid},
                     success: function(data) {
                         $('.preloader').hide();
@@ -1277,7 +1283,7 @@ include 'EI_HDR.php';
                         if(deleteflag==1){
                             $.ajax({
                                 type: "POST",
-                                url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Detail_Entry_Search_Update_Delete/deleteconformoption",
+                                url:SCTDTL_SEARH_controller_url+"deleteconformoption",
                                 data :{'rowid':rowid},
                                 success: function(data) {
                                     var successresult=JSON.parse(data);

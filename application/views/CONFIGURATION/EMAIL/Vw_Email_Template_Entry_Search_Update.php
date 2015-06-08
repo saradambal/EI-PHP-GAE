@@ -1,12 +1,14 @@
 
 <!--//*******************************************FILE DESCRIPTION*********************************************//
 //***********************************************EMAIL TEMPLATE ENTRY/SEARCH/UPDATE*******************************//
+//DONE BY:SARADAMBAL
+//VER 0.02-SD:08/06/2015 ED:08/06/2015 CHANGED ALL CTRL,MODEL,VIEW FILE NAME AND GET USERSTAMP AND TIME ZONE FROM EILIB,
 //DONE BY:LALITHA
 //VER 0.01-INITIAL VERSION, SD:18/05/2015 ED:18/05/2015
 //************************************************************************************************************-->
 <?php
 //require_once('HEADER.php');
-include 'EI_HDR.php';
+require_once('application/libraries/EI_HDR.php');
 ?>
 <html>
 <head>
@@ -20,6 +22,7 @@ $(document).ready(function() {
     $(".preloader").hide();
     $('#ET_SRC_UPD_DEL_lb_scriptname').hide();
     var value_err_array=[];
+    var ET_SRC_UPD_DEL_controller_url="<?php echo base_url(); ?>" + '/index.php/CONFIGURATION/EMAIL/Ctrl_Email_Template_Entry_Search_Update/' ;
     $('#ET_SRC_UPD_DEL_btn_search').hide();
     var ET_ENTRY_chknull_input="";
     //JQUERY LIB VALIDATION START
@@ -29,7 +32,7 @@ $(document).ready(function() {
     // INITIAL DATA LODING
     $.ajax({
         type: "POST",
-        'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Email_Template_Forms/Initaildatas",
+        'url':ET_SRC_UPD_DEL_controller_url+"Initaildatas",
         data:{"Formname":'EmailTemplateSearchUpdate',"ErrorList":'278,279,280,281,291,400,401'},
         success: function(data){
             $('.preloader').hide();
@@ -91,7 +94,7 @@ $(document).ready(function() {
     //SCRIPT NAME LOADING
     $.ajax({
         type: "POST",
-        'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Email_Template_Forms/ET_SRC_UPD_DEL_script_name",
+        'url':ET_SRC_UPD_DEL_controller_url+"ET_SRC_UPD_DEL_script_name",
         success: function(data){
             var value_array=JSON.parse(data);
             for(var i=0;i<value_array[0].length;i++)
@@ -202,7 +205,7 @@ $(document).ready(function() {
             var ET_ENTRY_scriptname=$('#ET_ENTRY_tb_scriptname').val();
             $.ajax({
                 type: "POST",
-                'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Email_Template_Forms/scriptname_exists",
+                'url':ET_SRC_UPD_DEL_controller_url+"scriptname_exists",
                 data: {'scriptnme': ET_ENTRY_scriptname},
                 success: function(data) {
                     var ET_ENTRY_response=JSON.parse(data.script_name_already_exits_array)//retdata.final_array[0];
@@ -262,7 +265,7 @@ $(document).ready(function() {
         var ET_ENTRY_body=$('#ET_ENTRY_ta_body').val();
         $.ajax({
             type: "POST",
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Email_Template_Forms/login",
+            'url':ET_SRC_UPD_DEL_controller_url+"login",
             data: {'scriptnme': ET_ENTRY_scriptname,'sub': ET_ENTRY_subject,'bdy': ET_ENTRY_body},
             success: function(data) {
                 var flag="EMAILINSERT_FLAG";
@@ -303,7 +306,7 @@ $(document).ready(function() {
         $('.preloader').hide();
         $.ajax({
             type: "POST",
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Email_Template_Forms/fetchdata",
+            'url':ET_SRC_UPD_DEL_controller_url+"fetchdata",
             data: {'scriptnameid': ET_SRC_UPD_DEL_scriptname_id},
             success: function(data) {
                 values_array=JSON.parse(data);
@@ -367,7 +370,7 @@ $(document).ready(function() {
             var data = $('#ET_SRC_UPD_DEL_form_emailtemplate').serialize();
             $.ajax({
                 type: "POST",
-                'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Email_Template_Forms/subupdatefunction",
+                'url':ET_SRC_UPD_DEL_controller_url+"subupdatefunction",
                 data:{'id':id,'subjectvalue':subjectvalue},
                 success: function(ET_SRC_UPD_DEL_update_result) {
                     if(ET_SRC_UPD_DEL_update_result=='true')
@@ -411,7 +414,7 @@ $(document).ready(function() {
             var data = $('#ET_SRC_UPD_DEL_form_emailtemplate').serialize();
             $.ajax({
                 type: "POST",
-                'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Email_Template_Forms/bdyupdatefunction",
+                'url':ET_SRC_UPD_DEL_controller_url+"bdyupdatefunction",
                 data:{'id':id,'bodyvalue':bodyvalue},
                 success: function(ET_SRC_UPD_DEL_update_result) {
                     if(ET_SRC_UPD_DEL_update_result=='true')
@@ -482,7 +485,7 @@ $(document).ready(function() {
         var data = $('#ET_SRC_UPD_DEL_form_emailtemplate').serialize();
         $.ajax({
             type: "POST",
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Email_Template_Forms/updatefunction",
+            'url':ET_SRC_UPD_DEL_controller_url+"updatefunction",
             data: data+'&id='+ id,
             success: function(ET_SRC_UPD_DEL_update_result) {
                 $('.preloader').hide();

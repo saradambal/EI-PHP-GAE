@@ -205,9 +205,8 @@ class Mdl_staff_detail_entry_search_update_delete extends CI_Model{
     //SINGLE ROW DELETION PROCESS CALLING EILIB  FUNCTION
     public function DeleteRecord($USERSTAMP,$rowid)
     {
-        global  $USERSTAMP;
-        $this->load->model('EILIB/Common_function');
-        $deleteflag=$this->Common_function->DeleteRecord(41,$rowid,$USERSTAMP);
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $deleteflag=$this->Mdl_eilib_common_function->DeleteRecord(41,$rowid,$USERSTAMP);
         return $deleteflag;
     }
     //FUNCTION FOR ALREADY EXIT

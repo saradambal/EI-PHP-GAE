@@ -1,5 +1,5 @@
 <?php
-class Mdl_configuration extends CI_Model{
+class Mdl_configuration_entry_update extends CI_Model{
     //FUNCTION FOR GETTING MODEL NAME
     Public function getscriptname($CONFIG_ENTRY_searchby)
     {
@@ -57,7 +57,6 @@ class Mdl_configuration extends CI_Model{
   }
     //FUNCTION FOR SAVE PART
     public function configentrydatainsert($USERSTAMP){
-        global  $USERSTAMP;
         $module=$_POST['CONFIG_ENTRY_lb_module'];
         $type=$_POST['CONFIG_ENTRY_lb_type'];
         if($type==42){
@@ -67,7 +66,7 @@ class Mdl_configuration extends CI_Model{
         }
         else{
             $data=$_POST['CONFIG_ENTRY_tb_data'];
-       $CONF_ENTRY_twodimen_details = $this->Mdl_configuration->CONF_ENTRY_twodimdata($module) ;
+       $CONF_ENTRY_twodimen_details = $this->CONF_ENTRY_twodimdata($module) ;
         $insertquery = "INSERT INTO ".$CONF_ENTRY_twodimen_details[1]."(CGN_ID,".$CONF_ENTRY_twodimen_details[2].",ULD_ID) VALUES(".$type.",'".$data."',(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='".$USERSTAMP."'))";
         }
         $this->db->query($insertquery);
@@ -78,29 +77,28 @@ class Mdl_configuration extends CI_Model{
             return false;
         }
     }
-    public function CONF_ENTRY_twodimflexdata($module){
-        $CONF_ENTRY_twodimen=array(3=>array("CUSTOMER_CONFIGURATION","CCN_DATA","DT.CCN_ID AS ID,DT.CCN_DATA AS DATA,DT.CCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.CCN_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),5=>array("ACCESS_CONFIGURATION","ACN_DATA","DT.ACN_ID AS ID,DT.ACN_DATA AS DATA,DT.ACN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.ACN_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),
-            8=>array("DEPOSIT_DEDUCTION_CONFIGURATION","DDC_DATA","DT.DDC_ID AS ID,DT.DDC_DATA AS DATA,DT.DDC_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.DDC_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),7=>array("EXPENSE_CONFIGURATION","ECN_DATA","DT.ECN_ID AS ID,DT.ECN_DATA AS DATA,DT.ECN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.ECN_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),
-            10=>array("NATIONALITY_CONFIGURATION","NC_DATA","DT.NC_ID AS ID,DT.NC_DATA AS DATA,DT.NC_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.NC_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),6=>array("OCBC_CONFIGURATION","OCN_DATA","DT.OCN_ID AS ID,DT.OCN_DATA AS DATA,DT.OCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.OCN_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),
-            4=>array("PAYMENT_CONFIGURATION","PCN_DATA","DT.PCN_ID AS ID,DT.PCN_DATA AS DATA,DT.PCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.PCN_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),9=>array("TRIGGER_CONFIGURATION","TC_DATA","DT.TC_ID AS ID,DT.TC_DATA AS DATA,DT.TC_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.TC_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),
-            2=>array("UNIT_CONFIGURATION","UCN_DATA","DT.UCN_ID AS ID,DT.UCN_DATA AS DATA,DT.UCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.UCN_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),14=>array("USER_RIGHTS_CONFIGURATION","URC_DATA","DT.URC_ID AS ID,DT.URC_DATA AS DATA,DT.URC_USERSTAMP AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.URC_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP,DT.URC_INITIALIZE_FLAG AS INIFLAG"),
-            11=>array("BANKTT_CONFIGURATION","BCN_DATA","DT.BCN_ID AS ID,DT.BCN_DATA AS DATA,DT.BCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.BCN_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),15=>array("ERM_CONFIGURATION","ERMCN_DATA","DT.ERMCN_ID AS ID,DT.ERMCN_DATA AS DATA,DT.ERMCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.ERMCN_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),
-            16=>array("CHEQUE_CONFIGURATION","CQCN_DATA","DT.CQCN_ID AS ID,DT.CQCN_DATA AS DATA,DT.CQCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.CQCN_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),17=>array("REPORT_CONFIGURATION","RCN_DATA","DT.RCN_ID AS ID,DT.RCN_DATA AS DATA,DT.RCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.RCN_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP")
+    public function CONF_ENTRY_twodimflexdata($module,$timeZoneFormat){
+        $CONF_ENTRY_twodimen=array(3=>array("CUSTOMER_CONFIGURATION","CCN_DATA","DT.CCN_ID AS ID,DT.CCN_DATA AS DATA,DT.CCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.CCN_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS TIMESTAMP"),5=>array("ACCESS_CONFIGURATION","ACN_DATA","DT.ACN_ID AS ID,DT.ACN_DATA AS DATA,DT.ACN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.ACN_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),
+            8=>array("DEPOSIT_DEDUCTION_CONFIGURATION","DDC_DATA","DT.DDC_ID AS ID,DT.DDC_DATA AS DATA,DT.DDC_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.DDC_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS TIMESTAMP"),7=>array("EXPENSE_CONFIGURATION","ECN_DATA","DT.ECN_ID AS ID,DT.ECN_DATA AS DATA,DT.ECN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.ECN_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),
+            10=>array("NATIONALITY_CONFIGURATION","NC_DATA","DT.NC_ID AS ID,DT.NC_DATA AS DATA,DT.NC_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.NC_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS TIMESTAMP"),6=>array("OCBC_CONFIGURATION","OCN_DATA","DT.OCN_ID AS ID,DT.OCN_DATA AS DATA,DT.OCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.OCN_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),
+            4=>array("PAYMENT_CONFIGURATION","PCN_DATA","DT.PCN_ID AS ID,DT.PCN_DATA AS DATA,DT.PCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.PCN_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS TIMESTAMP"),9=>array("TRIGGER_CONFIGURATION","TC_DATA","DT.TC_ID AS ID,DT.TC_DATA AS DATA,DT.TC_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.TC_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),
+            2=>array("UNIT_CONFIGURATION","UCN_DATA","DT.UCN_ID AS ID,DT.UCN_DATA AS DATA,DT.UCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.UCN_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS TIMESTAMP"),14=>array("USER_RIGHTS_CONFIGURATION","URC_DATA","DT.URC_ID AS ID,DT.URC_DATA AS DATA,DT.URC_USERSTAMP AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.URC_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP,DT.URC_INITIALIZE_FLAG AS INIFLAG"),
+            11=>array("BANKTT_CONFIGURATION","BCN_DATA","DT.BCN_ID AS ID,DT.BCN_DATA AS DATA,DT.BCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.BCN_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS TIMESTAMP"),15=>array("ERM_CONFIGURATION","ERMCN_DATA","DT.ERMCN_ID AS ID,DT.ERMCN_DATA AS DATA,DT.ERMCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.ERMCN_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP"),
+            16=>array("CHEQUE_CONFIGURATION","CQCN_DATA","DT.CQCN_ID AS ID,DT.CQCN_DATA AS DATA,DT.CQCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.CQCN_TIMESTAMP,".$timeZoneFormat."),'%d-%m-%Y %T') AS TIMESTAMP"),17=>array("REPORT_CONFIGURATION","RCN_DATA","DT.RCN_ID AS ID,DT.RCN_DATA AS DATA,DT.RCN_INITIALIZE_FLAG AS INIFLAG,ULD.ULD_LOGINID AS USERSTAMP,DATE_FORMAT(CONVERT_TZ(DT.RCN_TIMESTAMP,'+00:00','+05:30'),'%d-%m-%Y %T') AS TIMESTAMP")
         );
         return array ($CONF_ENTRY_twodimen[$module][0],$CONF_ENTRY_twodimen[$module][1],$CONF_ENTRY_twodimen[$module][2]);
     }
     //FUNCTION FOR FLEX TABLE
-    public function config_flexdata($USERSTAMP,$module,$type){
-        global  $USERSTAMP;
+    public function config_flexdata($USERSTAMP,$module,$type,$timeZoneFormat){
      if($module==8){
             $flex_tble_query =$this->db->query("SELECT DDC.DDC_ID AS ID,DDC.DDC_DATA AS DATA,DDC.DDC_SUB_DATA AS SUBTYPE,ULD.ULD_LOGINID,DDC.DDC_INITIALIZE_FLAG AS INIFLAG,DATE_FORMAT(CONVERT_TZ(DDC.DDC_TIMESTAMP,'+00:00','+05:30'), '%d-%m-%Y %T') AS DDC_TIMESTAMP FROM DEPOSIT_DEDUCTION_CONFIGURATION DDC,CONFIGURATION C,CONFIGURATION_PROFILE CP ,USER_LOGIN_DETAILS ULD WHERE ULD.ULD_ID=DDC.ULD_ID AND CP.CNP_ID='$module' AND DDC.CGN_ID=C.CGN_ID AND C.CGN_TYPE='$type' ORDER BY DDC.DDC_DATA ASC ");
         }
      else if($module==14){
-         $CONF_ENTRY_twodimen_details = $this->Mdl_configuration->CONF_ENTRY_twodimflexdata($module) ;
+         $CONF_ENTRY_twodimen_details = $this->CONF_ENTRY_twodimflexdata($module,$timeZoneFormat) ;
          $flex_tble_query =$this->db->query("SELECT ". $CONF_ENTRY_twodimen_details[2]. "  FROM ". $CONF_ENTRY_twodimen_details[0]. " DT,CONFIGURATION C,CONFIGURATION_PROFILE CP WHERE  CP.CNP_ID='$module' AND DT.CGN_ID=C.CGN_ID AND C.CGN_TYPE= '$type'  ORDER BY DT. ". $CONF_ENTRY_twodimen_details[1]. " ASC ");
      }
      else{
-                $CONF_ENTRY_twodimen_details = $this->Mdl_configuration->CONF_ENTRY_twodimflexdata($module) ;
+                $CONF_ENTRY_twodimen_details = $this->CONF_ENTRY_twodimflexdata($module,$timeZoneFormat) ;
          $flex_tble_query =$this->db->query("SELECT ". $CONF_ENTRY_twodimen_details[2]. "  FROM ". $CONF_ENTRY_twodimen_details[0]. " DT,CONFIGURATION C,CONFIGURATION_PROFILE CP,USER_LOGIN_DETAILS ULD WHERE  ULD.ULD_ID=DT.ULD_ID AND CP.CNP_ID='$module' AND DT.CGN_ID=C.CGN_ID AND C.CGN_TYPE= '$type'  ORDER BY DT. ". $CONF_ENTRY_twodimen_details[1]. " ASC ");
         }
         return $flex_tble_query->result();
@@ -108,19 +106,18 @@ class Mdl_configuration extends CI_Model{
     // FUNCTION FOR UPDATE PART
     public  function dataupdate($USERSTAMP,$rowid,$module,$type,$data,$CONFIG_SEARCH_subdata,$subdatamount_value)
     {
-        global  $USERSTAMP;
         if($module==42)
         {
             $updatequery = "UPDATE DEPOSIT_DEDUCTION_CONFIGURATION SET DDC_DATA='$subdatamount_value',DDC_SUB_DATA='$data',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE DDC_ID='$rowid'";
         }
         else if($module==14){
-            $CONFIG_SRCH_UPD_arr = $this->Mdl_configuration->CONF_ENTRY_twodimdata($module) ;
+            $CONFIG_SRCH_UPD_arr = $this->CONF_ENTRY_twodimdata($module) ;
 //            echo "UPDATE ".$CONFIG_SRCH_UPD_arr[1]." SET ".$CONFIG_SRCH_UPD_arr[2]."= '$data',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE ".$CONFIG_SRCH_UPD_arr[0]."=".$rowid;
 //            exit;
             $updatequery = "UPDATE ".$CONFIG_SRCH_UPD_arr[1]." SET ".$CONFIG_SRCH_UPD_arr[2]."= '$data',URC_USERSTAMP='$USERSTAMP' WHERE ".$CONFIG_SRCH_UPD_arr[0]."=".$rowid;
         }
         else{
-        $CONFIG_SRCH_UPD_arr = $this->Mdl_configuration->CONF_ENTRY_twodimdata($module) ;
+        $CONFIG_SRCH_UPD_arr = $this->CONF_ENTRY_twodimdata($module) ;
 //        echo "UPDATE ".$CONFIG_SRCH_UPD_arr[1]." SET ".$CONFIG_SRCH_UPD_arr[2]."= '$data',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE ".$CONFIG_SRCH_UPD_arr[0]."=".$rowid;
 //            exit;
             $updatequery = "UPDATE ".$CONFIG_SRCH_UPD_arr[1]." SET ".$CONFIG_SRCH_UPD_arr[2]."= '$data',ULD_ID=(SELECT ULD_ID FROM USER_LOGIN_DETAILS WHERE ULD_LOGINID='$USERSTAMP') WHERE ".$CONFIG_SRCH_UPD_arr[0]."=".$rowid;
@@ -137,7 +134,7 @@ class Mdl_configuration extends CI_Model{
     }
     public function deleteoption($USERSTAMP,$rowid,$module,$type,$data)
     {
-        $tableid = $this->Mdl_configuration->CONF_ENTRY_twodimdata($module) ;
+        $tableid = $this->CONF_ENTRY_twodimdata($module) ;
         $rowid=$rowid;
         $deletestmt = "CALL SP_CONFIG_CHECK_TRANSACTION(".$tableid[3].",$rowid,@DELETION_FLAG)";
         $this->db->query($deletestmt);
@@ -147,14 +144,14 @@ class Mdl_configuration extends CI_Model{
         return $successflag;
     }
     //FUNCTION FOR ALREADY EXIT
-    public function data_name_exists($module,$type,$data,$subdatamount_value)
+    public function data_name_exists($module,$type,$data)
     {
         if($type==42)
         {
             $checkquery= "SELECT DDC_SUB_DATA FROM DEPOSIT_DEDUCTION_CONFIGURATION WHERE DDC_SUB_DATA='$subdatamount_value'";
         }
         else{
-        $CONFIG_ENTRY_arr_config = $this->Mdl_configuration->CONF_ENTRY_twodimdata($module) ;
+        $CONFIG_ENTRY_arr_config = $this->CONF_ENTRY_twodimdata($module) ;
         $checkquery= "SELECT ".$CONFIG_ENTRY_arr_config[2]." FROM ".$CONFIG_ENTRY_arr_config[1]." CCN WHERE CCN.CGN_ID=(SELECT C.CGN_ID FROM CONFIGURATION C WHERE C.CGN_ID='$type') AND ".$CONFIG_ENTRY_arr_config[2]."='$data'";
         }
         $this->db->query($checkquery);
@@ -180,21 +177,20 @@ class Mdl_configuration extends CI_Model{
     //SINGLE ROW DELETION PROCESS CALLING EILIB  FUNCTION
     public function DeleteRecord($USERSTAMP,$rowid,$module,$type,$data)
     {
-        global  $USERSTAMP;
-        $CONFIG_SRCH_UPD_arr_delete_data = $this->Mdl_configuration->CONF_ENTRY_twodimdata($module) ;
-        $this->load->model('EILIB/Common_function');
-        $deleteflag=$this->Common_function->DeleteRecord(".$CONFIG_SRCH_UPD_arr_delete_data[3].",$rowid,$USERSTAMP);
+        $CONFIG_SRCH_UPD_arr_delete_data = $this->CONF_ENTRY_twodimdata($module) ;
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $deleteflag=$this->Mdl_eilib_common_function->DeleteRecord(".$CONFIG_SRCH_UPD_arr_delete_data[3].",$rowid,$USERSTAMP);
         return $deleteflag;
     }
     //FUNCTION FOR ALREADY EXIT
-    public function data_updname_exists($module,$type,$data,$CONFIG_SEARCH_subtype)
+    public function data_updname_exists($module,$type,$data,$CONFIG_SEARCH_subtype,$amt)
     {
         if($type==42)
         {
         $checkquery= "SELECT DDC_SUB_DATA FROM DEPOSIT_DEDUCTION_CONFIGURATION WHERE DDC_SUB_DATA='$CONFIG_SEARCH_subtype'";
         }
         else{
-        $CONFIG_ENTRY_arr_config = $this->Mdl_configuration->CONF_ENTRY_twodimdata($module) ;
+        $CONFIG_ENTRY_arr_config = $this->CONF_ENTRY_twodimdata($module) ;
         $checkquery= "SELECT ".$CONFIG_ENTRY_arr_config[2]." FROM ".$CONFIG_ENTRY_arr_config[1]." CCN WHERE CCN.CGN_ID=(SELECT C.CGN_ID FROM CONFIGURATION C WHERE C.CGN_ID='$type') AND ".$CONFIG_ENTRY_arr_config[2]."='$data'";
         }
         $this->db->query($checkquery);

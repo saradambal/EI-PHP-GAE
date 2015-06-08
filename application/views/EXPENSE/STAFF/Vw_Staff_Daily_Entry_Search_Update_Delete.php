@@ -1,10 +1,13 @@
 <!--//*******************************************FILE DESCRIPTION*********************************************//
 //***********************************************STAFF EXPENSE DAILY ENTRY/SEARCH/UPDATE/DELETE*******************************//
+//DONE BY SARADA
+//VER 0.02-SD:08/06/2015 ED:08/06/2015 CHANGED ALL CTRL,MODEL,VIEW FILE NAME AND GET USERSTAMP AND TIME ZONE FROM EILIB,
+REMOVED COMMENTS AND EMPTY SPACE
 //DONE BY:LALITHA
 //VER 0.01-INITIAL VERSION, SD:18/05/2015
 //************************************************************************************************************-->
 <?php
-require_once "EI_HDR.php";
+require_once('application/libraries/EI_HDR.php');
 ?>
 <html>
 <head>
@@ -18,6 +21,7 @@ require_once "EI_HDR.php";
 var listboxoption;
 var ErrorControl ={AmountCompare:'InValid'}
 $(document).ready(function(){
+    var STDLY_SEARCH_controller_url="<?php echo base_url(); ?>" + '/index.php/EXPENSE/STAFF/Ctrl_Staff_Daily_Entry_Search_Update_Delete/' ;
     $(".preloader").hide();
     $('#staffdly_lb_type').hide();
     $('#staffdly_lbl_type').hide();
@@ -294,15 +298,6 @@ $(document).ready(function(){
                 if(($("#STDLY_SEARCH_db_startdate").val()!="")&&($("#STDLY_SEARCH_db_enddate").val()!="")&&($("#STDLY_SEARCH_tb_fromamount").val()!="")&&($("#STDLY_SEARCH_tb_toamount").val()!=""))
                 {
                     $('#STDLY_SEARCH_btn_staffbutton').removeAttr("disabled");
-//                    if(ErrorControl.AmountCompare=='Valid')
-//                    {
-//                        $('#PDLY_SEARCH_lbl_amounterrormsg').hide();
-//                    }
-//                    else
-//                    {
-//                        $('#STDLY_SEARCH_lbl_amounterrormsg').text(STDLY_SEARCH_errorArray[0]).show();
-//                        $('#STDLY_SEARCH_btn_staffbutton').attr("disabled", "disabled");
-//                    }
                 }
                 else
                 {
@@ -542,7 +537,7 @@ $(document).ready(function(){
             $("#STDLY_SEARCH_tblSTDLY_SEARCH_tb_searchcommentse_multi").hide();
             $.ajax({
                 type: "POST",
-                url: "<?php echo site_url('Ctrl_Staff_Daily_Entry_Search_Update_Delete/STDLY_SEARCH_searchbyagentcommission'); ?>",
+                'url':STDLY_SEARCH_controller_url+"STDLY_SEARCH_searchbyagentcommission",
                 success: function(data){
                     $('.preloader').hide();
                     STDLY_SEARCH_expenseArray=JSON.parse(data);
@@ -645,7 +640,7 @@ $(document).ready(function(){
     var catid=[];
     $.ajax({
         type: "POST",
-        url: "<?php echo site_url('Ctrl_Staff_Daily_Entry_Search_Update_Delete/Initialdata'); ?>",
+        'url':STDLY_SEARCH_controller_url+"Initialdata",
         data:{'ErrorList':'337,169,105,400,45,106,107,127,128,129,130,131,132,133,134,135,136,137,138,139,140,141,142,143,144,145,146,147,148,149,150,151,152,169,170,315,377,378,379,401'},
         success: function(data){
             $('.preloader').hide();
@@ -1357,7 +1352,7 @@ $(document).ready(function(){
         $.ajax({
             type: "POST",
             data: $('#staffdlyentry_form').serialize(),
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/STDLY_INPUT_savedata",
+            'url':STDLY_SEARCH_controller_url+"STDLY_INPUT_savedata",
             success: function(data){
                 $('.preloader').hide();
 
@@ -1537,7 +1532,7 @@ $(document).ready(function(){
         $.ajax({
             type: "POST",
             data: $('#staffdlyentry_form').serialize(),
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/STDLY_INPUT_savestaff",
+            'url':STDLY_SEARCH_controller_url+"STDLY_INPUT_savestaff",
             success: function(data){
                 $('.preloader').hide();
                 STDLY_INPUT_response=JSON.parse(data)
@@ -1554,16 +1549,6 @@ $(document).ready(function(){
                     $("#STDLY_INPUT_db_invdate1").datepicker({dateFormat:'dd-mm-yy',
                         changeYear: true,
                         changeMonth: true});
-//                STAFF_categorytyperesult();
-//                var options =' ';
-//                for (var i = 0; i < expencetype.length; i++) {
-//                    if( i>=0 && i<=4)
-//                    {options += '<option value="' + catid[i] + '">' + catdata[i] + '</option>';
-//                    }}
-//                $('#STDLY_INPUT_tble_multi').show();
-//                $('#STDLY_INPUT_lb_category1').html(options);
-//                STDLY_INPUT_Sortit('STDLY_INPUT_lb_category1')
-//                $('#STDLY_INPUT_lb_category1').show();
                 }
                 else
                 {
@@ -2091,7 +2076,7 @@ $(document).ready(function(){
         $('.preloader').hide();
         $.ajax({
             type: "POST",
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/fetchdata",
+            'url':STDLY_SEARCH_controller_url+"fetchdata",
             data: {'STDLY_SEARCH_searchoptio':STDLY_SEARCH_searchoptio,'STDLY_SEARCH_startdate':STDLY_SEARCH_startdate,'STDLY_SEARCH_enddate':STDLY_SEARCH_enddate,'STDLY_SEARCH_fromamount':STDLY_SEARCH_fromamount,'STDLY_SEARCH_toamount':STDLY_SEARCH_toamount,'STDLY_SEARCH_searchcomments':STDLY_SEARCH_searchcomments},
             success: function(data) {
                 values_array=JSON.parse(data);
@@ -2106,11 +2091,13 @@ $(document).ready(function(){
                         var STDLY_SEARCH_CONFSAVEMSGs = STDLY_SEARCH_conformsg.replace('[SDATE]',":"+ STDLY_SEARCH_sdate);
                         var STDLY_SEARCH_CONFSAVEMSG = STDLY_SEARCH_CONFSAVEMSGs.replace('[EDATE]', STDLY_SEARCH_edate);
                     }
+                    alert('sdf')
                     $('#STDLY_SEARCH_lbl_headermesg').text(STDLY_SEARCH_CONFSAVEMSG);
                     $('#STDLY_SEARCH_lbl_headermesg').show();
                     var STDLY_SEARCH_table_value='<table id="STDLY_SEARCH_tbl_htmltable" border="1"  cellspacing="0" class="srcresult"  ><thead  bgcolor="#6495ed" style="color:white"><tr><th>DELETE</th><th class="uk-date-column" style="width:75px">AGENT DATE</th><th style="width:60px">COMMISSION AMOUNT</th><th style="width:300px;">COMMENTS</th><th style="width:200px;">USERSTAMP</th><th style="width:100px;" >TIMESTAMP</th></tr></thead><tbody>'
 //                    var ET_SRC_UPD_DEL_errmsg =value_err_array[4].EMC_DATA.replace('[SCRIPT]',ET_SRC_UPD_DEL_name);
 //                    $('#ET_SRC_UPD_DEL_div_header').text(ET_SRC_UPD_DEL_errmsg).show();
+                    alert(STDLY_SEARCH_table_value)
                     for(var j=0;j<values_array.length;j++){
                         STDLY_SEARCH_date=values_array[j].DATE;
                         STDLY_SEARCH_agentcommamount=values_array[j].AMNT;
@@ -2123,8 +2110,10 @@ $(document).ready(function(){
                         STDLY_SEARCH_agenttimestamp=values_array[j].timestamp;
                         id=values_array[j].EA_ID;
                         STDLY_SEARCH_table_value+='<tr><td><div class="col-lg-1"><span style="display: block;color:red" id ='+id+' class="glyphicon glyphicon-trash deletebutton" title="Delete"></span></div></td><td id=agentdate_'+id+' class="staffedit">'+STDLY_SEARCH_date+'</td><td id=agentcommissionamt_'+id+' class="staffedit">'+STDLY_SEARCH_agentcommamount+'</td><td id=comments_'+id+' class="staffedit">'+STDLY_SEARCH_agentcomments+'</td><td>'+STDLY_SEARCH_agentuserstamp+'</td><td>'+STDLY_SEARCH_agenttimestamp+'</td></tr>';
+                   alert(STDLY_SEARCH_table_value+'***')
                     }
                     STDLY_SEARCH_table_value+='</tbody></table>';
+                    alert(STDLY_SEARCH_table_value)
                     $('section').html(STDLY_SEARCH_table_value);
                     $('#STDLY_SEARCH_tbl_htmltable').DataTable({
                         "aaSorting": [],
@@ -2145,6 +2134,9 @@ $(document).ready(function(){
                     $('.preloader').hide();
                 }
                 $('#STDLY_SEARCH_div_htmltable').show();
+            },
+            error:function(data){
+                alert(JSON.stringify(data))
             }
         });
         sorting()
@@ -2225,7 +2217,7 @@ $(document).ready(function(){
         var STDLY_SEARCH_typelist=$('#STDLY_SEARCH_lb_typelist').val();
         $.ajax({
             type: "POST",
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/updatefunction",
+            'url':STDLY_SEARCH_controller_url+"updatefunction",
             data:{'id':combineid,'STDLY_SEARCH_typelist':STDLY_SEARCH_typelist,'agentdate':agentdate,'STDLY_SEARCH_comments':STDLY_SEARCH_comments,'STDTL_SEARCH_agentcommissionamt':STDTL_SEARCH_agentcommissionamt},
             success: function(STDLY_SEARCH_upd_res) {
                 if(STDLY_SEARCH_upd_res=='true')
@@ -2258,7 +2250,7 @@ $(document).ready(function(){
         $(".preloader").show();
         $.ajax({
             type: "POST",
-            url: "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/deleteconformoption",
+            url:STDLY_SEARCH_controller_url+"deleteconformoption",
             data :{'rowid':rowid,'STDLY_SEARCH_typelist':STDLY_SEARCH_typelist,'STDLY_SEARCH_srchoption':STDLY_SEARCH_srchoption},
             success: function(data) {
                 $('.preloader').hide();
@@ -2373,7 +2365,7 @@ $(document).ready(function(){
         var STDLY_SEARCH_typelist = $("#STDLY_SEARCH_lb_typelist").val();
         $.ajax({
             type: "POST",
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/STDLY_SEARCH_func_comments",
+            'url':STDLY_SEARCH_controller_url+"STDLY_SEARCH_func_comments",
             data: {'STDLY_SEARCH_sec_searchoption':STDLY_SEARCH_sec_searchoption,'STDLY_SEARCH_startdate':STDLY_SEARCH_startdate,'STDLY_SEARCH_enddate':STDLY_SEARCH_enddate,'STDLY_SEARCH_typelist':STDLY_SEARCH_typelist},
             success: function(data) {
                 STDLY_SEARCH_res_comments=JSON.parse(data);
@@ -2934,7 +2926,7 @@ $(document).ready(function(){
         var STDLY_SEARCH_loadcpfnosarray=[];
         $.ajax({
             type: "POST",
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/STDLY_SEARCH_loadcpfno",
+            'url':STDLY_SEARCH_controller_url+"STDLY_SEARCH_loadcpfno",
             success: function(data){
                 $('.preloader').hide();
                 STDLY_SEARCH_loadcpfnosarray=JSON.parse(data);
@@ -3128,7 +3120,7 @@ $(document).ready(function(){
         $('.preloader').hide();
         $.ajax({
             type: "POST",
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/fetch_salary_data",
+            'url':STDLY_SEARCH_controller_url+"fetch_salary_data",
             data: {'STDLY_SEARCH_searchoptio':STDLY_SEARCH_searchoptio,'STDLY_SEARCH_startdate':STDLY_SEARCH_startdate,'STDLY_SEARCH_enddate':STDLY_SEARCH_enddate,'STDLY_SEARCH_fromamount':STDLY_SEARCH_fromamount,'STDLY_SEARCH_toamount':STDLY_SEARCH_toamount,'STDLY_SEARCH_searchcomments':STDLY_SEARCH_searchcomments,'STDLY_SEARCH_selectedcpfno':STDLY_SEARCH_selectedcpfno},
             success: function(data) {
                 values_array=JSON.parse(data);
@@ -3568,7 +3560,7 @@ $(document).ready(function(){
         var STDLY_SEARCH_tb_hidesal1=$('#STDLY_SEARCH_tb_hidesal1').val();
         $.ajax({
             type: "POST",
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/updatefunction_staffentry",
+            'url':STDLY_SEARCH_controller_url+"updatefunction_staffentry",
             data:{'id':currentid,'STDLY_SEARCH_typelist':STDLY_SEARCH_typelist,'STDLY_SEARCH_comments':STDLY_SEARCH_comments,'STDLY_SEARCH_paiddate':STDLY_SEARCH_paiddate,'STDLY_SEARCH_cpfradio':STDLY_SEARCH_cpfradio,'STDLY_SEARCH_levyradio':STDLY_SEARCH_levyradio,'STDLY_SEARCH_fromperiod':STDLY_SEARCH_fromperiod,'STDLY_SEARCH_toperiod':STDLY_SEARCH_toperiod,'STDLY_SEARCH_hidenlevyamount':STDLY_SEARCH_hidenlevyamount,'STDLY_SEARCH_hidensalaryamount':STDLY_SEARCH_hidensalaryamount,'STDLY_SEARCH_hidencpfamount':STDLY_SEARCH_hidencpfamount,'STDLY_SEARCH_cpfamount':STDLY_SEARCH_cpfamount,'STDLY_SEARCH_searchoption':STDLY_SEARCH_searchoption,'STDLY_SEARCH_tb_hidelevy1':STDLY_SEARCH_tb_hidelevy1,'STDLY_SEARCH_tb_hidesal1':STDLY_SEARCH_tb_hidesal1},
             success: function(data) {
                 $(".preloader").hide();
@@ -4389,7 +4381,7 @@ $(document).ready(function(){
         $('.preloader').hide();
         $.ajax({
             type: "POST",
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/STDLY_SEARCH_sendallstaffdata",
+            'url':STDLY_SEARCH_controller_url+"STDLY_SEARCH_sendallstaffdata",
             data: {'STDLY_SEARCH_searchoptio':STDLY_SEARCH_searchoptio,'STDLY_SEARCH_staffexpansecategory':STDLY_SEARCH_staffexpansecategory,'STDLY_SEARCH_startdate':STDLY_SEARCH_startdate,'STDLY_SEARCH_enddate':STDLY_SEARCH_enddate,'STDLY_SEARCH_fromamount':STDLY_SEARCH_fromamount,'STDLY_SEARCH_toamount':STDLY_SEARCH_toamount,'STDLY_SEARCH_searchcomments':STDLY_SEARCH_searchcomments,'STDLY_SEARCH_invfromcomt':STDLY_SEARCH_invfromcomt,'STDLY_SEARCH_invitemcom':STDLY_SEARCH_invitemcom},
             success: function(data) {
                 values_array=JSON.parse(data);
@@ -4558,7 +4550,7 @@ $(document).ready(function(){
         var STDLY_SEARCH_typelist=$('#STDLY_SEARCH_lb_typelist').val();
         $.ajax({
             type: "POST",
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Staff_Daily_Entry_Search_Update_Delete/updatefunction",
+            'url':STDLY_SEARCH_controller_url+"updatefunction",
             data:{'id':combineid,'STDLY_SEARCH_typelist':STDLY_SEARCH_typelist,'STDLY_SEARCH_lbstaffexpense':STDLY_SEARCH_lbstaffexpense,'STDLY_SEARCH_dbinvoicedate':STDLY_SEARCH_dbinvoicedate,'STDLY_SEARCH_staff_fullamount':STDLY_SEARCH_staff_fullamount,'STDLY_SEARCH_tbinvoiceitems':STDLY_SEARCH_tbinvoiceitems,'STDLY_SEARCH_tbinvoicefrom':STDLY_SEARCH_tbinvoicefrom,'STDLY_SEARCH_tbcomments':STDLY_SEARCH_tbcomments},
             success: function(STDLY_SEARCH_upd_res) {
                 if(STDLY_SEARCH_upd_res=='true')

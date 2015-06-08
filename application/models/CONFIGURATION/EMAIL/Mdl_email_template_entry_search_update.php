@@ -1,5 +1,5 @@
 <?php
-class Mdl_email_template extends CI_Model{
+class Mdl_email_template_entry_search_update extends CI_Model{
     //FUNCTION FOR GETTING SCRIPT NAME
     Public function getscriptname()
     {
@@ -9,9 +9,9 @@ class Mdl_email_template extends CI_Model{
         $query = $this->db->get();
         return $query->result();
     }
-    public function fetch_data($scriptid)
+    public function fetch_data($scriptid,$timeZoneFormat)
     {
-        $this->db->select("EMD.ETD_ID,EMD.ETD_EMAIL_SUBJECT,EMD.ETD_EMAIL_BODY,ULD.ULD_LOGINID,DATE_FORMAT(CONVERT_TZ(EMD.ETD_TIMESTAMP,'+00:00','+05:30'), '%d-%m-%Y %T') AS ETD_TIMESTAMP");
+        $this->db->select("EMD.ETD_ID,EMD.ETD_EMAIL_SUBJECT,EMD.ETD_EMAIL_BODY,ULD.ULD_LOGINID,DATE_FORMAT(CONVERT_TZ(EMD.ETD_TIMESTAMP,".$timeZoneFormat."), '%d-%m-%Y %T') AS ETD_TIMESTAMP");
         $this->db->from('EMAIL_TEMPLATE_DETAILS EMD,USER_LOGIN_DETAILS ULD');
         $this->db->where("EMD.ULD_ID=ULD.ULD_ID AND EMD.ET_ID=".$scriptid);
         $query = $this->db->get();
@@ -54,7 +54,6 @@ class Mdl_email_template extends CI_Model{
     //FUNCTION FOR SAVE PART
     public function login_models($scriptnme,$sub,$bdy,$USERSTAMP)
     {
-        global  $USERSTAMP;
         $sql = "CALL SP_EMAIL_TEMPLATE_INSERT('$scriptnme','$sub','$bdy','$USERSTAMP',@EMAILINSERT_FLAG)";
         $query = $this->db->query($sql);
         $this->db->select('@EMAILINSERT_FLAG as EMAILINSERT_FLAG', FALSE);
