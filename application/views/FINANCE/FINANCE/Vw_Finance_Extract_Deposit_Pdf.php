@@ -20,6 +20,10 @@ require_once('application/libraries/EI_HDR.php');
             var DDE_glb_samename=[];
             var DDE_flg_checkbox=1;
             var shturl='';
+            var selectedsheet='';
+            var unitno='';
+            var customername='';
+            var nocustid='1';
         // initial data
             $.ajax({
                 type: "POST",
@@ -63,10 +67,11 @@ require_once('application/libraries/EI_HDR.php');
                 }
                 else
                 {
+                    selectedsheet=month;
                     $.ajax({
                         type: "POST",
                         url: ctrl_DDExtract_url+'/DDE_getsheetunit',
-                        data: {'month':month},
+                        data: {'month':month,shturl:shturl},
                         success: function(unitdata){
                             var unit_values=JSON.parse(unitdata);
                             DDE_getunit(unit_values);
@@ -77,13 +82,11 @@ require_once('application/libraries/EI_HDR.php');
                             show_msgbox("DEPOSIT DEDUCTION EXTRACTS",errordata,'error',false);
                         }
                     });
-                    $('#DDE_lb_customerselect').hide();
-                    $('#DDE_lbl_customerid').hide();
+                    $('#DDE_customerselect').hide();
                     $('#DDE_radiotable').hide();
                     $('#DDE_recvertable').hide();
                     $('#em').hide();
-                    $('#DDE_lb_unitselect').hide();
-                    $('#DDE_lbl_unit').hide();
+                    $('#DDE_unitselect').hide();
                     $('#DDE_emailtable tr').remove();
                     $('#DDE_emailtable').hide();
                 }
@@ -107,11 +110,12 @@ require_once('application/libraries/EI_HDR.php');
                 }
                 else
                 {
+                    unitno=unit;
                     var month=$('#DDE_lb_monthselect').val();
                     $.ajax({
                         type: "POST",
                         url: ctrl_DDExtract_url+'/DDE_customername',
-                        data: {'unit':unit,'month':month},
+                        data: {'unit':unit,'month':month,'shturl':shturl},
                         success: function(custdata){
                             var cust_values=JSON.parse(custdata);
                             DDE_custname(cust_values);
@@ -143,6 +147,7 @@ require_once('application/libraries/EI_HDR.php');
                 }
                 else
                 {
+                    customername=name;
                     $('#DDE_radiotable').show();
                     $('#DDE_radiotable').empty();
                     var DDE_flag_radio_custname=0;
@@ -173,7 +178,7 @@ require_once('application/libraries/EI_HDR.php');
                         $.ajax({
                             type: "POST",
                             url: ctrl_DDExtract_url+'/DDE_getcustid',
-                            data: {'name':name,'DDE_unit':DDE_unit,'DDE_month':DDE_month},
+                            data: {'name':name,'DDE_unit':DDE_unit,'DDE_month':DDE_month,'shturl':shturl},
                             success: function(custdtldata){
                                 var custdtl_values=JSON.parse(custdtldata);
                                 DDE_getdatebox(custdtl_values);
@@ -378,7 +383,7 @@ require_once('application/libraries/EI_HDR.php');
                 $.ajax({
                     type: "POST",
                     url: ctrl_DDExtract_url+'/DDE_Dep_Exct_recversionfun',
-                    data: {'DDE_namesplit':getid,'DDE_unit':DDE_unit,'DDE_month':DDE_month,'DDE_name':name},
+                    data: {'DDE_namesplit':getid,'DDE_unit':DDE_unit,'DDE_month':DDE_month,'DDE_name':name,'shturl':shturl,'nocustid':nocustid},
                     success: function(recverdata){
                         var recver_values=JSON.parse(recverdata);
                         DDE_getrecver(recver_values);

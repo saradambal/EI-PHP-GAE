@@ -63,7 +63,6 @@
     <script type="text/javascript">
         // function for graphics chart
         function drawChart(twoarr,CHART_errormsg,CHART_linebar) {
-            $("html, body").animate({ scrollTop: $(document).height()}, "slow");
             var data = google.visualization.arrayToDataTable(twoarr);
             var options = {
                 'title': CHART_errormsg,'width':'100%','height':'100%'

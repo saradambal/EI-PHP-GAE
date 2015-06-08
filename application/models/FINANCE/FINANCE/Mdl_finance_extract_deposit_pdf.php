@@ -62,4 +62,60 @@ class Mdl_finance_extract_deposit_pdf extends CI_Model{
         $montherrmsg=(object)['montharray'=>$montharray,'DDE_errorAarray'=>$ErrorMessage,'srtemailarray'=>$srtemailarray,'shturl'=>$shturl];
         return $montherrmsg;
     }
+    public function DDE_getsheet_unit($month,$shturl){
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $data1=array('DDE_flag'=>2,'shturl'=>$shturl,'selectedsheet'=>$month);
+        $unitarray=array();
+        $unitarray=$this->Mdl_eilib_common_function->Func_curl($data1);
+        $unitarray=explode(',',$unitarray);
+        $unitarray=array_values(array_unique($unitarray));
+        sort($unitarray);
+        return $unitarray;
+    }
+    public function DDE_customer_name($unitno,$month,$shturl){
+        $sendcustname=[]; $DDE_same_name=[];
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $data2=array('DDE_flag'=>3,'shturl'=>$shturl,'selectedunit'=>$unitno,'selectedsheet'=>$month);
+        $custarray=array();
+        $custarray=$this->Mdl_eilib_common_function->Func_curl($data2);
+        $custarray=explode(',',$custarray);
+        $custarray=array_values(array_unique($custarray));
+        sort($custarray);
+        for($i=0;$i<count($custarray);$i++){
+            if(strpos($custarray[$i],'_')>0){
+                if (explode('_', $custarray[$i])[1] != '') {
+                    $sendcustname[] = (explode('_', $custarray[$i])[0]);
+                }
+            }
+            else{
+                $sendcustname[]=($custarray[$i]);
+            }
+            $DDE_same_name[]=($custarray[$i]);
+        }
+        return [$sendcustname,$DDE_same_name];
+    }
+    public function DDE_get_custid($unitno,$month,$name,$shturl){
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $data3=array('DDE_flag'=>4,'shturl'=>$shturl,'selectedunit'=>$unitno,'selectedname'=>$name,'selectedsheet'=>$month);
+        $custidarray=array();
+        $custidarray=$this->Mdl_eilib_common_function->Func_curl($data3);
+        $custidarray=explode(',',$custidarray);
+        if($custidarray[0]!="")
+        {
+            $custidarray=$custidarray;
+        } else
+        {
+            $custidarray="0";
+        }
+        return $custidarray;
+    }
+    public function DDE_Dep_Exct_recversion($getid,$unitno,$month,$name,$shturl,$nocustid){
+        $this->load->model('EILIB/Mdl_eilib_common_function');
+        $data4=array('DDE_flag'=>5,'shturl'=>$shturl,'selectedunit'=>$unitno,'selectedname'=>$name,'selectedsheet'=>$month,'getid'=>$getid,
+            'nocustid'=>$nocustid);
+        $recverarray=array();
+        $recverarray=$this->Mdl_eilib_common_function->Func_curl($data4);
+        $recverarray=explode(',',$recverarray);
+        return $recverarray;
+    }
 }

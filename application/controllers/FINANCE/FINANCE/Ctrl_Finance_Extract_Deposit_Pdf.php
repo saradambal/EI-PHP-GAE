@@ -20,4 +20,35 @@ class Ctrl_Finance_Extract_Deposit_Pdf extends CI_Controller{
         $query=$this->Mdl_finance_extract_deposit_pdf->Initial_data($service);
         echo json_encode($query);
     }
+    public function DDE_getsheetunit(){
+        $month=$this->input->post('month');
+        $shturl=$this->input->post('shturl');
+        $getunitquery=$this->Mdl_finance_extract_deposit_pdf->DDE_getsheet_unit($month,$shturl);
+        echo json_encode($getunitquery);
+    }
+    public function DDE_customername(){
+        $unitno=$this->input->post('unit');
+        $month=$this->input->post('month');
+        $shturl=$this->input->post('shturl');
+        $getcustquery=$this->Mdl_finance_extract_deposit_pdf->DDE_customer_name($unitno,$month,$shturl);
+        echo json_encode($getcustquery);
+    }
+    public function DDE_getcustid(){
+        $unitno=$this->input->post('DDE_unit');
+        $month=$this->input->post('DDE_month');
+        $name=$this->input->post('name');
+        $shturl=$this->input->post('shturl');
+        $getcustidquery=$this->Mdl_finance_extract_deposit_pdf->DDE_get_custid($unitno,$month,$name,$shturl);
+        echo json_encode($getcustidquery);
+    }
+    public function DDE_Dep_Exct_recversionfun(){
+        $getid=$this->input->post('DDE_namesplit');
+        $unitno=$this->input->post('DDE_unit');
+        $month=$this->input->post('DDE_month');
+        $name=$this->input->post('DDE_name');
+        $shturl=$this->input->post('shturl');
+        $nocustid=$this->input->post('nocustid');
+        $getcustidquery=$this->Mdl_finance_extract_deposit_pdf->DDE_Dep_Exct_recversion($getid,$unitno,$month,$name,$shturl,$nocustid);
+        echo json_encode($getcustidquery);
+    }
 }
