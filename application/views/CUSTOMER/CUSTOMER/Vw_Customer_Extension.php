@@ -1,6 +1,6 @@
 <!--//*******************************************FILE DESCRIPTION*********************************************//
 /**********************************************CUSTOMER EXTENSION******************************************/
-//DONE BY:safi
+//DONE BY:PUNITHA
 //VER 0.01-INITIAL VERSION
 //*********************************************************************************************************//
 -->
@@ -739,7 +739,7 @@ alert(JSON.stringify(data))
                     url: controller_url+"CEXTN_chkProrated",
                     data:{"CEXTN_db_chkindate":CEXTN_db_chkindate,"CEXTN_db_chkoutdate":CEXTN_db_chkoutdate},
                     success:function(data){
-//                        alert(data);
+                        alert(data);
                         var CEXTN_rmtype=JSON.parse(data);
                         CEXTN_chkProrated_result(CEXTN_rmtype);
 

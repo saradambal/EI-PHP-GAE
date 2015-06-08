@@ -8,7 +8,6 @@ class Ctrl_Customer_Extension extends CI_Controller{
         $this->load->model('EILIB/Mdl_eilib_common_function');
     }
     public function index(){
-
         $this->load->view('CUSTOMER/CUSTOMER/Vw_Customer_Extension');
     }
     public function CEXTN_getCommonvalues(){
@@ -25,14 +24,12 @@ class Ctrl_Customer_Extension extends CI_Controller{
         $Values=array($unit,$nationality,$EmailList,$Option,$ErrorMessage,$Timelist,$proratedlabel,$AllUnit);
         echo json_encode($Values);
     }
-    public function CEXTN_getCustomerNameId_result()
-    {
+    public function CEXTN_getCustomerNameId_result(){
         $CEXTN_lb_unitno=$_POST['unitno'];
         $customer_IdName = $this->Mdl_customer_extension->CEXTN_getCustomerNameId($CEXTN_lb_unitno);
         echo json_encode($customer_IdName);
     }
-    public function  CEXTN_getCustomerdtls_result()
-    {
+    public function  CEXTN_getCustomerdtls_result(){
         $UserStamp=$this->Mdl_eilib_common_function->getSessionUserStamp();
         $timeZoneFormat=$this->Mdl_eilib_common_function->getTimezone();
         $CEXTN_unitno=$_POST['unitno'];
@@ -41,28 +38,24 @@ class Ctrl_Customer_Extension extends CI_Controller{
         echo json_encode($customer_finaldetls);
     }
     public function CEXTN_getRoomType(){
-
-        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_extension');
         $CEXTN_rmtype=$this->Mdl_customer_extension->CEXTN_getRoomType($this->input->post('unitno'),$this->input->post('rmtype'));
         echo json_encode($CEXTN_rmtype);
     }
     public  function CEXTN_getdiffunitCardNo(){
-
-        $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_extension');
         $final_value=$this->Mdl_customer_extension->CEXTN_getdiffunitCardNo($this->input->post('unitno'),$this->input->post('CEXTN_tb_firstname'),$this->input->post('CEXTN_tb_lastname'));
         echo json_encode($final_value);
-
-
+    }
+    public  function CEXTN_chkProrated(){
+        $final_value=$this->Mdl_customer_extension->CEXTN_chkProrated($this->input->post('CEXTN_db_chkindate'),$this->input->post('CEXTN_db_chkoutdate'));
+        echo json_encode($final_value);
     }
     public function CEXTN_SaveDetails(){
-
         $UserStamp=$this->Mdl_eilib_common_function->getSessionUserStamp();
         $timeZoneFormat=$this->Mdl_eilib_common_function->getTimezone();
         $this->load->library('Google');
         $this->load->model('CUSTOMER/CUSTOMER/Mdl_customer_extension');
         $final_value=$this->Mdl_customer_extension->CEXTN_SaveDetails($UserStamp);
         echo json_encode($final_value);
-
     }
 
 }

@@ -14,10 +14,12 @@
 class Mdl_eilib_calender  extends CI_Model {
     //TIME CONVERSION
     public function CalenderTime_Convertion($startdate,$startdate_starttime,$startdate_endtime){
-        $splitStart=explode(':',$startdate_starttime);
-        $startdate_starttime  =$splitStart[0].':'.$splitStart[1];
-        $splitEnd=explode(':',$startdate_endtime);
-        $startdate_endtime  =$splitEnd[0].':'.$splitEnd[1];
+        if($startdate!=''&&$startdate_starttime!=''&&$startdate_endtime!='') {
+            $splitStart = explode(':', $startdate_starttime);
+            $startdate_starttime = $splitStart[0] . ':' . $splitStart[1];
+            $splitEnd = explode(':', $startdate_endtime);
+            $startdate_endtime = $splitEnd[0] . ':' . $splitEnd[1];
+        }
         $start = new Google_Service_Calendar_EventDateTime();
         $start->setDateTime($startdate.'T'.$startdate_starttime.':00.000+08:00');
         $end = new Google_Service_Calendar_EventDateTime();
@@ -313,106 +315,100 @@ class Mdl_eilib_calender  extends CI_Model {
     //FUNCTION TO DELETE EXISTING EVENT N CREATE CURRENT CALENDAR EVENT DTS FOR EXTENSION N TERMINATION
     public function CTermExtn_Calevent($calPrimary,$CTermExtn_custid,$CTermExtn_recver,$ctermformname,$successflag)
     {
-        $CTermExtn_custfirstname="";$CTermExtn_custlastname="";
-        $CTermExtn_calevntchk_flag=0;
-        $CTermExtn_prevunitno=[];
-        $CTermExtn_prevroomtype=[];
-        $CTermExtn_caleventcount=0;
-        $sql = "CALL SP_CUSTOMER_MIN_MAX_RV(".$CTermExtn_custid.",@MIN_LP,@MAX_LP)";
-        $this->db->query($sql);
-        $this->db->select('@MIN_LP AS MIN,@MAX_LP AS MAX', FALSE);
-        $cterm_minlp = $this->db->get()->row()->MIN;
-        if($ctermformname=="EXTENSION")
-        {
-            $this->db->select('CED_REC_VER');
-            $this->db->from('VW_EXTENSION_CUSTOMER');
-            $this->db->where('CUSTOMER_ID='.$CTermExtn_custid);
-            $recObj = $this->db->get()->row();
-            $CTermExtn_recver=$recObj->CED_REC_VER;
+        try {
+            $CTermExtn_custfirstname = "";
+            $CTermExtn_custlastname = "";
+            $CTermExtn_calevntchk_flag = 0;
+            $CTermExtn_prevunitno = [];
+            $CTermExtn_prevroomtype = [];
+            $CTermExtn_caleventcount = 0;
+            $sql = "CALL SP_CUSTOMER_MIN_MAX_RV(" . $CTermExtn_custid . ",@MIN_LP,@MAX_LP)";
+            $this->db->query($sql);
+            $this->db->select('@MIN_LP AS MIN,@MAX_LP AS MAX', FALSE);
+            $cterm_minlp = $this->db->get()->row()->MIN;
+            if ($ctermformname == "EXTENSION") {
+                $this->db->select('CED_REC_VER');
+                $this->db->from('VW_EXTENSION_CUSTOMER');
+                $this->db->where('CUSTOMER_ID=' . $CTermExtn_custid);
+                $recObj = $this->db->get()->row();
+                $CTermExtn_recver = $recObj->CED_REC_VER;
+            }
+            $i = 0;
+            $queryCustomer = $this->db->query("SELECT  C.CUSTOMER_FIRST_NAME,C.CUSTOMER_LAST_NAME,CED.CED_REC_VER,CTD.CLP_GUEST_CARD,CTD.CLP_STARTDATE,CTD.CLP_ENDDATE,CTD.CLP_PRETERMINATE_DATE,CPD.CPD_MOBILE,CPD.CPD_INTL_MOBILE,CCD.CCD_OFFICE_NO,CPD.CPD_EMAIL,U.UNIT_NO,URTD.URTD_ROOM_TYPE,CTPA.CTP_DATA AS CED_SD_STIME, CTPB.CTP_DATA AS CED_SD_ETIME,CTPC.CTP_DATA AS CED_ED_STIME, CTPD.CTP_DATA AS CED_ED_ETIME FROM  CUSTOMER_ENTRY_DETAILS CED LEFT JOIN CUSTOMER_TIME_PROFILE CTPA ON CED.CED_SD_STIME = CTPA.CTP_ID LEFT JOIN CUSTOMER_TIME_PROFILE CTPB ON CED.CED_SD_ETIME = CTPB.CTP_ID LEFT JOIN CUSTOMER_TIME_PROFILE CTPC ON CED.CED_ED_STIME = CTPC.CTP_ID LEFT JOIN CUSTOMER_TIME_PROFILE CTPD ON CED.CED_ED_ETIME = CTPD.CTP_ID LEFT JOIN CUSTOMER_COMPANY_DETAILS CCD ON CED.CUSTOMER_ID=CCD.CUSTOMER_ID LEFT JOIN  CUSTOMER_PERSONAL_DETAILS CPD ON CED.CUSTOMER_ID=CPD.CUSTOMER_ID,CUSTOMER_LP_DETAILS CTD,UNIT_ROOM_TYPE_DETAILS URTD, UNIT_ACCESS_STAMP_DETAILS UASD ,UNIT U,CUSTOMER C WHERE  CED.UNIT_ID=U.UNIT_ID AND (CED.CUSTOMER_ID=" . $CTermExtn_custid . ")AND (CTD.CUSTOMER_ID=CED.CUSTOMER_ID) AND (CED.CED_REC_VER=CTD.CED_REC_VER) AND (CTD.CLP_GUEST_CARD IS NULL) AND CED.CED_CANCEL_DATE IS  NULL AND(UASD.UASD_ID=CED.UASD_ID) AND(UASD.URTD_ID=URTD.URTD_ID)  AND (C.CUSTOMER_ID=CED.CUSTOMER_ID) AND (CTD.CUSTOMER_ID=C.CUSTOMER_ID) AND CED.CED_REC_VER>=" . $cterm_minlp . " AND CTD.CLP_GUEST_CARD IS NULL ORDER BY CED.CED_REC_VER, CTD.CLP_GUEST_CARD ASC");
+            $result = $queryCustomer->result_array();
+            $resultcount=$this->db->affected_rows();
+            for ($s = 0; $s < $resultcount; $s++) {
+                $CTermExtn_caleventcount = $CTermExtn_caleventcount + 1;
+                $CTermExtn_gstcard = $result[$s]["CLP_GUEST_CARD"];
+                if ($CTermExtn_gstcard == null) {
+                    $CTermExtn_custfirstname = $result[$s]["CUSTOMER_FIRST_NAME"];
+                    $CTermExtn_custlastname = $result[$s]["CUSTOMER_LAST_NAME"];
+                    $CTermExtn_stdate = $result[$s]["CLP_STARTDATE"];
+                    $CTermExtn_stdate1 = $result[$s]["CLP_STARTDATE"];//get time--date
+                    $CTermExtn_eddate = $result[$s]["CLP_ENDDATE"];
+                    $CTermExtn_eddate1 = $result[$s]["CLP_ENDDATE"];//get time with date
+                    $CTermExtn_ptddate = $result[$s]["CLP_PRETERMINATE_DATE"];
+                    $CTermExtn_start_time_in = $result[$s]["CED_SD_STIME"];
+                    $CTermExtn_start_time_out = $result[$s]["CED_SD_ETIME"];
+                    $CTermExtn_end_time_in = $result[$s]["CED_ED_STIME"];
+                    $CTermExtn_end_time_out = $result[$s]["CED_ED_ETIME"];
+                    $CTermExtn_recversion = $result[$s]["CED_REC_VER"];
+                    $finalResult[] = array('sddate' => $result[$s]['CLP_STARTDATE'], 'sdtimein' => $result[$s]['CED_SD_STIME'], 'sdtimeout' => $result[$s]['CED_SD_ETIME'], 'eddate' => $result[$s]['CLP_STARTDATE'], 'edtimein' => $result[$s]['CLP_STARTDATE'], 'edtimeout' => $result[$s]['CLP_STARTDATE']);
+                }
+                if ($CTermExtn_ptddate != null) {
+                    $CTermExtn_ptddate1 = $result[$s]["CLP_PRETERMINATE_DATE"];//.getTime();
+                } else {
+                    $CTermExtn_ptddate1 = $CTermExtn_eddate1;
+                }
+                if (($CTermExtn_ptddate != null && ($ctermformname == "TERMINATION" && $CTermExtn_recversion <= $CTermExtn_recver && $successflag == 1))) {
+                }
+                if (($CTermExtn_ptddate != null && ($ctermformname == "TERMINATION" && $successflag == 0)) || ($CTermExtn_ptddate != null && ($ctermformname == "TERMINATION" && $CTermExtn_recversion <= $CTermExtn_recver && $successflag == 1)) || ($CTermExtn_ptddate != null && $ctermformname == "EXTENSION")) {
+                    $CTermExtn_eddate = $CTermExtn_ptddate;
+                }
+                //call cal event delete function from eilib
+
+                $cal_del_flag=$this->CUST_customerTermcalenderdeletion($calPrimary, $CTermExtn_custid, $CTermExtn_stdate, $CTermExtn_start_time_in, $CTermExtn_start_time_out, $CTermExtn_eddate, $CTermExtn_end_time_in, $CTermExtn_end_time_out, "");
+                $CTermExtn_custunittype = "";
+                $CTermExtn_mobile = $result[$s]["CPD_MOBILE"];
+                $CTermExtn_intmoblie = $result[$s]["CPD_INTL_MOBILE"];
+                $CTermExtn_office = $result[$s]["CCD_OFFICE_NO"];
+                $CTermExtn_emailid = $result[$s]["CPD_EMAIL"];
+                $CTermExtn_unitno = $result[$s]["UNIT_NO"];
+                $CTermExtn_roomtype = $result[$s]["URTD_ROOM_TYPE"];
+                $date1 = new DateTime("now");
+                $date2 = new DateTime("tomorrow");
+
+                if (new DateTime($CTermExtn_ptddate1) > new DateTime($CTermExtn_stdate1))//new Date(Utilities.formatDate(new Date(CTermExtn_ptddate1),TimeZone, 'yyyy/MM/dd 00:00:00'))<=new Date(Utilities.formatDate(new Date(CTermExtn_eddate1),TimeZone, 'yyyy/MM/dd 00:00:00')))
+                {
+                    $CTermExtn_prevunitno [] = $result[$s]["UNIT_NO"];
+                    $CTermExtn_prevroomtype[] = $result[$s]["URTD_ROOM_TYPE"];
+                    if ($CTermExtn_caleventcount > 1) {
+                        if ($CTermExtn_unitno != $CTermExtn_prevunitno[$i - 1] && $CTermExtn_prevunitno[$i - 1] != "undefined") {
+                            $CTermExtn_custunittype = "DIFF UNIT";
+                        } else {
+                            if ($CTermExtn_roomtype != $CTermExtn_prevroomtype[$i - 1] && $CTermExtn_prevroomtype[$i - 1] != "undefined") {
+                                $CTermExtn_custunittype = "DIFF RM";
+                            } else {
+                                $CTermExtn_stdate = "";
+                                $CTermExtn_start_time_in = "";
+                                $CTermExtn_start_time_out = "";
+                            }
+                        }
+                    }
+                    if ($CTermExtn_recversion == $CTermExtn_recver) {
+                        $this->CUST_customercalendercreation($calPrimary, $CTermExtn_custid, $CTermExtn_stdate, $CTermExtn_start_time_in, $CTermExtn_start_time_out, $CTermExtn_eddate, $CTermExtn_end_time_in, $CTermExtn_end_time_out, $CTermExtn_custfirstname, $CTermExtn_custlastname, $CTermExtn_mobile, $CTermExtn_intmoblie, $CTermExtn_office, $CTermExtn_emailid, $CTermExtn_unitno, $CTermExtn_roomtype, $CTermExtn_custunittype);
+                        $CTermExtn_calevntchk_flag = 1;
+                    }
+                    if ($CTermExtn_calevntchk_flag == 0) {
+                        $this->CUST_customercalendercreation($calPrimary, $CTermExtn_custid, $CTermExtn_stdate, $CTermExtn_start_time_in, $CTermExtn_start_time_out, "", "", "", $CTermExtn_custfirstname, $CTermExtn_custlastname, $CTermExtn_mobile, $CTermExtn_intmoblie, $CTermExtn_office, $CTermExtn_emailid, $CTermExtn_unitno, $CTermExtn_roomtype, $CTermExtn_custunittype);
+                    }
+                }
+                $i = $i + 1;
+            }
+            return 1;
         }
-        $i=0;
-        $queryCustomer=$this->db->query("SELECT  C.CUSTOMER_FIRST_NAME,C.CUSTOMER_LAST_NAME,CED.CED_REC_VER,CTD.CLP_GUEST_CARD,CTD.CLP_STARTDATE,CTD.CLP_ENDDATE,CTD.CLP_PRETERMINATE_DATE,CPD.CPD_MOBILE,CPD.CPD_INTL_MOBILE,CCD.CCD_OFFICE_NO,CPD.CPD_EMAIL,U.UNIT_NO,URTD.URTD_ROOM_TYPE,CTPA.CTP_DATA AS CED_SD_STIME, CTPB.CTP_DATA AS CED_SD_ETIME,CTPC.CTP_DATA AS CED_ED_STIME, CTPD.CTP_DATA AS CED_ED_ETIME FROM  CUSTOMER_ENTRY_DETAILS CED LEFT JOIN CUSTOMER_TIME_PROFILE CTPA ON CED.CED_SD_STIME = CTPA.CTP_ID LEFT JOIN CUSTOMER_TIME_PROFILE CTPB ON CED.CED_SD_ETIME = CTPB.CTP_ID LEFT JOIN CUSTOMER_TIME_PROFILE CTPC ON CED.CED_ED_STIME = CTPC.CTP_ID LEFT JOIN CUSTOMER_TIME_PROFILE CTPD ON CED.CED_ED_ETIME = CTPD.CTP_ID LEFT JOIN CUSTOMER_COMPANY_DETAILS CCD ON CED.CUSTOMER_ID=CCD.CUSTOMER_ID LEFT JOIN  CUSTOMER_PERSONAL_DETAILS CPD ON CED.CUSTOMER_ID=CPD.CUSTOMER_ID,CUSTOMER_LP_DETAILS CTD,UNIT_ROOM_TYPE_DETAILS URTD, UNIT_ACCESS_STAMP_DETAILS UASD ,UNIT U,CUSTOMER C WHERE  CED.UNIT_ID=U.UNIT_ID AND (CED.CUSTOMER_ID=".$CTermExtn_custid.")AND (CTD.CUSTOMER_ID=CED.CUSTOMER_ID) AND (CED.CED_REC_VER=CTD.CED_REC_VER) AND (CTD.CLP_GUEST_CARD IS NULL) AND CED.CED_CANCEL_DATE IS  NULL AND(UASD.UASD_ID=CED.UASD_ID) AND(UASD.URTD_ID=URTD.URTD_ID)  AND (C.CUSTOMER_ID=CED.CUSTOMER_ID) AND (CTD.CUSTOMER_ID=C.CUSTOMER_ID) AND CED.CED_REC_VER>=".$cterm_minlp." AND CTD.CLP_GUEST_CARD IS NULL ORDER BY CED.CED_REC_VER, CTD.CLP_GUEST_CARD ASC");
-        $result []=$queryCustomer->row_array();
-        for ($s=0;$s<count($result);$s++)
-        {
-            $CTermExtn_caleventcount=$CTermExtn_caleventcount+1;
-            $CTermExtn_gstcard= $result[$s]["CLP_GUEST_CARD"];
-            if($CTermExtn_gstcard==null)
-            {
-                $CTermExtn_custfirstname=$result[$s]["CUSTOMER_FIRST_NAME"];
-                $CTermExtn_custlastname=$result[$s]["CUSTOMER_LAST_NAME"];
-                $CTermExtn_stdate=$result[$s]["CLP_STARTDATE"];
-                $CTermExtn_stdate1=$result[$s]["CLP_STARTDATE"];//get time--date
-                $CTermExtn_eddate=$result[$s]["CLP_ENDDATE"];
-                $CTermExtn_eddate1=$result[$s]["CLP_ENDDATE"];//get time with date
-                $CTermExtn_ptddate=$result[$s]["CLP_PRETERMINATE_DATE"];
-                $CTermExtn_start_time_in=$result[$s]["CED_SD_STIME"];
-                $CTermExtn_start_time_out=$result[$s]["CED_SD_ETIME"];
-                $CTermExtn_end_time_in=$result[$s]["CED_ED_STIME"];
-                $CTermExtn_end_time_out=$result[$s]["CED_ED_ETIME"];
-                $CTermExtn_recversion=$result[$s]["CED_REC_VER"];
-                $finalResult[]=array('sddate'=>$result[$s]['CLP_STARTDATE'],'sdtimein'=>$result[$s]['CED_SD_STIME'],'sdtimeout'=>$result[$s]['CED_SD_ETIME'],'eddate'=>$result[$s]['CLP_STARTDATE'],'edtimein'=>$result[$s]['CLP_STARTDATE'],'edtimeout'=>$result[$s]['CLP_STARTDATE']);
-            }
-            if( $CTermExtn_ptddate!=null)
-            {
-                $CTermExtn_ptddate1=$result[$s]["CLP_PRETERMINATE_DATE"];//.getTime();
-            }
-            else
-            {
-                $CTermExtn_ptddate1= $CTermExtn_eddate1;
-            }
-            if(( $CTermExtn_ptddate!=null&&( $ctermformname=="TERMINATION"&& $CTermExtn_recversion<= $CTermExtn_recver&& $successflag==1))){
-            }
-            if(( $CTermExtn_ptddate!=null&&( $ctermformname=="TERMINATION"&& $successflag==0))||( $CTermExtn_ptddate!=null&&( $ctermformname=="TERMINATION"&& $CTermExtn_recversion<= $CTermExtn_recver&& $successflag==1))||( $CTermExtn_ptddate!=null&& $ctermformname=="EXTENSION"))
-            {
-                $CTermExtn_eddate= $CTermExtn_ptddate;
-            }
-            //call cal event delete function from eilib
-            $this->CUST_customerTermcalenderdeletion($calPrimary,$CTermExtn_custid,$CTermExtn_stdate,$CTermExtn_start_time_in,$CTermExtn_start_time_out,$CTermExtn_eddate,$CTermExtn_end_time_in,$CTermExtn_end_time_out,"");
-            $CTermExtn_custunittype="";
-            $CTermExtn_mobile=$result[$s]["CPD_MOBILE"];
-            $CTermExtn_intmoblie=$result[$s]["CPD_INTL_MOBILE"];
-            $CTermExtn_office=$result[$s]["CCD_OFFICE_NO"];
-            $CTermExtn_emailid=$result[$s]["CPD_EMAIL"];
-            $CTermExtn_unitno=$result[$s]["UNIT_NO"];
-            $CTermExtn_roomtype=$result[$s]["URTD_ROOM_TYPE"];
-            $date1 = new DateTime("now");
-            $date2 = new DateTime("tomorrow");
-            if(new DateTime($CTermExtn_ptddate1)>new DateTime($CTermExtn_stdate1))//new Date(Utilities.formatDate(new Date(CTermExtn_ptddate1),TimeZone, 'yyyy/MM/dd 00:00:00'))<=new Date(Utilities.formatDate(new Date(CTermExtn_eddate1),TimeZone, 'yyyy/MM/dd 00:00:00')))
-            {
-                $CTermExtn_prevunitno []=$result[$s]["UNIT_NO"];
-                $CTermExtn_prevroomtype[]=$result[$s]["URTD_ROOM_TYPE"];
-                if($CTermExtn_caleventcount>1)
-                {
-                    if($CTermExtn_unitno!=$CTermExtn_prevunitno[$i-1]&&$CTermExtn_prevunitno[$i-1]!="undefined")
-                    {
-                        $CTermExtn_custunittype="DIFF UNIT";
-                    }
-                    else
-                    {
-                        if($CTermExtn_roomtype!=$CTermExtn_prevroomtype[$i-1]&&$CTermExtn_prevroomtype[$i-1]!="undefined")
-                        {
-                            $CTermExtn_custunittype="DIFF RM";
-                        }
-                        else
-                        {
-                            $CTermExtn_stdate="";
-                            $CTermExtn_start_time_in="";
-                            $CTermExtn_start_time_out="";
-                        }
-                    }
-                }
-                if($CTermExtn_recversion==$CTermExtn_recver)
-                {
-                    $this->CUST_customercalendercreation($calPrimary,$CTermExtn_custid,$CTermExtn_stdate,$CTermExtn_start_time_in,$CTermExtn_start_time_out,$CTermExtn_eddate,$CTermExtn_end_time_in,$CTermExtn_end_time_out,$CTermExtn_custfirstname,$CTermExtn_custlastname,$CTermExtn_mobile,$CTermExtn_intmoblie,$CTermExtn_office,$CTermExtn_emailid,$CTermExtn_unitno,$CTermExtn_roomtype,$CTermExtn_custunittype);
-                    $CTermExtn_calevntchk_flag=1;
-                }
-                if($CTermExtn_calevntchk_flag==0)
-                {
-                    $this->CUST_customercalendercreation($calPrimary,$CTermExtn_custid,$CTermExtn_stdate,$CTermExtn_start_time_in,$CTermExtn_start_time_out,"","","",$CTermExtn_custfirstname,$CTermExtn_custlastname,$CTermExtn_mobile,$CTermExtn_intmoblie,$CTermExtn_office,$CTermExtn_emailid,$CTermExtn_unitno,$CTermExtn_roomtype,$CTermExtn_custunittype);
-                }
-            }
-            $i=$i+1;
+        catch(Exception $e){
+            return $e->getMessage();
         }
     }
     //FUNCTION TO GET EVENTS BEFORE UPDATE TABLE

@@ -37,10 +37,11 @@ $(document).ready(function(){
     var URSRC_basicrole_profile_array=[]
     var URSRC_basic_role;
     var UserStamp;
+    var controller_url="<?php echo base_url(); ?>" + '/index.php/ACCESSRIGHTS/Ctrl_Access_Rights_Search_Update/' ;
     ////FUNCTION TO LOAD INITIAL VALUES
     $.ajax({
         type: "POST",
-        'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Access_Rights_Search_Update/Loadinitialdata",
+        'url': controller_url+"Loadinitialdata",
 
         success: function(data){
             $('.preloader').hide();
@@ -54,7 +55,7 @@ $(document).ready(function(){
             URSRC_basicrole_profile_array=URSRC_intialvalues[0].URSRC_basicrole_profile_array;
             UserStamp=URSRC_intialvalues[0].UserStamp;
             if(URSRC_userrigths_array.length!=0){
-                var URSRC_role_radio='<div class="form-group"><div class="radio"><label class=" col-sm-2" style="white-space: nowrap!important;">SELECT ROLE ACCESS</label>'
+                var URSRC_role_radio='<div class="form-group" style="padding-left: 10px" ><div class="radio"><label class=" col-sm-2" style="white-space: nowrap!important;">SELECT ROLE ACCESS</label>'
                 var URSRC_basicrole_radio='<div class="form-group"><div class="radio"><label class=" col-sm-2" style="white-space: nowrap!important;">SELECT BASIC ROLE</label>'
                 for (var i = 0; i < URSRC_userrigths_array.length; i++) {
                     var id="URSRC_tble_table"+i
@@ -240,7 +241,7 @@ $(document).ready(function(){
         $('input:radio[name=URSRC_radio_basicroles1]').attr('checked',false);
         $.ajax({
             type: "POST",
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Access_Rights_Search_Update/URSRC_get_loginid",
+            'url': controller_url+"URSRC_get_loginid",
             data:{'URSRC_basicradio_value':URSRC_basicradio_value},
             success: function(data){
 
@@ -292,7 +293,7 @@ $(document).ready(function(){
         $('input:radio[name=URSRC_radio_basicroles1]').attr('checked',false);
         $.ajax({
             type:'POST',
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Access_Rights_Search_Update/URSRC_get_customrole",
+            'url': controller_url+"URSRC_get_customrole",
             success:function(data){
                 var URSRC_custome_role_array=JSON.parse(data);
                         $(".preloader").hide();
@@ -373,7 +374,7 @@ $(document).ready(function(){
         var formElement = document.getElementById("URSRC_userrightsform");
         $.ajax({
             type: "POST",
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Access_Rights_Search_Update/URSRC_check_basicrolemenu",
+            'url': controller_url+"URSRC_check_basicrolemenu",
             data:{'URSRC_basicradio_value':URSRC_basicradio_value},
             success: function(data){
                 var msg_alert=data;
@@ -428,7 +429,7 @@ $(document).ready(function(){
     {
         $.ajax({
             type: "POST",
-            'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Access_Rights_Search_Update/URSRC_getmenubasic_folder1",
+            'url': controller_url+"URSRC_getmenubasic_folder1",
             data:{'radio_value':URSRC_basicradio_value},
             success: function(data){
                 var basic_role_menus=JSON.parse(data);
@@ -716,7 +717,7 @@ $(document).ready(function(){
             $('#URSRC_lbl_role_err').hide();
             $.ajax({
                 type: "POST",
-                'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Access_Rights_Search_Update/URSRC_check_customrole",
+                'url': controller_url+"URSRC_check_customrole",
                 data :{'URSRC_roleidval':URSRC_roleidval},
                 success: function(data){
                     $('.preloader').hide();
@@ -748,7 +749,7 @@ $(document).ready(function(){
         var radio_value=$(this).val();
         $.ajax({
             type:'POST',
-            'url':"<?php echo base_url(); ?>" + "index.php/Ctrl_Access_Rights_Search_Update/URSRC_getmenu_folder",
+            'url':controller_url+"URSRC_getmenu_folder",
             data:{'radio_value':radio_value},
             success:function(data){
                 $('.preloader').hide();
@@ -1120,7 +1121,7 @@ $(document).ready(function(){
         var URSRC_radio_button_select_value=$("input[name=URSRC_mainradiobutton]:checked").val();
         $.ajax({
         type:'POST',
-            'url':"<?php echo base_url(); ?>" + "index.php/Ctrl_Access_Rights_Search_Update/URSRC_role_creation_save",
+            'url':controller_url+"URSRC_role_creation_save",
             data:$('#URSRC_form_user_rights').serialize(),
             'success':function(data){
             var URSRC_chkflag=JSON.parse(data);
@@ -1167,8 +1168,9 @@ $(document).ready(function(){
                     $('#URSRC_lbl_header').hide();
                     if(URSRC_chkflag==1){
                         show_msgbox("ACCESS RIGHTS-SEARCH/UPDATE",URSRC_errorAarray[4].EMC_DATA,"success",false)
-
-//                        $(document).doValidation({rule:'messagebox',prop:{msgtitle:"ACCESS RIGHTS-SEARCH/UPDATE",msgcontent:URSRC_errorAarray[4].EMC_DATA,position:{top:150,left:500}}});
+                    }
+                    else{
+                        show_msgbox("ACCESS RIGHTS-SEARCH/UPDATE",URSRC_errorAarray[16].EMC_DATA,"success",false)
                     }
                 }
                 else if(URSRC_radio_button_select_value=="ROLE SEARCH UPDATE"){
@@ -1187,7 +1189,11 @@ $(document).ready(function(){
                         show_msgbox("ACCESS RIGHTS-SEARCH/UPDATE",URSRC_errorAarray[18].EMC_DATA,"success",false)
 
                     }
-                }}
+                }
+            },
+            error:function(data){
+                show_msgbox("ACCESS RIGHTS-SEARCH/UPDATE",JSON.stringify(data),"error",false)
+            }
 
         });
 //        google.script.run.withFailureHandler(URSRC_error).withSuccessHandler(URSRC_clear).URSRC_role_creation_save(document.getElementById('URSRC_form_user_rights'));
@@ -1339,7 +1345,7 @@ $(document).ready(function(){
 
                     $.ajax({
                         type: "POST",
-                        'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Access_Rights_Search_Update/URSRC_check_loginid",
+                        'url': controller_url+"URSRC_check_loginid",
                         data :{'URSRC_login_id':URSRC_login_id},
                         success:function(data){
                             $(".preloader").hide();
@@ -1353,7 +1359,7 @@ $(document).ready(function(){
                                     var value=URSRC_role_array[i].replace(" ","_")
                                     var id1="URSRC_role_array"+i;
                                     if(i==0){
-                                        var URSRC_roles='<div class="form-group"><div class="radio"><label class=" col-sm-2 " style="white-space: nowrap!important;">SELECT ROLE ACCESS<em>*</em></label>'
+                                        var URSRC_roles='<div class="form-group" style="padding-left: 10px"><div class="radio"><label class=" col-sm-2 " style="white-space: nowrap!important;">SELECT ROLE ACCESS<em>*</em></label>'
                                         URSRC_roles+= '<div class=" col-sm-offset-2 col-sm-10"><label  style="white-space: nowrap!important;"><input type="radio" name="roles1" id='+id1+' value='+value+' class="URSRC_class_role1 tree login_submitvalidate"   />' + URSRC_role_array[i] + '</lable></div>';
 //                                        $('#URSRC_tble_rolecreation').append(URSRC_roles);
                                     }
@@ -1457,7 +1463,7 @@ $(document).ready(function(){
             $('#URSRC_btn_login_submitbutton').attr("disabled","disabled");
             $.ajax({
                 type: "POST",
-                'url': "<?php echo base_url(); ?>" + "index.php/Ctrl_Access_Rights_Search_Update/URSRC_get_logindetails",
+                'url': controller_url+"URSRC_get_logindetails",
                 data :{'URSRC_login_id':URSRC_login_id},
                 success:function(data){
                     var details=JSON.parse(data);
@@ -1477,7 +1483,7 @@ $(document).ready(function(){
                         if(URSRC_role1[i]==role){
                             if(i==0)
                             {
-                                var URSRC_roles='<label class=" control-label srctitle  col-sm-2" style="white-space: nowrap!important;">SELECT ROLE ACCESS</label>';
+                                var URSRC_roles='<label class=" control-label   col-sm-2" style="white-space: nowrap!important;">SELECT ROLE ACCESS</label>';
                                 URSRC_roles+= '<div class="col-sm-offset-2 col-sm-10"><label  style="white-space: nowrap!important;"><input type="radio" name="roles1" id='+id1+' value='+value+' class="login_submitvalidate" checked  />' + URSRC_role1[i] + '</lable></div>';
                                 $('#URSRC_tble_rolecreation').append(URSRC_roles);
                             }
@@ -1538,7 +1544,7 @@ $(document).ready(function(){
         var formelement=$('#URSRC_form_user_rights').serialize();
         $.ajax({
           type:'POST',
-            'url':"<?php echo base_url(); ?>" + "index.php/Ctrl_Access_Rights_Search_Update/URSRC_login_creation_save",
+            'url':controller_url+"URSRC_login_creation_save",
             data:formelement+"&URSRC_old_rolename="+old_role,
             success:function(data){
                 var URSRC_chkflag=JSON.parse(data);
@@ -1555,7 +1561,6 @@ $(document).ready(function(){
             $('#URSRC_lbl_header').hide();
                     show_msgbox("ACCESS RIGHTS-SEARCH/UPDATE",finalmsg,"success",false)
 
-//                    $(document).doValidation({rule:'messagebox',prop:{msgtitle:"ACCESS RIGHTS-SEARCH/UPDATE",msgcontent:finalmsg,position:{top:150,left:500}}});
             $('#URSRC_tb_loginid').val("");
             $('#URSRC_tb_loginid').prop("size","20");
                 $('#URSRC_tble_login').hide();
@@ -1565,14 +1570,10 @@ $(document).ready(function(){
                     else if(success_flag==1 && doc_flag==0){
 
                       show_msgbox("ACCESS RIGHTS-SEARCH/UPDATE",URSRC_errorAarray[18].EMC_DATA,"success",false)
-
-
                   }
                     else if(success_flag==1 && doc_flag==1 && cal_flag==0){
 
                       show_msgbox("ACCESS RIGHTS-SEARCH/UPDATE",URSRC_errorAarray[20].EMC_DATA,"success",false)
-
-
                   }
                 }
                 else if(value=="LOGIN SEARCH UPDATE"){
@@ -1584,23 +1585,16 @@ $(document).ready(function(){
                     $('#URSRC_lb_selectloginid').prop('selectedIndex',0);
                     $('#URSRC_btn_login_submitbutton').hide()
                     var msg=URSRC_errorAarray[6].EMC_DATA.replace("[NAME]",name)
-
                         show_msgbox("ACCESS RIGHTS-SEARCH/UPDATE",msg,"success",false)
                     }
                     else if(success_flag==1 && doc_flag==0){
-
                         show_msgbox("ACCESS RIGHTS-SEARCH/UPDATE",URSRC_errorAarray[18].EMC_DATA,"success",false)
-
-
                     }
-
-//                        $(document).doValidation({rule:'messagebox',prop:{msgtitle:"ACCESS RIGHTS-SEARCH/UPDATE",msgcontent:msg,position:{top:150,left:500}}});
-
                 }
 
     },
             error:function(data){
-
+                show_msgbox("ACCESS RIGHTS-SEARCH/UPDATE",JSON.stringify(data),"error",false)
             }
 
         });
@@ -1670,12 +1664,11 @@ $('#URSRC_btn_submitbutton').hide();
 <!--BODY TAG START-->
 <body>
 <div class="container">
-    <div  class="preloader MaskPanel"><div class="preloader statusarea" ><div style="padding-top:90px; text-align:center"><img src="https://googledrive.com/host/0B5pkfK_IBDxjU1FrR3hVTXB4a28/Loading.gif" /></div></div></div>
+    <div class="preloader"><span class="Centerer"></span><img class="preloaderimg"/> </div>
     <div class="title text-center"><h4><b>ACCESS RIGHTS-SEARCH/UPDATE</b></h4></div>
     <div class ='row content'>
         <div class="panel-body">
         <form  id="URSRC_form_user_rights" name="URSRC_user_right"  class="form-horizontal" role="form">
-
             <div class="form-group">
                 <label name="USU_lbl_strtdte" id="USU_lbl_strtdte" class="srctitle  col-sm-2">SELECT A OPTION
                 </label>
@@ -1749,8 +1742,8 @@ $('#URSRC_btn_submitbutton').hide();
                 <div id="URSRC_tble_basicroles_chk" hidden ></div>
             </div>
             <div id="URSRC_tble_role" hidden>
-                <label  class=" col-sm-2" >ROLE<em>*</em></label>
                 <div class="form-group">
+                    <label  class=" col-sm-2" >ROLE<em>*</em></label>
                     <div class="col-sm-3"><input type="text" name="URSRC_tb_customrole" id="URSRC_tb_customrole" maxlength="15" class="autosize form-control" placeholder="ROLE" /></div>
                     <label id="URSRC_lbl_role_err" class="errormsg"></label>
                 </div>
@@ -1761,8 +1754,6 @@ $('#URSRC_btn_submitbutton').hide();
 
             <div id="URSRC_tble_login" hidden>
                 <div ><label id="URSRC_lbl_nologin_err" class="errormsg"></label></div>
-
-
                 <div class="form-group">
                     <label id="URSRC_lbl_loginid" class=" col-sm-2">LOGIN ID<em>*</em></label>
                     <div class="col-sm-3"> <input type="text" name="URSRC_tb_loginid" id="URSRC_tb_loginid"  maxlength="40" class="alphanumericdot login_submitvalidate URSRC_email_validate form-control autosize" hidden /></div>
@@ -1781,15 +1772,12 @@ $('#URSRC_btn_submitbutton').hide();
                     <div id="URSRC_tble_rolecreation" hidden></div>
                 </div>
                 <div id="joindate">
-
                     <div class="form-group">
                         <label id="URSRC_lbl_joindate" class="col-sm-2" hidden >SELECT A JOIN DATE<em>*</em></label>
                         <div class="col-sm-10"><input type="text" name="URSRC_tb_joindate"  id="URSRC_tb_joindate" class="datepicker login_submitvalidate datemandtry form-control" style="width:110px;" hidden  /></div>
                     </div>
 
                 </div>
-
-
                 <input class="btn" type="button"  id="URSRC_btn_login_submitbutton" name="SAVE" value="SUBMIT" disabled hidden /></td>
             </div>
             <div id="URSRC_tble_rolesearch" hidden >

@@ -571,7 +571,14 @@ class Mdl_Customer_Extension extends CI_Model{
                   $CEXTN_rent_check=$CEXTN_hidden_diffamtprorated;
                   $CEXTN_rentamt=$CEXTN_tb_diffamtrent;
                   $CEXTN_depositamt=$CEXTN_tb_diffamtdep;
+                  if($CEXTN_depositamt==""){
+                      $CEXTN_depositamt='null';
+                  }
                   $CEXTN_profeeamt=$CEXTN_tb_diffamtprocost;
+                  if($CEXTN_profeeamt==""){
+                      $CEXTN_profeeamt='null';
+                  }
+                  $CEXTN_sameamntflag='null';
               }
               //GET CARD NOS
               $accessflag=0;
@@ -660,26 +667,28 @@ class Mdl_Customer_Extension extends CI_Model{
 
 //          echo "CALL SP_CUSTOMER_EXTENSION_INSERT('$CEXTN_hidden_custid','$CEXTN_tb_compname','$CEXTN_tb_compaddr','$CEXTN_tb_comppostcode','$CEXTN_tb_officeno','$CEXTN_unitno','$CEXTN_chksameunit','$CEXTN_roomtype','$CEXTN_lb_chkinfromtime','$CEXTN_lb_chkintotime','$CEXTN_lb_chkoutfromtime','$CEXTN_lb_chkouttotime','$CEXTN_Leaseperiod','$CEXTN_quators','$CEXTN_waivedvalue','$CEXTN_proratedvalue','$CEXTN_tb_noticeperiod','$CEXTN_db_noticeperioddate','$CEXTN_rentamt','$CEXTN_depositamt','$CEXTN_profeeamt','$CEXTN_tb_fixedairfee','$CEXTN_tb_airquarterfee','$CEXTN_tb_electcapfee','$CEXTN_tb_chkoutcleanfee','$CEXTN_tb_curtaindryfee','$CEXTN_accesscard','$CEXTN_db_chkindate','$UserStamp','$CEXTN_db_chkindate','$CEXTN_db_chkoutdate','$CEXTN_guestcard','$CEXTN_tb_nation','$CEXTN_tb_mobileno','$CEXTN_tb_intmobileno','$CEXTN_tb_emailid','$CEXTN_tb_passno','$CEXTN_db_passdate','$CEXTN_db_dob','$CEXTN_tb_epno','$CEXTN_db_epdate','$CEXTN_ta_comments','$CEXTN_sameamntflag',@EXTNFLAG,@TEMP_OUT_EXT_CARNOTBLNAME,@TEMP_OUT_EXTN_CLPDTLSTTBLNAME,@TEMP_OUT_EXTN_FEEDTLTBLNAME,@PAY_CHK_MSG)";
           $CEXTN_save="CALL SP_CUSTOMER_EXTENSION_INSERT($CEXTN_hidden_custid,$CEXTN_tb_compname,$CEXTN_tb_compaddr,$CEXTN_tb_comppostcode,$CEXTN_tb_officeno,'$CEXTN_unitno',$CEXTN_chksameunit,'$CEXTN_roomtype','$CEXTN_lb_chkinfromtime','$CEXTN_lb_chkintotime','$CEXTN_lb_chkoutfromtime','$CEXTN_lb_chkouttotime','$CEXTN_Leaseperiod','$CEXTN_quators','$CEXTN_waivedvalue','$CEXTN_proratedvalue',$CEXTN_tb_noticeperiod,$CEXTN_db_noticeperioddate,'$CEXTN_rentamt',$CEXTN_depositamt,$CEXTN_profeeamt,$CEXTN_tb_fixedairfee,$CEXTN_tb_airquarterfee,$CEXTN_tb_electcapfee,$CEXTN_tb_chkoutcleanfee,$CEXTN_tb_curtaindryfee,'$CEXTN_accesscard','$CEXTN_db_chkindate','$UserStamp','$CEXTN_db_chkindate','$CEXTN_db_chkoutdate','$CEXTN_guestcard','$CEXTN_tb_nation',$CEXTN_tb_mobileno,$CEXTN_tb_intmobileno,'$CEXTN_tb_emailid',$CEXTN_tb_passno,$CEXTN_db_passdate,$CEXTN_db_dob,$CEXTN_tb_epno,$CEXTN_db_epdate,'$CEXTN_ta_comments',$CEXTN_sameamntflag,@EXTNFLAG,@TEMP_OUT_EXT_CARNOTBLNAME,@TEMP_OUT_EXTN_CLPDTLSTTBLNAME,@TEMP_OUT_EXTN_FEEDTLTBLNAME,@PAY_CHK_MSG)";
-//echo $CEXTN_save;
+
+
           $this->db->query($CEXTN_save);
 //      CEXTN_savestmt.execute("CALL SP_CUSTOMER_EXTENSION_INSERT("+CEXTN_hidden_custid+","+CEXTN_tb_compname+","+CEXTN_tb_compaddr+","+CEXTN_tb_comppostcode+","+CEXTN_tb_officeno+","+CEXTN_unitno+","+CEXTN_chksameunit+",'"+CEXTN_roomtype+"','"+CEXTN_lb_chkinfromtime+"','"+CEXTN_lb_chkintotime+"','"+CEXTN_lb_chkoutfromtime+"','"+CEXTN_lb_chkouttotime+"','"+CEXTN_Leaseperiod+"',"+CEXTN_quators+",'"+CEXTN_waivedvalue+"','"+CEXTN_proratedvalue+"',"+CEXTN_tb_noticeperiod+","+CEXTN_db_noticeperioddate+","+CEXTN_rentamt+","+CEXTN_depositamt+","+CEXTN_profeeamt+","+CEXTN_tb_fixedairfee+","+CEXTN_tb_airquarterfee+","+CEXTN_tb_electcapfee+","+CEXTN_tb_chkoutcleanfee+","+CEXTN_tb_curtaindryfee+",'"+CEXTN_accesscard+"','"+CEXTN_db_chkindate+"','"+UserStamp+"','"+CEXTN_db_chkindate+"','"+CEXTN_db_chkoutdate+"','"+CEXTN_guestcard+"','"+CEXTN_tb_nation+"',"+CEXTN_tb_mobileno+","+CEXTN_tb_intmobileno+",'"+CEXTN_tb_emailid+"',"+CEXTN_tb_passno+","+CEXTN_db_passdate+","+CEXTN_db_dob+","+CEXTN_tb_epno+","+CEXTN_db_epdate+",'"+CEXTN_ta_comments+"','"+CEXTN_sameamntflag+"',@EXTNFLAG,@TEMP_OUT_EXT_CARNOTBLNAME,@TEMP_OUT_EXTN_CLPDTLSTTBLNAME,@TEMP_OUT_EXTN_FEEDTLTBLNAME,@PAY_CHK_MSG)");
 //      CEXTN_savestmt.close();
-      $CEXTN_saveflag=1;
-//      $CEXTN_finalarr=$this->CEXTN_ReturnFlagGetExtnFormTempTables();
-//      $CEXTN_saveflag=$CEXTN_finalarr[0];
+      $CEXTN_saveflag=0;
+      $CEXTN_finalarr=$this->CEXTN_ReturnFlagGetExtnFormTempTables();
+      $CEXTN_saveflag=$CEXTN_finalarr[0];
+
       if($CEXTN_saveflag==1)
       {
-          $filetempname = $_FILES['CEXTN_fileupload']['tmp_name'];
-          $filename = $_FILES['CEXTN_fileupload']['name'];
-          $filename = $CEXTN_unitno . '-' . $CEXTN_hidden_custid . '-' . $CEXTN_tb_firstname . ' ' . $CEXTN_tb_lastname;
-          $mimetype = 'application/pdf';
-          $this->load->model('EILIB/Mdl_eilib_common_function');
-          $service = $this->Mdl_eilib_common_function->get_service_document();
-
-          if ($filetempname != '')
-          {
-              $this->Mdl_eilib_common_function->Customer_FileUpload($service, $filename, 'PersonalDetails', '0B1AhtyM5U79zREp5QkpiYmphODg', $mimetype, $filetempname);
-          }
+//          $filetempname = $_FILES['CEXTN_fileupload']['tmp_name'];
+//          $filename = $_FILES['CEXTN_fileupload']['name'];
+//          $filename = $CEXTN_unitno . '-' . $CEXTN_hidden_custid . '-' . $CEXTN_tb_firstname . ' ' . $CEXTN_tb_lastname;
+//          $mimetype = 'application/pdf';
+//          $this->load->model('EILIB/Mdl_eilib_common_function');
+//          $service = $this->Mdl_eilib_common_function->get_service_document();
+//
+//          if ($filetempname != '')
+//          {
+//              $this->Mdl_eilib_common_function->Customer_FileUpload($service, $filename, 'PersonalDetails', '0B1AhtyM5U79zREp5QkpiYmphODg', $mimetype, $filetempname);
+//          }
 
           $this->load->model('EILIB/Mdl_eilib_calender');
           $cal_service=$this->Mdl_eilib_calender->createCalendarService();
@@ -703,6 +712,7 @@ class Mdl_Customer_Extension extends CI_Model{
             {
                 $CEXTN_rent_check='false';
             }
+          echo $cal_flag;
           //CONTRACT N INVOICE
           $service=$this->Mdl_eilib_common_function->get_service_document();
           $this->load->model('EILIB/Mdl_eilib_invoice_contract');
@@ -714,6 +724,8 @@ class Mdl_Customer_Extension extends CI_Model{
 
 //            CUST_invoice($UserStamp,$service,$unit,$customername,$companyname,$invoiceid,$invoicesno,$invoicedate,$rent,$process,$deposit,$sdate,$edate,$roomtype,$Leaseperiod,$rentcheck,$sendmailid,$docowner,$formname,$waived,$custid)
            if($CEXTN_depositamt=='null'){$CEXTN_depositamt='';}
+              if($CEXTN_profeeamt=='null'){$CEXTN_profeeamt='';}
+              echo "CUST_invoice($UserStamp, $service, $CEXTN_unitno, $CEXTN_continvoicecustomename, $CEXTN_tb_contrcompname, $CEXTN_invoiceid, $CEXTN_invoicesno, $CEXTN_invoicedate, $CEXTN_rentamt, $CEXTN_profeeamt, $CEXTN_depositamt, $CEXTN_db_chkindate, $CEXTN_db_chkoutdate, $CEXTN_roomtype, $CEXTN_Leaseperiod, $CEXTN_rent_check, $CEXTN_lb_emailid, $docowner, 'EXTENSION',$CEXTN_waivedvalue, $CEXTN_hidden_custid)";
             $InvoiceId = $this->Mdl_eilib_invoice_contract->CUST_invoice($UserStamp, $service, $CEXTN_unitno, $CEXTN_continvoicecustomename, $CEXTN_tb_contrcompname, $CEXTN_invoiceid, $CEXTN_invoicesno, $CEXTN_invoicedate, $CEXTN_rentamt, $CEXTN_profeeamt, $CEXTN_depositamt, $CEXTN_db_chkindate, $CEXTN_db_chkoutdate, $CEXTN_roomtype, $CEXTN_Leaseperiod, $CEXTN_rent_check, $CEXTN_lb_emailid, $docowner, 'EXTENSION',$CEXTN_waivedvalue, $CEXTN_hidden_custid);
 //            eilib.CUST_invoicecontractmail(CEXTN_saveconn,CEXTN_unitno,CEXTN_invoiceid,CEXTN_db_chkindate,CEXTN_db_chkoutdate,CEXTN_tb_contrcompname,CEXTN_continvoicecustomename,CEXTN_invoicesno,CEXTN_invoicedate,CEXTN_contractnoticeperiod,CEXTN_tb_contrpassno,CEXTN_tb_contrpassdate,CEXTN_tb_contrepno,CEXTN_tb_contrepdate,CEXTN_tb_contrnoticedate,CEXTN_Leaseperiod,CEXTN_customercard,CEXTN_rentamt,CEXTN_tb_airquarterfee,CEXTN_tb_fixedairfee,CEXTN_tb_electcapfee,CEXTN_tb_curtaindryfee,CEXTN_tb_chkoutcleanfee,CEXTN_profeeamt,CEXTN_depositamt,CEXTN_waivedvalue,CEXTN_roomtype,CEXTN_TargetFolderId,CEXTN_rent_check,docowner,CEXTN_lb_emailid,"EXTENSION",CEXTN_hidden_custid)
         }
